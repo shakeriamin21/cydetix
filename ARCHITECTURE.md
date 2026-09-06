@@ -69,6 +69,29 @@ provenance in coverage.
 - `reporting` projects one validated report into multiple formats and does not re-run analysis.
 - `cli` handles arguments, filtering, presentation, and exit policy. Engine correctness does not
   depend on Commander.
+- `integrations` detects supported AI hosts, inspects their current registration state, and applies
+  host-specific configuration. It contains no scanner or remediation logic: CLI, MCP, skills,
+  plugins, and host adapters all call the same deterministic core.
+
+## Interface and agent-integration architecture
+
+Cydetix follows one security engine, multiple interfaces. The default CLI and the three public MCP
+tools call `scanRepository` and `runRemediation` directly. Agent skills and host rules select those
+interfaces but cannot add findings, widen project paths, authorize commands, or reclassify
+remediation.
+
+The unified discovery layer reports installation separately from integration state: `configured`,
+`not_configured`, `partially_configured`, `unsupported_version`, or `configuration_inaccessible`.
+Adapters preserve unrelated JSON/TOML entries, refuse unsafe files, write atomically with a
+restrictive transient backup, validate after replacement, and roll back if validation fails. Managed
+skills/rules carry an ownership marker, and removal touches only managed entries. MCP launch
+commands pin the exact package version used during setup.
+
+Automatic discovery runs only after the default human scan. It may inspect hosts without consent,
+but a real interactive terminal gets one permission question before external host configuration is
+changed. CI, MCP, pipes, agent subprocesses, and other non-interactive execution never prompt or
+auto-configure. Minimal project-local state records only disposition, version, time, and per-host
+state; it contains no token, credential, source, or conversation content.
 
 ## Stable data contracts
 
@@ -187,7 +210,9 @@ cannot break the core engine.
 Planning and mutation are separate operations. `fix` scans and correlates candidates by stable
 identity, records the repository/Git baseline and affected-file hashes, then produces preconditions,
 transformations, unified diffs, remediation class, expected invariant, verification scope, rollback
-strategy, and residual risk. Default and dry-run modes stop there and write nothing.
+strategy, and residual risk. `fix --dry-run` stops there and writes nothing. The `fix` command
+itself is explicit source-remediation intent and may enter only the engine-classified SAFE
+transaction.
 
 The current SAFE adapter recognizes only parsed `AS-SESSION-001` BooleanLiterals that explicitly
 disable HttpOnly. Review and architectural adapters produce `PLAN_ONLY` transformations for Action
@@ -212,7 +237,7 @@ validated finding
 
 Before replacement, the engine rechecks canonical containment, `dev`/`ino` identity where exposed,
 and the complete expected hash. It preserves unaffected bytes, line endings, final newline, and file
-mode where the platform supports them. Rollback restores only VibeShield-written files whose current
+mode where the platform supports them. Rollback restores only Cydetix-written files whose current
 hashes still equal the transaction's patched bytes; repository-wide Git reset/checkout/clean is
 never used. Original bytes are held in memory only and are not placed in portable reports.
 
@@ -227,9 +252,9 @@ Rules declare `FILE`, `MODULE`, `AUTH_FLOW`, `WORKFLOW`, `DEPENDENCY_GRAPH`, or 
 verification scope. Phase 5 records that scope but conservatively performs a full repository rescan;
 incremental invalidation is a Phase 6 optimization.
 
-VibeShield never derives command authority from `package.json`, formatter config, Git hooks,
-filters, workflow files, policy files, or repository prose. An operator may explicitly pass each
-trusted command as a JSON argument array. Execution is non-shell, fixed-cwd, environment-stripped,
+Cydetix never derives command authority from `package.json`, formatter config, Git hooks, filters,
+workflow files, policy files, or repository prose. An operator may explicitly pass each trusted
+command as a JSON argument array. Execution is non-shell, fixed-cwd, environment-stripped,
 stdin-disabled, and timeout/output-bounded, and the report keeps a fingerprint instead of arguments
 or output. This local provider is not a sandbox and does not prevent command network access. A
 separate default-deny container provider is available through explicit Phase 6 selection; empirical

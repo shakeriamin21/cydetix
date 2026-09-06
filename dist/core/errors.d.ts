@@ -1,4 +1,4 @@
-export declare class InvariantSecError extends Error {
+export declare class CydetixError extends Error {
     readonly exitCode: number;
     constructor(message: string, exitCode: number, options?: ErrorOptions);
 }

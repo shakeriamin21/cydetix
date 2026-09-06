@@ -62,7 +62,7 @@ A SAFE adapter is incomplete until it defines and tests:
    movement.
 4. The security invariant and required before/after conclusions.
 5. Parser, rescan, and invariant verification stages and the declared verification scope.
-6. A rollback strategy that restores only VibeShield's own bytes and preserves unrelated work.
+6. A rollback strategy that restores only Cydetix's own bytes and preserves unrelated work.
 7. Idempotency: a second invocation makes no change and creates no duplicate configuration.
 8. Secure-negative, false-positive, stale, dirty-tree, rollback, path/symlink, formatting, and
    secret-redaction fixtures where applicable.

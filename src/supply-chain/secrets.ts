@@ -13,9 +13,9 @@ interface SecretPattern {
 
 const PATTERNS: readonly SecretPattern[] = [
   {
-    provider: "synthetic-vibeshield",
+    provider: "synthetic-cydetix",
     type: "synthetic test credential",
-    expression: /\b(INVARIANTSEC_TEST_SECRET_[A-Za-z0-9]{24,})\b/gu,
+    expression: /\b(CYDETIX_TEST_SECRET_[A-Za-z0-9]{24,})\b/gu,
     valueGroup: 1,
     contextual: false,
   },
@@ -106,7 +106,7 @@ export function detectSecretsInText(text: string, options: SecretTextOptions): S
       if (value === undefined) continue;
       const explicitFixtureExposure = value.toLowerCase().startsWith("fixture-only-not-a-real-");
       if (
-        pattern.provider !== "synthetic-vibeshield" &&
+        pattern.provider !== "synthetic-cydetix" &&
         !explicitFixtureExposure &&
         looksLikePlaceholder(value)
       ) {
@@ -140,7 +140,7 @@ export function detectSecretsInText(text: string, options: SecretTextOptions): S
             "PROVIDER_REVOCATION_REQUIRED",
           ],
           validationState: "PASSIVE_NOT_VALIDATED",
-          engine: options.engine ?? "vibeshield-secret-engine-v1",
+          engine: options.engine ?? "cydetix-secret-engine-v1",
         }),
       );
     }

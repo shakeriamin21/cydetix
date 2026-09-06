@@ -1,19 +1,19 @@
 {
-  "name": "vibeshield",
+  "name": "cydetix",
   "version": "0.6.0-alpha.1",
-  "description": "Deterministic project security analysis and policy-bounded remediation backed by the VibeShield CLI.",
+  "description": "Deterministic project security analysis and policy-bounded remediation backed by the Cydetix CLI.",
   "author": {
-    "name": "VibeShield contributors"
+    "name": "Cydetix contributors"
   },
   "license": "Apache-2.0",
   "keywords": ["application-security", "authentication", "supply-chain", "sbom", "sarif"],
   "skills": "./skills/",
   "mcpServers": "./.mcp.json",
   "interface": {
-    "displayName": "VibeShield",
+    "displayName": "Cydetix",
     "shortDescription": "Deterministic local security checks and safe fixes.",
     "longDescription": "Check application security, authentication, authorization, dependencies, secrets, supply chain, and CI/CD with a local deterministic engine.",
-    "developerName": "VibeShield contributors",
+    "developerName": "Cydetix contributors",
     "category": "Productivity",
     "capabilities": [],
     "defaultPrompt": [

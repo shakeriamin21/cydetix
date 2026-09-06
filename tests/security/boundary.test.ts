@@ -10,14 +10,14 @@ import { temporaryDirectory } from "../helpers/temporary.js";
 
 describe("repository boundary", () => {
   it("rejects traversal outside the selected root", async () => {
-    const root = await temporaryDirectory("invariantsec-boundary-");
+    const root = await temporaryDirectory("cydetix-boundary-");
     const boundary = await createBoundary(root);
     expect(() => resolveInside(boundary, "../outside.txt")).toThrow(/escapes repository root/);
     expect(() => resolveInside(boundary, path.resolve(root, "absolute.txt"))).toThrow(/absolute/);
   });
 
   it("does not follow a symlink that points outside the root", async () => {
-    const parent = await temporaryDirectory("invariantsec-symlink-");
+    const parent = await temporaryDirectory("cydetix-symlink-");
     const root = path.join(parent, "repo");
     const outside = path.join(parent, "outside");
     await mkdir(root);
@@ -42,7 +42,7 @@ describe("repository boundary", () => {
   });
 
   it("skips archives, binary input, and files over the configured limit", async () => {
-    const root = await temporaryDirectory("invariantsec-limits-");
+    const root = await temporaryDirectory("cydetix-limits-");
     await writeFile(path.join(root, "payload.zip"), "not expanded");
     await writeFile(path.join(root, "binary.dat"), Buffer.from([0, 1, 2, 3]));
     await writeFile(path.join(root, "large.ts"), "x".repeat(1025));

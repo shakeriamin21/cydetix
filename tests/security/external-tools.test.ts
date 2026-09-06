@@ -32,15 +32,15 @@ describe("optional external-tool failure isolation", () => {
   });
 
   it("does not inherit arbitrary host secrets", () => {
-    process.env.INVARIANTSEC_SYNTHETIC_HOST_SECRET = "synthetic-canary";
+    process.env.CYDETIX_SYNTHETIC_HOST_SECRET = "synthetic-canary";
     try {
       const result = probeExternalTool("synthetic", process.execPath, [
         "-e",
-        "process.exit(process.env.INVARIANTSEC_SYNTHETIC_HOST_SECRET===undefined?0:18)",
+        "process.exit(process.env.CYDETIX_SYNTHETIC_HOST_SECRET===undefined?0:18)",
       ]);
       expect(result.status).toBe("AVAILABLE");
     } finally {
-      delete process.env.INVARIANTSEC_SYNTHETIC_HOST_SECRET;
+      delete process.env.CYDETIX_SYNTHETIC_HOST_SECRET;
     }
   });
 });

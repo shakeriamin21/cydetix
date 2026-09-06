@@ -1,64 +1,38 @@
-# VibeShield publication gate
+# Cydetix publication gate
 
-Date: 2026-09-06
+Checked: 2026-09-06
 
-## Executive result
+Nothing has been published, pushed, tagged, or released by this phase.
 
-**Verdict: NOT_READY_FOR_PUBLICATION**
+## Identity state
 
-The source tree targets the unscoped `vibeshield` npm package and `vibeshield` binary. Nothing has
-been published. Local packed-artifact checks may establish install and execution behavior, but they
-do not establish live registry ownership, hosted operating-system behavior, trademark clearance, or
-marketplace acceptance.
+| Gate                             | State                       | Evidence                                        |
+| -------------------------------- | --------------------------- | ----------------------------------------------- |
+| Display/package/CLI alignment    | IMPLEMENTED                 | `Cydetix` / `cydetix` / `cydetix`               |
+| Exact npm registry lookup        | E404_POINT_IN_TIME          | `npm view cydetix --json`, 2026-09-06           |
+| npm ownership/reservation        | NOT_ESTABLISHED             | E404 is not ownership                           |
+| Obvious exact-name web collision | NOT_FOUND_IN_LIMITED_SEARCH | Four exact-name queries returned no results     |
+| Trademark/exclusivity clearance  | NOT_CLAIMED                 | No legal conclusion was performed               |
+| Scoped fallback                  | FORBIDDEN                   | A different identity requires explicit approval |
+| Publication authorization        | NOT_GRANTED                 | This phase explicitly forbids publication       |
 
-## Identity gates
+## Local preparation gates
 
-| Gate                                | State                  | Evidence                                                   |
-| ----------------------------------- | ---------------------- | ---------------------------------------------------------- |
-| Display/package/CLI alignment       | IMPLEMENTED            | `VibeShield` / `vibeshield` / `vibeshield`                 |
-| Exact npm registry lookup           | AVAILABLE_UNREGISTERED | `npm view vibeshield --json` returned `E404` on 2026-09-06 |
-| npm ownership/reservation           | NOT_ESTABLISHED        | An `E404` result is not ownership                          |
-| Active market-name collision review | REQUIRED               | Multiple active VibeShield security products were found    |
-| Trademark/exclusivity clearance     | NOT_CLAIMED            | No legal conclusion was requested or performed             |
-| Scoped fallback                     | FORBIDDEN              | A different identity requires explicit user approval       |
-| Publication authorization           | NOT_GRANTED            | This phase explicitly forbids automatic publication        |
+Before GitHub bootstrap, the handoff must record passing format, lint, type, schema, unit,
+integration, remediation, sandbox, package, skill, plugin, MCP, trigger, privacy, license, OSV,
+CycloneDX, workflow, and packed-install checks. The packed artifact must prove the Cydetix launcher,
+default scan, setup/status, machine output, remediation, and MCP surface.
 
-## Local gates
+## External release gates
 
-The current zero-friction phase must pass all of the following before source handoff:
+- Create or approve the public repository whose repository name is `cydetix`.
+- Configure branch/tag protections, private vulnerability reporting, the protected `release`
+  environment, and required hosted Windows/Linux/macOS checks.
+- Recheck the exact unscoped npm name and stop on any collision/protection response.
+- Complete the operator's legal/brand review; no source document provides trademark clearance.
+- Perform a separately authorized first-package bootstrap, then configure npm Trusted Publishing.
+- Verify live `npx cydetix` and global-install behavior from clean consumers.
+- Inspect and publish checksums, SBOM, attestations, plugin archive, and release manifest only after
+  all approvals.
 
-- complete format, lint, type, schema, unit, integration, remediation, sandbox, package, plugin,
-  skill, MCP, trigger-corpus, privacy, and license validation;
-- zero-config `vibeshield` scan from the packed npm artifact;
-- packed local npm execution equivalent, optional global install, real `vibeshield` launcher, setup,
-  and MCP protocol smoke tests;
-- version-pinned integration configuration with clean reconfiguration/uninstall behavior;
-- no username or package scope in primary onboarding;
-- one public skill with implicit invocation enabled and explicit mutation boundaries.
-
-The final measured outcomes are recorded in
-[`ZERO_FRICTION_UX_HANDOFF.md`](ZERO_FRICTION_UX_HANDOFF.md). A local pass does not turn the
-publication verdict into READY.
-
-## External gates that remain
-
-- Recheck `vibeshield` immediately before first publish and stop on any collision/protection error.
-- Resolve or explicitly accept the active VibeShield market-name conflict with appropriate legal
-  review.
-- Configure the approved public repository, protected release environment, npm Trusted Publisher,
-  provenance, attestations, vulnerability reporting, branch/tag protections, and hosted CI.
-- After an authorized real npm registration/publish, verify exactly:
-
-  ```bash
-  npx vibeshield --version
-  npx vibeshield --help
-  npx vibeshield
-  npx vibeshield setup
-  npm install -g vibeshield
-  vibeshield --version
-  vibeshield
-  vibeshield setup
-  ```
-
-No tag, remote, push, GitHub repository, GitHub release, npm publish, marketplace submission, or
-plugin publication was performed.
+No automated workflow may substitute a scoped package or expose an owner in the normal command.

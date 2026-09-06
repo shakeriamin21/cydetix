@@ -1,13 +1,13 @@
 import { readFile } from "node:fs/promises";
 
-import { selectVibeShieldTool } from "../dist/integrations/triggers.js";
+import { selectCydetixTool } from "../dist/integrations/triggers.js";
 
 const corpus = JSON.parse(await readFile("validation/agent-trigger-corpus.json", "utf8"));
 let correct = 0;
 let missed = 0;
 let unwanted = 0;
 for (const entry of corpus.cases) {
-  const actual = selectVibeShieldTool(entry.prompt) ?? null;
+  const actual = selectCydetixTool(entry.prompt) ?? null;
   if (actual === entry.expected) correct += 1;
   else if (entry.expected === null) unwanted += 1;
   else missed += 1;

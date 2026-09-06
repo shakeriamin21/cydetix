@@ -1,6 +1,6 @@
-name: "VibeShield security scan"
-description: "Run VibeShield locally and gate CI on evidence-backed findings."
-author: "VibeShield contributors"
+name: "Cydetix security scan"
+description: "Run Cydetix locally and gate CI on evidence-backed findings."
+author: "Cydetix contributors"
 
 inputs:
   path:
@@ -14,7 +14,7 @@ inputs:
   output:
     description: "SARIF output path."
     required: false
-    default: "vibeshield.sarif"
+    default: "cydetix.sarif"
 
 runs:
   using: "composite"
@@ -26,15 +26,15 @@ runs:
     - name: Install locked runtime dependencies
       shell: bash
       run: npm ci --ignore-scripts --omit=dev --prefix "$GITHUB_ACTION_PATH"
-    - name: Run offline VibeShield scan
+    - name: Run offline Cydetix scan
       shell: bash
       env:
-        VIBESHIELD_SCAN_PATH: ${{ inputs.path }}
-        VIBESHIELD_FAIL_ON: ${{ inputs.fail-on }}
-        VIBESHIELD_OUTPUT: ${{ inputs.output }}
+        CYDETIX_SCAN_PATH: ${{ inputs.path }}
+        CYDETIX_FAIL_ON: ${{ inputs.fail-on }}
+        CYDETIX_OUTPUT: ${{ inputs.output }}
       run: >-
-        node "$GITHUB_ACTION_PATH/dist/cli/main.js" ci "$VIBESHIELD_SCAN_PATH" --format sarif
-        --fail-on "$VIBESHIELD_FAIL_ON" > "$VIBESHIELD_OUTPUT"
+        node "$GITHUB_ACTION_PATH/dist/cli/main.js" ci "$CYDETIX_SCAN_PATH" --format sarif --fail-on
+        "$CYDETIX_FAIL_ON" > "$CYDETIX_OUTPUT"
 
 branding:
   icon: "shield"

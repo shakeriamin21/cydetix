@@ -10,10 +10,10 @@ export default defineConfig([
     "fixtures/**",
     "schemas/**",
     "rules/**",
-    ".invariantsec/**",
+    ".cydetix/**",
     ".npm-cache/**",
     ".phase6-cache/**",
-    ".docker-vibeshield/**",
+    ".docker-cydetix/**",
   ]),
   eslint.configs.recommended,
   {

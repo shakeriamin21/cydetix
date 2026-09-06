@@ -5,7 +5,7 @@ import path from "node:path";
 import { performance } from "node:perf_hooks";
 import { isParseFailure, parseSource } from "../ast-analysis/parser.js";
 import { scanRepository } from "../core/engine.js";
-import { InvariantSecError, EXIT } from "../core/errors.js";
+import { CydetixError, EXIT } from "../core/errors.js";
 import { sha256, stableFingerprint } from "../core/hash.js";
 import { createBoundary, isWithinRoot, readRegularFileInside, resolveInside, } from "../repository-discovery/boundary.js";
 import { detectSecretsInText } from "../supply-chain/secrets.js";
@@ -130,7 +130,7 @@ function redactForDiff(filePath, text) {
         path: filePath,
         sourceCategory: "working-tree",
         historyState: "current",
-        engine: "vibeshield-remediation-diff-v1",
+        engine: "cydetix-remediation-diff-v1",
     })) {
         const key = `${exposure.location.start.offset}:${exposure.location.end.offset}`;
         if (!unique.has(key))
@@ -186,10 +186,10 @@ function applyEdits(text, edits) {
     let updated = text;
     for (const edit of [...edits].sort((left, right) => right.startOffset - left.startOffset)) {
         if (edit.startOffset > edit.endOffset || edit.endOffset > updated.length)
-            throw new InvariantSecError(`Invalid remediation offsets for ${edit.path}.`, EXIT.verificationFailure);
+            throw new CydetixError(`Invalid remediation offsets for ${edit.path}.`, EXIT.verificationFailure);
         const current = updated.slice(edit.startOffset, edit.endOffset);
         if (sha256(current) !== edit.expectedTextSha256)
-            throw new InvariantSecError(`Remediation precondition changed for ${edit.path}; rescan required.`, EXIT.verificationFailure);
+            throw new CydetixError(`Remediation precondition changed for ${edit.path}; rescan required.`, EXIT.verificationFailure);
         updated = `${updated.slice(0, edit.startOffset)}${edit.replacement}${updated.slice(edit.endOffset)}`;
     }
     return updated;
@@ -345,7 +345,7 @@ async function buildCandidate(root, finding, gitState, authoritativeActionPins, 
                 : ["TARGETED_RESCAN", "SECURITY_INVARIANT"],
             externalCommandsAuthorized,
         },
-        rollbackStrategy: "Keep original bytes in transaction memory and restore only VibeShield-written files whose post-write hashes still match.",
+        rollbackStrategy: "Keep original bytes in transaction memory and restore only Cydetix-written files whose post-write hashes still match.",
         remediationSteps: remediationSteps(finding),
         residualRisk: residualRisk(finding),
     });
@@ -404,7 +404,7 @@ function verifyNoOverlaps(transformations) {
             if (previous !== undefined &&
                 current !== undefined &&
                 previous.endOffset > current.startOffset)
-                throw new InvariantSecError(`Refusing overlapping remediation edits in ${filePath}.`, EXIT.verificationFailure);
+                throw new CydetixError(`Refusing overlapping remediation edits in ${filePath}.`, EXIT.verificationFailure);
         }
     }
 }
@@ -431,17 +431,17 @@ async function prepareFiles(root, plans) {
     for (const [filePath, edits] of byPath) {
         const baseline = baselines.get(filePath);
         if (baseline === undefined)
-            throw new InvariantSecError(`Missing file baseline for ${filePath}.`, EXIT.verificationFailure);
+            throw new CydetixError(`Missing file baseline for ${filePath}.`, EXIT.verificationFailure);
         const target = resolveInside(boundary, filePath);
         const stat = await lstat(target);
         if (!stat.isFile() || stat.isSymbolicLink())
-            throw new InvariantSecError(`Remediation target is not a regular file: ${filePath}`, EXIT.verificationFailure);
+            throw new CydetixError(`Remediation target is not a regular file: ${filePath}`, EXIT.verificationFailure);
         const canonical = await realpath(target);
         if (!isWithinRoot(boundary.root, canonical))
-            throw new InvariantSecError(`Remediation target escapes repository root: ${filePath}`, EXIT.verificationFailure);
+            throw new CydetixError(`Remediation target escapes repository root: ${filePath}`, EXIT.verificationFailure);
         const before = await readRegularFileInside(boundary, filePath, MAX_FIX_FILE_BYTES);
         if (sha256(before) !== baseline.sha256)
-            throw new InvariantSecError(`STALE_FINDING: ${filePath} changed after planning; rescan required.`, EXIT.verificationFailure);
+            throw new CydetixError(`STALE_FINDING: ${filePath} changed after planning; rescan required.`, EXIT.verificationFailure);
         const afterText = applyEdits(before.toString("utf8"), edits);
         prepared.push({
             path: filePath,
@@ -457,19 +457,19 @@ async function atomicReplace(root, file, expectedCurrentHash, content) {
     const target = resolveInside(boundary, file.path);
     const currentStat = await lstat(target);
     if (!currentStat.isFile() || currentStat.isSymbolicLink())
-        throw new InvariantSecError(`Remediation target changed type: ${file.path}`, EXIT.verificationFailure);
+        throw new CydetixError(`Remediation target changed type: ${file.path}`, EXIT.verificationFailure);
     const canonical = await realpath(target);
     if (!isWithinRoot(boundary.root, canonical))
-        throw new InvariantSecError(`Remediation target escaped the repository: ${file.path}`, EXIT.verificationFailure);
+        throw new CydetixError(`Remediation target escaped the repository: ${file.path}`, EXIT.verificationFailure);
     const current = await readRegularFileInside(boundary, file.path, MAX_FIX_FILE_BYTES);
     if (sha256(current) !== expectedCurrentHash)
-        throw new InvariantSecError(`Concurrent modification detected for ${file.path}.`, EXIT.verificationFailure);
+        throw new CydetixError(`Concurrent modification detected for ${file.path}.`, EXIT.verificationFailure);
     const canonicalDirectory = await realpath(path.dirname(canonical));
     if (!isWithinRoot(boundary.root, canonicalDirectory))
-        throw new InvariantSecError(`Remediation target directory escaped the repository: ${file.path}`, EXIT.verificationFailure);
-    const temporary = path.join(canonicalDirectory, `.vibeshield-remediation-${randomUUID()}.tmp`);
+        throw new CydetixError(`Remediation target directory escaped the repository: ${file.path}`, EXIT.verificationFailure);
+    const temporary = path.join(canonicalDirectory, `.cydetix-remediation-${randomUUID()}.tmp`);
     if (!isWithinRoot(boundary.root, temporary))
-        throw new InvariantSecError("Temporary remediation path escaped the repository.", EXIT.verificationFailure);
+        throw new CydetixError("Temporary remediation path escaped the repository.", EXIT.verificationFailure);
     try {
         const handle = await open(temporary, "wx", file.mode);
         try {
@@ -481,13 +481,13 @@ async function atomicReplace(root, file, expectedCurrentHash, content) {
         }
         const fresh = await readRegularFileInside(boundary, file.path, MAX_FIX_FILE_BYTES);
         if (sha256(fresh) !== expectedCurrentHash)
-            throw new InvariantSecError(`Concurrent modification detected for ${file.path}.`, EXIT.verificationFailure);
+            throw new CydetixError(`Concurrent modification detected for ${file.path}.`, EXIT.verificationFailure);
         const freshStat = await lstat(target);
         const freshCanonical = await realpath(target);
         if (freshCanonical !== canonical ||
             freshStat.dev !== currentStat.dev ||
             freshStat.ino !== currentStat.ino)
-            throw new InvariantSecError(`File identity changed during remediation: ${file.path}.`, EXIT.verificationFailure);
+            throw new CydetixError(`File identity changed during remediation: ${file.path}.`, EXIT.verificationFailure);
         await rename(temporary, canonical);
         const directoryHandle = await open(canonicalDirectory, "r").catch(() => undefined);
         if (directoryHandle !== undefined) {
@@ -501,7 +501,7 @@ async function atomicReplace(root, file, expectedCurrentHash, content) {
     }
     const written = await readRegularFileInside(boundary, file.path, MAX_FIX_FILE_BYTES);
     if (!written.equals(content))
-        throw new InvariantSecError(`Atomic remediation write could not be verified: ${file.path}`, EXIT.verificationFailure);
+        throw new CydetixError(`Atomic remediation write could not be verified: ${file.path}`, EXIT.verificationFailure);
 }
 function result(stage, status, message, started, commandFingerprint, execution) {
     return {
@@ -553,13 +553,13 @@ async function rollbackFiles(root, written) {
             await atomicReplace(root, file, sha256(file.after), file.before);
         return {
             succeeded: true,
-            verification: result("ROLLBACK", "PASSED", "VibeShield restored only its own in-memory transaction bytes.", started),
+            verification: result("ROLLBACK", "PASSED", "Cydetix restored only its own in-memory transaction bytes.", started),
         };
     }
     catch {
         return {
             succeeded: false,
-            verification: result("ROLLBACK", "FAILED", "Rollback refused or failed because a target no longer matched VibeShield's written hash.", started),
+            verification: result("ROLLBACK", "FAILED", "Rollback refused or failed because a target no longer matched Cydetix's written hash.", started),
         };
     }
 }
@@ -634,7 +634,7 @@ export async function executeSafeTransaction(root, plansInput, context, commands
         plannedTransformations: plans.flatMap((plan) => plan.transformations),
     };
     if (plans.some((plan) => plan.classification !== "SAFE" || plan.state !== "PLANNED"))
-        throw new InvariantSecError("Unsafe or unapproved remediation cannot enter a SAFE transaction.", EXIT.unsafeRemediation);
+        throw new CydetixError("Unsafe or unapproved remediation cannot enter a SAFE transaction.", EXIT.unsafeRemediation);
     const transformationStart = performance.now();
     let prepared;
     try {

@@ -7,14 +7,14 @@ import { Command, CommanderError, InvalidArgumentError } from "commander";
 
 import { PRODUCT } from "../core/brand.js";
 import { scanRepository } from "../core/engine.js";
-import { InvariantSecError, EXIT } from "../core/errors.js";
+import { CydetixError, EXIT } from "../core/errors.js";
 import { probeExternalTool } from "../external-tools/model.js";
 import type { Confidence, ScanReport, Severity } from "../core/schema.js";
-import { parseAgentId, runSetup } from "../integrations/setup.js";
+import { parseAgentId, runAutomaticIntegration, runSetup } from "../integrations/setup.js";
 import type { AgentId } from "../integrations/types.js";
 import { runMcpServer } from "../mcp/server.js";
 import { createBoundary } from "../repository-discovery/boundary.js";
-import { CONFIG_NAME, LEGACY_CONFIG_NAME } from "../repository-discovery/config.js";
+import { CONFIG_NAME } from "../repository-discovery/config.js";
 import { RULES, RULE_BY_ID } from "../rule-engine/catalogue.js";
 import { runRemediation, type TrustedVerificationCommand } from "../remediation/fix.js";
 import { remediationReportSchema } from "../remediation/model.js";
@@ -161,8 +161,8 @@ interface ScanCommandOptions {
 
 async function executeScan(target: string, options: ScanCommandOptions): Promise<ScanReport> {
   if (!options.offline) {
-    throw new InvariantSecError(
-      "VibeShield is deliberately offline-only; network-backed adapters are not implemented.",
+    throw new CydetixError(
+      "Cydetix is deliberately offline-only; network-backed adapters are not implemented.",
       EXIT.usage,
     );
   }
@@ -173,7 +173,7 @@ async function initRepository(target: string): Promise<void> {
   const boundary = await createBoundary(target);
   const configPath = path.join(boundary.root, CONFIG_NAME);
   const existingNames: string[] = [];
-  for (const name of [CONFIG_NAME, LEGACY_CONFIG_NAME]) {
+  for (const name of [CONFIG_NAME]) {
     const existing = await lstat(path.join(boundary.root, name)).catch((error: unknown) => {
       if (errorCode(error) === "ENOENT") return undefined;
       throw error;
@@ -181,7 +181,7 @@ async function initRepository(target: string): Promise<void> {
     if (existing !== undefined) existingNames.push(name);
   }
   if (existingNames.length > 0) {
-    throw new InvariantSecError(
+    throw new CydetixError(
       `${existingNames.join(" and ")} already exists; refusing to overwrite configuration.`,
       EXIT.usage,
     );
@@ -239,18 +239,28 @@ export function buildProgram(): Command {
     .action(async () => {
       const options = program.opts<{ details: boolean; json: boolean; sarif: boolean }>();
       if (options.json && options.sarif)
-        throw new InvariantSecError("Choose only one of --json or --sarif.", EXIT.usage);
+        throw new CydetixError("Choose only one of --json or --sarif.", EXIT.usage);
       const report = await scanRepository({ path: "." });
       if (options.json) process.stdout.write(renderJson(report));
       else if (options.sarif) process.stdout.write(renderSarif(report));
       else if (options.details) process.stdout.write(renderText(report));
-      else process.stdout.write(renderHuman(report));
+      else {
+        process.stdout.write(renderHuman(report));
+        try {
+          await runAutomaticIntegration({ projectRoot: "." });
+        } catch {
+          if (process.stdin.isTTY && process.stdout.isTTY)
+            process.stdout.write(
+              "\nAI integration: needs attention. Run cydetix setup --status.\n",
+            );
+        }
+      }
     });
 
   program
     .command("init")
     .argument("[path]", "repository root", ".")
-    .description("Create an optional bounded, data-only VibeShield configuration")
+    .description("Create an optional bounded, data-only Cydetix configuration")
     .action(initRepository);
 
   program
@@ -265,7 +275,9 @@ export function buildProgram(): Command {
     .option("--all", "configure every supported adapter", false)
     .option("--yes", "accept setup non-interactively", false)
     .option("--dry-run", "preview integration changes without writing files", false)
-    .option("--uninstall", "remove only VibeShield-managed integration entries", false)
+    .option("--status", "show host detection and integration status without changes", false)
+    .option("--verify", "verify detected integrations without changes", false)
+    .option("--remove", "remove only Cydetix-managed integration entries", false)
     .option("--project <path>", "project root for project-scoped integrations", ".")
     .action(
       async (options: {
@@ -273,17 +285,24 @@ export function buildProgram(): Command {
         all: boolean;
         yes: boolean;
         dryRun: boolean;
-        uninstall: boolean;
+        status: boolean;
+        verify: boolean;
+        remove: boolean;
         project: string;
       }) => {
-        await runSetup({
+        if ([options.status, options.verify, options.remove].filter(Boolean).length > 1)
+          throw new CydetixError("Choose only one of --status, --verify, or --remove.", EXIT.usage);
+        const report = await runSetup({
           projectRoot: options.project,
           agents: options.agent,
           all: options.all,
           yes: options.yes,
           dryRun: options.dryRun,
-          uninstall: options.uninstall,
+          status: options.status,
+          verify: options.verify,
+          remove: options.remove,
         });
+        if (options.verify && !report.verified) process.exitCode = EXIT.verificationFailure;
       },
     );
 
@@ -333,7 +352,7 @@ export function buildProgram(): Command {
     .option("--format <format>", "output format", graphFormat, "text")
     .action(async (target: string, options: { auth: boolean; format: GraphOutputFormat }) => {
       if (!options.auth) {
-        throw new InvariantSecError("Only --auth graph output is implemented.", EXIT.usage);
+        throw new CydetixError("Only --auth graph output is implemented.", EXIT.usage);
       }
       const report = await scanRepository({ path: target });
       if (options.format === "json") {
@@ -368,7 +387,7 @@ export function buildProgram(): Command {
         const report = await scanRepository({ path: target, advisories: options.advisories });
         const analysis = report.securityAnalysis.supplyChainAnalysis;
         if (analysis === undefined)
-          throw new InvariantSecError("Supply-chain analysis unavailable.", EXIT.scanFailure);
+          throw new CydetixError("Supply-chain analysis unavailable.", EXIT.scanFailure);
         if (options.format === "json") {
           process.stdout.write(
             `${JSON.stringify({ inventory: analysis.inventory, advisories: analysis.advisories }, null, 2)}\n`,
@@ -389,7 +408,7 @@ export function buildProgram(): Command {
       const report = await scanRepository({ path: target, history: options.history });
       const analysis = report.securityAnalysis.supplyChainAnalysis;
       if (analysis === undefined)
-        throw new InvariantSecError("Secret analysis unavailable.", EXIT.scanFailure);
+        throw new CydetixError("Secret analysis unavailable.", EXIT.scanFailure);
       if (options.format === "json") {
         process.stdout.write(`${JSON.stringify(analysis.secrets, null, 2)}\n`);
       } else {
@@ -420,7 +439,7 @@ export function buildProgram(): Command {
         });
         const analysis = report.securityAnalysis.supplyChainAnalysis;
         if (analysis === undefined)
-          throw new InvariantSecError("Supply-chain analysis unavailable.", EXIT.scanFailure);
+          throw new CydetixError("Supply-chain analysis unavailable.", EXIT.scanFailure);
         if (options.format === "text") process.stdout.write(renderSupplyChainText(analysis));
         else if (options.format === "json")
           process.stdout.write(`${JSON.stringify(analysis, null, 2)}\n`);
@@ -435,7 +454,7 @@ export function buildProgram(): Command {
     .option("--format <format>", "SBOM output format", graphFormat, "json")
     .action(async (target: string, options: { format: GraphOutputFormat }) => {
       if (options.format !== "json") {
-        throw new InvariantSecError(
+        throw new CydetixError(
           "CycloneDX SBOM output currently supports --format json only.",
           EXIT.usage,
         );
@@ -443,7 +462,7 @@ export function buildProgram(): Command {
       const report = await scanRepository({ path: target });
       const inventory = report.securityAnalysis.supplyChainAnalysis?.inventory;
       if (inventory === undefined)
-        throw new InvariantSecError("Dependency inventory unavailable.", EXIT.scanFailure);
+        throw new CydetixError("Dependency inventory unavailable.", EXIT.scanFailure);
       process.stdout.write(`${JSON.stringify(generateCycloneDxSbom(inventory), null, 2)}\n`);
     });
 
@@ -451,7 +470,6 @@ export function buildProgram(): Command {
     .command("fix")
     .argument("[path]", "repository root", ".")
     .description("Apply and verify only SAFE remediation after explicit fix intent")
-    .option("--safe", "compatibility alias; SAFE is the only applicable class", false)
     .option("--finding <fingerprint>", "apply one finding by fingerprint")
     .option("--dry-run", "print plans and unified diffs with zero repository writes", false)
     .option("--non-interactive", "never prompt and never widen SAFE policy", false)
@@ -475,7 +493,6 @@ export function buildProgram(): Command {
       async (
         target: string,
         options: {
-          safe: boolean;
           finding?: string;
           dryRun: boolean;
           nonInteractive: boolean;
@@ -530,7 +547,7 @@ export function buildProgram(): Command {
 
   program
     .command("mcp")
-    .description("Run the first-party VibeShield stdio MCP server")
+    .description("Run the first-party Cydetix stdio MCP server")
     .action(runMcpServer);
 
   program
@@ -558,7 +575,7 @@ export function buildProgram(): Command {
       const absolute = path.resolve(reportPath);
       const stat = await lstat(absolute);
       if (!stat.isFile() || stat.isSymbolicLink() || stat.size > 10_485_760)
-        throw new InvariantSecError(
+        throw new CydetixError(
           "Remediation report must be a regular file no larger than 10 MiB.",
           EXIT.usage,
         );
@@ -578,7 +595,7 @@ export function buildProgram(): Command {
     .description("Explain a rule and its evidence requirements")
     .action((ruleId: string) => {
       const rule = RULE_BY_ID.get(ruleId);
-      if (rule === undefined) throw new InvariantSecError(`Unknown rule: ${ruleId}`, EXIT.usage);
+      if (rule === undefined) throw new CydetixError(`Unknown rule: ${ruleId}`, EXIT.usage);
       process.stdout.write(`${JSON.stringify(rule, null, 2)}\n`);
     });
 
@@ -661,7 +678,7 @@ export function buildProgram(): Command {
 
   program
     .command("version")
-    .description("Print the VibeShield version")
+    .description("Print the Cydetix version")
     .action(() => {
       process.stdout.write(`${PRODUCT.version}\n`);
     });
@@ -678,7 +695,7 @@ async function main(): Promise<void> {
       process.exitCode = EXIT.usage;
       return;
     }
-    if (error instanceof InvariantSecError) {
+    if (error instanceof CydetixError) {
       process.stderr.write(`${terminalSafe(error.message)}\n`);
       process.exitCode = error.exitCode;
       return;

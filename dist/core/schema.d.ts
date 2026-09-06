@@ -458,7 +458,7 @@ export declare const authGraphSchema: z.ZodObject<{
 export declare const scanReportSchema: z.ZodObject<{
     schemaVersion: z.ZodLiteral<"2.0.0">;
     tool: z.ZodObject<{
-        name: z.ZodLiteral<"vibeshield">;
+        name: z.ZodLiteral<"cydetix">;
         version: z.ZodString;
     }, z.core.$strict>;
     scan: z.ZodObject<{
@@ -2092,5 +2092,5 @@ export type RepositoryManifest = z.infer<typeof repositoryManifestSchema>;
 export type Coverage = z.infer<typeof coverageSchema>;
 export type AuthGraph = z.infer<typeof authGraphSchema>;
 export type ScanReport = z.infer<typeof scanReportSchema>;
-export type InvariantSecConfig = z.infer<typeof configSchema>;
+export type CydetixConfig = z.infer<typeof configSchema>;
 //# sourceMappingURL=schema.d.ts.map

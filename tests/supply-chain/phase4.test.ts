@@ -88,7 +88,7 @@ describe("Phase 4 supply-chain intelligence", () => {
     expect(exposed.findings.map((finding) => finding.ruleId)).toContain("AS-SECRET-001");
     const serialized = JSON.stringify(exposed);
     expect(serialized).not.toContain("7G9L2Q4M6R8T1V3X5Z7B9D2F4H6J8K");
-    expect(serialized).toContain("[REDACTED synthetic-vibeshield credential;");
+    expect(serialized).toContain("[REDACTED synthetic-cydetix credential;");
     const placeholder = await scanRepository({ path: path.join(PHASE4, "secret-placeholder") });
     expect(
       placeholder.findings.filter((finding) => finding.ruleId === "AS-SECRET-001"),
@@ -143,7 +143,7 @@ describe("Phase 4 supply-chain intelligence", () => {
   });
 
   it("finds a removed secret in an isolated ephemeral Git repository", async () => {
-    const root = await mkdtemp(path.join(os.tmpdir(), "invariantsec-history-"));
+    const root = await mkdtemp(path.join(os.tmpdir(), "cydetix-history-"));
     const nullDevice = process.platform === "win32" ? "NUL" : "/dev/null";
     const git = (...args: string[]) => {
       const result = spawnSync("git", ["-C", root, "-c", `core.hooksPath=${nullDevice}`, ...args], {
@@ -161,12 +161,11 @@ describe("Phase 4 supply-chain intelligence", () => {
     };
     try {
       git("init", "--quiet");
-      git("config", "user.name", "InvariantSec Fixture");
+      git("config", "user.name", "Cydetix Fixture");
       git("config", "user.email", "fixture@invalid.example");
-      const historyCredential = [
-        "INVARIANTSEC_TEST_",
-        "SECRET_M2N4P6R8T1V3X5Z7B9D2F4H6J8K1L3Q5",
-      ].join("");
+      const historyCredential = ["CYDETIX_TEST_", "SECRET_M2N4P6R8T1V3X5Z7B9D2F4H6J8K1L3Q5"].join(
+        "",
+      );
       await writeFile(path.join(root, "config.txt"), `${historyCredential}\n`, "utf8");
       git("add", "config.txt");
       git("commit", "--quiet", "-m", "add synthetic fixture exposure");

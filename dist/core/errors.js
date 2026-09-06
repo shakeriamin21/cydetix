@@ -1,9 +1,9 @@
-export class InvariantSecError extends Error {
+export class CydetixError extends Error {
     exitCode;
     constructor(message, exitCode, options) {
         super(message, options);
         this.exitCode = exitCode;
-        this.name = "InvariantSecError";
+        this.name = "CydetixError";
     }
 }
 export const EXIT = {

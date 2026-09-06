@@ -1,22 +1,33 @@
 {
   "schemaVersion": "1.2.0",
-  "generatedAt": "2026-09-05T06:20:29.339Z",
+  "generatedAt": "2026-09-06T10:28:57.016Z",
   "product": {
-    "name": "vibeshield",
+    "name": "cydetix",
     "version": "0.6.0-alpha.1",
-    "evidenceOrigin": "INTERNAL_VERIFIED_EXPORT"
+    "evidenceOrigin": "PUBLIC_GIT_COMMIT",
+    "publicSourceCommit": "068f87c71a033f18dc69862261ec4f8478909f48"
   },
   "verdict": "NOT_READY_FOR_PUBLIC_USE",
   "checks": [
     {
+      "id": "source-state",
+      "state": "executed_fail",
+      "evidence": "Artifacts are explicitly labeled as an uncommitted preview and cannot be published."
+    },
+    {
+      "id": "git-history-privacy",
+      "state": "executed_fail",
+      "evidence": "Git-history author/privacy approval is incomplete; no identity was silently approved."
+    },
+    {
       "id": "complete-test-suite",
       "state": "executed_pass",
-      "evidence": "28 files and 125 tests passed; 0 files and 0 tests failed; 0 files and 0 tests skipped."
+      "evidence": "32 files and 197 tests passed; 0 files and 0 tests failed; 0 files and 0 tests skipped."
     },
     {
       "id": "container-capability",
       "state": "executed_pass",
-      "evidence": "VibeShield executed its hardened Linux launch probe against the locally present immutable image.",
+      "evidence": "Cydetix executed its hardened Linux launch probe against the locally present immutable image.",
       "controls": [
         "daemon response",
         "Linux runtime",
@@ -160,32 +171,32 @@
     {
       "id": "benchmark-python-applicability",
       "state": "not_applicable",
-      "evidence": "The three reviewed BenchmarkPython cases do not satisfy current VibeShield rule prerequisites and remain excluded from TN counts."
+      "evidence": "The three reviewed BenchmarkPython cases do not satisfy current Cydetix rule prerequisites and remain excluded from TN counts."
     },
     {
       "id": "self-scan",
       "state": "executed_pass",
-      "evidence": "333 files and 1686856 bytes scanned; 0 active and 28 suppressed findings."
+      "evidence": "367 files and 1732244 bytes scanned; 0 active and 28 suppressed findings."
     },
     {
       "id": "packed-install-current-host",
       "state": "executed_pass",
-      "evidence": "Packed tarball installed with lifecycle scripts disabled; version, doctor, scan, remediation dry-run, and 4 packaged Agent Skills passed on win32-x64."
+      "evidence": "Packed tarball installed with lifecycle scripts disabled; version, doctor, scan, remediation dry-run, and 1 packaged Agent Skills passed on win32-x64."
     },
     {
       "id": "packed-plugin",
       "state": "executed_pass",
-      "evidence": "The isolated plugin archive validated its manifest, required files, portability checks, and 4 skills."
+      "evidence": "The isolated plugin archive validated its manifest, required files, portability checks, and 1 skills."
     },
     {
       "id": "release-artifacts",
       "state": "executed_pass",
-      "evidence": "The internal source release artifacts were generated and hashed before export; those hashes are superseded by the VibeShield rename and are not current release hashes."
+      "evidence": "4 release artifacts were regenerated after source commit 068f87c71a033f18dc69862261ec4f8478909f48 and SHA-256 hashed."
     },
     {
-      "id": "private-baseline-tag",
+      "id": "clean-public-lineage",
       "state": "executed_pass",
-      "evidence": "The internal baseline tag was verified before export. No private tag or Git object was imported into the public repository."
+      "evidence": "1 commit(s) are reachable in the clean public lineage; 0 tag(s) exist before publication approval."
     },
     {
       "id": "cross-platform-ci-matrix",
@@ -447,7 +458,7 @@
           "languageCompatible": true,
           "ruleCompatible": false,
           "disposition": "NOT_APPLICABLE",
-          "rationale": "The benchmark labels an arbitrary cookie, while VibeShield claims only authenticated session-cookie configuration. Excluded as NOT_APPLICABLE."
+          "rationale": "The benchmark labels an arbitrary cookie, while Cydetix claims only authenticated session-cookie configuration. Excluded as NOT_APPLICABLE."
         },
         {
           "caseId": "BenchmarkTest00337",
@@ -524,8 +535,8 @@
     ]
   },
   "tests": {
-    "filesPassed": 28,
-    "testsPassed": 125,
+    "filesPassed": 32,
+    "testsPassed": 197,
     "filesFailed": 0,
     "testsFailed": 0,
     "filesSkipped": 0,
@@ -534,58 +545,83 @@
   "performance": [
     {
       "name": "source-100",
-      "wallMilliseconds": 353.95760000000007,
-      "peakRssBytes": 84414464,
+      "wallMilliseconds": 237.69119999999998,
+      "peakRssBytes": 81661952,
       "files": 101,
-      "filesPerSecond": 285.3449113679152,
+      "filesPerSecond": 424.92107406584677,
       "graphNodes": 101,
       "graphEdges": 0,
       "findings": 0
     },
     {
       "name": "source-1000",
-      "wallMilliseconds": 1798.9575999999997,
-      "peakRssBytes": 102674432,
+      "wallMilliseconds": 1156.7404000000001,
+      "peakRssBytes": 99196928,
       "files": 1001,
-      "filesPerSecond": 556.4333478454412,
+      "filesPerSecond": 865.3627036800996,
       "graphNodes": 1001,
       "graphEdges": 0,
       "findings": 0
     },
     {
       "name": "source-5000",
-      "wallMilliseconds": 7170.952400000002,
-      "peakRssBytes": 156942336,
+      "wallMilliseconds": 10600.057199999997,
+      "peakRssBytes": 151355392,
       "files": 5001,
-      "filesPerSecond": 697.3969036525747,
+      "filesPerSecond": 471.7899069450306,
       "graphNodes": 5001,
       "graphEdges": 0,
       "findings": 0
     },
     {
       "name": "dependencies-2500",
-      "wallMilliseconds": 764.2078999999976,
-      "peakRssBytes": 296542208,
+      "wallMilliseconds": 1377.2949999999983,
+      "peakRssBytes": 294768640,
       "files": 2,
-      "filesPerSecond": 2.617088883797205,
+      "filesPerSecond": 1.4521217313647423,
       "graphNodes": 1,
       "graphEdges": 0,
       "findings": 0
     },
     {
       "name": "workflows-250",
-      "wallMilliseconds": 362.58669999999984,
-      "peakRssBytes": 305860608,
+      "wallMilliseconds": 582.9285999999993,
+      "peakRssBytes": 292597760,
       "files": 250,
-      "filesPerSecond": 689.4902653627398,
+      "filesPerSecond": 428.86899013018115,
       "graphNodes": 1,
       "graphEdges": 0,
       "findings": 0
     }
   ],
   "package": {
-    "state": "SUPERSEDED_BY_PUBLIC_RENAME",
-    "evidence": "Pre-rename package hashes were intentionally removed. Public artifacts must be regenerated from a committed VibeShield source tree."
+    "state": "CURRENT",
+    "entries": 320,
+    "packedBytes": 297039,
+    "unpackedBytes": 1873860,
+    "sizeGateBytes": 400000,
+    "hashes": [
+      {
+        "artifact": "cydetix-0.6.0-alpha.1.tgz",
+        "sha256": "66e539551ca4d9ce3c804a12f89987663bd2486c230fa33a4bf166f2ce256d2d",
+        "bytes": 297039
+      },
+      {
+        "artifact": "cydetix.cdx.json",
+        "sha256": "5d08f64df3051ee7f4cecdf56c7f148e0df6b74c17966418f8976a4602e55485",
+        "bytes": 151992
+      },
+      {
+        "artifact": "cydetix-codex-plugin-0.6.0-alpha.1.tar.gz",
+        "sha256": "d284731a81988f2d56115f9885a1d937878243b0bd84da7545b583041d198e4d",
+        "bytes": 6457
+      },
+      {
+        "artifact": "cydetix-release-validation-0.6.0-alpha.1.json",
+        "sha256": "296f3f35624de72657ab30b3449612959d240d1d389670a3a4f204d0a9cb901f",
+        "bytes": 2120
+      }
+    ]
   },
   "supportScope": [
     "TypeScript/JavaScript and narrow Python static analysis",
@@ -595,7 +631,7 @@
   ],
   "knownLimitations": [
     "Docker/container isolation depends on Docker Desktop, WSL2, the Linux kernel, runc, runtime-default seccomp, and the explicitly trusted image; container escape resistance is not proven.",
-    "The trusted image may define its own baseline environment; VibeShield adds only CI=true and VIBESHIELD_VERIFICATION=1 and does not forward arbitrary host variables.",
+    "The trusted image may define its own baseline environment; Cydetix adds only CI=true and CYDETIX_VERIFICATION=1 and does not forward arbitrary host variables.",
     "The writable ephemeral workspace bind mount has no independent byte quota; rootfs and tmpfs writes are bounded, but workspace disk exhaustion depends on host/runtime capacity.",
     "The bounded text-only copy excludes archives, binary assets, ignored dependencies, files over the copy limit, and repositories over 10,000 copied files or 100 MB.",
     "OWASP BenchmarkPython cases were outside current rule applicability and were not counted as negatives.",

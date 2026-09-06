@@ -70,7 +70,7 @@ const outputDirectory = path.resolve("schemas");
 await mkdir(outputDirectory, { recursive: true });
 for (const [name, schema] of schemas) {
   const schemaGeneration = name === "scan-report.schema.json" ? "v2" : "v1";
-  const output = `${JSON.stringify({ $id: `https://vibeshield.dev/schemas/${schemaGeneration}/${name}`, ...schema }, null, 2)}\n`;
+  const output = `${JSON.stringify({ $id: `https://cydetix.dev/schemas/${schemaGeneration}/${name}`, ...schema }, null, 2)}\n`;
   const target = path.join(outputDirectory, name);
   if (check) {
     const existing = await readFile(target, "utf8").catch(() => undefined);

@@ -2,12 +2,12 @@ import { readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 
 const root = path.resolve("agent-skills");
-const pluginRoot = path.resolve("plugins", "vibeshield", "skills");
+const pluginRoot = path.resolve("plugins", "cydetix", "skills");
 const entries = (await readdir(root, { withFileTypes: true })).filter((entry) =>
   entry.isDirectory(),
 );
-if (entries.length !== 1 || entries[0]?.name !== "vibeshield")
-  throw new Error("The public skill inventory must expose exactly one vibeshield capability.");
+if (entries.length !== 1 || entries[0]?.name !== "cydetix")
+  throw new Error("The public skill inventory must expose exactly one cydetix capability.");
 
 for (const entry of entries) {
   const skillPath = path.join(root, entry.name, "SKILL.md");

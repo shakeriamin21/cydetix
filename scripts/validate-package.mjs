@@ -44,12 +44,12 @@ const allowedRoots = new Set([
   "schemas",
 ]);
 const forbiddenPath =
-  /^(?:fixtures|tests|validation|\.git|\.vibeshield|\.vibeshield|coverage)(?:\/|$)|(?:^|\/)node_modules(?:\/|$)|\.(?:env|key|pem|p12)$/iu;
+  /^(?:fixtures|tests|validation|\.git|\.cydetix|coverage)(?:\/|$)|(?:^|\/)node_modules(?:\/|$)|\.(?:env|key|pem|p12)$/iu;
 const forbiddenContent = [
   ["Z:", "private-workspace-sentinel"].join("\\"),
   ["C:", "Users", "synthetic-user"].join("\\"),
   ["Codex", "Sandbox", "Offline"].join(""),
-  ["vibeshield", "phase6", "cache"].join("-"),
+  ["cydetix", "phase6", "cache"].join("-"),
 ];
 for (const file of manifest.files) {
   const normalized = String(file.path).replaceAll("\\", "/");
@@ -71,6 +71,15 @@ if (manifest.size > 400_000)
 if (manifest.unpackedSize > 2_500_000)
   throw new Error(`Unpacked size ${manifest.unpackedSize} exceeds the release gate.`);
 const packageJson = JSON.parse(await readFile(path.resolve("package.json"), "utf8"));
+if (packageJson.name !== "cydetix")
+  throw new Error("Package name must be the unscoped cydetix identity.");
+if (JSON.stringify(packageJson.bin) !== JSON.stringify({ cydetix: "./dist/cli/main.js" }))
+  throw new Error("Package must expose exactly one cydetix binary at the compiled CLI path.");
+const readme = await readFile(path.resolve("README.md"), "utf8");
+if (!readme.startsWith("# Cydetix\n\nSecurity for AI-built software.\n\n## Quick Start\n"))
+  throw new Error("README must lead with the Cydetix tagline and zero-friction Quick Start.");
+if (!readme.includes("npx cydetix") || /(?:npx|npm install -g)\s+@/u.test(readme))
+  throw new Error("README onboarding must use the unscoped Cydetix identity.");
 for (const name of ["preinstall", "install", "postinstall", "prepare"])
   if (packageJson.scripts?.[name] !== undefined)
     throw new Error(`Package lifecycle script is forbidden: ${name}`);

@@ -8,7 +8,7 @@ the SARIF.
 Example after a release tag exists:
 
 ```yaml
-name: vibeshield
+name: cydetix
 on:
   pull_request:
   push:
@@ -28,11 +28,11 @@ jobs:
         with:
           path: .
           fail-on: high
-          output: vibeshield.sarif
+          output: cydetix.sarif
 ```
 
-Pin the vibeshield action to a full reviewed commit SHA. To upload results to GitHub code scanning,
-add a separate `github/codeql-action/upload-sarif` step pinned to a full SHA and grant
+Pin the cydetix action to a full reviewed commit SHA. To upload results to GitHub code scanning, add
+a separate `github/codeql-action/upload-sarif` step pinned to a full SHA and grant
 `security-events: write`. That is an explicit data-transfer decision and may require GitHub Advanced
 Security for private repositories.
 

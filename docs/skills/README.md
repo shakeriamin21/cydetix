@@ -1,20 +1,20 @@
-# VibeShield Agent Skill and Codex plugin
+# Cydetix Agent Skill and Codex plugin
 
-VibeShield presents one user-facing security capability: `vibeshield`. Its description covers
-security review, authentication, authorization, sessions, JWT, OAuth, secrets, dependencies, supply
-chain, CI/CD, deployment readiness, hardening, and explicit security remediation. It also states a
-negative boundary for unrelated coding and UI work.
+Cydetix presents one user-facing security capability: `cydetix`. Its description covers security
+review, authentication, authorization, sessions, JWT, OAuth, secrets, dependencies, supply chain,
+CI/CD, deployment readiness, hardening, and explicit security remediation. It also states a negative
+boundary for unrelated coding and UI work.
 
-The canonical skill lives at `agent-skills/vibeshield`. The Codex plugin contains an exact copy at
-`plugins/vibeshield/skills/vibeshield` plus a version-pinned local stdio MCP declaration. Current
-OpenAI metadata enables implicit invocation; the host still makes a probabilistic selection and no
-perfect automatic-invocation claim is made.
+The canonical skill lives at `agent-skills/cydetix`. The Codex plugin contains an exact copy at
+`plugins/cydetix/skills/cydetix` plus a version-pinned local stdio MCP declaration. Current OpenAI
+metadata enables implicit invocation; the host still makes a probabilistic selection and no perfect
+automatic-invocation claim is made.
 
 ## Behavior boundary
 
-- `vibeshield_scan` and `vibeshield_explain` are read-only and may run implicitly for a relevant
-  security request.
-- `vibeshield_fix` may produce a dry-run plan when the user asks about fixing.
+- `cydetix_scan` and `cydetix_explain` are read-only and may run implicitly for a relevant security
+  request.
+- `cydetix_fix` may produce a dry-run plan when the user asks about fixing.
 - Source mutation requires explicit fix/remediate intent and the MCP confirmation value
   `fix-security-issues`.
 - The deterministic engine, not the agent, owns `SAFE`, `REVIEW_REQUIRED`, and `ARCHITECTURAL`
@@ -23,15 +23,19 @@ perfect automatic-invocation claim is made.
 
 ## Setup and validation
 
-After an authorized npm release, ordinary users run:
+The primary onboarding is the normal scan:
 
 ```bash
-npx vibeshield setup
+npx cydetix
 ```
 
-The setup command detects supported hosts, installs managed skill/rule material, and adds a pinned
-`vibeshield@<setup-version> mcp` stdio server. It never writes secrets. Use `--dry-run` to preview
-or `--uninstall` to remove only entries carrying the VibeShield managed marker.
+After scanning, an interactive run detects supported hosts and can install managed skill material
+plus a pinned `cydetix@<setup-version> mcp` stdio server after one permission question. It never
+writes secrets and never prompts in automation. Explicit management uses `cydetix setup`,
+`--status`, `--verify`, or `--remove`.
+
+Where MCP is unavailable but shell execution is permitted, installed instructions use the pinned CLI
+with `--json`; no adapter contains scanner logic.
 
 Repository validation:
 

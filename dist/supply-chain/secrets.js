@@ -3,9 +3,9 @@ import { pointAt } from "../rule-engine/finding.js";
 import { secretAnalysisSchema, secretExposureSchema } from "./model.js";
 const PATTERNS = [
     {
-        provider: "synthetic-vibeshield",
+        provider: "synthetic-cydetix",
         type: "synthetic test credential",
-        expression: /\b(INVARIANTSEC_TEST_SECRET_[A-Za-z0-9]{24,})\b/gu,
+        expression: /\b(CYDETIX_TEST_SECRET_[A-Za-z0-9]{24,})\b/gu,
         valueGroup: 1,
         contextual: false,
     },
@@ -87,7 +87,7 @@ export function detectSecretsInText(text, options) {
             if (value === undefined)
                 continue;
             const explicitFixtureExposure = value.toLowerCase().startsWith("fixture-only-not-a-real-");
-            if (pattern.provider !== "synthetic-vibeshield" &&
+            if (pattern.provider !== "synthetic-cydetix" &&
                 !explicitFixtureExposure &&
                 looksLikePlaceholder(value)) {
                 continue;
@@ -119,7 +119,7 @@ export function detectSecretsInText(text, options) {
                     "PROVIDER_REVOCATION_REQUIRED",
                 ],
                 validationState: "PASSIVE_NOT_VALIDATED",
-                engine: options.engine ?? "vibeshield-secret-engine-v1",
+                engine: options.engine ?? "cydetix-secret-engine-v1",
             }));
         }
     }

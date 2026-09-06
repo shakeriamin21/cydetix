@@ -1,7 +1,7 @@
 import { lstat, realpath, readFile } from "node:fs/promises";
 import path from "node:path";
 
-import { InvariantSecError, EXIT } from "../core/errors.js";
+import { CydetixError, EXIT } from "../core/errors.js";
 
 export interface RepositoryBoundary {
   readonly root: string;
@@ -22,12 +22,12 @@ export function isWithinRoot(root: string, candidate: string): boolean {
 export async function createBoundary(inputPath: string): Promise<RepositoryBoundary> {
   const requested = path.resolve(inputPath);
   const stat = await lstat(requested).catch((error: unknown) => {
-    throw new InvariantSecError(`Cannot inspect target path: ${requested}`, EXIT.usage, {
+    throw new CydetixError(`Cannot inspect target path: ${requested}`, EXIT.usage, {
       cause: error,
     });
   });
   if (stat.isSymbolicLink() || !stat.isDirectory()) {
-    throw new InvariantSecError(
+    throw new CydetixError(
       "Scan target must be a real directory, not a symlink or file.",
       EXIT.usage,
     );
@@ -37,14 +37,14 @@ export async function createBoundary(inputPath: string): Promise<RepositoryBound
 
 export function resolveInside(boundary: RepositoryBoundary, relativePath: string): string {
   if (relativePath.includes("\0") || path.isAbsolute(relativePath)) {
-    throw new InvariantSecError(
+    throw new CydetixError(
       "Refusing an absolute or NUL-containing repository path.",
       EXIT.scanFailure,
     );
   }
   const resolved = path.resolve(boundary.root, relativePath);
   if (!isWithinRoot(boundary.root, resolved)) {
-    throw new InvariantSecError(`Path escapes repository root: ${relativePath}`, EXIT.scanFailure);
+    throw new CydetixError(`Path escapes repository root: ${relativePath}`, EXIT.scanFailure);
   }
   return resolved;
 }
@@ -57,14 +57,14 @@ export async function readRegularFileInside(
   const resolved = resolveInside(boundary, relativePath);
   const stat = await lstat(resolved);
   if (stat.isSymbolicLink() || !stat.isFile()) {
-    throw new InvariantSecError(`Refusing non-regular file: ${relativePath}`, EXIT.scanFailure);
+    throw new CydetixError(`Refusing non-regular file: ${relativePath}`, EXIT.scanFailure);
   }
   if (stat.size > maxBytes) {
-    throw new InvariantSecError(`File exceeds read limit: ${relativePath}`, EXIT.scanFailure);
+    throw new CydetixError(`File exceeds read limit: ${relativePath}`, EXIT.scanFailure);
   }
   const canonical = await realpath(resolved);
   if (!isWithinRoot(boundary.root, canonical)) {
-    throw new InvariantSecError(
+    throw new CydetixError(
       `Canonical path escapes repository root: ${relativePath}`,
       EXIT.scanFailure,
     );
@@ -74,7 +74,7 @@ export async function readRegularFileInside(
 
 export function toReportPath(root: string, absolutePath: string): string {
   if (!isWithinRoot(root, absolutePath)) {
-    throw new InvariantSecError("Cannot report a path outside the repository.", EXIT.scanFailure);
+    throw new CydetixError("Cannot report a path outside the repository.", EXIT.scanFailure);
   }
   return path.relative(root, absolutePath).split(path.sep).join("/");
 }

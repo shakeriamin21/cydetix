@@ -18,7 +18,7 @@
   },
   "notes": [
     "The 39 CWE-614 cases set arbitrary response cookies; AS-SESSION-001 is intentionally scoped to authenticated session-cookie configuration.",
-    "The 151 hash cases do not establish InvariantSec's password-credential storage prerequisite.",
-    "No case is included in an accuracy denominator merely because its CWE looks adjacent to a narrower InvariantSec rule."
+    "The 151 hash cases do not establish Cydetix's password-credential storage prerequisite.",
+    "No case is included in an accuracy denominator merely because its CWE looks adjacent to a narrower Cydetix rule."
   ]
 }

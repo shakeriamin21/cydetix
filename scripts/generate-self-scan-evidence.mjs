@@ -20,7 +20,7 @@ const evidence = {
   securityIrModules: report.securityAnalysis.securityIr.modules.length,
   authenticationNodes: report.authGraph.nodes.length,
 };
-const evidenceDirectory = path.resolve(".vibeshield", "evidence");
+const evidenceDirectory = path.resolve(".cydetix", "evidence");
 await mkdir(evidenceDirectory, { recursive: true });
 await writeFile(
   path.join(evidenceDirectory, "self-scan.json"),

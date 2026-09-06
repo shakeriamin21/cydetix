@@ -4,7 +4,7 @@ import { performance } from "node:perf_hooks";
 
 import { scanRepository } from "../dist/core/engine.js";
 
-const benchmarkRoot = path.resolve(".vibeshield", "benchmarks");
+const benchmarkRoot = path.resolve(".cydetix", "benchmarks");
 await mkdir(benchmarkRoot, { recursive: true });
 
 async function measure(name, create) {
@@ -86,7 +86,7 @@ for (const count of [100, 1000, 5000])
 results.push(await measure("dependencies-2500", (root) => dependencyCorpus(root, 2500)));
 results.push(await measure("workflows-250", (root) => workflowCorpus(root, 250)));
 const output = { version: "1.0.0", results };
-const evidenceDirectory = path.resolve(".vibeshield", "evidence");
+const evidenceDirectory = path.resolve(".cydetix", "evidence");
 await mkdir(evidenceDirectory, { recursive: true });
 await writeFile(
   path.join(evidenceDirectory, "performance.json"),

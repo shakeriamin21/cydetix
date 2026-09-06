@@ -28,5 +28,5 @@ backups, command arguments/output, ambient environment, and raw secret values. E
 are represented as unified diffs with secret ranges redacted.
 
 Consumers should reject unknown schema versions and use the public JSON Schema rather than infer
-meaning from terminal text. `invariantsec remediation show <report>` performs this validation for a
+meaning from terminal text. `cydetix remediation show <report>` performs this validation for a
 user-controlled report file.

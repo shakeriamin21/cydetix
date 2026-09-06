@@ -16,7 +16,7 @@ const response = await fetch(
     headers: {
       Accept: "application/vnd.github+json",
       Authorization: `Bearer ${token}`,
-      "User-Agent": "vibeshield-release-gate",
+      "User-Agent": "cydetix-release-gate",
       "X-GitHub-Api-Version": "2026-03-10",
     },
     signal: AbortSignal.timeout(30_000),

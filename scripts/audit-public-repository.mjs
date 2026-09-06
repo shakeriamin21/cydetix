@@ -38,7 +38,7 @@ const reviewedFiles = git(["ls-files", "-z", "--cached", "--others", "--exclude-
   .split("\0")
   .filter(Boolean);
 const forbiddenRoots =
-  /^(?:\.vibeshield|\.npm-cache|coverage|node_modules|validation\/external)(?:\/|$)/u;
+  /^(?:\.cydetix|\.npm-cache|coverage|node_modules|validation\/external)(?:\/|$)/u;
 const forbiddenArtifact = /\.(?:dump|log|p12|pfx|tmp)$/iu;
 const personalWindowsPath = /\b[A-Za-z]:\\(?:private-workspace-sentinel|Users\\[^\\\s]+)(?:\\|\b)/u;
 const personalPosixPath =
@@ -48,7 +48,14 @@ const forbiddenNeedles = [
   ["Z:", "private-workspace-sentinel"].join("\\"),
   ["C:", "Users", "synthetic-user"].join("\\"),
   ["Codex", "Sandbox", "Offline"].join(""),
-  ["vibeshield", "phase6", "cache"].join("-"),
+  ["cydetix", "phase6", "cache"].join("-"),
+];
+const legacyBrands = [
+  ["vibe", "shield"].join(""),
+  ["invariant", "sec"].join(""),
+  ["auth", "shield"].join(""),
+  ["anti", "_vibe"].join(""),
+  ["anti", "-vibe"].join(""),
 ];
 const issues = [];
 let bytesReviewed = 0;
@@ -60,7 +67,11 @@ for (const relative of reviewedFiles) {
     continue;
   }
   const absolute = path.join(root, relative);
-  const metadata = await lstat(absolute);
+  const metadata = await lstat(absolute).catch((error) => {
+    if (error?.code === "ENOENT") return undefined;
+    throw error;
+  });
+  if (metadata === undefined) continue;
   if (!metadata.isFile()) {
     issues.push({ code: "NON_REGULAR_TRACKED_ENTRY", path: normalized });
     continue;
@@ -76,6 +87,13 @@ for (const relative of reviewedFiles) {
     continue;
   }
   const text = content.toString("utf8");
+  const normalizedText = text.toLowerCase();
+  if (
+    legacyBrands.some(
+      (brand) => normalizedText.includes(brand) || normalized.toLowerCase().includes(brand),
+    )
+  )
+    issues.push({ code: "LEGACY_PUBLIC_BRAND", path: normalized });
   if (personalWindowsPath.test(text) || personalPosixPath.test(text))
     issues.push({ code: "PERSONAL_MACHINE_PATH", path: normalized });
   for (const needle of forbiddenNeedles) {

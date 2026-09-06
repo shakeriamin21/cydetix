@@ -7,13 +7,20 @@ import { scanRepository } from "../dist/core/engine.js";
 import { generateCycloneDxSbom } from "../dist/supply-chain/sbom.js";
 
 const root = path.resolve(".");
+const preview = process.argv.includes("--preview");
 const destination = path.resolve(
-  process.env.VIBESHIELD_RELEASE_DIR ?? path.join(".vibeshield", "release"),
+  process.env.CYDETIX_RELEASE_DIR ?? path.join(".cydetix", preview ? "release-preview" : "release"),
 );
 const npmCli = process.env.npm_execpath;
 if (npmCli === undefined) throw new Error("npm_execpath is required; invoke through npm run.");
 
-function run(executable, arguments_, timeout = 120_000, extraEnvironment = {}) {
+function run(
+  executable,
+  arguments_,
+  timeout = 120_000,
+  extraEnvironment = {},
+  acceptedStatuses = [0],
+) {
   const result = spawnSync(executable, arguments_, {
     cwd: root,
     encoding: "utf8",
@@ -34,7 +41,7 @@ function run(executable, arguments_, timeout = 120_000, extraEnvironment = {}) {
       ...extraEnvironment,
     },
   });
-  if (result.error !== undefined || result.status !== 0)
+  if (result.error !== undefined || !acceptedStatuses.includes(result.status))
     throw new Error(`Release artifact command failed safely: ${executable}.`);
   return result.stdout;
 }
@@ -59,13 +66,43 @@ const worktreeStatus = run("git", [
   "--porcelain",
   "--untracked-files=all",
 ]).trim();
-if (worktreeStatus !== "")
+if (worktreeStatus !== "" && !preview)
   throw new Error("Release artifacts require a clean committed worktree and index.");
+const sourceState = worktreeStatus === "" ? "COMMITTED_CLEAN" : "UNCOMMITTED_PREVIEW";
 const publicRepositoryAudit = JSON.parse(
   run(process.execPath, [path.join(root, "scripts", "audit-public-repository.mjs")]),
 );
+const currentSourcePaths = run("git", [
+  "-c",
+  `safe.directory=${root.replaceAll("\\", "/")}`,
+  "ls-files",
+  "-z",
+  "--cached",
+  "--others",
+  "--exclude-standard",
+])
+  .split("\0")
+  .filter(Boolean)
+  .sort();
+const sourceTreeHash = createHash("sha256");
+for (const relative of currentSourcePaths) {
+  const content = await readFile(path.join(root, relative)).catch(() => undefined);
+  if (content === undefined) continue;
+  sourceTreeHash.update(relative.replaceAll("\\", "/"));
+  sourceTreeHash.update("\0");
+  sourceTreeHash.update(String(content.length));
+  sourceTreeHash.update("\0");
+  sourceTreeHash.update(content);
+}
+const sourceTreeSha256 = sourceTreeHash.digest("hex");
 const historyAudit = JSON.parse(
-  run(process.execPath, [path.join(root, "scripts", "audit-git-history.mjs")]),
+  run(
+    process.execPath,
+    [path.join(root, "scripts", "audit-git-history.mjs")],
+    120_000,
+    {},
+    preview ? [0, 1] : [0],
+  ),
 );
 await rm(destination, { recursive: true, force: true });
 await mkdir(destination, { recursive: true });
@@ -88,26 +125,26 @@ const report = await scanRepository({
   now: new Date("2026-09-04T00:00:00.000Z"),
 });
 const inventory = report.securityAnalysis.supplyChainAnalysis?.inventory;
-if (inventory === undefined) throw new Error("VibeShield dependency inventory is unavailable.");
+if (inventory === undefined) throw new Error("Cydetix dependency inventory is unavailable.");
 const sbom = generateCycloneDxSbom(inventory);
-const sbomPath = path.join(destination, "vibeshield.cdx.json");
+const sbomPath = path.join(destination, "cydetix.cdx.json");
 await writeFile(sbomPath, `${JSON.stringify(sbom, null, 2)}\n`, "utf8");
 
 const pluginManifest = JSON.parse(
-  await readFile(path.join(root, "plugins", "vibeshield", ".codex-plugin", "plugin.json"), "utf8"),
+  await readFile(path.join(root, "plugins", "cydetix", ".codex-plugin", "plugin.json"), "utf8"),
 );
 const pluginName = `${pluginManifest.name}-codex-plugin-${packageJson.version}.tar.gz`;
 const pluginPath = path.join(destination, pluginName);
-run("tar", ["-czf", pluginPath, "-C", path.join(root, "plugins"), "vibeshield"]);
+run("tar", ["-czf", pluginPath, "-C", path.join(root, "plugins"), "cydetix"]);
 run(process.execPath, [path.join(root, "scripts", "validate-package.mjs")], 120_000, {
   npm_execpath: npmCli,
 });
 run(process.execPath, [path.join(root, "scripts", "validate-packed-install.mjs")], 300_000, {
   npm_execpath: npmCli,
-  VIBESHIELD_PACKAGE_TARBALL: tarball,
+  CYDETIX_PACKAGE_TARBALL: tarball,
 });
 run(process.execPath, [path.join(root, "scripts", "validate-packed-plugin.mjs")], 120_000, {
-  VIBESHIELD_RELEASE_DIR: destination,
+  CYDETIX_RELEASE_DIR: destination,
 });
 
 const artifacts = await Promise.all([digest(tarball), digest(sbomPath), digest(pluginPath)]);
@@ -128,12 +165,12 @@ const sourceCommit = run("git", [
 const nodeVersion = process.version;
 const npmVersion = run(process.execPath, [npmCli, "--version"]).trim();
 const gitleaks = await readFile(
-  path.join(root, ".vibeshield", "evidence", "gitleaks-review.json"),
+  path.join(root, ".cydetix", "evidence", "gitleaks-review.json"),
   "utf8",
 )
   .then(JSON.parse)
   .catch(() => ({ state: "NOT_CHECKED" }));
-const osv = await readFile(path.join(root, ".vibeshield", "evidence", "osv-online.json"), "utf8")
+const osv = await readFile(path.join(root, ".cydetix", "evidence", "osv-online.json"), "utf8")
   .then(JSON.parse)
   .catch(() => ({ state: "NOT_CHECKED" }));
 const phase6bValidation = JSON.parse(
@@ -141,26 +178,26 @@ const phase6bValidation = JSON.parse(
 );
 const declaredState = (name) => process.env[name] ?? "NOT_CHECKED";
 const checks = {
-  historicalTests: declaredState("VIBESHIELD_HISTORICAL_TESTS_STATE"),
-  hostedCi: process.env.VIBESHIELD_HOSTED_CI_STATE ?? "NOT_RUN",
-  sandboxRegression: declaredState("VIBESHIELD_SANDBOX_REGRESSION_STATE"),
-  selfScan: declaredState("VIBESHIELD_SELF_SCAN_STATE"),
-  supplyChain: declaredState("VIBESHIELD_SUPPLY_CHAIN_STATE"),
-  npmAudit: process.env.VIBESHIELD_NPM_AUDIT_STATE ?? "NOT_CHECKED",
+  historicalTests: declaredState("CYDETIX_HISTORICAL_TESTS_STATE"),
+  hostedCi: process.env.CYDETIX_HOSTED_CI_STATE ?? "NOT_RUN",
+  sandboxRegression: declaredState("CYDETIX_SANDBOX_REGRESSION_STATE"),
+  selfScan: declaredState("CYDETIX_SELF_SCAN_STATE"),
+  supplyChain: declaredState("CYDETIX_SUPPLY_CHAIN_STATE"),
+  npmAudit: process.env.CYDETIX_NPM_AUDIT_STATE ?? "NOT_CHECKED",
   osv: osv.state,
   publicRepository: publicRepositoryAudit.state,
   gitHistoryPrivacy: historyAudit.state,
   independentSecretScan: gitleaks.state,
   packageAllowlist: "PASS",
   packageInstall: "PASS",
-  skills: declaredState("VIBESHIELD_SKILLS_STATE"),
+  skills: declaredState("CYDETIX_SKILLS_STATE"),
   plugin: "PASS",
-  schemas: declaredState("VIBESHIELD_SCHEMAS_STATE"),
-  sarif: declaredState("VIBESHIELD_SARIF_STATE"),
-  cyclonedx: declaredState("VIBESHIELD_CYCLONEDX_STATE"),
-  licenseAudit: declaredState("VIBESHIELD_LICENSE_AUDIT_STATE"),
-  workflowSecurity: declaredState("VIBESHIELD_WORKFLOW_SECURITY_STATE"),
-  openssfScorecard: process.env.VIBESHIELD_OPENSSF_STATE ?? "NOT_CHECKED",
+  schemas: declaredState("CYDETIX_SCHEMAS_STATE"),
+  sarif: declaredState("CYDETIX_SARIF_STATE"),
+  cyclonedx: declaredState("CYDETIX_CYCLONEDX_STATE"),
+  licenseAudit: declaredState("CYDETIX_LICENSE_AUDIT_STATE"),
+  workflowSecurity: declaredState("CYDETIX_WORKFLOW_SECURITY_STATE"),
+  openssfScorecard: process.env.CYDETIX_OPENSSF_STATE ?? "NOT_CHECKED",
 };
 const releaseCandidateState =
   publication.decision === "APPROVED" && Object.values(checks).every((state) => state === "PASS")
@@ -172,6 +209,7 @@ const phase7Validation = {
   state: releaseCandidateState,
   version: packageJson.version,
   sourceCommit,
+  sourceState,
   checks,
   phase6bEvidence: {
     verdict: phase6bValidation.verdict,
@@ -184,13 +222,15 @@ const phase7Validation = {
     environment: phase6bValidation.environment,
   },
 };
-const validationName = `vibeshield-release-validation-${packageJson.version}.json`;
+const validationName = `cydetix-release-validation-${packageJson.version}.json`;
 const validationPath = path.join(destination, validationName);
 await writeFile(validationPath, `${JSON.stringify(phase7Validation, null, 2)}\n`, "utf8");
 artifacts.push(await digest(validationPath));
 const releaseInputs = {
   schemaVersion: "1.0.0",
   sourceCommit,
+  sourceState,
+  sourceTreeSha256,
   productVersion: packageJson.version,
   nodeVersion,
   npmVersion,
@@ -214,6 +254,8 @@ const publicReleaseManifest = {
   state: releaseCandidateState,
   version: packageJson.version,
   sourceCommit,
+  sourceState,
+  sourceTreeSha256,
   tagCandidate: `v${packageJson.version}`,
   identity: {
     decision: publication.decision,

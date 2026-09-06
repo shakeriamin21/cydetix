@@ -1,0 +1,7 @@
+# Managed by cydetix setup.
+interface:
+  display_name: "Cydetix"
+  short_description: "Deterministic project security and safe remediation"
+  default_prompt: "Check this project for security issues."
+policy:
+  allow_implicit_invocation: true

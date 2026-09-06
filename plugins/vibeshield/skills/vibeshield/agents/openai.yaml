@@ -1,7 +1,0 @@
-# Managed by vibeshield setup.
-interface:
-  display_name: "VibeShield"
-  short_description: "Deterministic project security and safe remediation"
-  default_prompt: "Use $vibeshield to check this project for security issues."
-policy:
-  allow_implicit_invocation: true

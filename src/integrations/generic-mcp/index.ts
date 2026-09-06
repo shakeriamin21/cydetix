@@ -1,14 +1,24 @@
 import path from "node:path";
 
-import { pinnedMcpServer, updateJsonServer } from "../common.js";
+import { inspectJsonServer, pinnedMcpServer, updateJsonServer } from "../common.js";
+import { agentDetection } from "../discovery/index.js";
 import type { AdapterResult, IntegrationAdapter, SetupContext } from "../types.js";
+
+function configPath(context: SetupContext): string {
+  return path.join(context.projectRoot, ".cydetix", "mcp.json");
+}
+
+async function state(context: SetupContext) {
+  return inspectJsonServer(configPath(context), "mcpServers", pinnedMcpServer(context));
+}
 
 async function change(
   context: SetupContext,
   remove: boolean,
   dryRun: boolean,
 ): Promise<AdapterResult> {
-  const config = path.join(context.projectRoot, ".vibeshield", "mcp.json");
+  const before = await state(context);
+  const config = configPath(context);
   const changed = await updateJsonServer(
     config,
     "mcpServers",
@@ -16,19 +26,27 @@ async function change(
     remove,
     dryRun,
   );
+  const after = dryRun ? (remove ? "not_configured" : "configured") : await state(context);
   return {
     id: "generic-mcp",
     displayName: "Generic MCP",
     files: changed ? [config] : [],
-    action: changed ? (remove ? "removed" : "installed") : "unchanged",
+    action: changed
+      ? remove
+        ? "removed"
+        : before === "not_configured"
+          ? "installed"
+          : "updated"
+      : "unchanged",
+    verified: remove ? after === "not_configured" : after === "configured",
   };
 }
 
 export const genericMcpAdapter: IntegrationAdapter = {
   id: "generic-mcp",
   displayName: "Generic MCP",
-  detect() {
-    return { id: this.id, displayName: this.displayName, detected: false, evidence: [] };
+  async detect(context) {
+    return agentDetection(this.id, this.displayName, [], await state(context));
   },
   install: (context, dryRun) => change(context, false, dryRun),
   uninstall: (context, dryRun) => change(context, true, dryRun),

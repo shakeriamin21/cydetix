@@ -1,37 +1,69 @@
 import path from "node:path";
-import { AGENT_INSTRUCTIONS, commandAvailable, existingPaths, pinnedMcpServer, updateJsonServer, writeManagedFile, } from "../common.js";
-const RULE = `---
-trigger: model_decision
-description: Use VibeShield for security reviews, vulnerability assessment, deployment readiness, and explicit security remediation.
----
-
-${AGENT_INSTRUCTIONS}`;
+import { combineIntegrationStates, commandAvailable, existingPaths, inspectJsonServer, inspectManagedFile, installSkill, pinnedMcpServer, updateJsonServer, } from "../common.js";
+import { agentDetection } from "../discovery/index.js";
+function targets(context) {
+    const skill = path.join(context.projectRoot, ".windsurf", "skills", "cydetix");
+    const legacyRoot = path.join(context.homeDirectory, ".codeium", "windsurf");
+    return {
+        currentConfig: path.join(context.projectRoot, ".devin", "mcp_config.local.json"),
+        legacyConfig: path.join(legacyRoot, "mcp_config.json"),
+        legacyPresent: existingPaths([legacyRoot]).length > 0,
+        skill,
+        skillFile: path.join(skill, "SKILL.md"),
+    };
+}
+async function integrationState(context) {
+    const target = targets(context);
+    const states = [
+        await inspectJsonServer(target.currentConfig, "mcpServers", pinnedMcpServer(context)),
+        await inspectManagedFile(target.skillFile),
+    ];
+    if (target.legacyPresent)
+        states.push(await inspectJsonServer(target.legacyConfig, "mcpServers", pinnedMcpServer(context)));
+    return combineIntegrationStates(states);
+}
 async function change(context, remove, dryRun) {
-    const config = path.join(context.homeDirectory, ".codeium", "windsurf", "mcp_config.json");
-    const rule = path.join(context.projectRoot, ".windsurf", "rules", "vibeshield.md");
-    const changed = [];
-    if (await updateJsonServer(config, "mcpServers", pinnedMcpServer(context), remove, dryRun))
-        changed.push(config);
-    if (await writeManagedFile(rule, RULE, remove, dryRun))
-        changed.push(rule);
+    const before = await integrationState(context);
+    const target = targets(context);
+    const changed = await installSkill(target.skill, false, remove, dryRun);
+    if (await updateJsonServer(target.currentConfig, "mcpServers", pinnedMcpServer(context), remove, dryRun))
+        changed.push(target.currentConfig);
+    if (target.legacyPresent &&
+        (await updateJsonServer(target.legacyConfig, "mcpServers", pinnedMcpServer(context), remove, dryRun)))
+        changed.push(target.legacyConfig);
+    const after = dryRun
+        ? remove
+            ? "not_configured"
+            : "configured"
+        : await integrationState(context);
     return {
         id: "windsurf",
         displayName: "Windsurf",
         files: changed,
-        action: changed.length === 0 ? "unchanged" : remove ? "removed" : "installed",
+        action: changed.length === 0
+            ? "unchanged"
+            : remove
+                ? "removed"
+                : before === "not_configured"
+                    ? "installed"
+                    : "updated",
+        verified: remove ? after === "not_configured" : after === "configured",
     };
 }
 export const windsurfAdapter = {
     id: "windsurf",
     displayName: "Windsurf",
-    detect(context) {
+    async detect(context) {
         const evidence = existingPaths([
             path.join(context.homeDirectory, ".codeium", "windsurf"),
+            path.join(context.homeDirectory, ".config", "devin"),
             path.join(context.projectRoot, ".windsurf"),
+            path.join(context.projectRoot, ".devin"),
         ]);
-        if (commandAvailable("windsurf"))
-            evidence.push("windsurf executable on PATH");
-        return { id: this.id, displayName: this.displayName, detected: evidence.length > 0, evidence };
+        if (commandAvailable("windsurf", context.platform, context.executablePath) ||
+            commandAvailable("devin", context.platform, context.executablePath))
+            evidence.push("Windsurf/Devin executable on PATH");
+        return agentDetection(this.id, this.displayName, evidence, await integrationState(context));
     },
     install: (context, dryRun) => change(context, false, dryRun),
     uninstall: (context, dryRun) => change(context, true, dryRun),

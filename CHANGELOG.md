@@ -7,19 +7,19 @@ package; report and rule schemas are versioned independently.
 
 ### Changed
 
-- Renamed the public product/package/primary binary from the prior InvariantSec candidate to the
-  requested unscoped `vibeshield` identity while retaining the old binary and config filename as
-  migration aliases.
-- Added zero-config current-project scanning, concise decision-oriented human output, primary `fix`
-  and `setup` flows, six agent adapters, and a version-pinned durable MCP setup model.
-- Replaced four public specialist skills with one implicitly invocable `vibeshield` skill and added
-  `vibeshield_scan`, `vibeshield_fix`, and `vibeshield_explain` as the minimal MCP surface.
-- Added trigger-selection, setup/reconfiguration/uninstall, MCP protocol, intent-boundary, and
-  packed `npm exec`/global launcher regression coverage.
+- Finalized the previously unpublished product/package/primary binary as the unscoped Cydetix /
+  `cydetix` identity and removed all unpublished candidate aliases and config names.
+- Added scan-first zero-config current-project UX, concise decision output, post-scan agent
+  discovery with one consent prompt, explicit setup status/verify/remove modes, six adapters, and a
+  version-pinned durable MCP model.
+- Replaced four public specialist skills with one implicitly invocable `cydetix` skill and added
+  `cydetix_scan`, `cydetix_fix`, and `cydetix_explain` as the minimal MCP surface.
+- Added trigger-selection, setup/reconfiguration/removal, transactional config validation/rollback,
+  MCP protocol, intent-boundary, and packed `npm exec`/global launcher regression coverage.
 
-No publication is authorized. The exact npm name was unregistered when checked on 2026-09-06, but
-multiple active VibeShield security-market uses require explicit identity review and no trademark
-clearance is claimed.
+No publication is authorized. The exact npm lookup returned E404 on 2026-09-06 and limited
+exact-name web searches found no obvious match. Neither observation establishes ownership or
+trademark clearance.
 
 ## [0.6.0-alpha.1] - 2026-09-05
 
@@ -96,7 +96,7 @@ clearance is claimed.
 
 ### Changed
 
-- `vibeshield fix` now plans by default and reserves `APPLIED_VERIFIED` for changes whose parser,
+- `cydetix fix` now plans by default and reserves `APPLIED_VERIFIED` for changes whose parser,
   authorized verification, deterministic rescan, intended hashes, and security-invariant
   postcondition all pass.
 - The `security-remediation` Agent Skill consumes deterministic classification and proof, cannot
@@ -137,7 +137,7 @@ clearance is claimed.
   applicable missing PKCE.
 - Deep, exact-API adapters for express-session, Prisma authentication records, jsonwebtoken, jose,
   oauth4webapi, and Node CSPRNG reset generation.
-- `vibeshield graph <root> --auth` text/JSON diagnostics, richer `auth` output, authentication stage
+- `cydetix graph <root> --auth` text/JSON diagnostics, richer `auth` output, authentication stage
   timings, raw corpus metrics, and a Phase 3 performance regression check.
 - Multi-file secure, vulnerable, unknown, refresh-rotation, and false-positive authentication
   fixtures with SARIF code-flow and secret-redaction checks.

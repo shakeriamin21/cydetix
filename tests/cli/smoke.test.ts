@@ -43,16 +43,17 @@ describe("CLI smoke contract", () => {
   it("scans the current project by default with concise human output", () => {
     const result = runCli();
     expect(result.status).toBe(0);
-    expect(result.stdout).toMatch(/^VibeShield\n\nScanning /u);
+    expect(result.stdout).toMatch(/^Cydetix\n\nScanning /u);
     expect(result.stdout).not.toContain("SECURITY IR:");
     expect(result.stdout).not.toContain("Standards:");
+    expect(result.stdout).not.toContain("Enable automatic security checks");
   });
 
   it("offers complete structured output from the default command", () => {
     const result = runCli("--json");
     expect(result.status).toBe(0);
     const report = JSON.parse(result.stdout) as { tool: { name: string }; findings: unknown[] };
-    expect(report.tool.name).toBe("vibeshield");
+    expect(report.tool.name).toBe("cydetix");
     expect(Array.isArray(report.findings)).toBe(true);
   });
 
@@ -61,6 +62,14 @@ describe("CLI smoke contract", () => {
     expect(result.status).toBe(0);
     expect(result.stdout).toContain("COVERAGE");
     expect(result.stdout).toContain("No active findings");
+  });
+
+  it("reports integration status without prompting", () => {
+    const result = runCli("setup", "--status");
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain("Cydetix Setup");
+    expect(result.stdout).toContain("No configuration changes were made.");
+    expect(result.stdout).not.toContain("[Y/n]");
   });
 
   it("uses exit code 1 when a CI finding meets policy", () => {
@@ -116,7 +125,6 @@ describe("CLI smoke contract", () => {
     const explicitlySafeDryRun = runCli(
       "fix",
       "fixtures/autofix/vulnerable",
-      "--safe",
       "--dry-run",
       "--format",
       "json",
@@ -131,10 +139,10 @@ describe("CLI smoke contract", () => {
     expect(explicitlySafeDryReport.transactions).toEqual([]);
     expect(explicitlySafeDryReport.plans.some((plan) => plan.classification === "SAFE")).toBe(true);
 
-    const review = runCli("fix", "fixtures/phase4/actions-tagged", "--safe", "--non-interactive");
+    const review = runCli("fix", "fixtures/phase4/actions-tagged", "--non-interactive");
     expect(review.status).toBe(6);
 
-    const temp = temporaryDirectorySync("vibeshield-cli-fix-");
+    const temp = temporaryDirectorySync("cydetix-cli-fix-");
     const target = path.join(temp, "repo");
     cpSync(path.resolve("fixtures", "autofix", "vulnerable"), target, { recursive: true });
     const applied = runCli("fix", target, "--non-interactive");

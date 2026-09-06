@@ -20,7 +20,7 @@ const stages = {
 // One untimed transaction removes module/JIT initialization from the small transactional sample.
 // Twenty measured runs make nearest-rank p95 the second-slowest observation instead of the maximum.
 await runRemediation({ path: path.resolve("fixtures", "autofix", "vulnerable"), dryRun: true });
-const warmupDirectory = await mkdtemp(path.join(os.tmpdir(), "vibeshield-phase5-warmup-"));
+const warmupDirectory = await mkdtemp(path.join(os.tmpdir(), "cydetix-phase5-warmup-"));
 try {
   const warmupTarget = path.join(warmupDirectory, "repo");
   await cp(path.resolve("fixtures", "autofix", "vulnerable"), warmupTarget, { recursive: true });
@@ -40,7 +40,7 @@ for (let index = 0; index < repetitions; index += 1) {
   await runRemediation({ path: path.resolve("fixtures", "autofix", "vulnerable"), dryRun: true });
   planning.push(performance.now() - planningStart);
 
-  const temporary = await mkdtemp(path.join(os.tmpdir(), "vibeshield-phase5-benchmark-"));
+  const temporary = await mkdtemp(path.join(os.tmpdir(), "cydetix-phase5-benchmark-"));
   const target = path.join(temporary, "repo");
   try {
     await cp(path.resolve("fixtures", "autofix", "vulnerable"), target, { recursive: true });

@@ -15,7 +15,7 @@ import { buildSecurityIr } from "../call-graph/builder.js";
 import { enrichSecurityFacts } from "../dataflow-analysis/security-facts.js";
 import {
   scanReportSchema,
-  type InvariantSecConfig,
+  type CydetixConfig,
   type Finding,
   type ScanReport,
   type Severity,
@@ -46,7 +46,7 @@ function scopeMatches(scope: string, filePath: string): boolean {
 
 function applyAcceptedRisk(
   findings: readonly Finding[],
-  config: InvariantSecConfig,
+  config: CydetixConfig,
   now: Date,
 ): { findings: Finding[]; suppressedFindings: Finding[] } {
   const active: Finding[] = [];
@@ -220,7 +220,7 @@ export async function scanRepository(options: ScanOptions): Promise<ScanReport> 
         "bounded repository discovery",
         "Babel JavaScript/TypeScript AST",
         "Lezer Python syntax tree",
-        "deterministic VibeShield rule engine",
+        "deterministic Cydetix rule engine",
         "authentication graph (literal/dependency evidence)",
         "Security IR and repository-local ESM call graph",
         "Express identity trust and Prisma resource-flow analysis",
@@ -254,7 +254,7 @@ export async function scanRepository(options: ScanOptions): Promise<ScanReport> 
         "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
         ...(options.history === true
           ? []
-          : ["Git history was not analyzed; use vibeshield secrets . --history."]),
+          : ["Git history was not analyzed; use cydetix secrets . --history."]),
         ...((options.advisories ?? "offline") === "offline"
           ? [
               "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",

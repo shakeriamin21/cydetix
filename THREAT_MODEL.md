@@ -2,13 +2,13 @@
 
 ## Assets and security objectives
 
-VibeShield protects the operator's workstation/runner, repository confidentiality and integrity,
+Cydetix protects the operator's workstation/runner, repository confidentiality and integrity,
 environment credentials, report confidentiality, and the integrity of security conclusions. The
 selected repository is adversarial data even when the operator owns it.
 
 ## Trust boundaries
 
-- Trusted: the reviewed vibeshield release, its locked dependencies, the explicit CLI arguments, and
+- Trusted: the reviewed cydetix release, its locked dependencies, the explicit CLI arguments, and
   operating-system primitives within their documented guarantees.
 - Untrusted: every repository pathname, byte, symlink, config value, Git setting, generated file,
   embedded instruction, dependency manifest, and fixture.
@@ -30,10 +30,10 @@ selected repository is adversarial data even when the operator owns it.
 | Credential disclosure              | No environment dump; detected values are hashed/redacted; auth evidence never emits JWTs, reset tokens, cookies, OAuth secrets, or private keys     |
 | Prompt injection                   | Repository prose is evidence only; CLI correctness does not use an LLM; skills explicitly prohibit repository instructions from changing boundaries |
 | Unexpected network access          | Ordinary scan is offline; OSV is explicit and transmits only npm ecosystem/name/version with bounded timeout and structured failure states          |
-| Unauthorized mutation              | `scan`/`auth` cannot write; `fix` plans by default; only `--safe` is root-bounded, hash-preconditioned, transactional, and verified                 |
+| Unauthorized mutation              | `scan`/`auth` cannot write; only explicit `fix` intent can enter root-bounded, hash-preconditioned, transactional, verified SAFE remediation        |
 | Stale or concurrent patch          | Whole-file and exact-range hashes, affected dirty-file refusal, final identity/hash check, stable finding identity, `STALE_FINDING`                 |
 | Partial or interrupted write       | Complete in-memory preparation, exclusive same-directory temporary, file flush, atomic replacement, per-file change journal                         |
-| Destructive rollback               | Restore only VibeShield-written paths whose current hash is still the expected patched hash; never repository-wide Git reset/checkout/clean         |
+| Destructive rollback               | Restore only Cydetix-written paths whose current hash is still the expected patched hash; never repository-wide Git reset/checkout/clean            |
 | Malicious verifier/formatter       | No implicit execution; explicit JSON argument arrays, `shell: false`, fixed cwd, stripped environment, no stdin, time/output bounds                 |
 | Remediation false-success          | Only `APPLIED_VERIFIED` after parser/authorized checks, deterministic rescan, intended hashes, and invariant transition; rollback remains failure   |
 | Secret leakage in patch journal    | Exact secret-range replacements are redacted in unified diffs; portable reports omit source backups, command arguments/output, and absolute root    |
@@ -87,7 +87,7 @@ used to write or restore content.
 
 Verification is staged. Parser failure, an explicitly authorized command failure, rescan failure, or
 an invariant that remains insecure/unknown triggers rollback. Rollback is conditional on the current
-file still being VibeShield's output; concurrent user edits stop restoration and produce
+file still being Cydetix's output; concurrent user edits stop restoration and produce
 `ROLLBACK_FAILED` rather than overwrite them. This protects user work but can leave a partially
 modified repository that requires manual review. Process termination between atomic replacement and
 rollback remains a journal/report recovery concern; persistent crash recovery is not implemented.

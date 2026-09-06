@@ -1,4 +1,4 @@
-import type { InvariantSecConfig, RepositoryManifest } from "../core/schema.js";
+import type { CydetixConfig, RepositoryManifest } from "../core/schema.js";
 import { type RepositoryBoundary } from "./boundary.js";
 export type SourceLanguage = "javascript" | "typescript" | "python" | "configuration" | "other";
 export interface SourceFile {
@@ -12,5 +12,5 @@ export interface TraversalResult {
     readonly files: readonly SourceFile[];
     readonly baseManifest: Pick<RepositoryManifest, "root" | "filesExamined" | "bytesExamined" | "files" | "skipped">;
 }
-export declare function traverseRepository(boundary: RepositoryBoundary, config: InvariantSecConfig): Promise<TraversalResult>;
+export declare function traverseRepository(boundary: RepositoryBoundary, config: CydetixConfig): Promise<TraversalResult>;
 //# sourceMappingURL=traverse.d.ts.map

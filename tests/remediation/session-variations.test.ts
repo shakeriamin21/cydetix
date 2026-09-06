@@ -10,7 +10,7 @@ import { runRemediation } from "../../src/remediation/fix.js";
 const temporaryDirectories: string[] = [];
 
 async function temporary(): Promise<string> {
-  const directory = await mkdtemp(path.join(os.tmpdir(), "invariantsec-session-variation-"));
+  const directory = await mkdtemp(path.join(os.tmpdir(), "cydetix-session-variation-"));
   temporaryDirectories.push(directory);
   return directory;
 }

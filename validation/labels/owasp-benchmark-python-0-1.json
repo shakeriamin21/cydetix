@@ -11,7 +11,7 @@
       "ruleCompatible": false,
       "expectedUnknown": false,
       "cwe": "CWE-614",
-      "rationale": "The benchmark labels an arbitrary cookie, while InvariantSec claims only authenticated session-cookie configuration. Excluded as NOT_APPLICABLE."
+      "rationale": "The benchmark labels an arbitrary cookie, while Cydetix claims only authenticated session-cookie configuration. Excluded as NOT_APPLICABLE."
     },
     {
       "caseId": "BenchmarkTest00337",

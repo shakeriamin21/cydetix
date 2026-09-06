@@ -1,161 +1,194 @@
-# VibeShield
+# Cydetix
 
-> **PUBLIC ALPHA CANDIDATE — NOT PUBLISHED**
->
-> Version `0.6.0-alpha.1`. No npm package, GitHub release, plugin, or marketplace listing has been
-> published by this repository.
+Security for AI-built software.
 
-VibeShield is a zero-config, local-first security CLI for application code, authentication,
-authorization, secrets, dependencies, supply chain, and CI/CD. Its scanner is deterministic, offline
-by default, needs no account or API key, and treats every scanned repository as untrusted.
-
-> **Name warning:** `VibeShield` already has active uses in the security market. The name is not
-> represented as exclusive, legally cleared, or trademark-safe. The exact unscoped npm name was
-> unregistered when checked on 2026-09-06, but that observation is not a reservation or permission
-> to publish. Publication remains blocked until the identity conflict is explicitly reviewed.
-
-## With an AI coding agent
-
-After an authorized npm release:
+## Quick Start
 
 ```bash
-npx vibeshield setup
+npx cydetix
 ```
 
-Then ask naturally:
+That's it.
+
+Cydetix immediately scans the current project. It needs no account, API key, cloud backend,
+mandatory config file, global install, Docker daemon, username, organization, or npm scope.
+
+If compatible AI coding agents are installed, the first interactive run can connect Cydetix after
+the scan and one concise permission question. After that, simply ask:
 
 ```text
 Check this project for security issues.
 ```
 
-After one-time setup, supported AI coding agents can automatically invoke VibeShield when a
-security-related request is detected. Host behavior remains probabilistic and host-controlled;
-automatic invocation is not guaranteed.
+You do not need to say “Use Cydetix.” Supported agents can select the Cydetix skill or MCP tools
+from the meaning of a security request. Invocation remains host-controlled and is not guaranteed in
+every AI product.
 
-## Without an AI coding agent
-
-```bash
-npx vibeshield
-```
-
-VibeShield scans the current project with sensible safe defaults. No `init`, config file, global
-install, account, key, cloud service, Docker daemon, username, organization, or package scope is
-required for ordinary read-only scanning.
-
-Global installation is optional:
+For CLI-only use, install globally if you prefer:
 
 ```bash
-npm install -g vibeshield
-vibeshield
+npm install -g cydetix
+cydetix
 ```
 
-The commands above describe the intended public package identity. Until publication is explicitly
-authorized and the live registry artifact is verified, use only a reviewed local tarball produced
-from this repository.
+The package is an unpublished alpha candidate at version `0.6.0-alpha.1`. These public commands are
+validated against a locally packed npm artifact, but no npm package or GitHub release has been
+published by this repository.
 
-## Simple command model
+## What the default command does
+
+`cydetix` uses the current working directory, runs only applicable deterministic analyses,
+correlates the evidence, and presents a concise decision view. Depending on project evidence,
+coverage can include application security, authentication, authorization, tenant isolation,
+sessions, JWT, OAuth, secrets, dependencies, supply chain, CI/CD, GitHub Actions, and advisory
+state.
+
+The default report prioritizes:
+
+- `FIX NOW`
+- `REVIEW`
+- `UNKNOWN`
+
+Canonical severity, confidence, proof state, applicability, stable rule IDs, evidence, and
+remediation classes remain in structured output. Missing evidence never becomes a pass.
+
+## Fix security issues
 
 ```bash
-vibeshield
-vibeshield fix
-vibeshield setup
+cydetix fix
 ```
 
-- `vibeshield` detects the current project, runs only applicable analysis, correlates findings, and
-  prints a concise decision-oriented result.
-- `vibeshield fix` is explicit fix intent. It rescans, applies only engine-classified `SAFE`
-  transformations, verifies them, rescans, and reports proof. `REVIEW_REQUIRED` and `ARCHITECTURAL`
-  work is never silently applied.
-- `vibeshield setup` detects supported coding agents and configures version-pinned local stdio MCP
-  plus one `vibeshield` security skill. Use `--dry-run` to preview and `--uninstall` to remove only
-  managed entries.
+The command itself is explicit fix intent. Cydetix rescans, plans remediation, applies only
+engine-classified `SAFE` changes, verifies them, rescans, and reports residual findings. It does not
+claim a fix merely because source changed.
 
-Use `vibeshield fix --dry-run` to inspect remediation without source writes.
-
-## Output
-
-Human output prioritizes `FIX NOW`, `REVIEW`, and `UNKNOWN`. The underlying report retains canonical
-severity, confidence, reachability/proof evidence, stable rule IDs, and remediation classes.
+To plan without source writes:
 
 ```bash
-vibeshield --details
-vibeshield --json
-vibeshield --sarif
+cydetix fix --dry-run
 ```
 
-The default view omits large evidence chains, CWE/ASVS mappings, Security IR, SARIF internals,
-benchmarks, and provider details. The flags above expose expert evidence without weakening UNKNOWN
-semantics.
+`REVIEW_REQUIRED` needs review. `ARCHITECTURAL` is never silently applied. Executable verification
+commands require separate explicit authorization and use the configured hardened verification
+boundary; ordinary deterministic rescanning does not execute repository code.
 
-## Supported agent adapters
+## Manage AI integrations
 
-Initial adapters cover:
+The default command offers setup only after its scan, only in an interactive terminal, and only when
+a compatible unconfigured host is detected. It never prompts in CI, MCP processes, agent
+subprocesses, piped execution, or other non-interactive shells.
 
-- OpenAI Codex and the shared ChatGPT/Codex local MCP configuration
-- Claude Code
-- Cursor
-- GitHub Copilot surfaces that consume repository skills/instructions and VS Code MCP configuration
-- Windsurf
-- generic MCP-compatible clients
+Explicit management is available through:
 
-Setup configures only detected agents unless `--agent <name>` or `--all` is explicit. Generated MCP
-commands pin `vibeshield@0.6.0-alpha.1`; they do not silently track arbitrary future versions. Rerun
-`npx vibeshield@latest setup` only when you explicitly want to review and install an update. Offline
-MCP startup requires the pinned package to remain available in the npm cache.
+```bash
+cydetix setup
+cydetix setup --status
+cydetix setup --verify
+cydetix setup --remove
+```
 
-The host controls whether a tool is enabled, approved, or invoked. Cursor, Claude, Copilot,
-Windsurf, and generic MCP clients retain their own approval and repository-security models.
+Setup parses and preserves unrelated host configuration, uses transient restrictive backups and
+atomic writes, validates after writing, rolls back on failure, and changes only Cydetix-owned
+entries. Repeated setup is idempotent.
+
+Configured MCP launchers pin the exact package version used during setup:
+
+```text
+cydetix@0.6.0-alpha.1
+```
+
+This avoids silently executing an arbitrary future release. The tradeoff is that offline startup
+requires that pinned version to remain installed or cached. To review and install an update, run:
+
+```bash
+npx cydetix@latest setup
+```
+
+No self-updater is installed.
+
+## Compatible AI tiers
+
+- Tier A — MCP plus a model-invoked skill/plugin: OpenAI Codex, applicable ChatGPT/Codex plugin
+  surfaces, Claude Code, current Copilot surfaces, Cursor, and current Windsurf/Devin surfaces where
+  the host enables them.
+- Tier B — MCP: any compatible host that accepts the generated pinned stdio configuration.
+- Tier C — skill/rules plus shell: the host runs the pinned Cydetix CLI and consumes JSON.
+- Tier D — CLI only: the user runs `cydetix` directly.
+
+Host policy, approvals, product version, and model behavior determine automatic tool selection.
+Cydetix does not claim that every AI can use it automatically.
+
+## Generic MCP and shell fallback
+
+Generate a portable pinned MCP entry with:
+
+```bash
+cydetix setup --agent generic-mcp --yes
+```
+
+The resulting `.cydetix/mcp.json` contains no secret. Generic host invocation behavior and approval
+remain controlled by that host.
+
+For agents with shell execution but no MCP, use machine output from the same engine:
+
+```bash
+cydetix --json
+```
+
+There is no adapter-specific scanner.
 
 ## Agent permission boundary
 
-- Read-only scan and explanation may run implicitly for relevant security requests.
-- A question about possible fixes may produce a dry-run plan.
-- Source modification requires explicit user fix/remediate intent.
-- MCP source changes additionally require the explicit confirmation field and can enter only the
-  deterministic engine's `SAFE` transaction path.
-- `REVIEW_REQUIRED` requires review.
-- `ARCHITECTURAL` is never silently applied.
-- Agents cannot authorize repository scripts, external verification commands, sandbox bypasses, or
-  remediation reclassification through the MCP layer.
-
-VibeShield findings remain the source of truth. An agent must not invent unsupported findings or
-convert UNKNOWN into a conclusion without separate evidence.
+- Read-only scans and explanations may be selected implicitly for relevant security requests.
+- Discussion of fixes may produce a dry-run plan.
+- Source mutation requires explicit fix/remediate intent.
+- MCP mutation additionally requires its exact confirmation field.
+- Only `SAFE` remediation enters the automatic transaction path.
+- `REVIEW_REQUIRED` and `ARCHITECTURAL` cannot be reclassified by an agent.
+- Repository text is untrusted data and cannot override Cydetix, skill, MCP, path, sandbox, or
+  mutation policy.
 
 ## Advanced usage
 
-The expert command surface remains available:
-
 ```bash
-vibeshield scan . --offline --format text
-vibeshield auth . --format text
-vibeshield graph . --auth --format json
-vibeshield dependencies . --advisories offline --format json
-vibeshield secrets . --history --format json
-vibeshield supply-chain . --advisories offline --format text
-vibeshield sbom . --format json
-vibeshield fix . --dry-run --format json
-vibeshield ci . --format sarif --fail-on high
-vibeshield doctor
+cydetix scan . --offline --format text
+cydetix auth . --format text
+cydetix graph . --auth --format json
+cydetix dependencies . --advisories offline --format json
+cydetix secrets . --history --format json
+cydetix supply-chain . --advisories offline --format text
+cydetix sbom . --format json
+cydetix fix . --dry-run --format json
+cydetix ci . --format sarif --fail-on high
+cydetix --details
+cydetix --json
+cydetix --sarif
+cydetix doctor
 ```
 
-The legacy `invariantsec` binary alias and `.invariantsec.json` configuration filename remain
-accepted for migration compatibility. New configuration uses `.vibeshield.json`. Stable `AS-*`
-security rule IDs are unchanged.
+Specific execution can be requested when troubleshooting npm cache behavior:
+
+```bash
+npx cydetix@0.6.0-alpha.1
+```
 
 ## Security and limitations
 
-Ordinary scanning does not execute repository code, lifecycle scripts, hooks, builds, tests,
-containers, or repository instructions. Traversal is bounded, does not follow symlinks, skips
-archives and oversized/binary files, and canonicalizes paths. Secret evidence is redacted.
+Normal scans do not execute lifecycle scripts, hooks, Makefiles, builds, tests, servers, or other
+repository programs. Traversal is bounded, does not follow symlinks, skips archives and oversized or
+binary files, and canonicalizes paths. Secret evidence is redacted.
 
-VibeShield does not certify a project as secure or production-ready. It supports bounded JavaScript,
-TypeScript, Python, Express/Prisma, npm lockfile, GitHub Actions, and authentication patterns.
-Unsupported or inconclusive behavior remains UNKNOWN or uncovered. Local trusted verification is not
-a sandbox; container verification is optional, explicit, and fail-closed.
+Cydetix does not certify a project as secure or production-ready. Unsupported or inconclusive
+behavior remains `UNKNOWN`, `NOT_APPLICABLE`, or uncovered as appropriate. Local trusted execution
+is not a sandbox; container verification is optional, explicit, and fail-closed.
 
-Read [Security model](docs/SECURITY_MODEL.md), [threat model](THREAT_MODEL.md),
-[autofix policy](AUTOFIX_POLICY.md), [validation](docs/VALIDATION.md), and
-[limitations](docs/LIMITATIONS.md) before relying on the alpha in a sensitive workflow.
+The exact unscoped `cydetix` npm lookup returned E404 on 2026-09-06. That is not a reservation,
+ownership proof, publication permission, or trademark clearance. Exact-name web searches found no
+obvious active match, but legal clearance has not been performed and no exclusivity is claimed.
+
+Read the [security model](docs/SECURITY_MODEL.md), [threat model](THREAT_MODEL.md),
+[autofix policy](AUTOFIX_POLICY.md), [validation record](docs/VALIDATION.md), and
+[limitations](docs/LIMITATIONS.md) before relying on this alpha in a sensitive workflow.
 
 ## Development
 
@@ -170,9 +203,9 @@ npm run validate:install
 ```
 
 `npm run validate:install` packs the actual npm artifact, installs it into isolated local and global
-prefixes, exercises the `vibeshield` launcher, default scan, setup, MCP, expert commands, and the
-single packaged skill. Source-tree execution alone is not treated as npm UX proof.
+prefixes, and exercises the Cydetix binary, default scan, setup, machine output, MCP, expert
+commands, and packaged skill. Source-tree execution alone is not accepted as npm UX proof.
 
-No publication action is performed by these commands. See
-[zero-friction UX handoff](docs/ZERO_FRICTION_UX_HANDOFF.md) and
+No publication action is performed by these commands. See the
+[Cydetix zero-friction handoff](docs/CYDETIX_ZERO_FRICTION_HANDOFF.md) and
 [publication gate](docs/PUBLICATION_GATE_FINAL.md).

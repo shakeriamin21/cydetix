@@ -4,7 +4,7 @@ import { PRODUCT } from "../dist/core/brand.js";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const lock = JSON.parse(await readFile("package-lock.json", "utf8"));
-const plugin = JSON.parse(await readFile("plugins/vibeshield/.codex-plugin/plugin.json", "utf8"));
+const plugin = JSON.parse(await readFile("plugins/cydetix/.codex-plugin/plugin.json", "utf8"));
 const publication = JSON.parse(await readFile("release/publication-config.json", "utf8"));
 const sourceBrand = await readFile("src/core/brand.ts", "utf8");
 const readme = await readFile("README.md", "utf8");
@@ -32,14 +32,14 @@ for (const [source, content] of [
   if (!content.includes(packageJson.version))
     throw new Error(`Version mismatch: ${source} does not name ${packageJson.version}.`);
 }
-for (const skillRoot of ["agent-skills", "plugins/vibeshield/skills"]) {
-  const content = await readFile(`${skillRoot}/vibeshield/SKILL.md`, "utf8");
-  if (!content.includes("name: vibeshield"))
-    throw new Error(`Skill identity mismatch: ${skillRoot}/vibeshield/SKILL.md.`);
+for (const skillRoot of ["agent-skills", "plugins/cydetix/skills"]) {
+  const content = await readFile(`${skillRoot}/cydetix/SKILL.md`, "utf8");
+  if (!content.includes("name: cydetix"))
+    throw new Error(`Skill identity mismatch: ${skillRoot}/cydetix/SKILL.md.`);
 }
 if (publication.tagCandidate !== `v${packageJson.version}`)
   throw new Error("Publication tag candidate does not match the package version.");
-const expectedTag = process.env.VIBESHIELD_EXPECTED_TAG;
+const expectedTag = process.env.CYDETIX_EXPECTED_TAG;
 if (expectedTag !== undefined && expectedTag !== `v${packageJson.version}`)
   throw new Error(`Release tag ${expectedTag} does not match package v${packageJson.version}.`);
 process.stdout.write(

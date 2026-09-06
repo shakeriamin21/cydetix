@@ -67,9 +67,9 @@ export function generateCycloneDxSbom(inventory, now = new Date()) {
         purl: component.purl,
         scope: component.optional ? "optional" : "required",
         properties: [
-            { name: "vibeshield:dependency-kind", value: component.kind },
-            { name: "vibeshield:resolved", value: String(component.resolved) },
-            { name: "vibeshield:source", value: component.source },
+            { name: "cydetix:dependency-kind", value: component.kind },
+            { name: "cydetix:resolved", value: String(component.resolved) },
+            { name: "cydetix:source", value: component.source },
         ],
     }));
     const rootPurl = inventory.rootComponent;
@@ -102,10 +102,10 @@ export function generateCycloneDxSbom(inventory, now = new Date()) {
                 components: [
                     {
                         type: "application",
-                        "bom-ref": `pkg:npm/vibeshield@${PRODUCT.version}`,
+                        "bom-ref": `pkg:npm/cydetix@${PRODUCT.version}`,
                         name: PRODUCT.id,
                         version: PRODUCT.version,
-                        purl: `pkg:npm/vibeshield@${PRODUCT.version}`,
+                        purl: `pkg:npm/cydetix@${PRODUCT.version}`,
                     },
                 ],
             },

@@ -348,7 +348,7 @@ export const authGraphSchema = z
 export const scanReportSchema = z
   .object({
     schemaVersion: z.literal("2.0.0"),
-    tool: z.object({ name: z.literal("vibeshield"), version: z.string() }).strict(),
+    tool: z.object({ name: z.literal("cydetix"), version: z.string() }).strict(),
     scan: z
       .object({
         id: z.string(),
@@ -436,4 +436,4 @@ export type RepositoryManifest = z.infer<typeof repositoryManifestSchema>;
 export type Coverage = z.infer<typeof coverageSchema>;
 export type AuthGraph = z.infer<typeof authGraphSchema>;
 export type ScanReport = z.infer<typeof scanReportSchema>;
-export type InvariantSecConfig = z.infer<typeof configSchema>;
+export type CydetixConfig = z.infer<typeof configSchema>;

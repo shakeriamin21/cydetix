@@ -27,8 +27,8 @@ squatting version merely to make the OIDC gate green. A bootstrap publish is its
 publication and is outside Codex's current authority.
 
 The first version of a new npm package cannot use npm staged publishing because npm requires the
-package to exist before staging. If `vibeshield` remains unregistered, the first approved alpha is
-the separately authorized bootstrap publication under `--tag alpha`, not `latest`; it must not be
+package to exist before staging. If `cydetix` remains unregistered, the first approved alpha is the
+separately authorized bootstrap publication under `--tag alpha`, not `latest`; it must not be
 described as Trusted Publishing. See [the npm bootstrap plan](../NPM_BOOTSTRAP.md). Later versions
 use OIDC after the package settings exist.
 
@@ -42,7 +42,7 @@ From a clean reviewed source commit:
 ```powershell
 npm ci --ignore-scripts
 npm run audit
-$env:VIBESHIELD_SANDBOX_IMAGE = "sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b"
+$env:CYDETIX_SANDBOX_IMAGE = "sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b"
 npm run verify
 npm run release:self-scan
 npm run validate:online-osv
@@ -68,7 +68,7 @@ are complete. Do not weaken these checks to obtain a green result.
    pass on the exact candidate commit.
 4. Enable GitHub private vulnerability reporting.
 5. Create a protected `release` environment with a required reviewer.
-6. Recheck `vibeshield` directly at npm. If it remains unregistered, obtain separate approval for a
+6. Recheck `cydetix` directly at npm. If it remains unregistered, obtain separate approval for a
    one-time 2FA-protected publication of the exact reviewed alpha tarball under the `alpha`
    dist-tag. Use the shortest-lived practical credential, do not commit it, and revoke/log out
    immediately afterward.
@@ -88,7 +88,7 @@ git switch main
 git pull --ff-only
 git rev-parse HEAD
 git status --short
-git tag -a v0.6.0-alpha.1 -m "VibeShield v0.6.0-alpha.1"
+git tag -a v0.6.0-alpha.1 -m "Cydetix v0.6.0-alpha.1"
 git show --no-patch --decorate v0.6.0-alpha.1
 git push origin v0.6.0-alpha.1
 ```

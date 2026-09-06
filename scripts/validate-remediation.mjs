@@ -5,7 +5,7 @@ import path from "node:path";
 import { runRemediation } from "../dist/remediation/fix.js";
 import { remediationReportSchema } from "../dist/remediation/model.js";
 
-const temporary = await mkdtemp(path.join(os.tmpdir(), "vibeshield-remediation-validation-"));
+const temporary = await mkdtemp(path.join(os.tmpdir(), "cydetix-remediation-validation-"));
 const target = path.join(temporary, "repo");
 try {
   await cp(path.resolve("fixtures", "autofix", "vulnerable"), target, { recursive: true });

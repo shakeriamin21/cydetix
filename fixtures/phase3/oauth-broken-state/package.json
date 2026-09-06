@@ -1,5 +1,5 @@
 {
-  "name": "invariantsec-oauth-broken-state-fixture",
+  "name": "cydetix-oauth-broken-state-fixture",
   "private": true,
   "dependencies": {
     "express": "5.1.0",

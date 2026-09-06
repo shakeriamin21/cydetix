@@ -1,7 +1,7 @@
 import { lstat, opendir, readFile, realpath } from "node:fs/promises";
 import path from "node:path";
 
-import type { InvariantSecConfig, RepositoryManifest } from "../core/schema.js";
+import type { CydetixConfig, RepositoryManifest } from "../core/schema.js";
 import { isWithinRoot, toReportPath, type RepositoryBoundary } from "./boundary.js";
 
 export type SourceLanguage = "javascript" | "typescript" | "python" | "configuration" | "other";
@@ -24,8 +24,7 @@ export interface TraversalResult {
 
 const BUILTIN_IGNORES = new Set([
   ".git",
-  ".invariantsec",
-  ".vibeshield",
+  ".cydetix",
   ".hg",
   ".svn",
   "node_modules",
@@ -87,7 +86,7 @@ function ignoredByUser(relativePath: string, patterns: readonly string[]): boole
 
 export async function traverseRepository(
   boundary: RepositoryBoundary,
-  config: InvariantSecConfig,
+  config: CydetixConfig,
 ): Promise<TraversalResult> {
   const files: SourceFile[] = [];
   const skipped: RepositoryManifest["skipped"] = [];

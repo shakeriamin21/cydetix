@@ -14,7 +14,7 @@ import type { RemediationCandidate, RemediationReport } from "../../src/remediat
 import { temporaryDirectory } from "../helpers/temporary.js";
 
 async function copyFixture(name: string): Promise<string> {
-  const temp = await temporaryDirectory("invariantsec-remediation-");
+  const temp = await temporaryDirectory("cydetix-remediation-");
   const target = path.join(temp, "repo");
   await cp(path.resolve("fixtures", name), target, { recursive: true });
   return target;
@@ -41,8 +41,8 @@ function git(root: string, ...arguments_: string[]): void {
 
 function initializeGit(root: string): void {
   git(root, "init");
-  git(root, "config", "user.email", "invariantsec@example.invalid");
-  git(root, "config", "user.name", "InvariantSec Test");
+  git(root, "config", "user.email", "cydetix@example.invalid");
+  git(root, "config", "user.name", "Cydetix Test");
   git(root, "add", ".");
   git(root, "commit", "-m", "fixture baseline", "--no-gpg-sign");
 }
@@ -194,7 +194,7 @@ describe("remediation transaction safety", () => {
   });
 
   it("handles a Unicode target and safely ignores an oversized crafted source", async () => {
-    const unicodeRoot = await temporaryDirectory("invariantsec-unicode-");
+    const unicodeRoot = await temporaryDirectory("cydetix-unicode-");
     const unicodePath = path.join(unicodeRoot, "session-μ.py");
     await writeFile(
       unicodePath,
@@ -205,7 +205,7 @@ describe("remediation transaction safety", () => {
     expect(unicode.transactions[0]?.finalState).toBe("APPLIED_VERIFIED");
     expect(await readFile(unicodePath, "utf8")).toContain("= True");
 
-    const hugeRoot = await temporaryDirectory("invariantsec-huge-");
+    const hugeRoot = await temporaryDirectory("cydetix-huge-");
     const huge = `${"#".repeat(1_100_000)}\napp.config["SESSION_COOKIE_HTTPONLY"] = False\n`;
     await writeFile(path.join(hugeRoot, "app.py"), huge, "utf8");
     const skipped = await runRemediation({ path: hugeRoot, applySafe: true });
@@ -214,7 +214,7 @@ describe("remediation transaction safety", () => {
   });
 
   it("preserves CRLF line endings, final newline, and file mode where supported", async () => {
-    const root = await temporaryDirectory("invariantsec-attributes-");
+    const root = await temporaryDirectory("cydetix-attributes-");
     const target = path.join(root, "app.py");
     const original =
       'from flask import Flask\r\napp = Flask(__name__)\r\napp.config["SESSION_COOKIE_HTTPONLY"] = False\r\n';

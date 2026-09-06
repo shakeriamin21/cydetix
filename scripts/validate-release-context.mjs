@@ -29,10 +29,10 @@ function git(arguments_) {
   return result.stdout.trim();
 }
 
-const tag = process.env.VIBESHIELD_EXPECTED_TAG;
-if (tag === undefined) throw new Error("VIBESHIELD_EXPECTED_TAG is required.");
+const tag = process.env.CYDETIX_EXPECTED_TAG;
+if (tag === undefined) throw new Error("CYDETIX_EXPECTED_TAG is required.");
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const plugin = JSON.parse(await readFile("plugins/vibeshield/.codex-plugin/plugin.json", "utf8"));
+const plugin = JSON.parse(await readFile("plugins/cydetix/.codex-plugin/plugin.json", "utf8"));
 const expectedTag = `v${packageJson.version}`;
 if (tag !== expectedTag) throw new Error(`Tag ${tag} does not match ${expectedTag}.`);
 if (plugin.version !== packageJson.version)

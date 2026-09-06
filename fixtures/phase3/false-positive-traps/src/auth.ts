@@ -4,7 +4,7 @@ function verifyToken(token: string) {
   return jwt.verify(token, process.env.JWT_PUBLIC_KEY!, {
     algorithms: ["RS256"],
     issuer: "https://issuer.example",
-    audience: "invariantsec-fixture",
+    audience: "cydetix-fixture",
   });
 }
 

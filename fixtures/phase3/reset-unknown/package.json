@@ -1,5 +1,5 @@
 {
-  "name": "invariantsec-reset-unknown-fixture",
+  "name": "cydetix-reset-unknown-fixture",
   "private": true,
   "dependencies": {
     "@prisma/client": "6.16.1",

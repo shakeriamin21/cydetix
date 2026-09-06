@@ -1,7 +1,7 @@
 import { readdir, readFile, stat } from "node:fs/promises";
 import path from "node:path";
 
-const pluginRoot = path.resolve("plugins", "vibeshield");
+const pluginRoot = path.resolve("plugins", "cydetix");
 const manifestPath = path.join(pluginRoot, ".codex-plugin", "plugin.json");
 const raw = await readFile(manifestPath, "utf8");
 const packageManifest = JSON.parse(await readFile(path.resolve("package.json"), "utf8"));
@@ -18,7 +18,7 @@ if (!/^\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?$/.test(manifest.version)) {
 if (manifest.version !== packageManifest.version) {
   throw new Error("Plugin and CLI package versions must match.");
 }
-if (marketplace.name !== "vibeshield" || marketplace.interface?.displayName !== "VibeShield") {
+if (marketplace.name !== "cydetix" || marketplace.interface?.displayName !== "Cydetix") {
   throw new Error("Repository plugin catalog identity is invalid.");
 }
 if (!Array.isArray(marketplace.plugins) || marketplace.plugins.length !== 1) {
@@ -28,7 +28,7 @@ const marketplaceEntry = marketplace.plugins[0];
 if (
   marketplaceEntry.name !== manifest.name ||
   marketplaceEntry.source?.source !== "local" ||
-  marketplaceEntry.source?.path !== "./plugins/vibeshield" ||
+  marketplaceEntry.source?.path !== "./plugins/cydetix" ||
   marketplaceEntry.policy?.installation !== "AVAILABLE" ||
   marketplaceEntry.policy?.authentication !== "ON_INSTALL" ||
   typeof marketplaceEntry.category !== "string"
@@ -41,11 +41,11 @@ for (const field of ["description", "author", "interface", "skills", "mcpServers
 if (manifest.apps !== undefined) throw new Error("Plugin must not declare an absent app.");
 const mcpPath = path.resolve(pluginRoot, manifest.mcpServers);
 const mcp = JSON.parse(await readFile(mcpPath, "utf8"));
-const server = mcp.mcpServers?.vibeshield;
+const server = mcp.mcpServers?.cydetix;
 if (
   server?.command !== "npx" ||
   JSON.stringify(server.args) !==
-    JSON.stringify(["--yes", `vibeshield@${packageManifest.version}`, "mcp"])
+    JSON.stringify(["--yes", `cydetix@${packageManifest.version}`, "mcp"])
 )
   throw new Error("Plugin MCP command must be pinned to the plugin/package version.");
 const skillsPath = path.resolve(pluginRoot, manifest.skills);
@@ -53,8 +53,8 @@ if (!(await stat(skillsPath)).isDirectory()) throw new Error("Plugin skills path
 const skillNames = (await readdir(skillsPath, { withFileTypes: true }))
   .filter((entry) => entry.isDirectory())
   .map((entry) => entry.name);
-if (JSON.stringify(skillNames) !== JSON.stringify(["vibeshield"]))
-  throw new Error("Plugin must expose exactly one vibeshield skill.");
+if (JSON.stringify(skillNames) !== JSON.stringify(["cydetix"]))
+  throw new Error("Plugin must expose exactly one cydetix skill.");
 const [rootLicense, pluginLicense] = await Promise.all([
   readFile(path.resolve("LICENSE"), "utf8"),
   readFile(path.join(pluginRoot, "LICENSE"), "utf8"),

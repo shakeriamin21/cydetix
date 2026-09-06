@@ -7,7 +7,7 @@ import { scanRepository } from "../../src/core/engine.js";
 import { temporaryDirectory } from "../helpers/temporary.js";
 
 async function repositoryCopy(): Promise<string> {
-  const temporary = await temporaryDirectory("invariantsec-risk-");
+  const temporary = await temporaryDirectory("cydetix-risk-");
   const target = path.join(temporary, "repo");
   await cp(path.resolve("fixtures", "typescript", "vulnerable"), target, { recursive: true });
   return target;
@@ -36,7 +36,7 @@ function config(expires: string): string {
 describe("accepted risk", () => {
   it("suppresses a scoped finding while retaining owner and expiry", async () => {
     const target = await repositoryCopy();
-    await writeFile(path.join(target, ".invariantsec.json"), config("2027-08-30"), "utf8");
+    await writeFile(path.join(target, ".cydetix.json"), config("2027-08-30"), "utf8");
     const report = await scanRepository({ path: target, now: new Date("2026-08-30T00:00:00Z") });
     expect(report.findings.some((finding) => finding.ruleId === "AS-TOKEN-001")).toBe(false);
     expect(report.suppressedFindings).toContainEqual(
@@ -53,7 +53,7 @@ describe("accepted risk", () => {
 
   it("surfaces an expired exception again", async () => {
     const target = await repositoryCopy();
-    await writeFile(path.join(target, ".invariantsec.json"), config("2026-08-29"), "utf8");
+    await writeFile(path.join(target, ".cydetix.json"), config("2026-08-29"), "utf8");
     const report = await scanRepository({ path: target, now: new Date("2026-08-30T00:00:00Z") });
     expect(report.findings.some((finding) => finding.ruleId === "AS-TOKEN-001")).toBe(true);
     expect(report.suppressedFindings.some((finding) => finding.ruleId === "AS-TOKEN-001")).toBe(
@@ -67,7 +67,7 @@ describe("accepted risk", () => {
     const token = first.findings.find((finding) => finding.ruleId === "AS-TOKEN-001");
     if (token === undefined) throw new Error("Expected token fixture finding.");
     await writeFile(
-      path.join(target, ".invariantsec.json"),
+      path.join(target, ".cydetix.json"),
       `${JSON.stringify({ schemaVersion: "1.0.0", baseline: [token.fingerprint] }, null, 2)}\n`,
       "utf8",
     );

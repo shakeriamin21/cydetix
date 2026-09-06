@@ -1,7 +1,6 @@
-import { type InvariantSecConfig } from "../core/schema.js";
+import { type CydetixConfig } from "../core/schema.js";
 import type { RepositoryBoundary } from "./boundary.js";
-export declare const CONFIG_NAME = ".vibeshield.json";
-export declare const LEGACY_CONFIG_NAME = ".invariantsec.json";
-export declare const DEFAULT_CONFIG: InvariantSecConfig;
-export declare function loadConfig(boundary: RepositoryBoundary): Promise<InvariantSecConfig>;
+export declare const CONFIG_NAME = ".cydetix.json";
+export declare const DEFAULT_CONFIG: CydetixConfig;
+export declare function loadConfig(boundary: RepositoryBoundary): Promise<CydetixConfig>;
 //# sourceMappingURL=config.d.ts.map

@@ -1,6 +1,6 @@
 # Known limitations
 
-VibeShield is a prerelease static-analysis project, not a guarantee that an application is secure or
+Cydetix is a prerelease static-analysis project, not a guarantee that an application is secure or
 compliant.
 
 ## Analysis scope
@@ -35,7 +35,7 @@ compliant.
   different runtime, kernel, image, platform, or daemon configuration.
 - The capability launch probe requires `/bin/true` in the explicitly trusted image. Image-defined
   baseline environment variables remain present; arbitrary host variables are not forwarded.
-- Container isolation is defense in depth. VibeShield does not claim resistance to Docker, runc,
+- Container isolation is defense in depth. Cydetix does not claim resistance to Docker, runc,
   kernel, hypervisor, or trusted-image compromise, or safety for arbitrary hostile native code.
 - The writable ephemeral workspace bind mount has no independent byte quota. Rootfs is read-only and
   `/tmp`/`/run` are bounded, but workspace disk exhaustion depends on runtime/host capacity.
@@ -62,10 +62,10 @@ compliant.
 - npm Trusted Publishing is configured from an existing package's settings. If the approved npm
   coordinate is new, a separately authorized first-package bootstrap is required before the OIDC
   release workflow can publish later versions; no token fallback is present in the workflow.
-- The requested public identity is VibeShield and the candidate unscoped npm/CLI name is
-  `vibeshield`. An exact registry lookup returned `E404` on 2026-09-06, but this source tree does
-  not reserve or own that coordinate. Multiple active security-market uses of VibeShield require
-  explicit brand/legal review; no exclusivity or trademark clearance is claimed.
+- The requested public identity is Cydetix and the candidate unscoped npm/CLI name is `cydetix`. An
+  exact registry lookup returned `E404` on 2026-09-06, but this source tree does not reserve or own
+  that coordinate. Limited exact-name searches found no obvious active match; formal brand/legal
+  review remains pending, and no exclusivity or trademark clearance is claimed.
 - Setup adapters and the Codex plugin validate locally. Host-controlled implicit tool selection,
   remote plugin installation, Copilot CLI MCP consumption, marketplace acceptance, and live npm
   behavior are not claimed until their external tests execute.

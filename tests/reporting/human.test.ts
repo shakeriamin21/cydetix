@@ -14,7 +14,12 @@ describe("concise human report", () => {
     );
     expect(matchingFindings.length).toBeGreaterThan(1);
     const output = renderHuman(report);
+    expect(output).toContain("Security status: NEEDS ATTENTION");
+    expect(output).toMatch(/FIX NOW\s+\d+/u);
+    expect(output).toMatch(/REVIEW\s+\d+/u);
+    expect(output).toMatch(/UNKNOWN\s+\d+/u);
     expect(output.match(/Session cookie protection is explicitly disabled/gu)).toHaveLength(1);
+    expect(output).not.toContain("src/server.ts:");
     expect(report.findings).toHaveLength(6);
   });
 });

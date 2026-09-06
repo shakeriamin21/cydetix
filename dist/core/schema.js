@@ -321,7 +321,7 @@ export const authGraphSchema = z
 export const scanReportSchema = z
     .object({
     schemaVersion: z.literal("2.0.0"),
-    tool: z.object({ name: z.literal("vibeshield"), version: z.string() }).strict(),
+    tool: z.object({ name: z.literal("cydetix"), version: z.string() }).strict(),
     scan: z
         .object({
         id: z.string(),

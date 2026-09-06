@@ -29,7 +29,7 @@ jobs:
         run: npm run validate:publication-config
       - name: Require annotated tag, version, commit, changelog, and notes consistency
         env:
-          VIBESHIELD_EXPECTED_TAG: ${{ github.ref_name }}
+          CYDETIX_EXPECTED_TAG: ${{ github.ref_name }}
         run: npm run validate:release-context
       - name: Require successful exact-commit hosted CI
         env:
@@ -49,49 +49,49 @@ jobs:
       - name: Independently scan complete history
         shell: bash
         run: |
-          mkdir -p .vibeshield/evidence
+          mkdir -p .cydetix/evidence
           docker run --rm --network none --read-only --cap-drop ALL \
             --security-opt no-new-privileges --pids-limit 128 --memory 512m --cpus 1 \
             --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/repo,readonly" \
-            --mount "type=bind,source=$PWD/.vibeshield/evidence,target=/evidence" \
+            --mount "type=bind,source=$PWD/.cydetix/evidence,target=/evidence" \
             ghcr.io/gitleaks/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f \
             git /repo --redact=100 --report-format json --report-path /evidence/gitleaks.json \
             --no-banner --no-color --exit-code 0 --timeout 180
-          node scripts/validate-gitleaks-report.mjs .vibeshield/evidence/gitleaks.json
+          node scripts/validate-gitleaks-report.mjs .cydetix/evidence/gitleaks.json
       - name: Run npm advisory gate
         run: npm run audit
       - name: Run complete verification with mandatory sandbox tests
         env:
-          VIBESHIELD_SANDBOX_IMAGE: sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b
+          CYDETIX_SANDBOX_IMAGE: sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b
         run: npm run verify
       - name: Run explicit online OSV gate
         run: npm run validate:online-osv
       - name: Build exact release artifacts and manifest
         env:
-          VIBESHIELD_HISTORICAL_TESTS_STATE: PASS
-          VIBESHIELD_RELEASE_DIR: release-bundle
-          VIBESHIELD_HOSTED_CI_STATE: PASS
-          VIBESHIELD_SANDBOX_REGRESSION_STATE: PASS
-          VIBESHIELD_SELF_SCAN_STATE: PASS
-          VIBESHIELD_SUPPLY_CHAIN_STATE: PASS
-          VIBESHIELD_NPM_AUDIT_STATE: PASS
-          VIBESHIELD_SKILLS_STATE: PASS
-          VIBESHIELD_SCHEMAS_STATE: PASS
-          VIBESHIELD_SARIF_STATE: PASS
-          VIBESHIELD_CYCLONEDX_STATE: PASS
-          VIBESHIELD_LICENSE_AUDIT_STATE: PASS
-          VIBESHIELD_WORKFLOW_SECURITY_STATE: PASS
-          VIBESHIELD_OPENSSF_STATE: PASS
+          CYDETIX_HISTORICAL_TESTS_STATE: PASS
+          CYDETIX_RELEASE_DIR: release-bundle
+          CYDETIX_HOSTED_CI_STATE: PASS
+          CYDETIX_SANDBOX_REGRESSION_STATE: PASS
+          CYDETIX_SELF_SCAN_STATE: PASS
+          CYDETIX_SUPPLY_CHAIN_STATE: PASS
+          CYDETIX_NPM_AUDIT_STATE: PASS
+          CYDETIX_SKILLS_STATE: PASS
+          CYDETIX_SCHEMAS_STATE: PASS
+          CYDETIX_SARIF_STATE: PASS
+          CYDETIX_CYCLONEDX_STATE: PASS
+          CYDETIX_LICENSE_AUDIT_STATE: PASS
+          CYDETIX_WORKFLOW_SECURITY_STATE: PASS
+          CYDETIX_OPENSSF_STATE: PASS
         run: npm run release:artifacts
       - name: Smoke-test the exact release tarball
         shell: bash
         run: |
           tarball="$(find release-bundle -maxdepth 1 -name '*.tgz' -print -quit)"
           test -n "$tarball"
-          VIBESHIELD_PACKAGE_TARBALL="$tarball" npm run validate:install
+          CYDETIX_PACKAGE_TARBALL="$tarball" npm run validate:install
       - name: Validate the exact plugin archive
         env:
-          VIBESHIELD_RELEASE_DIR: release-bundle
+          CYDETIX_RELEASE_DIR: release-bundle
         run: npm run validate:packed-plugin
       - name: Upload verified release bundle
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
@@ -146,7 +146,7 @@ jobs:
         uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
         with:
           subject-path: release-bundle/*.tgz
-          sbom-path: release-bundle/vibeshield.cdx.json
+          sbom-path: release-bundle/cydetix.cdx.json
       - name: Create a non-public draft GitHub prerelease
         env:
           GH_TOKEN: ${{ github.token }}

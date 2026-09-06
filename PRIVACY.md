@@ -1,6 +1,6 @@
 # Privacy
 
-VibeShield has no telemetry. Normal scans are offline and do not upload source, filenames, findings,
+Cydetix has no telemetry. Normal scans are offline and do not upload source, filenames, findings,
 metrics, or credentials. The product does not require an account or API key.
 
 Reports remain on the operator's machine unless the operator redirects, publishes, or uploads them.
@@ -18,11 +18,11 @@ Explicit OSV mode transmits only npm ecosystem, package name, and exact resolved
 Provider failure remains explicit.
 
 Local explicit verification receives only a small environment allowlist, but it is not isolated from
-host files or network. Container verification adds only fixed VibeShield control variables; the
-trusted image may define its own baseline environment. VibeShield does not mount the host home,
-cloud credentials, SSH agent, or Docker socket, and its default container network policy is denied.
-Phase 6B empirically exercised environment canaries, host-home/host-temp canaries, socket absence,
-and in-container DNS/TCP/HTTP/HTTPS attempts on the recorded Docker Desktop/WSL2 host. The result is
+host files or network. Container verification adds only fixed Cydetix control variables; the trusted
+image may define its own baseline environment. Cydetix does not mount the host home, cloud
+credentials, SSH agent, or Docker socket, and its default container network policy is denied. Phase
+6B empirically exercised environment canaries, host-home/host-temp canaries, socket absence, and
+in-container DNS/TCP/HTTP/HTTPS attempts on the recorded Docker Desktop/WSL2 host. The result is
 runtime-specific evidence, not a claim of protection against container/runtime/kernel compromise.
 
 External-corpus acquisition and npm package installation are explicit development/CI network
@@ -31,7 +31,7 @@ not included in release artifacts. Release reports contain normalized counts, im
 hashes, and limitations rather than external source or local machine paths.
 
 GitHub artifact/attestation verification and npm installation also use their respective network
-services. Source is not sent to npm or GitHub by an ordinary local scan. VibeShield has no hidden
+services. Source is not sent to npm or GitHub by an ordinary local scan. Cydetix has no hidden
 telemetry; feedback uses deliberate GitHub mechanisms after the public repository exists.
 
 Any future telemetry or hosted analysis requires explicit opt-in, documentation, retention controls,

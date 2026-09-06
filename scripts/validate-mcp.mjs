@@ -29,12 +29,9 @@ const responses = result.stdout
   .split(/\r?\n/u)
   .map((line) => JSON.parse(line));
 if (responses.length !== 2) throw new Error("MCP server returned an unexpected response count.");
-if (responses[0]?.result?.serverInfo?.name !== "vibeshield")
+if (responses[0]?.result?.serverInfo?.name !== "Cydetix")
   throw new Error("MCP initialize identity mismatch.");
 const names = responses[1]?.result?.tools?.map((tool) => tool.name);
-if (
-  JSON.stringify(names) !==
-  JSON.stringify(["vibeshield_scan", "vibeshield_fix", "vibeshield_explain"])
-)
+if (JSON.stringify(names) !== JSON.stringify(["cydetix_scan", "cydetix_fix", "cydetix_explain"]))
   throw new Error("MCP public tool surface mismatch.");
-process.stdout.write("Validated VibeShield MCP initialize and three-tool stdio surface.\n");
+process.stdout.write("Validated Cydetix MCP initialize and three-tool stdio surface.\n");

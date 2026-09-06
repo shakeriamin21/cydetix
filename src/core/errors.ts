@@ -1,11 +1,11 @@
-export class InvariantSecError extends Error {
+export class CydetixError extends Error {
   public constructor(
     message: string,
     public readonly exitCode: number,
     options?: ErrorOptions,
   ) {
     super(message, options);
-    this.name = "InvariantSecError";
+    this.name = "CydetixError";
   }
 }
 

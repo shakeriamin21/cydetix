@@ -1,5 +1,5 @@
 {
-  "name": "invariantsec-fixture-typescript-secure",
+  "name": "cydetix-fixture-typescript-secure",
   "private": true,
   "dependencies": {
     "argon2": "0.0.0-fixture",

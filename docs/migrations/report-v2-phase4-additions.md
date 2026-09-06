@@ -29,6 +29,6 @@ these fingerprints against external providers.
 
 ## Separate SBOM artifact
 
-`invariantsec sbom` emits CycloneDX 1.7 JSON as a separate artifact. It is not embedded wholesale in
-the scan report. The generated `cyclonedx-1.7.schema.json` validates InvariantSec's supported output
-profile; the canonical upstream CycloneDX schema remains authoritative.
+`cydetix sbom` emits CycloneDX 1.7 JSON as a separate artifact. It is not embedded wholesale in the
+scan report. The generated `cyclonedx-1.7.schema.json` validates Cydetix's supported output profile;
+the canonical upstream CycloneDX schema remains authoritative.

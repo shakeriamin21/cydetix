@@ -1,5 +1,5 @@
 {
-  "name": "invariantsec-auth-false-positive-traps",
+  "name": "cydetix-auth-false-positive-traps",
   "private": true,
   "dependencies": {
     "express": "5.1.0",

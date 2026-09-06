@@ -1,43 +1,79 @@
 import path from "node:path";
 
 import {
+  combineIntegrationStates,
   commandAvailable,
   existingPaths,
+  inspectJsonServer,
+  inspectManagedFile,
   installSkill,
   pinnedMcpServer,
   updateJsonServer,
 } from "../common.js";
+import { agentDetection } from "../discovery/index.js";
 import type { AdapterResult, IntegrationAdapter, SetupContext } from "../types.js";
+
+function targets(context: SetupContext) {
+  const skill = path.join(context.projectRoot, ".claude", "skills", "cydetix");
+  return {
+    config: path.join(context.projectRoot, ".mcp.json"),
+    skill,
+    skillFile: path.join(skill, "SKILL.md"),
+  };
+}
+
+async function integrationState(context: SetupContext) {
+  const target = targets(context);
+  return combineIntegrationStates([
+    await inspectJsonServer(target.config, "mcpServers", pinnedMcpServer(context)),
+    await inspectManagedFile(target.skillFile),
+  ]);
+}
 
 async function change(
   context: SetupContext,
   remove: boolean,
   dryRun: boolean,
 ): Promise<AdapterResult> {
-  const config = path.join(context.projectRoot, ".mcp.json");
-  const skill = path.join(context.projectRoot, ".claude", "skills", "vibeshield");
-  const changed = await installSkill(skill, false, remove, dryRun);
-  if (await updateJsonServer(config, "mcpServers", pinnedMcpServer(context), remove, dryRun))
-    changed.push(config);
+  const before = await integrationState(context);
+  const target = targets(context);
+  const changed = await installSkill(target.skill, false, remove, dryRun);
+  if (await updateJsonServer(target.config, "mcpServers", pinnedMcpServer(context), remove, dryRun))
+    changed.push(target.config);
+  const after = dryRun
+    ? remove
+      ? "not_configured"
+      : "configured"
+    : await integrationState(context);
   return {
     id: "claude",
     displayName: "Claude Code",
     files: changed,
-    action: changed.length === 0 ? "unchanged" : remove ? "removed" : "installed",
+    action:
+      changed.length === 0
+        ? "unchanged"
+        : remove
+          ? "removed"
+          : before === "not_configured"
+            ? "installed"
+            : "updated",
+    verified: remove ? after === "not_configured" : after === "configured",
   };
 }
 
 export const claudeAdapter: IntegrationAdapter = {
   id: "claude",
   displayName: "Claude Code",
-  detect(context) {
+  async detect(context) {
     const evidence = existingPaths([
       path.join(context.homeDirectory, ".claude"),
+      path.join(context.homeDirectory, ".claude.json"),
       path.join(context.projectRoot, ".claude"),
       path.join(context.projectRoot, "CLAUDE.md"),
     ]);
-    if (commandAvailable("claude")) evidence.push("claude executable on PATH");
-    return { id: this.id, displayName: this.displayName, detected: evidence.length > 0, evidence };
+    if (commandAvailable("claude", context.platform, context.executablePath))
+      evidence.push("claude executable on PATH");
+    return agentDetection(this.id, this.displayName, evidence, await integrationState(context));
   },
   install: (context, dryRun) => change(context, false, dryRun),
   uninstall: (context, dryRun) => change(context, true, dryRun),

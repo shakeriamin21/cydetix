@@ -3,8 +3,7 @@ import path from "node:path";
 import { isWithinRoot, toReportPath } from "./boundary.js";
 const BUILTIN_IGNORES = new Set([
     ".git",
-    ".invariantsec",
-    ".vibeshield",
+    ".cydetix",
     ".hg",
     ".svn",
     "node_modules",

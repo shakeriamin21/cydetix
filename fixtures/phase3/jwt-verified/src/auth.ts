@@ -6,7 +6,7 @@ export function requireToken(req: any, res: any, next: () => void) {
   const claims = jwt.verify(token, process.env.JWT_PUBLIC_KEY!, {
     algorithms: ["RS256"],
     issuer: "https://issuer.example",
-    audience: "invariantsec-fixture",
+    audience: "cydetix-fixture",
   });
   req.auth = claims;
   return next();

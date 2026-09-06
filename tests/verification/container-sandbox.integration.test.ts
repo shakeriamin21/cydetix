@@ -13,7 +13,7 @@ import {
   type VerificationRunner,
 } from "../../src/verification/runner.js";
 
-const sandboxImage = process.env.VIBESHIELD_SANDBOX_IMAGE;
+const sandboxImage = process.env.CYDETIX_SANDBOX_IMAGE;
 
 function hostPathCandidates(hostPath: string): string[] {
   const normalized = hostPath.replaceAll("\\", "/");
@@ -38,7 +38,7 @@ describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => 
   let runner: VerificationRunner;
 
   beforeAll(async () => {
-    root = await mkdtemp(path.join(os.tmpdir(), "invariantsec-container-proof-"));
+    root = await mkdtemp(path.join(os.tmpdir(), "cydetix-container-proof-"));
     runner = createContainerSandboxRunner({ image: sandboxImage ?? "" });
     const capability = await runner.capability();
     expect(capability.state).toBe("AVAILABLE_HARDENED");
@@ -52,12 +52,12 @@ describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => 
   it("sanitizes host environment, isolates real host canaries, and uses an ephemeral workspace", async () => {
     const marker = path.join(root, "container-marker.txt");
     const canaryValue = "synthetic-phase6b-host-file-canary";
-    const temporaryCanary = path.join(os.tmpdir(), `invariantsec-host-${randomUUID()}.txt`);
-    const homeCanary = path.join(os.homedir(), `.invariantsec-host-${randomUUID()}.txt`);
+    const temporaryCanary = path.join(os.tmpdir(), `cydetix-host-${randomUUID()}.txt`);
+    const homeCanary = path.join(os.homedir(), `.cydetix-host-${randomUUID()}.txt`);
     const canaryEnvironment = {
-      INVARIANTSEC_TEST_AWS_SECRET: "synthetic-aws-secret-phase6b",
-      INVARIANTSEC_TEST_GITHUB_TOKEN: "synthetic-github-token-phase6b",
-      INVARIANTSEC_TEST_DATABASE_PASSWORD: "synthetic-database-password-phase6b",
+      CYDETIX_TEST_AWS_SECRET: "synthetic-aws-secret-phase6b",
+      CYDETIX_TEST_GITHUB_TOKEN: "synthetic-github-token-phase6b",
+      CYDETIX_TEST_DATABASE_PASSWORD: "synthetic-database-password-phase6b",
     };
     await Promise.all([
       writeFile(temporaryCanary, canaryValue, "utf8"),
@@ -73,7 +73,7 @@ describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => 
             "const fs=require('node:fs')",
             `const forbiddenEnvironment=${JSON.stringify(Object.keys(canaryEnvironment))}`,
             "if(forbiddenEnvironment.some(name=>process.env[name]!==undefined))process.exit(21)",
-            "if(process.env.CI!=='true'||process.env.VIBESHIELD_VERIFICATION!=='1')process.exit(22)",
+            "if(process.env.CI!=='true'||process.env.CYDETIX_VERIFICATION!=='1')process.exit(22)",
             `const candidates=${JSON.stringify([
               ...hostPathCandidates(temporaryCanary),
               ...hostPathCandidates(homeCanary),
@@ -91,9 +91,9 @@ describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => 
       expect(result.state).toBe("SUCCEEDED");
       await expect(readFile(marker, "utf8")).rejects.toMatchObject({ code: "ENOENT" });
     } finally {
-      delete process.env.INVARIANTSEC_TEST_AWS_SECRET;
-      delete process.env.INVARIANTSEC_TEST_GITHUB_TOKEN;
-      delete process.env.INVARIANTSEC_TEST_DATABASE_PASSWORD;
+      delete process.env.CYDETIX_TEST_AWS_SECRET;
+      delete process.env.CYDETIX_TEST_GITHUB_TOKEN;
+      delete process.env.CYDETIX_TEST_DATABASE_PASSWORD;
       await Promise.all([rm(temporaryCanary, { force: true }), rm(homeCanary, { force: true })]);
     }
   });
@@ -130,7 +130,7 @@ describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => 
           "const status=fs.readFileSync('/proc/self/status','utf8')",
           "for(const field of ['CapInh','CapPrm','CapEff','CapBnd','CapAmb'])if(!new RegExp('^'+field+':\\\\s+0+$','m').test(status))process.exit(42)",
           "if(!/^NoNewPrivs:\\s+1$/m.test(status)||!/^Seccomp:\\s+2$/m.test(status))process.exit(43)",
-          "try{fs.writeFileSync('/invariantsec-rootfs-canary','bad');process.exit(44)}catch(error){if(!['EROFS','EACCES'].includes(error.code))process.exit(45)}",
+          "try{fs.writeFileSync('/cydetix-rootfs-canary','bad');process.exit(44)}catch(error){if(!['EROFS','EACCES'].includes(error.code))process.exit(45)}",
           "if(process.env.DOCKER_HOST!==undefined||process.env.SSH_AUTH_SOCK!==undefined)process.exit(46)",
           "if(['/var/run/docker.sock','/run/docker.sock'].some(candidate=>fs.existsSync(candidate)))process.exit(47)",
           "const mounts=fs.readFileSync('/proc/self/mountinfo','utf8')",
@@ -164,7 +164,7 @@ describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => 
     expect(result.state).toBe("TIMED_OUT");
     const remaining = spawnSync(
       "docker",
-      ["ps", "-a", "--filter", "name=vibeshield-verify-", "--format", "{{.Names}}"],
+      ["ps", "-a", "--filter", "name=cydetix-verify-", "--format", "{{.Names}}"],
       { encoding: "utf8", shell: false, windowsHide: true, timeout: 10_000 },
     );
     expect(remaining.status).toBe(0);
@@ -231,8 +231,8 @@ describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => 
   }, 60_000);
 
   it("cleans isolated workspaces after success, failure, and timeout", async () => {
-    const temporaryRoot = await mkdtemp(path.join(os.tmpdir(), "invariantsec-workspace-parent-"));
-    const source = await mkdtemp(path.join(os.tmpdir(), "invariantsec-workspace-source-"));
+    const temporaryRoot = await mkdtemp(path.join(os.tmpdir(), "cydetix-workspace-parent-"));
+    const source = await mkdtemp(path.join(os.tmpdir(), "cydetix-workspace-source-"));
     await writeFile(path.join(source, "baseline.txt"), "original\n", "utf8");
     const isolated = createContainerSandboxRunner({
       image: sandboxImage ?? "",
@@ -294,8 +294,8 @@ describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => 
 
   it("clears an image entrypoint that would intercept the authorized command", async () => {
     const identity = randomUUID();
-    const seedName = `invariantsec-entrypoint-seed-${identity}`;
-    const imageName = `invariantsec-entrypoint-test:${identity}`;
+    const seedName = `cydetix-entrypoint-seed-${identity}`;
+    const imageName = `cydetix-entrypoint-test:${identity}`;
     const runDocker = (arguments_: string[]) =>
       spawnSync("docker", arguments_, {
         encoding: "utf8",
@@ -335,7 +335,7 @@ describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => 
   });
 
   it("completes a sandbox-verified SAFE remediation and remains idempotent", async () => {
-    const temporary = await mkdtemp(path.join(os.tmpdir(), "invariantsec-container-fix-"));
+    const temporary = await mkdtemp(path.join(os.tmpdir(), "cydetix-container-fix-"));
     const target = path.join(temporary, "repo");
     await cp(path.resolve("fixtures", "autofix", "vulnerable"), target, { recursive: true });
     try {
@@ -397,7 +397,7 @@ describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => 
   });
 
   it("rolls back a sandbox verification failure without touching user changes", async () => {
-    const temporary = await mkdtemp(path.join(os.tmpdir(), "invariantsec-container-rollback-"));
+    const temporary = await mkdtemp(path.join(os.tmpdir(), "cydetix-container-rollback-"));
     const target = path.join(temporary, "repo");
     await cp(path.resolve("fixtures", "autofix", "vulnerable"), target, { recursive: true });
     const sourcePath = path.join(target, "app.py");
@@ -425,7 +425,7 @@ describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => 
   });
 
   it("does not retain secret-shaped or terminal-control sandbox output", async () => {
-    const secret = "ghp_INVARIANTSEC_PHASE6B_SYNTHETIC_1234567890";
+    const secret = "ghp_CYDETIX_PHASE6B_SYNTHETIC_1234567890";
     const control = "\u001b[31m\u001b]0;owned\u0007\rreplace\btext";
     const scripts = [
       `process.stdout.write(${JSON.stringify(secret)});process.stderr.write(${JSON.stringify(secret)});process.exit(9)`,

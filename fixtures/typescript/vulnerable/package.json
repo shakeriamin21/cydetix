@@ -1,5 +1,5 @@
 {
-  "name": "invariantsec-fixture-typescript-vulnerable",
+  "name": "cydetix-fixture-typescript-vulnerable",
   "private": true,
   "dependencies": {
     "cors": "0.0.0-fixture",

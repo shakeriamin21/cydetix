@@ -1,14 +1,14 @@
 {
-  "name": "vibeshield",
+  "name": "cydetix",
   "interface": {
-    "displayName": "VibeShield"
+    "displayName": "Cydetix"
   },
   "plugins": [
     {
-      "name": "vibeshield",
+      "name": "cydetix",
       "source": {
         "source": "local",
-        "path": "./plugins/vibeshield"
+        "path": "./plugins/cydetix"
       },
       "policy": {
         "installation": "AVAILABLE",

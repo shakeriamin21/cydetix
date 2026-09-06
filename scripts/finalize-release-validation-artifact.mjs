@@ -3,8 +3,10 @@ import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const source = path.resolve("validation", "validation-report.json");
-const releaseDirectory = path.resolve(".vibeshield", "release");
-const destination = path.join(releaseDirectory, "vibeshield-validation-report.json");
+const releaseDirectory = path.resolve(
+  process.env.CYDETIX_RELEASE_DIR ?? path.join(".cydetix", "release"),
+);
+const destination = path.join(releaseDirectory, "cydetix-validation-report.json");
 const manifestPath = path.join(releaseDirectory, "release-inputs.json");
 const content = await readFile(source);
 const manifest = JSON.parse(await readFile(manifestPath, "utf8"));

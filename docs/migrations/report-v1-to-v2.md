@@ -1,7 +1,7 @@
 # Scan report v1 to v2 migration
 
-InvariantSec 0.2.0 emits scan report schema `2.0.0`. This is an intentional breaking contract change
-from the Phase 1 `1.0.0` report. The repository manifest and rule schemas remain `1.0.0`; the new
+Cydetix 0.2.0 emits scan report schema `2.0.0`. This is an intentional breaking contract change from
+the Phase 1 `1.0.0` report. The repository manifest and rule schemas remain `1.0.0`; the new
 Security IR and authorization-proof schemas begin independently at `1.0.0`.
 
 ## Why the major report version changed
@@ -39,5 +39,5 @@ counts.
 5. Preserve evidence-path order when rendering or importing findings.
 6. Continue treating an empty findings list as inconclusive outside the report's stated coverage.
 
-InvariantSec does not emit both schema versions in one scan. Consumers needing v1 must remain on a
+Cydetix does not emit both schema versions in one scan. Consumers needing v1 must remain on a
 verified pre-v2 release until they migrate.

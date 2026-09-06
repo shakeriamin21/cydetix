@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "vibeshield": {
-      "command": "npx",
-      "args": ["--yes", "vibeshield@0.6.0-alpha.1", "mcp"]
-    }
-  }
-}

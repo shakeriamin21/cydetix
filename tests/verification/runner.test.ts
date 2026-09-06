@@ -39,7 +39,7 @@ describe("verification runners", () => {
     };
     const arguments_ = buildContainerArguments(
       `sha256:${"c".repeat(64)}`,
-      "invariantsec-test",
+      "cydetix-test",
       "C:\\bounded workspace",
       command,
     );
@@ -73,7 +73,7 @@ describe("verification runners", () => {
   });
 
   it("keeps commands inert under NO_EXECUTION", async () => {
-    const root = await temporary("invariantsec-no-exec-");
+    const root = await temporary("cydetix-no-exec-");
     const marker = path.join(root, "executed.txt");
     const runner = createNoExecutionRunner();
     const result = await runner.run(root, {
@@ -88,14 +88,14 @@ describe("verification runners", () => {
   });
 
   it("sanitizes the environment for explicitly selected local execution", async () => {
-    const root = await temporary("invariantsec-local-exec-");
-    process.env.INVARIANTSEC_SYNTHETIC_HOST_SECRET = "must-not-cross";
+    const root = await temporary("cydetix-local-exec-");
+    process.env.CYDETIX_SYNTHETIC_HOST_SECRET = "must-not-cross";
     try {
       const result = await createLocalExplicitRunner().run(root, {
         executable: process.execPath,
         arguments: [
           "-e",
-          "process.exit(process.env.INVARIANTSEC_SYNTHETIC_HOST_SECRET === undefined ? 0 : 19)",
+          "process.exit(process.env.CYDETIX_SYNTHETIC_HOST_SECRET === undefined ? 0 : 19)",
         ],
         workingDirectory: ".",
         timeoutMilliseconds: 5000,
@@ -105,7 +105,7 @@ describe("verification runners", () => {
       expect(result.capability.state).toBe("AVAILABLE_DEGRADED");
       expect(result.capability.controls.network).toBe("NOT_ISOLATED");
     } finally {
-      delete process.env.INVARIANTSEC_SYNTHETIC_HOST_SECRET;
+      delete process.env.CYDETIX_SYNTHETIC_HOST_SECRET;
     }
   });
 
@@ -113,7 +113,7 @@ describe("verification runners", () => {
     const mutable = createContainerSandboxRunner({ image: "node:22-alpine" });
     expect((await mutable.capability()).state).toBe("MISCONFIGURED");
 
-    const root = await temporary("invariantsec-container-unavailable-");
+    const root = await temporary("cydetix-container-unavailable-");
     const marker = path.join(root, "executed.txt");
     const unavailable = createContainerSandboxRunner({
       image: `sha256:${"a".repeat(64)}`,
@@ -131,7 +131,7 @@ describe("verification runners", () => {
   });
 
   it("restores a SAFE patch when the required sandbox is unavailable", async () => {
-    const root = await temporary("invariantsec-sandbox-rollback-");
+    const root = await temporary("cydetix-sandbox-rollback-");
     const source =
       'from flask import Flask\napp = Flask(__name__)\napp.config["SESSION_COOKIE_HTTPONLY"] = False\n';
     await writeFile(path.join(root, "app.py"), source, "utf8");

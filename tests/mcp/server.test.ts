@@ -2,7 +2,17 @@ import { describe, expect, it } from "vitest";
 
 import { handleMcpRequest } from "../../src/mcp/server.js";
 
-describe("VibeShield MCP server", () => {
+describe("Cydetix MCP server", () => {
+  it("uses the public Cydetix server identity", async () => {
+    const response = await handleMcpRequest({
+      jsonrpc: "2.0",
+      id: 0,
+      method: "initialize",
+      params: { protocolVersion: "2025-06-18" },
+    });
+    expect((response?.result as { serverInfo: { name: string } }).serverInfo.name).toBe("Cydetix");
+  });
+
   it("exposes only the three public tools", async () => {
     const response = await handleMcpRequest({
       jsonrpc: "2.0",
@@ -11,9 +21,9 @@ describe("VibeShield MCP server", () => {
     });
     const result = response?.result as { tools: Array<{ name: string }> };
     expect(result.tools.map((tool) => tool.name)).toEqual([
-      "vibeshield_scan",
-      "vibeshield_fix",
-      "vibeshield_explain",
+      "cydetix_scan",
+      "cydetix_fix",
+      "cydetix_explain",
     ]);
   });
 
@@ -23,14 +33,14 @@ describe("VibeShield MCP server", () => {
       id: 2,
       method: "tools/call",
       params: {
-        name: "vibeshield_scan",
+        name: "cydetix_scan",
         arguments: { path: "fixtures/typescript/vulnerable" },
       },
     });
     const result = response?.result as {
       structuredContent: { report: { tool: { name: string }; findings: unknown[] } };
     };
-    expect(result.structuredContent.report.tool.name).toBe("vibeshield");
+    expect(result.structuredContent.report.tool.name).toBe("cydetix");
     expect(result.structuredContent.report.findings.length).toBeGreaterThan(0);
   });
 
@@ -40,7 +50,7 @@ describe("VibeShield MCP server", () => {
       id: 3,
       method: "tools/call",
       params: {
-        name: "vibeshield_fix",
+        name: "cydetix_fix",
         arguments: { path: "fixtures/autofix/vulnerable", apply: true },
       },
     });
@@ -52,7 +62,7 @@ describe("VibeShield MCP server", () => {
       jsonrpc: "2.0",
       id: 4,
       method: "tools/call",
-      params: { name: "vibeshield_scan", arguments: { path: ".." } },
+      params: { name: "cydetix_scan", arguments: { path: ".." } },
     });
     expect(response?.error?.message).toContain("must stay within");
   });

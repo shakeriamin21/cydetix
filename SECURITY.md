@@ -32,23 +32,23 @@ Ordinary scans are offline. Explicit OSV mode sends only npm ecosystem, package 
 resolved version to `https://api.osv.dev`; it does not send source, paths, findings, or credentials.
 Provider failure is reported as unavailable rather than clean.
 
-Secret analysis is passive. VibeShield does not validate credentials against providers. Raw secret
+Secret analysis is passive. Cydetix does not validate credentials against providers. Raw secret
 values are not stored in normalized results or emitted to terminal, JSON, SARIF, debug graphs, logs,
 or Agent Skills. History mode is explicit and uses read-only Git object inspection without checkout,
 hooks, aliases, prompts, or repository scripts.
 
 ## Remediation data handling and execution
 
-`vibeshield fix` plans without mutation by default. Only `--safe` can apply an engine-classified
-SAFE transformation. Plans and transactions exclude the machine-specific repository root, original
-file backups, full secrets, trusted-command arguments, command output, and ambient credentials.
-Unified diffs redact secret replacement ranges. User-controlled JSON reports provide remediation
-history; VibeShield does not silently persist repository details in a global store.
+`cydetix fix --dry-run` plans without mutation. Explicit `cydetix fix` can apply an
+engine-classified SAFE transformation. Plans and transactions exclude the machine-specific
+repository root, original file backups, full secrets, trusted-command arguments, command output, and
+ambient credentials. Unified diffs redact secret replacement ranges. User-controlled JSON reports
+provide remediation history; Cydetix does not silently persist repository details in a global store.
 
-Repositories remain hostile during fixing. VibeShield rejects traversal, symlink targets, oversized
-or non-regular files, changed preconditions, and affected dirty files; unrelated dirty work is
+Repositories remain hostile during fixing. Cydetix rejects traversal, symlink targets, oversized or
+non-regular files, changed preconditions, and affected dirty files; unrelated dirty work is
 preserved. Writes use a temporary sibling and atomic replacement, and rollback is limited to files
-whose current hash still matches VibeShield's own change. A successful rollback is a failed
+whose current hash still matches Cydetix's own change. A successful rollback is a failed
 remediation, not a success claim.
 
 Repository scripts, formatter configuration, Git hooks/filters, workflow files, and prose never

@@ -50,7 +50,7 @@ export const releaseValidationReportSchema = z
     generatedAt: z.iso.datetime(),
     product: z
       .object({
-        name: z.literal("vibeshield"),
+        name: z.literal("cydetix"),
         version: z.string().min(1),
         evidenceOrigin: z.enum(["INTERNAL_VERIFIED_EXPORT", "PUBLIC_GIT_COMMIT"]),
         publicSourceCommit: z

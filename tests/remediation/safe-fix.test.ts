@@ -9,7 +9,7 @@ import { temporaryDirectory } from "../helpers/temporary.js";
 
 describe("SAFE transactional remediation", () => {
   it("dry-runs with a unified diff and zero writes, then proves the invariant and is idempotent", async () => {
-    const temp = await temporaryDirectory("invariantsec-fix-");
+    const temp = await temporaryDirectory("cydetix-fix-");
     const target = path.join(temp, "repo");
     await cp(path.resolve("fixtures", "autofix", "vulnerable"), target, { recursive: true });
     const targetFile = path.join(target, "app.py");
@@ -64,8 +64,8 @@ describe("SAFE transactional remediation", () => {
   });
 
   it("redacts credential material from proposed and applied unified diffs", async () => {
-    const root = await temporaryDirectory("invariantsec-fix-redaction-");
-    const credential = ["INVARIANTSEC", "TEST", "SECRET", "A1B2C3D4E5F6G7H8J9K0L1M2"].join("_");
+    const root = await temporaryDirectory("cydetix-fix-redaction-");
+    const credential = ["CYDETIX", "TEST", "SECRET", "A1B2C3D4E5F6G7H8J9K0L1M2"].join("_");
     await writeFile(
       path.join(root, "app.py"),
       `from flask import Flask\napp = Flask(__name__)\nAPI_TOKEN = "${credential}"\napp.config["SESSION_COOKIE_HTTPONLY"] = False\n`,
@@ -74,6 +74,6 @@ describe("SAFE transactional remediation", () => {
     const report = await runRemediation({ path: root, dryRun: true });
     const serialized = JSON.stringify(report);
     expect(serialized).not.toContain(credential);
-    expect(serialized).toContain("[REDACTED synthetic-vibeshield credential;");
+    expect(serialized).toContain("[REDACTED synthetic-cydetix credential;");
   });
 });

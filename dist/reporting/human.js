@@ -70,36 +70,41 @@ export function renderHuman(report) {
     const needsAttention = categorized.filter(({ category }) => category !== "UNKNOWN");
     const unknown = categorized.filter(({ category }) => category === "UNKNOWN");
     const shown = needsAttention.slice(0, 5);
-    const remaining = categorized.length - shown.length;
-    const lines = ["VibeShield", "", `Scanning ${project}...`, ""];
+    const counts = { "FIX NOW": 0, REVIEW: 0, UNKNOWN: 0 };
+    for (const item of categorized)
+        counts[item.category] += 1;
+    const safe = categorized.filter(({ finding, category }) => finding.autofix === "SAFE" && category !== "UNKNOWN").length;
+    const status = needsAttention.length > 0
+        ? "NEEDS ATTENTION"
+        : unknown.length > 0
+            ? "REVIEW COVERAGE"
+            : "NO ACTIONABLE ISSUES";
+    const lines = ["Cydetix", "", `Scanning ${project}...`, ""];
     for (const area of relevantAreas(report))
-        lines.push(`  [checked] ${area}`);
-    lines.push("");
-    if (needsAttention.length === 0) {
-        lines.push("No issues need immediate attention within the coverage shown.");
-    }
-    else {
-        lines.push(`${needsAttention.length} ${needsAttention.length === 1 ? "issue needs" : "issues need"} attention`);
-    }
+        lines.push(`  ${area}`);
+    lines.push("", `Security status: ${status}`, "", `FIX NOW   ${counts["FIX NOW"]}`, `REVIEW    ${counts.REVIEW}`, `UNKNOWN   ${counts.UNKNOWN}`);
     if (shown.length > 0)
         lines.push("");
     for (const { finding, category } of shown) {
-        lines.push(category, `${finding.severity.toUpperCase()}  ${terminalSafe(finding.title)}`, `  ${terminalSafe(finding.location.path)}:${finding.location.start.line}`, "");
+        const title = terminalSafe(finding.title);
+        lines.push(category, finding.severity.toUpperCase(), `${title}${title.endsWith(".") ? "" : "."}`, "");
     }
-    if (remaining > 0 || unknown.length > 0) {
-        const other = Math.max(remaining, unknown.length);
-        lines.push(`${other} other informational/unknown ${other === 1 ? "item" : "items"}`, "");
+    const other = categorized.length - shown.length;
+    if (other > 0) {
+        lines.push(`${other} other review/unknown ${other === 1 ? "item" : "items"}`, "");
     }
+    if (safe > 0)
+        lines.push(`${safe} ${safe === 1 ? "issue can" : "issues can"} be safely remediated.`, "");
     if (needsAttention.length > 0) {
-        lines.push("Run:", "", "  vibeshield fix", "", "to review and apply any verified SAFE remediation.");
+        lines.push("Run:", "", "  cydetix fix");
     }
     else if (unknown.length > 0) {
-        lines.push("Run vibeshield --details to review UNKNOWN evidence and coverage limitations.");
+        lines.push("Run cydetix --details to review UNKNOWN evidence and coverage limitations.");
     }
     return `${lines.join("\n").trimEnd()}\n`;
 }
 export function renderRemediationHuman(report) {
-    const lines = ["VibeShield Fix", ""];
+    const lines = ["Cydetix Fix", ""];
     if (report.dryRun) {
         lines.push("Dry run complete. No source files were changed.", "");
     }
@@ -114,7 +119,7 @@ export function renderRemediationHuman(report) {
         lines.push("", "Review-required and architectural work was not applied automatically.");
     }
     if (!report.dryRun && report.summary.verificationFailed > 0) {
-        lines.push("", "Verification failed; VibeShield preserved or restored the repository safely.");
+        lines.push("", "Verification failed; Cydetix preserved or restored the repository safely.");
     }
     return `${lines.join("\n")}\n`;
 }

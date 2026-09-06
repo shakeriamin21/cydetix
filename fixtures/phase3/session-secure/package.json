@@ -1,5 +1,5 @@
 {
-  "name": "invariantsec-session-secure-fixture",
+  "name": "cydetix-session-secure-fixture",
   "private": true,
   "dependencies": {
     "bcrypt": "6.0.0",

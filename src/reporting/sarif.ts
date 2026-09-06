@@ -50,7 +50,7 @@ function sarifResult(finding: Finding): unknown {
       ? undefined
       : [
           {
-            message: { text: "VibeShield repository-wide security evidence path" },
+            message: { text: "Cydetix repository-wide security evidence path" },
             threadFlows: [
               {
                 locations: finding.evidencePath.map((step) => ({
@@ -92,7 +92,7 @@ function sarifResult(finding: Finding): unknown {
       },
     ],
     partialFingerprints: {
-      "vibeshield/v1": finding.fingerprint,
+      "cydetix/v1": finding.fingerprint,
     },
     ...(finding.autofix === "SAFE" && finding.fix !== undefined
       ? {

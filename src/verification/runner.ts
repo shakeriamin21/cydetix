@@ -104,7 +104,7 @@ function localEnvironment(): NodeJS.ProcessEnv {
     TEMP: process.env.TEMP,
     TMP: process.env.TMP,
     CI: "true",
-    VIBESHIELD_VERIFICATION: "1",
+    CYDETIX_VERIFICATION: "1",
   };
 }
 
@@ -229,7 +229,7 @@ async function copyEphemeralRepository(
 ): Promise<string> {
   const parent = temporaryRoot === undefined ? os.tmpdir() : path.resolve(temporaryRoot);
   await mkdir(parent, { recursive: true });
-  const destination = await mkdtemp(path.join(parent, "vibeshield-sandbox-"));
+  const destination = await mkdtemp(path.join(parent, "cydetix-sandbox-"));
   await chmod(destination, 0o777).catch(() => undefined);
   try {
     const boundary = await createBoundary(sourceRoot);
@@ -307,7 +307,7 @@ export function buildContainerArguments(
     "--env",
     "CI=true",
     "--env",
-    "VIBESHIELD_VERIFICATION=1",
+    "CYDETIX_VERIFICATION=1",
     "--workdir",
     workdir,
     "--mount",
@@ -394,7 +394,7 @@ export function createContainerSandboxRunner(options: ContainerRunnerOptions): V
       });
       return cachedCapability;
     }
-    const configurationDirectory = await mkdtemp(path.join(os.tmpdir(), "vibeshield-docker-"));
+    const configurationDirectory = await mkdtemp(path.join(os.tmpdir(), "cydetix-docker-"));
     let probeWorkspace: string | undefined;
     let probeContainerName: string | undefined;
     try {
@@ -436,7 +436,7 @@ export function createContainerSandboxRunner(options: ContainerRunnerOptions): V
           imageIdentity: options.image,
           controls: baseControls("CONTAINER_SANDBOX"),
           limitations: [
-            "The pinned verification image is not present locally; VibeShield did not pull it implicitly.",
+            "The pinned verification image is not present locally; Cydetix did not pull it implicitly.",
           ],
         });
         return cachedCapability;
@@ -512,9 +512,9 @@ export function createContainerSandboxRunner(options: ContainerRunnerOptions): V
         return cachedCapability;
       }
 
-      probeWorkspace = await mkdtemp(path.join(os.tmpdir(), "vibeshield-sandbox-probe-"));
+      probeWorkspace = await mkdtemp(path.join(os.tmpdir(), "cydetix-sandbox-probe-"));
       await chmod(probeWorkspace, 0o777).catch(() => undefined);
-      probeContainerName = `vibeshield-probe-${randomUUID()}`;
+      probeContainerName = `cydetix-probe-${randomUUID()}`;
       const runArguments = buildContainerArguments(
         options.image,
         probeContainerName,
@@ -593,7 +593,7 @@ export function createContainerSandboxRunner(options: ContainerRunnerOptions): V
         inspected.Config.WorkingDir === "/workspace" &&
         inspected.Config.Entrypoint === null &&
         containerEnvironment.includes("CI=true") &&
-        containerEnvironment.includes("VIBESHIELD_VERIFICATION=1") &&
+        containerEnvironment.includes("CYDETIX_VERIFICATION=1") &&
         inspected.HostConfig?.Privileged === false &&
         inspected.HostConfig.ReadonlyRootfs === true &&
         capabilityDrop.includes("ALL") &&
@@ -729,8 +729,8 @@ export function createContainerSandboxRunner(options: ContainerRunnerOptions): V
       let containerName: string | undefined;
       try {
         workspace = await copyEphemeralRepository(repositoryRoot, options.temporaryRoot);
-        configurationDirectory = await mkdtemp(path.join(os.tmpdir(), "vibeshield-docker-"));
-        containerName = `vibeshield-verify-${randomUUID()}`;
+        configurationDirectory = await mkdtemp(path.join(os.tmpdir(), "cydetix-docker-"));
+        containerName = `cydetix-verify-${randomUUID()}`;
         const activeContainerName = containerName;
         const arguments_ = buildContainerArguments(
           options.image,

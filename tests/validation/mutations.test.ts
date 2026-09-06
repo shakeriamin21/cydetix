@@ -9,7 +9,7 @@ import { scanRepository } from "../../src/core/engine.js";
 const temporaryDirectories: string[] = [];
 
 async function copyFixture(name: string): Promise<string> {
-  const temporary = await mkdtemp(path.join(os.tmpdir(), "invariantsec-mutation-"));
+  const temporary = await mkdtemp(path.join(os.tmpdir(), "cydetix-mutation-"));
   temporaryDirectories.push(temporary);
   const target = path.join(temporary, "repo");
   await cp(path.resolve("fixtures", "phase3", name), target, { recursive: true });

@@ -1,6 +1,6 @@
 # Security model
 
-VibeShield treats the selected repository as hostile data.
+Cydetix treats the selected repository as hostile data.
 
 ## What it reads
 
@@ -12,11 +12,11 @@ explicit history mode, and repository configuration are parsed as data.
 ## What it writes
 
 `scan`, `auth`, `dependencies`, `secrets`, `supply-chain`, and `sbom` do not modify target source.
-`fix` plans by default. `fix --safe` may change only an engine-generated SAFE target after canonical
-path, regular-file, dirty-state, identity, whole-file hash, and exact vulnerable-range checks. It
-uses a sibling temporary file, atomic replacement, postcondition rescan, and hash-guarded rollback.
-Reports and release evidence are written only where the operator explicitly redirects them or where
-project development scripts use the ignored `.vibeshield/` workspace.
+`fix` is explicit mutation intent and may change only an engine-generated SAFE target after
+canonical path, regular-file, dirty-state, identity, whole-file hash, and exact vulnerable-range
+checks. It uses a sibling temporary file, atomic replacement, postcondition rescan, and hash-guarded
+rollback. Reports and release evidence are written only where the operator explicitly redirects them
+or where project development scripts use the ignored `.cydetix/` workspace.
 
 ## When code executes
 
@@ -30,15 +30,15 @@ already-present image pinned by SHA-256. It never pulls an image or silently fal
 Capability results are `AVAILABLE_HARDENED`, `AVAILABLE_DEGRADED`, `UNAVAILABLE`, or
 `MISCONFIGURED`.
 
-The container provider uses an VibeShield-created text-only ephemeral repository copy, UID/GID
-65534, network none, read-only container root, limited tmpfs, no Docker/SSH socket, no privileged
-mode, all capabilities dropped, no-new-privileges, runtime-default seccomp, one CPU, 512 MiB
-combined memory/swap, 128 PIDs, time and aggregate two-megabyte output bounds, and fixed
-host-environment forwarding (`CI=true` and `VIBESHIELD_VERIFICATION=1`). The explicitly trusted
-image can define its own baseline environment. Capability is not inferred from the Docker
-executable: the daemon must report Linux, memory, PID, and seccomp support and successfully execute
-the complete hardened profile using the image's `/bin/true`. The image entrypoint is cleared so it
-cannot intercept the structurally authorized executable.
+The container provider uses a Cydetix-created text-only ephemeral repository copy, UID/GID 65534,
+network none, read-only container root, limited tmpfs, no Docker/SSH socket, no privileged mode, all
+capabilities dropped, no-new-privileges, runtime-default seccomp, one CPU, 512 MiB combined
+memory/swap, 128 PIDs, time and aggregate two-megabyte output bounds, and fixed host-environment
+forwarding (`CI=true` and `CYDETIX_VERIFICATION=1`). The explicitly trusted image can define its own
+baseline environment. Capability is not inferred from the Docker executable: the daemon must report
+Linux, memory, PID, and seccomp support and successfully execute the complete hardened profile using
+the image's `/bin/true`. The image entrypoint is cleared so it cannot intercept the structurally
+authorized executable.
 
 Phase 6B executed the adversarial integration suite on Docker Desktop/WSL2. In-container commands
 proved DNS/TCP/HTTP/HTTPS denial; synthetic environment, host-home, and host-temp canary isolation;

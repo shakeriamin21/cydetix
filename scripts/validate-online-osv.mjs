@@ -17,7 +17,7 @@ const result = {
   resolvedPackageIdentities: identities,
   sourceTransmitted: false,
 };
-const evidenceDirectory = path.resolve(".vibeshield", "evidence");
+const evidenceDirectory = path.resolve(".cydetix", "evidence");
 await mkdir(evidenceDirectory, { recursive: true });
 await writeFile(
   path.join(evidenceDirectory, "osv-online.json"),

@@ -11,7 +11,7 @@ export declare const releaseValidationReportSchema: z.ZodObject<{
     schemaVersion: z.ZodLiteral<"1.2.0">;
     generatedAt: z.ZodISODateTime;
     product: z.ZodObject<{
-        name: z.ZodLiteral<"vibeshield">;
+        name: z.ZodLiteral<"cydetix">;
         version: z.ZodString;
         evidenceOrigin: z.ZodEnum<{
             INTERNAL_VERIFIED_EXPORT: "INTERNAL_VERIFIED_EXPORT";

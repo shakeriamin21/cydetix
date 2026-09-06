@@ -1,5 +1,5 @@
 {
-  "name": "invariantsec-reset-secure-fixture",
+  "name": "cydetix-reset-secure-fixture",
   "private": true,
   "dependencies": {
     "@prisma/client": "6.16.1",

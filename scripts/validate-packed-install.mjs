@@ -6,11 +6,11 @@ import { pathToFileURL } from "node:url";
 const npmCli = process.env.npm_execpath;
 if (npmCli === undefined) throw new Error("npm_execpath is required; invoke through npm run.");
 const root = path.resolve(".");
-const releaseTemporaryRoot = path.resolve(".vibeshield", "release-tests");
+const releaseTemporaryRoot = path.resolve(".cydetix", "release-tests");
 await mkdir(releaseTemporaryRoot, { recursive: true });
 const temporary = await mkdtemp(path.join(releaseTemporaryRoot, "packed-install-"));
 const cache = path.resolve(".npm-cache");
-const evidenceDirectory = path.resolve(".vibeshield", "evidence");
+const evidenceDirectory = path.resolve(".cydetix", "evidence");
 const evidencePath = path.join(evidenceDirectory, "packed-install.json");
 await mkdir(evidenceDirectory, { recursive: true });
 await rm(evidencePath, { force: true });
@@ -56,12 +56,14 @@ try {
   const npxConsumer = path.join(temporary, "npx-consumer");
   const npxFixture = path.join(npxConsumer, "fixture");
   const globalPrefix = path.join(temporary, "global-prefix");
+  const globalFixFixture = path.join(temporary, "global-fix-fixture");
   const fixture = path.join(consumer, "fixture");
   await mkdir(packageDirectory);
   await mkdir(fixture, { recursive: true });
   await mkdir(npxFixture, { recursive: true });
+  await mkdir(globalFixFixture, { recursive: true });
   const packageJson = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
-  const suppliedTarball = process.env.VIBESHIELD_PACKAGE_TARBALL;
+  const suppliedTarball = process.env.CYDETIX_PACKAGE_TARBALL;
   let tarball;
   if (suppliedTarball === undefined) {
     const packOutput = run(
@@ -78,7 +80,7 @@ try {
   }
   await writeFile(
     path.join(consumer, "package.json"),
-    `${JSON.stringify({ name: "vibeshield-packed-smoke", private: true }, null, 2)}\n`,
+    `${JSON.stringify({ name: "cydetix-packed-smoke", private: true }, null, 2)}\n`,
     "utf8",
   );
   await writeFile(
@@ -91,10 +93,16 @@ try {
     'app.config["SESSION_COOKIE_HTTPONLY"] = False\n',
     "utf8",
   );
+  await writeFile(
+    path.join(globalFixFixture, "app.py"),
+    'app.config["SESSION_COOKIE_HTTPONLY"] = False\n',
+    "utf8",
+  );
   run(
     process.execPath,
     [npmCli, "install", "--ignore-scripts", "--prefer-offline", "--no-audit", "--no-fund", tarball],
     consumer,
+    300_000,
   );
   run(
     process.execPath,
@@ -111,14 +119,15 @@ try {
       tarball,
     ],
     temporary,
+    300_000,
   );
   const installedRoot = path.join(consumer, "node_modules", ...packageJson.name.split("/"));
   const cli = path.join(installedRoot, "dist", "cli", "main.js");
   const version = run(process.execPath, [cli, "--version"], consumer).trim();
   if (version !== packageJson.version) throw new Error("Packed CLI version mismatch.");
-  const binaryName = "vibeshield";
+  const binaryName = "cydetix";
   if (packageJson.bin?.[binaryName] !== "./dist/cli/main.js")
-    throw new Error("Packed package has no correctly mapped vibeshield binary.");
+    throw new Error("Packed package has no correctly mapped cydetix binary.");
   const globalInstalledRoot = path.join(
     globalPrefix,
     ...(process.platform === "win32" ? ["node_modules"] : ["lib", "node_modules"]),
@@ -133,24 +142,39 @@ try {
   );
   if ((await stat(globalLauncher)).isFile() !== true)
     throw new Error("Global CLI launcher is missing.");
-  const runGlobal = (arguments_, cwd) =>
+  const runGlobal = (arguments_, cwd, acceptedStatuses = [0]) =>
     process.platform === "win32"
       ? run(
           process.env.ComSpec ?? "C:\\Windows\\System32\\cmd.exe",
           ["/d", "/s", "/c", globalLauncher, ...arguments_],
           cwd,
+          120_000,
+          acceptedStatuses,
         )
-      : run(globalLauncher, arguments_, cwd);
+      : run(globalLauncher, arguments_, cwd, 120_000, acceptedStatuses);
   const globalVersion = runGlobal(["--version"], npxConsumer).trim();
   if (globalVersion !== packageJson.version) throw new Error("Global CLI version mismatch.");
   const globalDefault = runGlobal([], fixture);
-  if (!globalDefault.startsWith("VibeShield\n\nScanning "))
-    throw new Error("Global vibeshield default scan failed.");
+  if (!globalDefault.startsWith("Cydetix\n\nScanning "))
+    throw new Error("Global cydetix default scan failed.");
+  if (!runGlobal(["--help"], fixture).includes("Usage: cydetix"))
+    throw new Error("Global cydetix help failed.");
   const globalSetup = runGlobal(
     ["setup", "--agent", "generic-mcp", "--yes", "--project", fixture],
     npxConsumer,
   );
-  if (!globalSetup.includes("Now ask your AI")) throw new Error("Global vibeshield setup failed.");
+  if (!globalSetup.includes("Now ask your AI")) throw new Error("Global cydetix setup failed.");
+  const globalStatus = runGlobal(
+    ["setup", "--agent", "generic-mcp", "--status", "--project", fixture],
+    npxConsumer,
+  );
+  if (!globalStatus.includes("Generic MCP — configured"))
+    throw new Error("Global cydetix setup status failed.");
+  const globalFix = JSON.parse(
+    runGlobal(["fix", "--non-interactive", "--format", "json"], globalFixFixture, [5]),
+  );
+  if (globalFix.summary?.verified < 1)
+    throw new Error("Global cydetix SAFE remediation was not verified.");
   const npxVersion = run(
     process.execPath,
     [
@@ -179,7 +203,7 @@ try {
     ],
     npxFixture,
   );
-  if (!npxDefault.startsWith("VibeShield\n\nScanning "))
+  if (!npxDefault.startsWith("Cydetix\n\nScanning "))
     throw new Error("Packed npx zero-config scan failed.");
   const npxSetup = run(
     process.execPath,
@@ -201,6 +225,27 @@ try {
     npxConsumer,
   );
   if (!npxSetup.includes("Now ask your AI")) throw new Error("Packed npx setup flow failed.");
+  const npxStatus = run(
+    process.execPath,
+    [
+      npmCli,
+      "exec",
+      "--offline",
+      "--yes",
+      `--package=${pathToFileURL(tarball).href}`,
+      "--",
+      binaryName,
+      "setup",
+      "--agent",
+      "generic-mcp",
+      "--status",
+      "--project",
+      npxFixture,
+    ],
+    npxConsumer,
+  );
+  if (!npxStatus.includes("Generic MCP — configured"))
+    throw new Error("Packed npx setup status failed.");
   const help = run(process.execPath, [cli, "--help"], consumer);
   if (!help.includes("Detect and configure supported AI coding agents"))
     throw new Error("Packed CLI help contract failed.");
@@ -211,10 +256,10 @@ try {
   );
   if (!Array.isArray(scan.findings)) throw new Error("Packed scan did not return findings.");
   const defaultHuman = run(process.execPath, [cli], fixture);
-  if (!defaultHuman.startsWith("VibeShield\n\nScanning "))
+  if (!defaultHuman.startsWith("Cydetix\n\nScanning "))
     throw new Error("Packed zero-config default scan did not use concise human mode.");
   const defaultJson = JSON.parse(run(process.execPath, [cli, "--json"], fixture));
-  if (defaultJson.tool?.name !== "vibeshield")
+  if (defaultJson.tool?.name !== "cydetix")
     throw new Error("Packed zero-config JSON scan identity mismatch.");
   const authentication = JSON.parse(
     run(process.execPath, [cli, "auth", fixture, "--offline", "--format", "json"], consumer),
@@ -237,7 +282,7 @@ try {
   const dryRun = JSON.parse(
     run(
       process.execPath,
-      [cli, "fix", fixture, "--safe", "--dry-run", "--format", "json"],
+      [cli, "fix", fixture, "--dry-run", "--format", "json"],
       consumer,
       120_000,
       [0, 1],
@@ -249,7 +294,7 @@ try {
     !dryRun.plans.some((plan) => plan.classification === "SAFE")
   )
     throw new Error("Packed remediation dry-run contract failed.");
-  const skillNames = ["vibeshield"];
+  const skillNames = ["cydetix"];
   for (const name of skillNames) {
     const skill = await readFile(
       path.join(installedRoot, "agent-skills", name, "SKILL.md"),
@@ -268,9 +313,9 @@ try {
   );
   if (!setupOutput.includes("Now ask your AI")) throw new Error("Packed setup UX failed.");
   const setupConfig = JSON.parse(
-    await readFile(path.join(fixture, ".vibeshield", "mcp.json"), "utf8"),
+    await readFile(path.join(fixture, ".cydetix", "mcp.json"), "utf8"),
   );
-  if (!setupConfig.mcpServers?.vibeshield?.args?.includes(`vibeshield@${packageJson.version}`))
+  if (!setupConfig.mcpServers?.cydetix?.args?.includes(`cydetix@${packageJson.version}`))
     throw new Error("Packed setup did not pin the MCP package version.");
   const mcpInput = `${JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list", params: {} })}\n`;
   const mcpOutput = run(process.execPath, [cli, "mcp"], fixture, 120_000, [0], mcpInput);
@@ -290,12 +335,16 @@ try {
         artifactSource: suppliedTarball === undefined ? "SOURCE_PACK" : "SUPPLIED_RELEASE_TARBALL",
         commands: [
           "--version",
-          "global vibeshield launcher --version",
-          "global vibeshield default scan",
-          "global vibeshield setup",
-          "npm exec vibeshield from local tarball",
-          "npm exec vibeshield default scan from local tarball",
-          "npm exec vibeshield setup from local tarball",
+          "global cydetix launcher --version",
+          "global cydetix default scan",
+          "global cydetix --help",
+          "global cydetix setup",
+          "global cydetix setup --status",
+          "global cydetix fix",
+          "npm exec cydetix from local tarball",
+          "npm exec cydetix default scan from local tarball",
+          "npm exec cydetix setup from local tarball",
+          "npm exec cydetix setup --status from local tarball",
           "--help",
           "doctor",
           "zero-config default scan",
@@ -304,7 +353,7 @@ try {
           "auth",
           "supply-chain --advisories offline",
           "sbom",
-          "fix --safe --dry-run",
+          "fix --dry-run",
           "setup --agent generic-mcp",
           "mcp tools/list",
         ],

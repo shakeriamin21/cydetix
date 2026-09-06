@@ -7,11 +7,19 @@ import { createContainerSandboxRunner } from "../dist/verification/runner.js";
 
 const root = path.resolve(".");
 const resultsDirectory = path.resolve("validation", "results");
-const evidenceDirectory = path.resolve(".vibeshield", "evidence");
-const releaseDirectory = path.resolve(".vibeshield", "release");
+const evidenceDirectory = path.resolve(".cydetix", "evidence");
+const releaseDirectory = path.resolve(
+  process.env.CYDETIX_RELEASE_DIR ?? path.join(".cydetix", "release"),
+);
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const releaseInputs = JSON.parse(
   await readFile(path.join(releaseDirectory, "release-inputs.json"), "utf8"),
+);
+const preliminaryRelease = JSON.parse(
+  await readFile(
+    path.join(releaseDirectory, `cydetix-release-validation-${packageJson.version}.json`),
+    "utf8",
+  ),
 );
 const testReport = JSON.parse(await readFile(path.join(evidenceDirectory, "tests.json"), "utf8"));
 const packedInstall = JSON.parse(
@@ -74,9 +82,9 @@ function parseJsonCommand(executable, arguments_) {
   return JSON.parse(run(executable, arguments_));
 }
 
-const image = process.env.VIBESHIELD_SANDBOX_IMAGE ?? `sha256:${"0".repeat(64)}`;
+const image = process.env.CYDETIX_SANDBOX_IMAGE ?? `sha256:${"0".repeat(64)}`;
 const sandbox = await createContainerSandboxRunner({ image }).capability();
-const sandboxRequested = process.env.VIBESHIELD_SANDBOX_IMAGE !== undefined;
+const sandboxRequested = process.env.CYDETIX_SANDBOX_IMAGE !== undefined;
 const sandboxPassed = sandboxRequested && sandbox.state === "AVAILABLE_HARDENED";
 const assertions = testReport.testResults.flatMap((result) => result.assertionResults);
 
@@ -139,6 +147,23 @@ const externalRerun = await optionalEvidence("external-rerun.json", {
 
 const checks = [
   {
+    id: "source-state",
+    state: releaseInputs.sourceState === "COMMITTED_CLEAN" ? "executed_pass" : "executed_fail",
+    evidence:
+      releaseInputs.sourceState === "COMMITTED_CLEAN"
+        ? "Release artifacts came from a clean committed source tree."
+        : "Artifacts are explicitly labeled as an uncommitted preview and cannot be published.",
+  },
+  {
+    id: "git-history-privacy",
+    state:
+      preliminaryRelease.checks?.gitHistoryPrivacy === "PASS" ? "executed_pass" : "executed_fail",
+    evidence:
+      preliminaryRelease.checks?.gitHistoryPrivacy === "PASS"
+        ? "The explicit Git-history author/privacy allowlist passed."
+        : "Git-history author/privacy approval is incomplete; no identity was silently approved.",
+  },
+  {
     id: "complete-test-suite",
     state:
       filesFailed === 0 && testsFailed === 0 && filesSkipped === 0 && testsSkipped === 0
@@ -158,8 +183,8 @@ const checks = [
           : "executed_fail"
         : "not_checked",
     evidence: sandboxPassed
-      ? "VibeShield executed its hardened Linux launch probe against the locally present immutable image."
-      : "VibeShield did not obtain AVAILABLE_HARDENED; no sandbox property is counted as passing.",
+      ? "Cydetix executed its hardened Linux launch probe against the locally present immutable image."
+      : "Cydetix did not obtain AVAILABLE_HARDENED; no sandbox property is counted as passing.",
     controls: [
       "daemon response",
       "Linux runtime",
@@ -281,7 +306,7 @@ const checks = [
     id: "benchmark-python-applicability",
     state: "not_applicable",
     evidence:
-      "The three reviewed BenchmarkPython cases do not satisfy current VibeShield rule prerequisites and remain excluded from TN counts.",
+      "The three reviewed BenchmarkPython cases do not satisfy current Cydetix rule prerequisites and remain excluded from TN counts.",
   },
   {
     id: "self-scan",
@@ -327,6 +352,8 @@ const checks = [
 ];
 
 const mandatoryChecks = new Set([
+  "source-state",
+  "git-history-privacy",
   "complete-test-suite",
   "container-capability",
   "previously-gated-five",
@@ -372,7 +399,7 @@ const validation = releaseValidationReportSchema.parse({
   schemaVersion: "1.2.0",
   generatedAt: new Date().toISOString(),
   product: {
-    name: "vibeshield",
+    name: "cydetix",
     version: packageJson.version,
     evidenceOrigin: "PUBLIC_GIT_COMMIT",
     publicSourceCommit: implementationCommit,
@@ -423,7 +450,7 @@ const validation = releaseValidationReportSchema.parse({
   ],
   knownLimitations: [
     "Docker/container isolation depends on Docker Desktop, WSL2, the Linux kernel, runc, runtime-default seccomp, and the explicitly trusted image; container escape resistance is not proven.",
-    "The trusted image may define its own baseline environment; VibeShield adds only CI=true and VIBESHIELD_VERIFICATION=1 and does not forward arbitrary host variables.",
+    "The trusted image may define its own baseline environment; Cydetix adds only CI=true and CYDETIX_VERIFICATION=1 and does not forward arbitrary host variables.",
     "The writable ephemeral workspace bind mount has no independent byte quota; rootfs and tmpfs writes are bounded, but workspace disk exhaustion depends on host/runtime capacity.",
     "The bounded text-only copy excludes archives, binary assets, ignored dependencies, files over the copy limit, and repositories over 10,000 copied files or 100 MB.",
     "OWASP BenchmarkPython cases were outside current rule applicability and were not counted as negatives.",

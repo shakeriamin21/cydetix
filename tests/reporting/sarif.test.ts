@@ -34,7 +34,7 @@ describe("SARIF reporting", () => {
     expect(sarif.runs[0]?.tool.driver.rules).toHaveLength(20);
     expect(sarif.runs[0]?.results.length).toBeGreaterThan(0);
     for (const result of sarif.runs[0]?.results ?? []) {
-      expect(result.partialFingerprints["vibeshield/v1"]).toMatch(/^[a-f0-9]{64}$/);
+      expect(result.partialFingerprints["cydetix/v1"]).toMatch(/^[a-f0-9]{64}$/);
       expect(
         path.isAbsolute(result.locations[0]?.physicalLocation.artifactLocation.uri ?? ""),
       ).toBe(false);

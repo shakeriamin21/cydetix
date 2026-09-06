@@ -1,24 +1,25 @@
-# VibeShield CLI contract
+# Cydetix CLI contract
 
 ## Primary commands
 
-| Command            | Mutation           | Behavior                                                                                  |
-| ------------------ | ------------------ | ----------------------------------------------------------------------------------------- |
-| `vibeshield`       | None               | Scans the current project with applicable deterministic engines and concise human output  |
-| `vibeshield fix`   | SAFE only          | Rescans, applies only approved SAFE fixes, verifies, rescans, and reports residual issues |
-| `vibeshield setup` | Integration config | Detects and configures supported AI coding agents                                         |
+| Command         | Mutation           | Behavior                                                                                  |
+| --------------- | ------------------ | ----------------------------------------------------------------------------------------- |
+| `cydetix`       | None               | Scans the current project with applicable deterministic engines and concise human output  |
+| `cydetix fix`   | SAFE only          | Rescans, applies only approved SAFE fixes, verifies, rescans, and reports residual issues |
+| `cydetix setup` | Integration config | Detects and configures supported AI coding agents                                         |
 
 The default scan needs no `init`, configuration file, account, key, cloud service, global install,
-Docker daemon, or engine selector. New config uses `.vibeshield.json`; the legacy
-`.invariantsec.json` filename remains readable for migration.
+Docker daemon, or engine selector. Optional configuration uses `.cydetix.json`; no unpublished
+candidate filename or CLI alias is retained.
 
 `fix` itself is explicit mutation intent. `--dry-run` emits plans/diffs with zero source writes.
-`REVIEW_REQUIRED` and `ARCHITECTURAL` plans are never applied. `--safe` remains only as a backwards-
-compatible alias and cannot widen engine policy.
+`REVIEW_REQUIRED` and `ARCHITECTURAL` plans are never applied.
 
+After a normal interactive scan, Cydetix can offer one consent prompt for detected unconfigured
+hosts. It never prompts in CI, MCP, agent subprocesses, pipes, or non-interactive shells. Explicit
 `setup` configures only detected environments unless `--agent <name>` or `--all` is supplied. In a
-non-interactive session, writes require `--yes`. `--dry-run` previews and `--uninstall` removes only
-managed entries.
+non-interactive session, writes require `--yes`. `--dry-run` previews, `--status` inspects,
+`--verify` checks, and `--remove` removes only Cydetix-owned entries.
 
 ## Default output and expert formats
 
@@ -27,29 +28,29 @@ confidence, proof/reachability state, evidence, standards mappings, and stable r
 structured reports.
 
 ```bash
-vibeshield --details
-vibeshield --json
-vibeshield --sarif
+cydetix --details
+cydetix --json
+cydetix --sarif
 ```
 
 ## Advanced usage
 
 ```bash
-vibeshield scan . --offline --format text
-vibeshield auth . --format text
-vibeshield graph . --auth --format json
-vibeshield dependencies . --advisories offline --format json
-vibeshield secrets . --history --format json
-vibeshield supply-chain . --advisories offline --format text
-vibeshield sbom . --format json
-vibeshield fix . --dry-run --format json
-vibeshield remediation show remediation.json --format text
-vibeshield verify .
-vibeshield explain AS-SESSION-001
-vibeshield standards
-vibeshield ci . --format sarif --fail-on high
-vibeshield doctor
-vibeshield version
+cydetix scan . --offline --format text
+cydetix auth . --format text
+cydetix graph . --auth --format json
+cydetix dependencies . --advisories offline --format json
+cydetix secrets . --history --format json
+cydetix supply-chain . --advisories offline --format text
+cydetix sbom . --format json
+cydetix fix . --dry-run --format json
+cydetix remediation show remediation.json --format text
+cydetix verify .
+cydetix explain AS-SESSION-001
+cydetix standards
+cydetix ci . --format sarif --fail-on high
+cydetix doctor
+cydetix version
 ```
 
 Each `--verify-command` value is an explicitly authorized non-empty JSON string array. It is invoked

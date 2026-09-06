@@ -1,6 +1,6 @@
 # Public capability history
 
-InvariantSec was developed through a sequence of internal engineering gates before its first public
+Cydetix was developed through a sequence of internal engineering gates before its first public
 source commit. The private handoff documents are intentionally excluded from the public repository:
 they duplicated public documentation and included internal branches, commit topology, local
 environment details, stale release experiments, and process notes that users do not need.

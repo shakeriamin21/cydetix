@@ -1,6 +1,6 @@
 # Standards traceability
 
-VibeShield rule mappings are traceability aids, not compliance certificates. A rule maps only the
+Cydetix rule mappings are traceability aids, not compliance certificates. A rule maps only the
 invariant it directly checks, and the coverage report records everything the scan did not establish.
 
 ## Normative/current baselines used for implemented rules

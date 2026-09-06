@@ -7,7 +7,7 @@ import multitoolPath from "@microsoft/sarif-multitool";
 import { scanRepository } from "../dist/core/engine.js";
 import { renderSarif } from "../dist/reporting/sarif.js";
 
-const temporary = await mkdtemp(path.join(os.tmpdir(), "vibeshield-sarif-"));
+const temporary = await mkdtemp(path.join(os.tmpdir(), "cydetix-sarif-"));
 try {
   const fixtures = [
     ["phase-one", path.resolve("fixtures", "typescript", "vulnerable"), {}],

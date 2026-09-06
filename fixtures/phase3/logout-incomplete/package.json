@@ -1,5 +1,5 @@
 {
-  "name": "invariantsec-logout-incomplete-fixture",
+  "name": "cydetix-logout-incomplete-fixture",
   "private": true,
   "dependencies": {
     "express": "5.1.0",

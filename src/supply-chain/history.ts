@@ -128,7 +128,7 @@ export function scanGitHistory(root: string, maximumBytes = 32 * 1024 * 1024): H
           path: filePath,
           sourceCategory: "git-history",
           historyState: "historical",
-          engine: `vibeshield-git-history-v1:${commit.slice(0, 12)}`,
+          engine: `cydetix-git-history-v1:${commit.slice(0, 12)}`,
           lineOffset: Math.max(0, newLine - 1),
         }),
       );

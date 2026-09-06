@@ -90,26 +90,26 @@ Those cases remain `UNKNOWN`.
 
 ## Remediation and verification
 
-| Capability                                  | Status                  | Evidence and limitations                                                   |
-| ------------------------------------------- | ----------------------- | -------------------------------------------------------------------------- |
-| Remediation report/transaction              | Analyzed v1             | Plans, baselines, changes, verification, transitions, state, residual risk |
-| Default fix behavior                        | Plan only               | No repository write without explicit `--safe`                              |
-| Zero-write dry run                          | Analyzed and tested     | Proposed unified diff plus verification plan; affected hashes unchanged    |
-| `AS-SESSION-001` HttpOnly BooleanLiteral    | SAFE, JS/TS/Python      | Exact false-to-true range; parser and invariant rescan proof               |
-| Mutable GitHub Action reference             | REVIEW_REQUIRED         | Plan only; no invented or implicit online SHA resolution                   |
-| Vulnerable dependency                       | REVIEW_REQUIRED         | Fixed-version/lockfile plan; no package-manager or lockfile mutation       |
-| Current-tree secret exposure                | PARTIAL/ARCHITECTURAL   | Rotation, revocation, history, and monitoring components remain explicit   |
-| Authorization/tenant/auth protocol findings | ARCHITECTURAL/review    | No invented business policy or lifecycle semantics                         |
-| Affected dirty file                         | Refused/review          | Unrelated dirty files are recorded and preserved                           |
-| Stale finding                               | Refused                 | Whole-file and exact-range hashes require rescan                           |
-| Atomic file write and rollback              | Analyzed and tested     | Same-directory replace; rollback only VibeShield-written current hashes    |
-| No-execution provider                       | Default/fail closed     | Command remains inert                                                      |
-| Local trusted verification command          | Explicit/degraded       | Non-shell, bounded, stripped environment; not a sandbox/network boundary   |
-| Container verification provider             | Explicit/capability     | Immutable local image, ephemeral copy, network/privilege/resource controls |
-| Container adversarial integration           | Validated Phase 6B host | 13 tests: former gates plus privilege/resource/remediation evidence        |
-| Verification scope                          | Declared                | Current Phase 5 implementation performs correctness-first full rescan      |
-| Remediation history                         | User-controlled report  | `remediation show`; no silent global persistence                           |
-| SARIF fixes                                 | SAFE only               | Exact artifact replacements; no fixes for plan-only recommendations        |
+| Capability                                  | Status                  | Evidence and limitations                                                    |
+| ------------------------------------------- | ----------------------- | --------------------------------------------------------------------------- |
+| Remediation report/transaction              | Analyzed v1             | Plans, baselines, changes, verification, transitions, state, residual risk  |
+| Default fix behavior                        | SAFE apply + verify     | The `fix` command is explicit intent; only engine-classified SAFE work runs |
+| Zero-write dry run                          | Analyzed and tested     | Proposed unified diff plus verification plan; affected hashes unchanged     |
+| `AS-SESSION-001` HttpOnly BooleanLiteral    | SAFE, JS/TS/Python      | Exact false-to-true range; parser and invariant rescan proof                |
+| Mutable GitHub Action reference             | REVIEW_REQUIRED         | Plan only; no invented or implicit online SHA resolution                    |
+| Vulnerable dependency                       | REVIEW_REQUIRED         | Fixed-version/lockfile plan; no package-manager or lockfile mutation        |
+| Current-tree secret exposure                | PARTIAL/ARCHITECTURAL   | Rotation, revocation, history, and monitoring components remain explicit    |
+| Authorization/tenant/auth protocol findings | ARCHITECTURAL/review    | No invented business policy or lifecycle semantics                          |
+| Affected dirty file                         | Refused/review          | Unrelated dirty files are recorded and preserved                            |
+| Stale finding                               | Refused                 | Whole-file and exact-range hashes require rescan                            |
+| Atomic file write and rollback              | Analyzed and tested     | Same-directory replace; rollback only Cydetix-written current hashes        |
+| No-execution provider                       | Default/fail closed     | Command remains inert                                                       |
+| Local trusted verification command          | Explicit/degraded       | Non-shell, bounded, stripped environment; not a sandbox/network boundary    |
+| Container verification provider             | Explicit/capability     | Immutable local image, ephemeral copy, network/privilege/resource controls  |
+| Container adversarial integration           | Validated Phase 6B host | 13 tests: former gates plus privilege/resource/remediation evidence         |
+| Verification scope                          | Declared                | Current Phase 5 implementation performs correctness-first full rescan       |
+| Remediation history                         | User-controlled report  | `remediation show`; no silent global persistence                            |
+| SARIF fixes                                 | SAFE only               | Exact artifact replacements; no fixes for plan-only recommendations         |
 
 Authorization proofs are `PROVEN`, `VIOLATED`, or `UNKNOWN`. `UNKNOWN` is a first-class result and
 does not generate a vulnerability finding. `VIOLATED` requires the complete supported evidence chain
@@ -121,10 +121,10 @@ Text, JSON report schema v2.0.0, and SARIF 2.1.0 are implemented. A separate rem
 schema v1.0.0 represents Phase 5 plans and transactions without breaking scan-report consumers. The
 scan report embeds Security IR, authorization proofs, optional authentication analysis v1, and
 optional supply-chain analysis v1; SARIF cross-file findings carry ordered `codeFlows`.
-`vibeshield graph --auth` supports text and JSON. `fix` and `remediation show` support text/JSON;
-SAFE edits can also project SARIF `fixes`. HTML is roadmap. Supported runtimes are Node.js 22.18+
-within 22.x and 24.11+ within 24.x; CI configures both on GitHub-hosted Windows, macOS, and Linux.
-The packed install was observed locally on Node 24/Windows. The six-case hosted matrix and a hosted
+`cydetix graph --auth` supports text and JSON. `fix` and `remediation show` support text/JSON; SAFE
+edits can also project SARIF `fixes`. HTML is roadmap. Supported runtimes are Node.js 22.18+ within
+22.x and 24.11+ within 24.x; CI configures both on GitHub-hosted Windows, macOS, and Linux. The
+packed install was observed locally on Node 24/Windows. The six-case hosted matrix and a hosted
 Linux sandbox job are configured but remain `NOT_RUN` until an approved GitHub repository executes
 them; local equivalents are not counted as hosted passes. Native standalone binaries are roadmap.
 

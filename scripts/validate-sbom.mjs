@@ -12,11 +12,11 @@ for (const target of [path.resolve("fixtures", "phase4", "sbom"), path.resolve("
     throw new Error(`Unexpected SBOM format for ${target}.`);
   }
   const serialized = JSON.stringify(bom);
-  if (/INVARIANTSEC_TEST_SECRET_|-----BEGIN .*PRIVATE KEY-----/u.test(serialized)) {
+  if (/CYDETIX_TEST_SECRET_|-----BEGIN .*PRIVATE KEY-----/u.test(serialized)) {
     throw new Error(`Secret material appeared in SBOM output for ${target}.`);
   }
 }
 
 process.stdout.write(
-  "Validated CycloneDX 1.7 SBOM output for the fixture and VibeShield inventory.\n",
+  "Validated CycloneDX 1.7 SBOM output for the fixture and Cydetix inventory.\n",
 );

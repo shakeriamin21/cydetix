@@ -1,53 +1,90 @@
 import path from "node:path";
 
 import {
-  AGENT_INSTRUCTIONS,
+  agentInstructions,
+  combineIntegrationStates,
   commandAvailable,
   existingPaths,
+  inspectJsonServer,
+  inspectManagedFile,
   pinnedMcpServer,
   updateJsonServer,
   writeManagedFile,
 } from "../common.js";
+import { agentDetection } from "../discovery/index.js";
 import type { AdapterResult, IntegrationAdapter, SetupContext } from "../types.js";
 
-const RULE = `---
-description: Use VibeShield for security audits, authentication, authorization, secrets, dependencies, supply chain, CI/CD, deployment readiness, and explicit security remediation.
-globs:
+function targets(context: SetupContext) {
+  return {
+    config: path.join(context.projectRoot, ".cursor", "mcp.json"),
+    rule: path.join(context.projectRoot, ".cursor", "rules", "cydetix.mdc"),
+  };
+}
+
+function rule(version: string): string {
+  return `---
+description: Use Cydetix for software security reviews, vulnerabilities, authentication, authorization, secrets, dependencies, supply chain, CI/CD, deployment readiness, hardening, and explicit security remediation.
 alwaysApply: false
 ---
 
-${AGENT_INSTRUCTIONS}`;
+${agentInstructions(version)}`;
+}
+
+async function integrationState(context: SetupContext) {
+  const target = targets(context);
+  return combineIntegrationStates([
+    await inspectJsonServer(target.config, "mcpServers", pinnedMcpServer(context)),
+    await inspectManagedFile(target.rule),
+  ]);
+}
 
 async function change(
   context: SetupContext,
   remove: boolean,
   dryRun: boolean,
 ): Promise<AdapterResult> {
-  const config = path.join(context.projectRoot, ".cursor", "mcp.json");
-  const rule = path.join(context.projectRoot, ".cursor", "rules", "vibeshield.mdc");
+  const before = await integrationState(context);
+  const target = targets(context);
   const changed: string[] = [];
-  if (await updateJsonServer(config, "mcpServers", pinnedMcpServer(context), remove, dryRun))
-    changed.push(config);
-  if (await writeManagedFile(rule, RULE, remove, dryRun)) changed.push(rule);
+  if (await updateJsonServer(target.config, "mcpServers", pinnedMcpServer(context), remove, dryRun))
+    changed.push(target.config);
+  if (await writeManagedFile(target.rule, rule(context.packageVersion), remove, dryRun))
+    changed.push(target.rule);
+  const after = dryRun
+    ? remove
+      ? "not_configured"
+      : "configured"
+    : await integrationState(context);
   return {
     id: "cursor",
     displayName: "Cursor",
     files: changed,
-    action: changed.length === 0 ? "unchanged" : remove ? "removed" : "installed",
+    action:
+      changed.length === 0
+        ? "unchanged"
+        : remove
+          ? "removed"
+          : before === "not_configured"
+            ? "installed"
+            : "updated",
+    verified: remove ? after === "not_configured" : after === "configured",
   };
 }
 
 export const cursorAdapter: IntegrationAdapter = {
   id: "cursor",
   displayName: "Cursor",
-  detect(context) {
+  async detect(context) {
     const evidence = existingPaths([
       path.join(context.homeDirectory, ".cursor"),
       path.join(context.projectRoot, ".cursor"),
     ]);
-    if (commandAvailable("cursor") || commandAvailable("cursor-agent"))
+    if (
+      commandAvailable("cursor", context.platform, context.executablePath) ||
+      commandAvailable("cursor-agent", context.platform, context.executablePath)
+    )
       evidence.push("Cursor executable on PATH");
-    return { id: this.id, displayName: this.displayName, detected: evidence.length > 0, evidence };
+    return agentDetection(this.id, this.displayName, evidence, await integrationState(context));
   },
   install: (context, dryRun) => change(context, false, dryRun),
   uninstall: (context, dryRun) => change(context, true, dryRun),

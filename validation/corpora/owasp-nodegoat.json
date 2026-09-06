@@ -19,6 +19,6 @@
   "notes": [
     "NodeGoat is a realistic deliberately vulnerable application, not a complete labeled SAST benchmark.",
     "Precision is reported only for emitted findings manually adjudicated during implementation; independent human review remains outstanding and recall is unavailable.",
-    "The CommonJS application architecture is outside InvariantSec's bounded relative-ESM cross-file graph support."
+    "The CommonJS application architecture is outside Cydetix's bounded relative-ESM cross-file graph support."
   ]
 }

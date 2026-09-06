@@ -26,7 +26,7 @@ interface ToolDefinition {
         readonly openWorldHint: boolean;
     };
 }
-export declare const VIBESHIELD_MCP_TOOLS: readonly ToolDefinition[];
+export declare const CYDETIX_MCP_TOOLS: readonly ToolDefinition[];
 export declare function handleMcpRequest(request: JsonRpcRequest): Promise<JsonRpcResponse | undefined>;
 export declare function runMcpServer(): Promise<void>;
 export {};

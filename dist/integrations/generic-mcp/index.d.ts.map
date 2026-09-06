@@ -1,1 +1,1 @@
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../src/integrations/generic-mcp/index.ts"],"names":[],"mappings":"AAGA,OAAO,KAAK,EAAiB,kBAAkB,EAAgB,MAAM,aAAa,CAAC;AAuBnF,eAAO,MAAM,iBAAiB,EAAE,kBAQ/B,CAAC"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../src/integrations/generic-mcp/index.ts"],"names":[],"mappings":"AAIA,OAAO,KAAK,EAAiB,kBAAkB,EAAgB,MAAM,aAAa,CAAC;AAwCnF,eAAO,MAAM,iBAAiB,EAAE,kBAQ/B,CAAC"}

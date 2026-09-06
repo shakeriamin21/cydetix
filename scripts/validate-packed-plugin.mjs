@@ -5,16 +5,16 @@ import path from "node:path";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const pluginManifest = JSON.parse(
-  await readFile("plugins/vibeshield/.codex-plugin/plugin.json", "utf8"),
+  await readFile("plugins/cydetix/.codex-plugin/plugin.json", "utf8"),
 );
-const releaseDirectory = process.env.VIBESHIELD_RELEASE_DIR ?? path.join(".vibeshield", "release");
+const releaseDirectory = process.env.CYDETIX_RELEASE_DIR ?? path.join(".cydetix", "release");
 const archive = path.resolve(
   releaseDirectory,
   `${pluginManifest.name}-codex-plugin-${packageJson.version}.tar.gz`,
 );
 if (!(await stat(archive)).isFile())
   throw new Error("Build release artifacts before validating the packed plugin.");
-const temporary = await mkdtemp(path.join(os.tmpdir(), "vibeshield-plugin-install-"));
+const temporary = await mkdtemp(path.join(os.tmpdir(), "cydetix-plugin-install-"));
 
 async function inspectTree(directory) {
   const entries = await readdir(directory, { withFileTypes: true });
@@ -56,12 +56,12 @@ try {
   });
   if (extraction.error !== undefined || extraction.status !== 0)
     throw new Error("Packed plugin extraction failed safely.");
-  const root = path.join(temporary, "vibeshield");
+  const root = path.join(temporary, "cydetix");
   await inspectTree(root);
   const manifest = JSON.parse(
     await readFile(path.join(root, ".codex-plugin", "plugin.json"), "utf8"),
   );
-  if (manifest.name !== "vibeshield" || manifest.version !== packageJson.version)
+  if (manifest.name !== "cydetix" || manifest.version !== packageJson.version)
     throw new Error("Packed plugin identity/version mismatch.");
   for (const required of ["LICENSE", "NOTICE", "README.md"])
     if (!(await stat(path.join(root, required))).isFile())
@@ -70,14 +70,14 @@ try {
   const skills = (await readdir(skillsRoot, { withFileTypes: true })).filter((entry) =>
     entry.isDirectory(),
   );
-  if (skills.length !== 1 || skills[0]?.name !== "vibeshield")
+  if (skills.length !== 1 || skills[0]?.name !== "cydetix")
     throw new Error("Packed plugin skill inventory mismatch.");
   for (const entry of skills) {
     const skill = await readFile(path.join(skillsRoot, entry.name, "SKILL.md"), "utf8");
     if (!skill.startsWith("---\n") || !skill.includes(`name: ${entry.name}`))
       throw new Error(`Packed plugin skill is invalid: ${entry.name}`);
   }
-  const evidenceDirectory = path.resolve(".vibeshield", "evidence");
+  const evidenceDirectory = path.resolve(".cydetix", "evidence");
   await mkdir(evidenceDirectory, { recursive: true });
   await writeFile(
     path.join(evidenceDirectory, "packed-plugin.json"),

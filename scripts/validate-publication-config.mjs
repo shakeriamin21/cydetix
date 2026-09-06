@@ -1,18 +1,18 @@
 import { readFile } from "node:fs/promises";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-const plugin = JSON.parse(await readFile("plugins/vibeshield/.codex-plugin/plugin.json", "utf8"));
+const plugin = JSON.parse(await readFile("plugins/cydetix/.codex-plugin/plugin.json", "utf8"));
 const publication = JSON.parse(await readFile("release/publication-config.json", "utf8"));
 
 const errors = [];
 if (publication.decision !== "APPROVED") errors.push("public identity has not been approved");
 if (publication.productName === null) errors.push("public product name is unset");
 if (publication.npmPackageName !== packageJson.name) errors.push("npm package identity mismatches");
-if (publication.npmPackageName !== "vibeshield" || publication.npmPackageName.includes("/"))
-  errors.push("the exact unscoped vibeshield package identity is not approved");
-if (publication.cliCommand !== "vibeshield") errors.push("primary CLI identity mismatches");
+if (publication.npmPackageName !== "cydetix" || publication.npmPackageName.includes("/"))
+  errors.push("the exact unscoped cydetix package identity is not approved");
+if (publication.cliCommand !== "cydetix") errors.push("primary CLI identity mismatches");
 if (publication.nameMarketConflict !== "REVIEWED_AND_EXPLICITLY_APPROVED")
-  errors.push("active VibeShield security-market name uses have not been explicitly resolved");
+  errors.push("formal Cydetix name and legal review has not been explicitly approved");
 if (publication.version !== packageJson.version) errors.push("publication version mismatches");
 if (publication.tagCandidate !== `v${packageJson.version}`) errors.push("tag candidate mismatches");
 if (publication.npmDistTag !== "alpha") errors.push("first alpha must use the alpha dist-tag");

@@ -1,1 +1,1 @@
-{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../src/integrations/claude/index.ts"],"names":[],"mappings":"AASA,OAAO,KAAK,EAAiB,kBAAkB,EAAgB,MAAM,aAAa,CAAC;AAoBnF,eAAO,MAAM,aAAa,EAAE,kBAc3B,CAAC"}
+{"version":3,"file":"index.d.ts","sourceRoot":"","sources":["../../../src/integrations/claude/index.ts"],"names":[],"mappings":"AAaA,OAAO,KAAK,EAAiB,kBAAkB,EAAgB,MAAM,aAAa,CAAC;AAkDnF,eAAO,MAAM,aAAa,EAAE,kBAgB3B,CAAC"}

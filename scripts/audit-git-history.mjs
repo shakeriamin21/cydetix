@@ -54,7 +54,7 @@ const forbiddenNeedles = [
   },
   { id: "LOCAL_USER_PROFILE", value: ["C:", "Users", "synthetic-user"].join("\\") },
   { id: "LOCAL_SANDBOX_NAME", value: ["Codex", "Sandbox", "Offline"].join("") },
-  { id: "LOCAL_CACHE_NAME", value: ["vibeshield", "phase6", "cache"].join("-") },
+  { id: "LOCAL_CACHE_NAME", value: ["cydetix", "phase6", "cache"].join("-") },
 ];
 for (const commit of commits) {
   for (const needle of forbiddenNeedles) {
