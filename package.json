@@ -1,11 +1,10 @@
 {
-  "name": "vibeshield",
+  "name": "cydetix",
   "version": "0.6.0-alpha.1",
   "description": "Zero-config deterministic application security and policy-bounded remediation CLI",
   "type": "module",
   "bin": {
-    "vibeshield": "./dist/cli/main.js",
-    "invariantsec": "./dist/cli/main.js"
+    "cydetix": "dist/cli/main.js"
   },
   "files": [
     "dist",
@@ -29,7 +28,7 @@
     "lint": "eslint .",
     "format": "prettier --check .",
     "format:write": "prettier --write .",
-    "test": "vitest run",
+    "test": "vitest run --maxWorkers=1 --testTimeout=120000",
     "test:sandbox": "vitest run tests/verification/container-sandbox.integration.test.ts",
     "test:coverage": "vitest run --coverage",
     "benchmark:phase2": "npm run build && node scripts/measure-phase2.mjs",
@@ -38,13 +37,13 @@
     "benchmark:phase5": "npm run build && node scripts/measure-phase5.mjs",
     "benchmark:phase6": "npm run build && node scripts/measure-phase6-scale.mjs",
     "release:artifacts": "npm run build && node scripts/build-release-artifacts.mjs",
+    "release:preview": "npm run build && node scripts/build-release-artifacts.mjs --preview",
     "release:evidence": "npm run build && node scripts/generate-release-validation.mjs",
     "release:self-scan": "npm run build && node scripts/generate-self-scan-evidence.mjs",
     "release:validation-artifact": "node scripts/finalize-release-validation-artifact.mjs",
     "corpus:phase3": "npm run build && node scripts/report-phase3-corpus.mjs",
     "corpus:phase4": "npm run build && node scripts/report-phase4-corpus.mjs",
-    "vibeshield": "tsx src/cli/main.ts",
-    "invariantsec": "npm run vibeshield",
+    "cydetix": "tsx src/cli/main.ts",
     "validate:plugin": "node scripts/validate-plugin.mjs",
     "validate:gitleaks-report": "node scripts/validate-gitleaks-report.mjs",
     "validate:online-osv": "npm run build && node scripts/validate-online-osv.mjs",
@@ -101,5 +100,13 @@
     "typescript": "6.0.3",
     "typescript-eslint": "8.68.0",
     "vitest": "4.1.11"
+  },
+  "repository": {
+    "url": "git+https://github.com/shakeriamin21/cydetix.git",
+    "type": "git"
+  },
+  "homepage": "https://github.com/shakeriamin21/cydetix#readme",
+  "bugs": {
+    "url": "https://github.com/shakeriamin21/cydetix/issues"
   }
 }
