@@ -31,9 +31,8 @@ npm install -g cydetix
 cydetix
 ```
 
-The package is an unpublished alpha candidate at version `0.6.0-alpha.1`. These public commands are
-validated against a locally packed npm artifact, but no npm package or GitHub release has been
-published by this repository.
+The current source is the `0.6.0-alpha.2` release candidate. The existing public npm package is
+`cydetix@0.6.0-alpha.1`; this preparation does not publish alpha.2 or create a GitHub release.
 
 ## What the default command does
 
@@ -94,7 +93,7 @@ entries. Repeated setup is idempotent.
 Configured MCP launchers pin the exact package version used during setup:
 
 ```text
-cydetix@0.6.0-alpha.1
+cydetix@0.6.0-alpha.2
 ```
 
 This avoids silently executing an arbitrary future release. The tradeoff is that offline startup
@@ -169,7 +168,7 @@ cydetix doctor
 Specific execution can be requested when troubleshooting npm cache behavior:
 
 ```bash
-npx cydetix@0.6.0-alpha.1
+npx cydetix@0.6.0-alpha.2
 ```
 
 ## Security and limitations
@@ -182,9 +181,9 @@ Cydetix does not certify a project as secure or production-ready. Unsupported or
 behavior remains `UNKNOWN`, `NOT_APPLICABLE`, or uncovered as appropriate. Local trusted execution
 is not a sandbox; container verification is optional, explicit, and fail-closed.
 
-The exact unscoped `cydetix` npm lookup returned E404 on 2026-09-06. That is not a reservation,
-ownership proof, publication permission, or trademark clearance. Exact-name web searches found no
-obvious active match, but legal clearance has not been performed and no exclusivity is claimed.
+The exact unscoped package exists on npm; `npm view cydetix --json` returned `cydetix@0.6.0-alpha.1`
+on 2026-09-06. Package registration is not product-name exclusivity or trademark clearance. Legal
+clearance has not been performed and no exclusivity is claimed.
 
 Read the [security model](docs/SECURITY_MODEL.md), [threat model](THREAT_MODEL.md),
 [autofix policy](AUTOFIX_POLICY.md), [validation record](docs/VALIDATION.md), and

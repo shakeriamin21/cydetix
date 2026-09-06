@@ -1,7 +1,7 @@
 export const PRODUCT = {
     id: "cydetix",
     displayName: "Cydetix",
-    version: "0.6.0-alpha.1",
+    version: "0.6.0-alpha.2",
     reportSchemaVersion: "2.0.0",
     ruleSchemaVersion: "1.0.0",
 };

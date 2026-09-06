@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.2.0",
-  "generatedAt": "2026-09-06T10:28:57.016Z",
+  "generatedAt": "2026-09-06T13:11:47.843Z",
   "product": {
     "name": "cydetix",
-    "version": "0.6.0-alpha.1",
+    "version": "0.6.0-alpha.2",
     "evidenceOrigin": "PUBLIC_GIT_COMMIT",
-    "publicSourceCommit": "068f87c71a033f18dc69862261ec4f8478909f48"
+    "publicSourceCommit": "a73cb30e9e45e0a05c2596680fc9c523bda50228"
   },
   "verdict": "NOT_READY_FOR_PUBLIC_USE",
   "checks": [
@@ -176,7 +176,7 @@
     {
       "id": "self-scan",
       "state": "executed_pass",
-      "evidence": "367 files and 1732244 bytes scanned; 0 active and 28 suppressed findings."
+      "evidence": "369 files and 1761103 bytes scanned; 0 active and 28 suppressed findings."
     },
     {
       "id": "packed-install-current-host",
@@ -191,12 +191,12 @@
     {
       "id": "release-artifacts",
       "state": "executed_pass",
-      "evidence": "4 release artifacts were regenerated after source commit 068f87c71a033f18dc69862261ec4f8478909f48 and SHA-256 hashed."
+      "evidence": "4 release artifacts were regenerated after source commit a73cb30e9e45e0a05c2596680fc9c523bda50228 and SHA-256 hashed."
     },
     {
       "id": "clean-public-lineage",
       "state": "executed_pass",
-      "evidence": "1 commit(s) are reachable in the clean public lineage; 0 tag(s) exist before publication approval."
+      "evidence": "3 commit(s) are reachable in the clean public lineage; 0 tag(s) exist before publication approval."
     },
     {
       "id": "cross-platform-ci-matrix",
@@ -206,7 +206,7 @@
     {
       "id": "openssf-scorecard",
       "state": "not_checked",
-      "evidence": "OpenSSF Scorecard tooling or an addressable public repository was unavailable."
+      "evidence": "No exact-commit OpenSSF Scorecard result was supplied to this local release-preparation run."
     }
   ],
   "corpora": [
@@ -505,7 +505,7 @@
   },
   "environment": {
     "nodeVersion": "v24.15.0",
-    "npmVersion": "11.12.1",
+    "npmVersion": "11.19.1",
     "platform": "win32-x64",
     "docker": {
       "clientVersion": "29.0.1",
@@ -531,7 +531,7 @@
     "state": "not_checked",
     "checksRun": 0,
     "limitations": [
-      "OpenSSF Scorecard tooling or an addressable public repository was unavailable."
+      "No exact-commit OpenSSF Scorecard result was supplied to this local release-preparation run."
     ]
   },
   "tests": {
@@ -597,29 +597,29 @@
   "package": {
     "state": "CURRENT",
     "entries": 320,
-    "packedBytes": 297039,
-    "unpackedBytes": 1873860,
+    "packedBytes": 297150,
+    "unpackedBytes": 1874312,
     "sizeGateBytes": 400000,
     "hashes": [
       {
-        "artifact": "cydetix-0.6.0-alpha.1.tgz",
-        "sha256": "66e539551ca4d9ce3c804a12f89987663bd2486c230fa33a4bf166f2ce256d2d",
-        "bytes": 297039
+        "artifact": "cydetix-0.6.0-alpha.2.tgz",
+        "sha256": "6ee278d4878774a83482cd036df42526d4c1f4fe79b9b609c64fef6b01ea55b2",
+        "bytes": 297150
       },
       {
         "artifact": "cydetix.cdx.json",
-        "sha256": "5d08f64df3051ee7f4cecdf56c7f148e0df6b74c17966418f8976a4602e55485",
+        "sha256": "95bf0225f05b6caed39853155cc88625e2156b63da67058fa6639151c251baf2",
         "bytes": 151992
       },
       {
-        "artifact": "cydetix-codex-plugin-0.6.0-alpha.1.tar.gz",
-        "sha256": "d284731a81988f2d56115f9885a1d937878243b0bd84da7545b583041d198e4d",
-        "bytes": 6457
+        "artifact": "cydetix-codex-plugin-0.6.0-alpha.2.tar.gz",
+        "sha256": "662ffca96f6af376f5d3966ac90835ae4c41ca9ac112ece7813e6c71d527b3f1",
+        "bytes": 6468
       },
       {
-        "artifact": "cydetix-release-validation-0.6.0-alpha.1.json",
-        "sha256": "296f3f35624de72657ab30b3449612959d240d1d389670a3a4f204d0a9cb901f",
-        "bytes": 2120
+        "artifact": "cydetix-release-validation-0.6.0-alpha.2.json",
+        "sha256": "a61a34b7d7415247af005538801315eadf18451dfb10c7a61e6a9a34b00df7bf",
+        "bytes": 2106
       }
     ]
   },
@@ -637,6 +637,6 @@
     "OWASP BenchmarkPython cases were outside current rule applicability and were not counted as negatives.",
     "NodeGoat labels are findings-only manual adjudications, so recall is withheld.",
     "The GitHub-hosted cross-platform CI matrix was not executed from this local-only checkout.",
-    "OpenSSF Scorecard tooling or an addressable public repository was unavailable."
+    "No exact-commit OpenSSF Scorecard result was supplied to this local release-preparation run."
   ]
 }

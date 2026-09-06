@@ -278,7 +278,7 @@ install claim is made by the Windows run.
 ## 23. Package validation
 
 The current package gate validates the exact unscoped `cydetix` package, exactly one binary mapping
-to `./dist/cli/main.js`, the username/scope-free README, absence of lifecycle scripts, allowed
+to `dist/cli/main.js`, the username/scope-free README, absence of lifecycle scripts, allowed
 contents, and size limits. The latest measured artifact contains 320 entries and remains below the
 400 KB packed / 2.5 MB unpacked gates.
 

@@ -25,7 +25,7 @@ if (publication.privateVulnerabilityReporting !== "ENABLED")
   errors.push("private vulnerability reporting is not confirmed enabled");
 if (!/^[^/]+\/[^/]+$/u.test(publication.githubRepository ?? ""))
   errors.push("GitHub owner/repository is unset");
-const repositoryUrl = `https://github.com/${publication.githubRepository}.git`;
+const repositoryUrl = `git+https://github.com/${publication.githubRepository}.git`;
 if (packageJson.repository?.url !== repositoryUrl)
   errors.push("package repository URL does not exactly match the approved GitHub repository");
 if (plugin.version !== packageJson.version) errors.push("plugin version mismatches");

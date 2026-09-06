@@ -12,25 +12,14 @@ requires CLI 11.5.1+ and Node 22.14+ for trusted publishing; the workflow uses s
 checks the npm CLI before publishing. The approved public `package.json` repository URL must exactly
 match the GitHub repository configured at npm.
 
-Trusted Publishing does not solve first registration of an unused npm coordinate. npm's documented
-setup starts from the package settings page, where the maintainer selects a trusted publisher. An
-`E404` package has no such settings page. Therefore publication remains blocked until the approved
-coordinate is checked again and one of these conditions is explicitly approved:
+The exact unscoped package now exists as `cydetix@0.6.0-alpha.1`. Before releasing alpha.2, an
+authorized maintainer must independently confirm that npm Trusted Publishing is bound to
+`shakeriamin21/cydetix`, `.github/workflows/release.yml`, and the protected `release` environment.
+Repository configuration alone does not prove the external npm setting or a successful OIDC
+publication.
 
-- the chosen package already exists under the maintainer's control and can be bound to
-  `.github/workflows/release.yml`; or
-- the maintainer separately authorizes and performs a one-time, 2FA-protected bootstrap publish,
-  reviews its exact artifacts and dist-tag, then configures OIDC for later versions.
-
-Do not add a temporary long-lived npm token to `release.yml`, and do not publish a dummy or
-squatting version merely to make the OIDC gate green. A bootstrap publish is itself public
-publication and is outside Codex's current authority.
-
-The first version of a new npm package cannot use npm staged publishing because npm requires the
-package to exist before staging. If `cydetix` remains unregistered, the first approved alpha is the
-separately authorized bootstrap publication under `--tag alpha`, not `latest`; it must not be
-described as Trusted Publishing. See [the npm bootstrap plan](../NPM_BOOTSTRAP.md). Later versions
-use OIDC after the package settings exist.
+Do not add a temporary long-lived npm token to `release.yml`. See
+[the npm package and Trusted Publishing plan](../NPM_BOOTSTRAP.md).
 
 GitHub attestations and npm provenance establish artifact/source/build relationships. They do not
 prove that the software is vulnerability-free, complete, or production-ready.
@@ -60,24 +49,19 @@ are complete. Do not weaken these checks to obtain a green result.
 
 ## Required external setup
 
-1. Review `docs/PUBLIC_IDENTITY_DECISION.md`. The selected identity is recorded in
-   `release/publication-config.json`; the GitHub owner/repository remains unset.
-2. Create the approved public repository only after separate authorization, then apply
-   `docs/GITHUB_REPOSITORY_CONFIGURATION.md`.
+1. Review `docs/PUBLIC_IDENTITY_DECISION.md`. The selected identity and `shakeriamin21/cydetix`
+   repository are recorded in `release/publication-config.json`.
+2. Apply and verify `docs/GITHUB_REPOSITORY_CONFIGURATION.md` on the existing repository.
 3. Confirm the six-case hosted CI matrix, Action smoke, hosted Linux sandbox, and OpenSSF Scorecard
    pass on the exact candidate commit.
 4. Enable GitHub private vulnerability reporting.
 5. Create a protected `release` environment with a required reviewer.
-6. Recheck `cydetix` directly at npm. If it remains unregistered, obtain separate approval for a
-   one-time 2FA-protected publication of the exact reviewed alpha tarball under the `alpha`
-   dist-tag. Use the shortest-lived practical credential, do not commit it, and revoke/log out
-   immediately afterward.
-7. After the package exists, configure the npm trusted publisher with the exact GitHub owner,
-   repository, workflow filename `release.yml`, and environment `release`. Require 2FA, remove any
-   bootstrap credential, and restrict token publishing where operationally appropriate. Update the
-   fail-closed publication state; do not represent the bootstrap publication as Trusted Publishing.
-8. Verify the candidate handoff and release manifest say `READY_FOR_USER_PUBLICATION_APPROVAL` with
-   zero blockers.
+6. Recheck `cydetix` directly at npm and verify expected control of the existing package.
+7. Confirm the npm trusted publisher uses the exact GitHub owner, repository, workflow filename
+   `release.yml`, and environment `release`. Require 2FA and restrict token publishing where
+   operationally appropriate. Update the fail-closed publication state only from verified evidence.
+8. Verify the candidate release manifest says `READY_FOR_USER_PUBLICATION_APPROVAL` with zero
+   blockers.
 
 ## Publication after explicit approval
 
@@ -88,9 +72,9 @@ git switch main
 git pull --ff-only
 git rev-parse HEAD
 git status --short
-git tag -a v0.6.0-alpha.1 -m "Cydetix v0.6.0-alpha.1"
-git show --no-patch --decorate v0.6.0-alpha.1
-git push origin v0.6.0-alpha.1
+git tag -a v0.6.0-alpha.2 -m "Cydetix v0.6.0-alpha.2"
+git show --no-patch --decorate v0.6.0-alpha.2
+git push origin v0.6.0-alpha.2
 ```
 
 The tag triggers `.github/workflows/release.yml`. It re-verifies the approved identity, annotated

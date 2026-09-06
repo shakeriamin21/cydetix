@@ -126,15 +126,17 @@ fixture/schema findings in each applicable scope were reviewed and fully redacte
 Git-history metadata audit still fails because the existing commit author email has not been placed
 on the explicit public allowlist; Cydetix does not silently approve or rewrite it.
 
-The package allowlist has 320 entries, 297,039 packed bytes, 1,873,860 unpacked bytes, no lifecycle
-scripts, and exactly one `cydetix` binary. Isolated npm-exec and global-prefix installation exercise
-version/help/default scan/setup/status/SAFE fix/machine output/MCP paths successfully. The isolated
-plugin archive validates one skill. Self-scan has zero active and 28 dated fixture-suppressed
-findings; npm audit reports zero vulnerabilities; online OSV reports no findings across 214 resolved
-identities; CycloneDX, SARIF, schemas, remediation, license, and workflow-security gates pass.
+The alpha.2 package allowlist has 320 entries, 297,150 packed bytes, 1,874,312 unpacked bytes, no
+lifecycle scripts, and exactly one `cydetix` binary. Isolated npm-exec and global-prefix
+installation exercise version/help/default scan/setup/status/SAFE fix/machine output/MCP paths
+successfully. The isolated plugin archive validates one skill. Self-scan has zero active and 28
+dated fixture-suppressed findings; npm audit reports zero vulnerabilities; online OSV reports no
+findings across 214 resolved identities; CycloneDX, SARIF, schemas, remediation, license, and
+workflow-security gates pass.
 
-The exact npm lookup returned point-in-time `E404`, which is not registration or ownership. Hosted
+The exact npm lookup returned the existing public `cydetix@0.6.0-alpha.1` package on 2026-09-06.
+That establishes registration, not trademark clearance or authorization for alpha.2. Hosted
 Windows/Linux/macOS CI, the external Action consumer, CodeQL, Scorecard, GitHub security settings,
-attestations, npm registration, and Trusted Publishing remain unexecuted or unconfigured. Generated
-checksums and manifests are labeled `UNCOMMITTED_PREVIEW` and `NOT_READY_FOR_PUBLICATION`; they must
-be regenerated from a clean approved commit before any separately authorized release.
+attestations, and Trusted Publishing are not re-executed or proven by local preparation. Generated
+checksums and manifests must be regenerated from a clean approved commit before any separately
+authorized release.

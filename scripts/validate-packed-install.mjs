@@ -126,7 +126,7 @@ try {
   const version = run(process.execPath, [cli, "--version"], consumer).trim();
   if (version !== packageJson.version) throw new Error("Packed CLI version mismatch.");
   const binaryName = "cydetix";
-  if (packageJson.bin?.[binaryName] !== "./dist/cli/main.js")
+  if (packageJson.bin?.[binaryName] !== "dist/cli/main.js")
     throw new Error("Packed package has no correctly mapped cydetix binary.");
   const globalInstalledRoot = path.join(
     globalPrefix,

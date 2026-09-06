@@ -132,7 +132,9 @@ const externalConsistent =
 const scorecard = await optionalEvidence("scorecard.json", {
   state: "not_checked",
   checksRun: 0,
-  limitations: ["OpenSSF Scorecard tooling or an addressable public repository was unavailable."],
+  limitations: [
+    "No exact-commit OpenSSF Scorecard result was supplied to this local release-preparation run.",
+  ],
 });
 const crossPlatform = await optionalEvidence("cross-platform.json", {
   state: "not_checked",

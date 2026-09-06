@@ -5,10 +5,12 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+## [0.6.0-alpha.2] - 2026-09-06
+
 ### Changed
 
-- Finalized the previously unpublished product/package/primary binary as the unscoped Cydetix /
-  `cydetix` identity and removed all unpublished candidate aliases and config names.
+- Finalized the product/package/primary binary as the unscoped Cydetix / `cydetix` identity and
+  removed all pre-release candidate aliases and config names.
 - Added scan-first zero-config current-project UX, concise decision output, post-scan agent
   discovery with one consent prompt, explicit setup status/verify/remove modes, six adapters, and a
   version-pinned durable MCP model.
@@ -16,10 +18,13 @@ package; report and rule schemas are versioned independently.
   `cydetix_scan`, `cydetix_fix`, and `cydetix_explain` as the minimal MCP surface.
 - Added trigger-selection, setup/reconfiguration/removal, transactional config validation/rollback,
   MCP protocol, intent-boundary, and packed `npm exec`/global launcher regression coverage.
+- Aligned package, CLI, plugin, pinned integration, repository, and release-candidate metadata at
+  `0.6.0-alpha.2` after `cydetix@0.6.0-alpha.1` became available on npm.
+- Made release-report validation fail closed when evidence names a different package version, and
+  removed a stale tracked alpha.1 tarball from the public source tree.
 
-No publication is authorized. The exact npm lookup returned E404 on 2026-09-06 and limited
-exact-name web searches found no obvious match. Neither observation establishes ownership or
-trademark clearance.
+The existing npm package does not establish product-name exclusivity or trademark clearance. No such
+clearance is claimed.
 
 ## [0.6.0-alpha.1] - 2026-09-05
 

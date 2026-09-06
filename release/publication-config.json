@@ -3,18 +3,21 @@
   "decision": "IDENTITY_REQUESTED_PUBLICATION_BLOCKED",
   "productName": "Cydetix",
   "npmPackageName": "cydetix",
-  "githubRepository": null,
+  "githubRepository": "shakeriamin21/cydetix",
   "cliCommand": "cydetix",
-  "version": "0.6.0-alpha.1",
-  "tagCandidate": "v0.6.0-alpha.1",
+  "version": "0.6.0-alpha.2",
+  "tagCandidate": "v0.6.0-alpha.2",
   "npmDistTag": "alpha",
-  "npmPackageRegistration": "AVAILABLE_UNREGISTERED",
+  "npmPackageRegistration": "EXISTS",
   "npmAvailabilityCheckedAt": "2026-09-06",
-  "npmAvailabilityEvidence": "npm view cydetix --json returned E404 from registry.npmjs.org",
+  "npmAvailabilityEvidence": "npm view cydetix --json returned cydetix@0.6.0-alpha.1 from registry.npmjs.org; alpha.2 is not published",
   "nameMarketConflict": "LIMITED_SEARCH_NO_OBVIOUS_EXACT_MATCH_LEGAL_REVIEW_PENDING",
   "trademarkClearance": "NOT_CLAIMED",
   "npmTrustedPublisher": "NOT_CONFIGURED",
   "githubEnvironment": "release",
   "privateVulnerabilityReporting": "NOT_CONFIGURED",
-  "approvedHistoryAuthorEmailSha256": []
+  "approvedHistoryAuthorEmailSha256": [
+  "c17e937df082f74192111bb52b7274d3d1f5657005c23c793e9e10637f601a96",
+  "6d2d413f66d0c163ae32890d341b3acb3259b2cd8dd52bed87b6b6fa8506ed65"]
+
 }

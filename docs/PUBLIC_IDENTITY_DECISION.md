@@ -8,7 +8,7 @@ The final requested public identity is:
 - tagline: **Security for AI-built software.**
 - npm package: `cydetix`
 - CLI binary: `cydetix`
-- intended repository name: `cydetix`
+- GitHub repository: `shakeriamin21/cydetix`
 - primary Agent Skill/plugin ID: `cydetix`
 - MCP server: **Cydetix**
 - public MCP tools: `cydetix_scan`, `cydetix_fix`, and `cydetix_explain`
@@ -18,13 +18,13 @@ IDs remain unchanged because they identify security semantics, not product brand
 
 ## npm evidence
 
-`npm view cydetix --json` queried `https://registry.npmjs.org/cydetix` on 2026-09-06 and returned
-`E404 Not Found`. No exact registered package was visible at that time.
+`npm view cydetix --json` queried the npm registry on 2026-09-06 and returned the existing public
+package `cydetix@0.6.0-alpha.1`. Both `alpha` and `latest` pointed to that version at the time of
+the check.
 
-This does not reserve the name, establish npm ownership, authorize publication, or guarantee that
-npm will permit registration. The exact query must be repeated immediately before an authorized
-first publish. Any collision or protected-name result is a stop condition; no scoped fallback is
-approved.
+This confirms package registration, not product-name exclusivity, trademark clearance, or authority
+to publish a later version. The exact query must be repeated before an authorized release. No scoped
+fallback is approved.
 
 ## Market and legal evidence
 
@@ -35,6 +35,7 @@ confusion analysis has been completed. No exclusivity is claimed.
 
 ## Publication decision
 
-No publication is authorized. Repository ownership, npm registration, Trusted Publishing, protected
-release environment, hosted validation, live registry UX, and legal/brand review remain external
-gates. The source identity may advance to GitHub bootstrap only after the local handoff gates pass.
+`cydetix@0.6.0-alpha.1` is public. This alpha.2 preparation does not authorize or perform another
+publication. npm Trusted Publishing, protected release-environment controls, hosted validation,
+private vulnerability reporting, and legal/brand review remain fail-closed gates unless separately
+verified and approved.

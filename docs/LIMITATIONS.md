@@ -56,16 +56,16 @@ compliant.
   `NOT_RUN` until the approved public repository executes them.
 - Node.js support is limited to 22.18+ in the 22.x line and 24.11+ in the 24.x line; only Node 24.15
   was observed locally, while the six-case Node/OS CI matrix remains unobserved here.
-- OpenSSF Scorecard remains `NOT_CHECKED` because there is no addressable public repository. A
-  pinned workflow is prepared, but configured is not executed. Public artifact/SBOM attestations and
-  npm OIDC provenance likewise remain unexecuted; bit-for-bit reproducibility is not claimed.
-- npm Trusted Publishing is configured from an existing package's settings. If the approved npm
-  coordinate is new, a separately authorized first-package bootstrap is required before the OIDC
-  release workflow can publish later versions; no token fallback is present in the workflow.
-- The requested public identity is Cydetix and the candidate unscoped npm/CLI name is `cydetix`. An
-  exact registry lookup returned `E404` on 2026-09-06, but this source tree does not reserve or own
-  that coordinate. Limited exact-name searches found no obvious active match; formal brand/legal
-  review remains pending, and no exclusivity or trademark clearance is claimed.
+- OpenSSF Scorecard and the hosted matrix are not re-executed by local release preparation. The
+  pinned release workflow checks their exact-commit state before publication. Public artifact/SBOM
+  attestations and alpha.2 npm OIDC provenance remain unexecuted; bit-for-bit reproducibility is not
+  claimed.
+- npm Trusted Publishing must be configured from the existing package's settings for the exact
+  repository, workflow, and `release` environment. No token fallback is present in the workflow, and
+  local preparation does not prove the external setting is configured.
+- The public identity is Cydetix and the unscoped npm/CLI name is `cydetix`. An exact registry
+  lookup returned the public `cydetix@0.6.0-alpha.1` package on 2026-09-06. Registration does not
+  provide brand/legal review, exclusivity, or trademark clearance; none is claimed.
 - Setup adapters and the Codex plugin validate locally. Host-controlled implicit tool selection,
   remote plugin installation, Copilot CLI MCP consumption, marketplace acceptance, and live npm
   behavior are not claimed until their external tests execute.

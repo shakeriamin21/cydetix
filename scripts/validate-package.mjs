@@ -73,7 +73,7 @@ if (manifest.unpackedSize > 2_500_000)
 const packageJson = JSON.parse(await readFile(path.resolve("package.json"), "utf8"));
 if (packageJson.name !== "cydetix")
   throw new Error("Package name must be the unscoped cydetix identity.");
-if (JSON.stringify(packageJson.bin) !== JSON.stringify({ cydetix: "./dist/cli/main.js" }))
+if (JSON.stringify(packageJson.bin) !== JSON.stringify({ cydetix: "dist/cli/main.js" }))
   throw new Error("Package must expose exactly one cydetix binary at the compiled CLI path.");
 const readme = await readFile(path.resolve("README.md"), "utf8");
 if (!readme.startsWith("# Cydetix\n\nSecurity for AI-built software.\n\n## Quick Start\n"))
