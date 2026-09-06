@@ -119,14 +119,14 @@ databases are exhaustive or that dependency functions are reachable.
 
 ## Current public distribution gate
 
-The current-tree audit passes over 674 tracked and non-ignored files with no personal path, private
+The current-tree audit passes over 666 tracked and non-ignored files with no personal path, private
 email, forbidden artifact, binary, or earlier-candidate-brand issue. Independent Gitleaks 8.30.1
-scans pass for both the current public-tree export and the one-commit history after nine synthetic
+scans pass for both the current public-tree export and the reviewed history after synthetic
 fixture/schema findings in each applicable scope were reviewed and fully redacted. The deterministic
-Git-history metadata audit still fails because the existing commit author email has not been placed
-on the explicit public allowlist; Cydetix does not silently approve or rewrite it.
+Git-history metadata audit passes for four commits against the two preserved, explicitly approved
+author-email hashes; the audit stores hashes rather than public email addresses.
 
-The alpha.2 package allowlist has 320 entries, 297,150 packed bytes, 1,874,312 unpacked bytes, no
+The alpha.3 package allowlist has 320 entries, 297,437 packed bytes, 1,875,499 unpacked bytes, no
 lifecycle scripts, and exactly one `cydetix` binary. Isolated npm-exec and global-prefix
 installation exercise version/help/default scan/setup/status/SAFE fix/machine output/MCP paths
 successfully. The isolated plugin archive validates one skill. Self-scan has zero active and 28
@@ -134,9 +134,11 @@ dated fixture-suppressed findings; npm audit reports zero vulnerabilities; onlin
 findings across 214 resolved identities; CycloneDX, SARIF, schemas, remediation, license, and
 workflow-security gates pass.
 
-The exact npm lookup returned the existing public `cydetix@0.6.0-alpha.1` package on 2026-09-06.
-That establishes registration, not trademark clearance or authorization for alpha.2. Hosted
-Windows/Linux/macOS CI, the external Action consumer, CodeQL, Scorecard, GitHub security settings,
-attestations, and Trusted Publishing are not re-executed or proven by local preparation. Generated
-checksums and manifests must be regenerated from a clean approved commit before any separately
-authorized release.
+The exact npm lookup returned the existing public `cydetix@0.6.0-alpha.1` package on 2026-09-06. The
+alpha.2 GitHub Actions attempt stopped at `validate:publication-config` and did not publish to npm;
+alpha.3 is also not published. Registration does not establish trademark clearance or release
+authorization. The maintainer-provided configuration records npm Trusted Publishing and private
+vulnerability reporting as configured, but local preparation does not prove an OIDC publication or
+rerun hosted Windows/Linux/macOS CI, the external Action consumer, CodeQL, Scorecard, attestations,
+or GitHub settings. Generated checksums and manifests must be regenerated from a clean approved
+commit before any separately authorized release.

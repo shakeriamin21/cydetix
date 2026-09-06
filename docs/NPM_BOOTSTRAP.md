@@ -26,8 +26,9 @@ Require a clean public commit, hosted OS matrix, sandbox job, repository securit
 package/plugin/skill/MCP gates, SBOM, manifest, and checksums. Use the `alpha` dist-tag and do not
 add a long-lived npm token to the workflow.
 
-Only after the npm settings are independently confirmed may release metadata say Trusted Publishing
-is configured. Preparing or dry-running alpha.2 does not prove that an OIDC publication succeeded.
+The alpha.3 publication metadata records the maintainer-provided state that Trusted Publishing is
+configured. The alpha.2 workflow stopped before publication, and preparing or dry-running alpha.3
+does not prove that an OIDC publication succeeded.
 
 References: [npm Trusted Publishers](https://docs.npmjs.com/trusted-publishers/),
 [dist-tags](https://docs.npmjs.com/adding-dist-tags-to-packages/), and

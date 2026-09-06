@@ -35,7 +35,8 @@ confusion analysis has been completed. No exclusivity is claimed.
 
 ## Publication decision
 
-`cydetix@0.6.0-alpha.1` is public. This alpha.2 preparation does not authorize or perform another
-publication. npm Trusted Publishing, protected release-environment controls, hosted validation,
-private vulnerability reporting, and legal/brand review remain fail-closed gates unless separately
-verified and approved.
+`cydetix@0.6.0-alpha.1` is public. The tagged alpha.2 GitHub Actions attempt stopped at
+`validate:publication-config` and did not publish to npm. This alpha.3 preparation records the
+maintainer-provided state that npm Trusted Publishing and private vulnerability reporting are
+configured, but does not authorize or perform publication. Hosted validation and legal/brand review
+remain fail-closed gates unless separately verified and approved.

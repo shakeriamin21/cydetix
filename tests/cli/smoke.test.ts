@@ -36,7 +36,7 @@ describe("CLI smoke contract", () => {
   it("reports the version", () => {
     const result = runCli("version");
     expect(result.status).toBe(0);
-    expect(result.stdout).toBe("0.6.0-alpha.2\n");
+    expect(result.stdout).toBe("0.6.0-alpha.3\n");
     expect(result.stderr).toBe("");
   });
 

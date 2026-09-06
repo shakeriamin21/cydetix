@@ -31,8 +31,10 @@ npm install -g cydetix
 cydetix
 ```
 
-The current source is the `0.6.0-alpha.2` release candidate. The existing public npm package is
-`cydetix@0.6.0-alpha.1`; this preparation does not publish alpha.2 or create a GitHub release.
+The current source is the `0.6.0-alpha.3` replacement release candidate. The existing public npm
+package is `cydetix@0.6.0-alpha.1`; the tagged alpha.2 GitHub Actions attempt stopped at publication
+configuration validation and did not publish to npm. This preparation does not publish alpha.3 or
+create a GitHub release.
 
 ## What the default command does
 
@@ -93,7 +95,7 @@ entries. Repeated setup is idempotent.
 Configured MCP launchers pin the exact package version used during setup:
 
 ```text
-cydetix@0.6.0-alpha.2
+cydetix@0.6.0-alpha.3
 ```
 
 This avoids silently executing an arbitrary future release. The tradeoff is that offline startup
@@ -168,7 +170,7 @@ cydetix doctor
 Specific execution can be requested when troubleshooting npm cache behavior:
 
 ```bash
-npx cydetix@0.6.0-alpha.2
+npx cydetix@0.6.0-alpha.3
 ```
 
 ## Security and limitations

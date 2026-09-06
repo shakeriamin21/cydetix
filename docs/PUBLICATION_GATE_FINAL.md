@@ -2,8 +2,9 @@
 
 Checked: 2026-09-06
 
-`cydetix@0.6.0-alpha.1` already exists on npm. This alpha.2 preparation does not publish, push, tag,
-or create a GitHub release.
+`cydetix@0.6.0-alpha.1` exists on npm. The tagged alpha.2 GitHub Actions attempt failed at
+`validate:publication-config` before npm publication. This alpha.3 preparation does not publish,
+push, create or modify tags, or create a GitHub release.
 
 ## Identity state
 
@@ -15,7 +16,7 @@ or create a GitHub release.
 | Obvious exact-name web collision  | NOT_FOUND_IN_LIMITED_SEARCH | Four exact-name queries returned no results     |
 | Trademark/exclusivity clearance   | NOT_CLAIMED                 | No legal conclusion was performed               |
 | Scoped fallback                   | FORBIDDEN                   | A different identity requires explicit approval |
-| Alpha.2 publication authorization | NOT_GRANTED                 | This preparation explicitly forbids publication |
+| Alpha.3 publication authorization | NOT_GRANTED                 | This preparation explicitly forbids publication |
 
 ## Local preparation gates
 

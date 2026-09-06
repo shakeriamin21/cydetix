@@ -5,7 +5,26 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+## [0.6.0-alpha.3] - 2026-09-06
+
+### Changed
+
+- Prepared `0.6.0-alpha.3` as the replacement candidate after the tagged alpha.2 GitHub Actions
+  attempt stopped at `validate:publication-config` before npm publication.
+- Synchronized the package, lockfile, CLI version, Codex plugin, pinned skill/MCP launchers, tests,
+  release notes, and publication metadata at `0.6.0-alpha.3` without changing security-engine,
+  remediation, sandbox, or reporting behavior.
+- Recorded the maintainer-provided state that npm Trusted Publishing and GitHub private
+  vulnerability reporting are configured, while retaining the fail-closed name-review gate.
+
+The npm registry still contains only `cydetix@0.6.0-alpha.1`; alpha.2 was not published. Package
+registration and release preparation do not establish product-name exclusivity or trademark
+clearance, and neither is claimed.
+
 ## [0.6.0-alpha.2] - 2026-09-06
+
+The tagged GitHub Actions attempt for this version failed at `validate:publication-config` before
+npm publication. This version was not published to npm and is superseded by `0.6.0-alpha.3`.
 
 ### Changed
 
