@@ -1,0 +1,164 @@
+name: Release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions: {}
+
+jobs:
+  verify-release:
+    name: Verify exact release commit
+    runs-on: ubuntu-latest
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout tagged source without persisted credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up supported Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.11.0"
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts
+      - name: Require approved identity and private reporting
+        run: npm run validate:publication-config
+      - name: Require annotated tag, version, commit, changelog, and notes consistency
+        env:
+          VIBESHIELD_EXPECTED_TAG: ${{ github.ref_name }}
+        run: npm run validate:release-context
+      - name: Require successful exact-commit hosted CI
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run validate:hosted-workflow -- ci.yml
+      - name: Require successful exact-commit OpenSSF run
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run validate:hosted-workflow -- scorecard.yml
+      - name: Reject unsanitized reachable history
+        run: npm run audit:history -- --enforce
+      - name: Pull reviewed immutable sandbox and secret-scanner images
+        shell: bash
+        run: |
+          docker pull node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b
+          docker pull ghcr.io/gitleaks/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f
+      - name: Independently scan complete history
+        shell: bash
+        run: |
+          mkdir -p .vibeshield/evidence
+          docker run --rm --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges --pids-limit 128 --memory 512m --cpus 1 \
+            --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/repo,readonly" \
+            --mount "type=bind,source=$PWD/.vibeshield/evidence,target=/evidence" \
+            ghcr.io/gitleaks/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f \
+            git /repo --redact=100 --report-format json --report-path /evidence/gitleaks.json \
+            --no-banner --no-color --exit-code 0 --timeout 180
+          node scripts/validate-gitleaks-report.mjs .vibeshield/evidence/gitleaks.json
+      - name: Run npm advisory gate
+        run: npm run audit
+      - name: Run complete verification with mandatory sandbox tests
+        env:
+          VIBESHIELD_SANDBOX_IMAGE: sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b
+        run: npm run verify
+      - name: Run explicit online OSV gate
+        run: npm run validate:online-osv
+      - name: Build exact release artifacts and manifest
+        env:
+          VIBESHIELD_HISTORICAL_TESTS_STATE: PASS
+          VIBESHIELD_RELEASE_DIR: release-bundle
+          VIBESHIELD_HOSTED_CI_STATE: PASS
+          VIBESHIELD_SANDBOX_REGRESSION_STATE: PASS
+          VIBESHIELD_SELF_SCAN_STATE: PASS
+          VIBESHIELD_SUPPLY_CHAIN_STATE: PASS
+          VIBESHIELD_NPM_AUDIT_STATE: PASS
+          VIBESHIELD_SKILLS_STATE: PASS
+          VIBESHIELD_SCHEMAS_STATE: PASS
+          VIBESHIELD_SARIF_STATE: PASS
+          VIBESHIELD_CYCLONEDX_STATE: PASS
+          VIBESHIELD_LICENSE_AUDIT_STATE: PASS
+          VIBESHIELD_WORKFLOW_SECURITY_STATE: PASS
+          VIBESHIELD_OPENSSF_STATE: PASS
+        run: npm run release:artifacts
+      - name: Smoke-test the exact release tarball
+        shell: bash
+        run: |
+          tarball="$(find release-bundle -maxdepth 1 -name '*.tgz' -print -quit)"
+          test -n "$tarball"
+          VIBESHIELD_PACKAGE_TARBALL="$tarball" npm run validate:install
+      - name: Validate the exact plugin archive
+        env:
+          VIBESHIELD_RELEASE_DIR: release-bundle
+        run: npm run validate:packed-plugin
+      - name: Upload verified release bundle
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: release-bundle-${{ github.sha }}
+          path: release-bundle/
+          if-no-files-found: error
+          retention-days: 7
+
+  publish:
+    name: Publish approved prerelease
+    needs: verify-release
+    runs-on: ubuntu-latest
+    environment: release
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
+    steps:
+      - name: Checkout tagged release metadata
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Set up npm registry for trusted publishing
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.11.0"
+          registry-url: "https://registry.npmjs.org"
+      - name: Require a Trusted Publishing-capable npm CLI
+        run: >-
+          node -e "const {execFileSync}=require('node:child_process'); const
+          [major,minor]=execFileSync('npm',['--version'],{encoding:'utf8'}).trim().split('.').map(Number);
+          if(major<11||(major===11&&minor<5))process.exit(1)"
+      - name: Download exact verified bundle
+        uses: actions/download-artifact@70fc10c6e5e1ce46ad2ea6f2b72d43f7d47b13c3 # v8.0.0
+        with:
+          name: release-bundle-${{ github.sha }}
+          path: release-bundle
+      - name: Verify every downloaded checksum
+        working-directory: release-bundle
+        run: sha256sum --check SHA256SUMS
+      - name: Attest distributable artifacts
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: |
+            release-bundle/*.tgz
+            release-bundle/*.tar.gz
+            release-bundle/*.json
+            release-bundle/SHA256SUMS
+      - name: Attest CycloneDX SBOM for the npm tarball
+        uses: actions/attest@1e69f48acb82d1966a394da916b4c1698aa569d6 # v4.2.2
+        with:
+          subject-path: release-bundle/*.tgz
+          sbom-path: release-bundle/vibeshield.cdx.json
+      - name: Create a non-public draft GitHub prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          title="$(node -p "JSON.parse(require('fs').readFileSync('release/publication-config.json')).productName + ' v' + require('./package.json').version")"
+          gh release create "$GITHUB_REF_NAME" release-bundle/* --verify-tag --draft --prerelease \
+            --title "$title" --notes-file "docs/releases/$GITHUB_REF_NAME.md"
+      - name: Publish approved prerelease through npm OIDC
+        shell: bash
+        run: npm publish release-bundle/*.tgz --access public --tag alpha --ignore-scripts
+      - name: Publish the prepared GitHub prerelease
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release edit "$GITHUB_REF_NAME" --draft=false --prerelease

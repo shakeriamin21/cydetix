@@ -1,0 +1,105 @@
+{
+  "schemaVersion": "1.0.0",
+  "corpusId": "owasp-benchmark-python-0-1",
+  "immutableRevision": "f1291485808b66e20ddb6b01b10dc71b3df8c8ba",
+  "counts": {
+    "total": 3,
+    "languageCompatible": 3,
+    "ruleCompatible": 0,
+    "executed": 0,
+    "truePositive": 0,
+    "falsePositive": 0,
+    "trueNegative": 0,
+    "falseNegative": 0,
+    "unknown": 0,
+    "unsupported": 0,
+    "notApplicable": 3,
+    "duplicate": 0,
+    "needsDomainContext": 0
+  },
+  "metrics": {
+    "limitations": [
+      "Precision is unavailable without adjudicated positives.",
+      "Recall, false-positive rate, specificity, F1, and Youden are withheld for incomplete labels."
+    ]
+  },
+  "perRule": [
+    {
+      "ruleId": "AS-PASSWORD-001",
+      "counts": {
+        "total": 1,
+        "languageCompatible": 1,
+        "ruleCompatible": 0,
+        "executed": 0,
+        "truePositive": 0,
+        "falsePositive": 0,
+        "trueNegative": 0,
+        "falseNegative": 0,
+        "unknown": 0,
+        "unsupported": 0,
+        "notApplicable": 1,
+        "duplicate": 0,
+        "needsDomainContext": 0
+      },
+      "metrics": {
+        "limitations": [
+          "Precision is unavailable without adjudicated positives.",
+          "Recall, false-positive rate, specificity, F1, and Youden are withheld for incomplete labels."
+        ]
+      }
+    },
+    {
+      "ruleId": "AS-SESSION-001",
+      "counts": {
+        "total": 2,
+        "languageCompatible": 2,
+        "ruleCompatible": 0,
+        "executed": 0,
+        "truePositive": 0,
+        "falsePositive": 0,
+        "trueNegative": 0,
+        "falseNegative": 0,
+        "unknown": 0,
+        "unsupported": 0,
+        "notApplicable": 2,
+        "duplicate": 0,
+        "needsDomainContext": 0
+      },
+      "metrics": {
+        "limitations": [
+          "Precision is unavailable without adjudicated positives.",
+          "Recall, false-positive rate, specificity, F1, and Youden are withheld for incomplete labels."
+        ]
+      }
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "BenchmarkTest00007",
+      "ruleId": "AS-PASSWORD-001",
+      "path": "testcode/BenchmarkTest00007.py",
+      "languageCompatible": true,
+      "ruleCompatible": false,
+      "disposition": "NOT_APPLICABLE",
+      "rationale": "A generic weak-hash benchmark does not prove password credential storage, which is an AS-PASSWORD-001 prerequisite."
+    },
+    {
+      "caseId": "BenchmarkTest00064",
+      "ruleId": "AS-SESSION-001",
+      "path": "testcode/BenchmarkTest00064.py",
+      "languageCompatible": true,
+      "ruleCompatible": false,
+      "disposition": "NOT_APPLICABLE",
+      "rationale": "The benchmark labels an arbitrary cookie, while InvariantSec claims only authenticated session-cookie configuration. Excluded as NOT_APPLICABLE."
+    },
+    {
+      "caseId": "BenchmarkTest00337",
+      "ruleId": "AS-SESSION-001",
+      "path": "testcode/BenchmarkTest00337.py",
+      "languageCompatible": true,
+      "ruleCompatible": false,
+      "disposition": "NOT_APPLICABLE",
+      "rationale": "Secure arbitrary-cookie control case is outside the authenticated session-cookie invariant."
+    }
+  ]
+}

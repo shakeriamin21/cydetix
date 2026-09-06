@@ -1,0 +1,7 @@
+dist/
+coverage/
+node_modules/
+fixtures/**/expected/*.json
+package-lock.json
+rules/*.json
+schemas/*.json

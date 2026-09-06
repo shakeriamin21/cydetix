@@ -1,0 +1,9 @@
+{
+  "name": "invariantsec-oauth-secure-fixture",
+  "private": true,
+  "dependencies": {
+    "express": "5.1.0",
+    "express-session": "1.18.2",
+    "oauth4webapi": "3.8.1"
+  }
+}

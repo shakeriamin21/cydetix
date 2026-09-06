@@ -1,0 +1,8 @@
+{
+  "name": "invariantsec-refresh-rotation-fixture",
+  "private": true,
+  "dependencies": {
+    "@prisma/client": "6.16.1",
+    "express": "5.1.0"
+  }
+}

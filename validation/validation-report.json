@@ -1,0 +1,606 @@
+{
+  "schemaVersion": "1.2.0",
+  "generatedAt": "2026-09-05T06:20:29.339Z",
+  "product": {
+    "name": "vibeshield",
+    "version": "0.6.0-alpha.1",
+    "evidenceOrigin": "INTERNAL_VERIFIED_EXPORT"
+  },
+  "verdict": "NOT_READY_FOR_PUBLIC_USE",
+  "checks": [
+    {
+      "id": "complete-test-suite",
+      "state": "executed_pass",
+      "evidence": "28 files and 125 tests passed; 0 files and 0 tests failed; 0 files and 0 tests skipped."
+    },
+    {
+      "id": "container-capability",
+      "state": "executed_pass",
+      "evidence": "VibeShield executed its hardened Linux launch probe against the locally present immutable image.",
+      "controls": [
+        "daemon response",
+        "Linux runtime",
+        "immutable local image",
+        "hardened launch probe"
+      ]
+    },
+    {
+      "id": "previously-gated-five",
+      "state": "executed_pass",
+      "evidence": "The five Phase 6 capability-gated integration tests all executed with the pinned image; skipped tests are not accepted as passes.",
+      "tests": [
+        "sanitizes host environment, isolates real host canaries, and uses an ephemeral workspace",
+        "denies DNS resolution, TCP connections, and HTTP/HTTPS requests",
+        "terminates a timed-out process tree and removes the container",
+        "enforces the aggregate captured-output bound",
+        "enforces the container PID bound"
+      ]
+    },
+    {
+      "id": "network-denial",
+      "state": "executed_pass",
+      "evidence": "An in-container command attempted DNS, TEST-NET TCP, HTTP, and HTTPS communication; every attempt was denied or timed out without connecting.",
+      "tests": ["denies DNS resolution, TCP connections, and HTTP/HTTPS requests"],
+      "controls": [
+        "--network none",
+        "in-container DNS",
+        "in-container TCP",
+        "in-container HTTP/HTTPS"
+      ]
+    },
+    {
+      "id": "environment-and-host-filesystem-isolation",
+      "state": "executed_pass",
+      "evidence": "Three synthetic host environment canaries plus synthetic host-temp and host-home file canaries were inaccessible in the workload.",
+      "tests": [
+        "sanitizes host environment, isolates real host canaries, and uses an ephemeral workspace"
+      ],
+      "controls": [
+        "fixed environment allowlist",
+        "no home mount",
+        "no host-temp mount",
+        "ephemeral copy"
+      ]
+    },
+    {
+      "id": "container-privilege-controls",
+      "state": "executed_pass",
+      "evidence": "The workload observed UID/GID 65534, zero capability sets, NoNewPrivs=1, seccomp mode 2, read-only root, no Docker/SSH socket, and the configured cgroup limits.",
+      "tests": ["receives non-root, privilege, socket, mount, rootfs, and cgroup controls"],
+      "controls": [
+        "non-root",
+        "all capabilities dropped",
+        "no-new-privileges",
+        "runtime-default seccomp",
+        "read-only root",
+        "no privileged/socket mounts"
+      ]
+    },
+    {
+      "id": "resource-and-timeout-enforcement",
+      "state": "executed_pass",
+      "evidence": "Infinite/child-process, output, PID, page-touched memory, and tmpfs exhaustion fixtures reached the intended enforced bounds.",
+      "tests": [
+        "terminates a timed-out process tree and removes the container",
+        "enforces the aggregate captured-output bound",
+        "enforces the container PID bound",
+        "enforces memory and temporary-filesystem exhaustion bounds"
+      ],
+      "controls": [
+        "timeout",
+        "container kill/removal",
+        "2 MB output",
+        "128 PIDs",
+        "512 MiB memory+swap",
+        "64 MiB /tmp"
+      ]
+    },
+    {
+      "id": "ephemeral-workspace-cleanup",
+      "state": "executed_pass",
+      "evidence": "Sandbox-created files did not reach the source repository, and temporary copies were removed after success, command failure, and timeout.",
+      "tests": ["cleans isolated workspaces after success, failure, and timeout"]
+    },
+    {
+      "id": "ordinary-scan-hostile-repository",
+      "state": "executed_pass",
+      "evidence": "Ordinary scanning/remediation did not execute hostile package scripts, formatter configuration, hooks, prompt instructions, or metacharacter paths.",
+      "tests": [
+        "terminates deterministically without executing repository instructions or scripts",
+        "does not execute hostile repository scripts, formatters, hooks, or instructions"
+      ]
+    },
+    {
+      "id": "no-silent-local-fallback",
+      "state": "executed_pass",
+      "evidence": "After a successful container run, simulated Docker unavailability returned SANDBOX_UNAVAILABLE and left the local marker absent.",
+      "tests": [
+        "does not silently fall back after a successful sandbox run",
+        "rejects mutable images and never falls back when Docker is unavailable"
+      ]
+    },
+    {
+      "id": "authorized-command-entrypoint-integrity",
+      "state": "executed_pass",
+      "evidence": "A synthetic image entrypoint that returned success was cleared; the authorized command executed and its exit code 83 was preserved.",
+      "tests": ["clears an image entrypoint that would intercept the authorized command"]
+    },
+    {
+      "id": "sandboxed-remediation-end-to-end",
+      "state": "executed_pass",
+      "evidence": "The vulnerable session fixture moved PROVEN_INSECURE to PROVEN_SECURE, returned APPLIED_VERIFIED, and a second run made no changes.",
+      "tests": ["completes a sandbox-verified SAFE remediation and remains idempotent"]
+    },
+    {
+      "id": "sandboxed-verification-rollback",
+      "state": "executed_pass",
+      "evidence": "A structurally valid SAFE edit followed by a failing sandbox command returned ROLLBACK_SUCCEEDED; source and unrelated-user-file hashes were unchanged.",
+      "tests": ["rolls back a sandbox verification failure without touching user changes"]
+    },
+    {
+      "id": "sandbox-output-redaction-and-terminal-safety",
+      "state": "executed_pass",
+      "evidence": "Synthetic stdout, stderr, thrown-error, JSON, timeout, excessive-output, ANSI, OSC-title, carriage-return, and backspace payloads did not appear in retained sandbox results; text rendering escaped controls.",
+      "tests": [
+        "does not retain secret-shaped or terminal-control sandbox output",
+        "redacts configuration parser failures and terminal control bytes",
+        "neutralizes terminal control characters in untrusted report fields"
+      ]
+    },
+    {
+      "id": "external-validation-regression",
+      "state": "skipped_capability",
+      "evidence": "Fresh corpus acquisition was attempted from both official GitHub repositories, but host DNS resolution was unavailable; prior pinned results were not relabeled as a fresh run."
+    },
+    {
+      "id": "stored-external-results-integrity",
+      "state": "executed_pass",
+      "evidence": "Stored pinned results remain NodeGoat 6 TP / 0 FP / 1 NEEDS_DOMAIN_CONTEXT and BenchmarkPython 3 NOT_APPLICABLE / 0 TN; denominators were not broadened."
+    },
+    {
+      "id": "benchmark-python-applicability",
+      "state": "not_applicable",
+      "evidence": "The three reviewed BenchmarkPython cases do not satisfy current VibeShield rule prerequisites and remain excluded from TN counts."
+    },
+    {
+      "id": "self-scan",
+      "state": "executed_pass",
+      "evidence": "333 files and 1686856 bytes scanned; 0 active and 28 suppressed findings."
+    },
+    {
+      "id": "packed-install-current-host",
+      "state": "executed_pass",
+      "evidence": "Packed tarball installed with lifecycle scripts disabled; version, doctor, scan, remediation dry-run, and 4 packaged Agent Skills passed on win32-x64."
+    },
+    {
+      "id": "packed-plugin",
+      "state": "executed_pass",
+      "evidence": "The isolated plugin archive validated its manifest, required files, portability checks, and 4 skills."
+    },
+    {
+      "id": "release-artifacts",
+      "state": "executed_pass",
+      "evidence": "The internal source release artifacts were generated and hashed before export; those hashes are superseded by the VibeShield rename and are not current release hashes."
+    },
+    {
+      "id": "private-baseline-tag",
+      "state": "executed_pass",
+      "evidence": "The internal baseline tag was verified before export. No private tag or Git object was imported into the public repository."
+    },
+    {
+      "id": "cross-platform-ci-matrix",
+      "state": "not_checked",
+      "evidence": "The six-case GitHub-hosted Windows/Linux/macOS matrix is configured but was not remotely executed in this local gate."
+    },
+    {
+      "id": "openssf-scorecard",
+      "state": "not_checked",
+      "evidence": "OpenSSF Scorecard tooling or an addressable public repository was unavailable."
+    }
+  ],
+  "corpora": [
+    {
+      "schemaVersion": "1.0.0",
+      "corpusId": "owasp-nodegoat-c5cb68a",
+      "immutableRevision": "c5cb68a7084e4ae7dcc60e6a98768720a81841e8",
+      "counts": {
+        "total": 7,
+        "languageCompatible": 7,
+        "ruleCompatible": 7,
+        "executed": 6,
+        "truePositive": 6,
+        "falsePositive": 0,
+        "trueNegative": 0,
+        "falseNegative": 0,
+        "unknown": 0,
+        "unsupported": 0,
+        "notApplicable": 0,
+        "duplicate": 0,
+        "needsDomainContext": 1
+      },
+      "metrics": {
+        "precision": {
+          "value": 1,
+          "numerator": 6,
+          "denominator": 6
+        },
+        "limitations": [
+          "Recall, false-positive rate, specificity, F1, and Youden are withheld for incomplete labels."
+        ]
+      },
+      "perRule": [
+        {
+          "ruleId": "AS-CI-001",
+          "counts": {
+            "total": 6,
+            "languageCompatible": 6,
+            "ruleCompatible": 6,
+            "executed": 6,
+            "truePositive": 6,
+            "falsePositive": 0,
+            "trueNegative": 0,
+            "falseNegative": 0,
+            "unknown": 0,
+            "unsupported": 0,
+            "notApplicable": 0,
+            "duplicate": 0,
+            "needsDomainContext": 0
+          },
+          "metrics": {
+            "precision": {
+              "value": 1,
+              "numerator": 6,
+              "denominator": 6
+            },
+            "limitations": [
+              "Recall, false-positive rate, specificity, F1, and Youden are withheld for incomplete labels."
+            ]
+          }
+        },
+        {
+          "ruleId": "AS-SECRET-001",
+          "counts": {
+            "total": 1,
+            "languageCompatible": 1,
+            "ruleCompatible": 1,
+            "executed": 0,
+            "truePositive": 0,
+            "falsePositive": 0,
+            "trueNegative": 0,
+            "falseNegative": 0,
+            "unknown": 0,
+            "unsupported": 0,
+            "notApplicable": 0,
+            "duplicate": 0,
+            "needsDomainContext": 1
+          },
+          "metrics": {
+            "limitations": [
+              "Precision is unavailable without adjudicated positives.",
+              "Recall, false-positive rate, specificity, F1, and Youden are withheld for incomplete labels."
+            ]
+          }
+        }
+      ],
+      "cases": [
+        {
+          "caseId": "nodegoat-action-cache-e2e",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/e2e-test.yml",
+          "line": 26,
+          "languageCompatible": true,
+          "ruleCompatible": true,
+          "disposition": "TRUE_POSITIVE",
+          "rationale": "External actions/cache is pinned to mutable tag v2."
+        },
+        {
+          "caseId": "nodegoat-action-checkout-e2e",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/e2e-test.yml",
+          "line": 16,
+          "languageCompatible": true,
+          "ruleCompatible": true,
+          "disposition": "TRUE_POSITIVE",
+          "rationale": "External actions/checkout is pinned to mutable tag v2, not a full immutable commit SHA."
+        },
+        {
+          "caseId": "nodegoat-action-setup-e2e",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/e2e-test.yml",
+          "line": 21,
+          "languageCompatible": true,
+          "ruleCompatible": true,
+          "disposition": "TRUE_POSITIVE",
+          "rationale": "External actions/setup-node is pinned to mutable tag v1."
+        },
+        {
+          "caseId": "nodegoat-action-upload-e2e",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/e2e-test.yml",
+          "line": 58,
+          "languageCompatible": true,
+          "ruleCompatible": true,
+          "disposition": "TRUE_POSITIVE",
+          "rationale": "External actions/upload-artifact is pinned to mutable tag v2."
+        },
+        {
+          "caseId": "nodegoat-action-checkout-lint",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/lint.yml",
+          "line": 16,
+          "languageCompatible": true,
+          "ruleCompatible": true,
+          "disposition": "TRUE_POSITIVE",
+          "rationale": "External actions/checkout is pinned to mutable tag v2."
+        },
+        {
+          "caseId": "nodegoat-action-setup-lint",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/lint.yml",
+          "line": 21,
+          "languageCompatible": true,
+          "ruleCompatible": true,
+          "disposition": "TRUE_POSITIVE",
+          "rationale": "External actions/setup-node is pinned to mutable tag v1."
+        },
+        {
+          "caseId": "nodegoat-development-tls-key",
+          "ruleId": "AS-SECRET-001",
+          "path": "artifacts/cert/server.key",
+          "line": 1,
+          "languageCompatible": true,
+          "ruleCompatible": true,
+          "disposition": "NEEDS_DOMAIN_CONTEXT",
+          "rationale": "A private key is committed and loaded by server.js, but project context is required to determine whether this deliberately vulnerable training key protects any meaningful deployment identity."
+        }
+      ]
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "corpusId": "owasp-benchmark-python-0-1",
+      "immutableRevision": "f1291485808b66e20ddb6b01b10dc71b3df8c8ba",
+      "counts": {
+        "total": 3,
+        "languageCompatible": 3,
+        "ruleCompatible": 0,
+        "executed": 0,
+        "truePositive": 0,
+        "falsePositive": 0,
+        "trueNegative": 0,
+        "falseNegative": 0,
+        "unknown": 0,
+        "unsupported": 0,
+        "notApplicable": 3,
+        "duplicate": 0,
+        "needsDomainContext": 0
+      },
+      "metrics": {
+        "limitations": [
+          "Precision is unavailable without adjudicated positives.",
+          "Recall, false-positive rate, specificity, F1, and Youden are withheld for incomplete labels."
+        ]
+      },
+      "perRule": [
+        {
+          "ruleId": "AS-PASSWORD-001",
+          "counts": {
+            "total": 1,
+            "languageCompatible": 1,
+            "ruleCompatible": 0,
+            "executed": 0,
+            "truePositive": 0,
+            "falsePositive": 0,
+            "trueNegative": 0,
+            "falseNegative": 0,
+            "unknown": 0,
+            "unsupported": 0,
+            "notApplicable": 1,
+            "duplicate": 0,
+            "needsDomainContext": 0
+          },
+          "metrics": {
+            "limitations": [
+              "Precision is unavailable without adjudicated positives.",
+              "Recall, false-positive rate, specificity, F1, and Youden are withheld for incomplete labels."
+            ]
+          }
+        },
+        {
+          "ruleId": "AS-SESSION-001",
+          "counts": {
+            "total": 2,
+            "languageCompatible": 2,
+            "ruleCompatible": 0,
+            "executed": 0,
+            "truePositive": 0,
+            "falsePositive": 0,
+            "trueNegative": 0,
+            "falseNegative": 0,
+            "unknown": 0,
+            "unsupported": 0,
+            "notApplicable": 2,
+            "duplicate": 0,
+            "needsDomainContext": 0
+          },
+          "metrics": {
+            "limitations": [
+              "Precision is unavailable without adjudicated positives.",
+              "Recall, false-positive rate, specificity, F1, and Youden are withheld for incomplete labels."
+            ]
+          }
+        }
+      ],
+      "cases": [
+        {
+          "caseId": "BenchmarkTest00007",
+          "ruleId": "AS-PASSWORD-001",
+          "path": "testcode/BenchmarkTest00007.py",
+          "languageCompatible": true,
+          "ruleCompatible": false,
+          "disposition": "NOT_APPLICABLE",
+          "rationale": "A generic weak-hash benchmark does not prove password credential storage, which is an AS-PASSWORD-001 prerequisite."
+        },
+        {
+          "caseId": "BenchmarkTest00064",
+          "ruleId": "AS-SESSION-001",
+          "path": "testcode/BenchmarkTest00064.py",
+          "languageCompatible": true,
+          "ruleCompatible": false,
+          "disposition": "NOT_APPLICABLE",
+          "rationale": "The benchmark labels an arbitrary cookie, while VibeShield claims only authenticated session-cookie configuration. Excluded as NOT_APPLICABLE."
+        },
+        {
+          "caseId": "BenchmarkTest00337",
+          "ruleId": "AS-SESSION-001",
+          "path": "testcode/BenchmarkTest00337.py",
+          "languageCompatible": true,
+          "ruleCompatible": false,
+          "disposition": "NOT_APPLICABLE",
+          "rationale": "Secure arbitrary-cookie control case is outside the authenticated session-cookie invariant."
+        }
+      ]
+    }
+  ],
+  "sandbox": {
+    "schemaVersion": "1.0.0",
+    "runner": "CONTAINER_SANDBOX",
+    "state": "AVAILABLE_HARDENED",
+    "runtime": "docker",
+    "runtimeVersion": "29.0.1",
+    "imageIdentity": "sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
+    "controls": {
+      "network": "DENIED",
+      "environment": "SANITIZED",
+      "workspace": "EPHEMERAL_COPY",
+      "containerRoot": "READ_ONLY",
+      "dockerSocketMounted": false,
+      "sshAgentMounted": false,
+      "privileged": false,
+      "nonRoot": true,
+      "noNewPrivileges": true,
+      "capabilitiesDropped": true,
+      "seccomp": "RUNTIME_DEFAULT",
+      "memoryMegabytes": 512,
+      "cpuCount": 1,
+      "pidLimit": 128,
+      "outputBytes": 2000000,
+      "timeoutMilliseconds": 120000
+    },
+    "limitations": [
+      "Container isolation reduces risk but is not claimed as a perfect security boundary.",
+      "A network-denied, non-root, read-only, resource-bounded launch probe executed successfully.",
+      "The runtime-default seccomp profile is used; host runtime enforcement remains trusted."
+    ]
+  },
+  "environment": {
+    "nodeVersion": "v24.15.0",
+    "npmVersion": "11.12.1",
+    "platform": "win32-x64",
+    "docker": {
+      "clientVersion": "29.0.1",
+      "serverVersion": "29.0.1",
+      "serverPlatform": "Docker Desktop 4.52.0 (210994)",
+      "osType": "linux",
+      "architecture": "x86_64",
+      "kernelVersion": "6.18.33.2-microsoft-standard-WSL2",
+      "cgroupVersion": "2",
+      "defaultRuntime": "runc",
+      "securityOptions": ["name=seccomp,profile=builtin", "name=cgroupns"],
+      "imageIdentity": "sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
+      "imageRepoDigests": [
+        "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b"
+      ]
+    },
+    "wsl": {
+      "version": "2.7.13.0",
+      "backend": "WSL2"
+    }
+  },
+  "scorecard": {
+    "state": "not_checked",
+    "checksRun": 0,
+    "limitations": [
+      "OpenSSF Scorecard tooling or an addressable public repository was unavailable."
+    ]
+  },
+  "tests": {
+    "filesPassed": 28,
+    "testsPassed": 125,
+    "filesFailed": 0,
+    "testsFailed": 0,
+    "filesSkipped": 0,
+    "testsSkipped": 0
+  },
+  "performance": [
+    {
+      "name": "source-100",
+      "wallMilliseconds": 353.95760000000007,
+      "peakRssBytes": 84414464,
+      "files": 101,
+      "filesPerSecond": 285.3449113679152,
+      "graphNodes": 101,
+      "graphEdges": 0,
+      "findings": 0
+    },
+    {
+      "name": "source-1000",
+      "wallMilliseconds": 1798.9575999999997,
+      "peakRssBytes": 102674432,
+      "files": 1001,
+      "filesPerSecond": 556.4333478454412,
+      "graphNodes": 1001,
+      "graphEdges": 0,
+      "findings": 0
+    },
+    {
+      "name": "source-5000",
+      "wallMilliseconds": 7170.952400000002,
+      "peakRssBytes": 156942336,
+      "files": 5001,
+      "filesPerSecond": 697.3969036525747,
+      "graphNodes": 5001,
+      "graphEdges": 0,
+      "findings": 0
+    },
+    {
+      "name": "dependencies-2500",
+      "wallMilliseconds": 764.2078999999976,
+      "peakRssBytes": 296542208,
+      "files": 2,
+      "filesPerSecond": 2.617088883797205,
+      "graphNodes": 1,
+      "graphEdges": 0,
+      "findings": 0
+    },
+    {
+      "name": "workflows-250",
+      "wallMilliseconds": 362.58669999999984,
+      "peakRssBytes": 305860608,
+      "files": 250,
+      "filesPerSecond": 689.4902653627398,
+      "graphNodes": 1,
+      "graphEdges": 0,
+      "findings": 0
+    }
+  ],
+  "package": {
+    "state": "SUPERSEDED_BY_PUBLIC_RENAME",
+    "evidence": "Pre-rename package hashes were intentionally removed. Public artifacts must be regenerated from a committed VibeShield source tree."
+  },
+  "supportScope": [
+    "TypeScript/JavaScript and narrow Python static analysis",
+    "Express/Prisma cross-file reasoning",
+    "npm lockfile and GitHub Actions supply-chain analysis",
+    "one deterministic SAFE session-cookie remediation adapter"
+  ],
+  "knownLimitations": [
+    "Docker/container isolation depends on Docker Desktop, WSL2, the Linux kernel, runc, runtime-default seccomp, and the explicitly trusted image; container escape resistance is not proven.",
+    "The trusted image may define its own baseline environment; VibeShield adds only CI=true and VIBESHIELD_VERIFICATION=1 and does not forward arbitrary host variables.",
+    "The writable ephemeral workspace bind mount has no independent byte quota; rootfs and tmpfs writes are bounded, but workspace disk exhaustion depends on host/runtime capacity.",
+    "The bounded text-only copy excludes archives, binary assets, ignored dependencies, files over the copy limit, and repositories over 10,000 copied files or 100 MB.",
+    "OWASP BenchmarkPython cases were outside current rule applicability and were not counted as negatives.",
+    "NodeGoat labels are findings-only manual adjudications, so recall is withheld.",
+    "The GitHub-hosted cross-platform CI matrix was not executed from this local-only checkout.",
+    "OpenSSF Scorecard tooling or an addressable public repository was unavailable."
+  ]
+}

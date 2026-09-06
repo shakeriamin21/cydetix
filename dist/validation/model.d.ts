@@ -1,0 +1,335 @@
+import { z } from "zod";
+export declare const validationSchemaVersion: "1.0.0";
+export declare const corpusKindSchema: z.ZodEnum<{
+    INTERNAL_REGRESSION: "INTERNAL_REGRESSION";
+    EXTERNAL_LABELED: "EXTERNAL_LABELED";
+    DELIBERATELY_VULNERABLE_APPLICATION: "DELIBERATELY_VULNERABLE_APPLICATION";
+    REAL_WORLD_BENIGN: "REAL_WORLD_BENIGN";
+    HOSTILE_REPOSITORY: "HOSTILE_REPOSITORY";
+    PERFORMANCE: "PERFORMANCE";
+}>;
+export declare const validationDispositionSchema: z.ZodEnum<{
+    UNKNOWN: "UNKNOWN";
+    UNSUPPORTED: "UNSUPPORTED";
+    NOT_APPLICABLE: "NOT_APPLICABLE";
+    TRUE_POSITIVE: "TRUE_POSITIVE";
+    FALSE_POSITIVE: "FALSE_POSITIVE";
+    TRUE_NEGATIVE: "TRUE_NEGATIVE";
+    FALSE_NEGATIVE: "FALSE_NEGATIVE";
+    EXPECTED_BUT_DUPLICATE: "EXPECTED_BUT_DUPLICATE";
+    NEEDS_DOMAIN_CONTEXT: "NEEDS_DOMAIN_CONTEXT";
+}>;
+export declare const corpusManifestSchema: z.ZodObject<{
+    schemaVersion: z.ZodLiteral<"1.0.0">;
+    corpusId: z.ZodString;
+    kind: z.ZodEnum<{
+        INTERNAL_REGRESSION: "INTERNAL_REGRESSION";
+        EXTERNAL_LABELED: "EXTERNAL_LABELED";
+        DELIBERATELY_VULNERABLE_APPLICATION: "DELIBERATELY_VULNERABLE_APPLICATION";
+        REAL_WORLD_BENIGN: "REAL_WORLD_BENIGN";
+        HOSTILE_REPOSITORY: "HOSTILE_REPOSITORY";
+        PERFORMANCE: "PERFORMANCE";
+    }>;
+    source: z.ZodURL;
+    sourceProject: z.ZodString;
+    immutableRevision: z.ZodString;
+    license: z.ZodString;
+    language: z.ZodArray<z.ZodString>;
+    frameworks: z.ZodArray<z.ZodString>;
+    acquisition: z.ZodEnum<{
+        GIT_PINNED_COMMIT: "GIT_PINNED_COMMIT";
+        RELEASE_ARCHIVE_CHECKSUM: "RELEASE_ARCHIVE_CHECKSUM";
+    }>;
+    checksum: z.ZodOptional<z.ZodString>;
+    labelsPath: z.ZodString;
+    inventory: z.ZodObject<{
+        totalCases: z.ZodNumber;
+        languageCompatible: z.ZodNumber;
+        candidateRuleCompatible: z.ZodNumber;
+        evaluatedCases: z.ZodNumber;
+    }, z.core.$strict>;
+    notes: z.ZodArray<z.ZodString>;
+}, z.core.$strict>;
+export declare const expectedValidationCaseSchema: z.ZodObject<{
+    caseId: z.ZodString;
+    ruleId: z.ZodString;
+    path: z.ZodString;
+    line: z.ZodOptional<z.ZodNumber>;
+    expected: z.ZodEnum<{
+        VULNERABLE: "VULNERABLE";
+        SECURE: "SECURE";
+    }>;
+    languageCompatible: z.ZodBoolean;
+    ruleCompatible: z.ZodBoolean;
+    expectedUnknown: z.ZodDefault<z.ZodBoolean>;
+    cwe: z.ZodOptional<z.ZodString>;
+    rationale: z.ZodString;
+}, z.core.$strict>;
+export declare const manualAdjudicationSchema: z.ZodObject<{
+    caseId: z.ZodString;
+    ruleId: z.ZodString;
+    path: z.ZodString;
+    line: z.ZodOptional<z.ZodNumber>;
+    disposition: z.ZodEnum<{
+        UNKNOWN: "UNKNOWN";
+        UNSUPPORTED: "UNSUPPORTED";
+        NOT_APPLICABLE: "NOT_APPLICABLE";
+        TRUE_POSITIVE: "TRUE_POSITIVE";
+        FALSE_POSITIVE: "FALSE_POSITIVE";
+        TRUE_NEGATIVE: "TRUE_NEGATIVE";
+        FALSE_NEGATIVE: "FALSE_NEGATIVE";
+        EXPECTED_BUT_DUPLICATE: "EXPECTED_BUT_DUPLICATE";
+        NEEDS_DOMAIN_CONTEXT: "NEEDS_DOMAIN_CONTEXT";
+    }>;
+    reviewer: z.ZodString;
+    rationale: z.ZodString;
+    projectDocumentation: z.ZodOptional<z.ZodURL>;
+}, z.core.$strict>;
+export declare const corpusLabelsSchema: z.ZodObject<{
+    schemaVersion: z.ZodLiteral<"1.0.0">;
+    corpusId: z.ZodString;
+    expectedCases: z.ZodArray<z.ZodObject<{
+        caseId: z.ZodString;
+        ruleId: z.ZodString;
+        path: z.ZodString;
+        line: z.ZodOptional<z.ZodNumber>;
+        expected: z.ZodEnum<{
+            VULNERABLE: "VULNERABLE";
+            SECURE: "SECURE";
+        }>;
+        languageCompatible: z.ZodBoolean;
+        ruleCompatible: z.ZodBoolean;
+        expectedUnknown: z.ZodDefault<z.ZodBoolean>;
+        cwe: z.ZodOptional<z.ZodString>;
+        rationale: z.ZodString;
+    }, z.core.$strict>>;
+    manualAdjudications: z.ZodArray<z.ZodObject<{
+        caseId: z.ZodString;
+        ruleId: z.ZodString;
+        path: z.ZodString;
+        line: z.ZodOptional<z.ZodNumber>;
+        disposition: z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            UNSUPPORTED: "UNSUPPORTED";
+            NOT_APPLICABLE: "NOT_APPLICABLE";
+            TRUE_POSITIVE: "TRUE_POSITIVE";
+            FALSE_POSITIVE: "FALSE_POSITIVE";
+            TRUE_NEGATIVE: "TRUE_NEGATIVE";
+            FALSE_NEGATIVE: "FALSE_NEGATIVE";
+            EXPECTED_BUT_DUPLICATE: "EXPECTED_BUT_DUPLICATE";
+            NEEDS_DOMAIN_CONTEXT: "NEEDS_DOMAIN_CONTEXT";
+        }>;
+        reviewer: z.ZodString;
+        rationale: z.ZodString;
+        projectDocumentation: z.ZodOptional<z.ZodURL>;
+    }, z.core.$strict>>;
+    completeness: z.ZodEnum<{
+        PARTIAL: "PARTIAL";
+        COMPLETE_APPLICABLE_LABELS: "COMPLETE_APPLICABLE_LABELS";
+        FINDINGS_ONLY: "FINDINGS_ONLY";
+    }>;
+}, z.core.$strict>;
+export declare const metricSchema: z.ZodObject<{
+    value: z.ZodNumber;
+    numerator: z.ZodNumber;
+    denominator: z.ZodNumber;
+}, z.core.$strict>;
+export declare const validationCountsSchema: z.ZodObject<{
+    total: z.ZodNumber;
+    languageCompatible: z.ZodNumber;
+    ruleCompatible: z.ZodNumber;
+    executed: z.ZodNumber;
+    truePositive: z.ZodNumber;
+    falsePositive: z.ZodNumber;
+    trueNegative: z.ZodNumber;
+    falseNegative: z.ZodNumber;
+    unknown: z.ZodNumber;
+    unsupported: z.ZodNumber;
+    notApplicable: z.ZodNumber;
+    duplicate: z.ZodNumber;
+    needsDomainContext: z.ZodNumber;
+}, z.core.$strict>;
+export declare const validationMetricsSchema: z.ZodObject<{
+    precision: z.ZodOptional<z.ZodObject<{
+        value: z.ZodNumber;
+        numerator: z.ZodNumber;
+        denominator: z.ZodNumber;
+    }, z.core.$strict>>;
+    recall: z.ZodOptional<z.ZodObject<{
+        value: z.ZodNumber;
+        numerator: z.ZodNumber;
+        denominator: z.ZodNumber;
+    }, z.core.$strict>>;
+    falsePositiveRate: z.ZodOptional<z.ZodObject<{
+        value: z.ZodNumber;
+        numerator: z.ZodNumber;
+        denominator: z.ZodNumber;
+    }, z.core.$strict>>;
+    specificity: z.ZodOptional<z.ZodObject<{
+        value: z.ZodNumber;
+        numerator: z.ZodNumber;
+        denominator: z.ZodNumber;
+    }, z.core.$strict>>;
+    f1: z.ZodOptional<z.ZodObject<{
+        value: z.ZodNumber;
+        numerator: z.ZodNumber;
+        denominator: z.ZodNumber;
+    }, z.core.$strict>>;
+    youden: z.ZodOptional<z.ZodObject<{
+        value: z.ZodNumber;
+        numerator: z.ZodNumber;
+        denominator: z.ZodNumber;
+    }, z.core.$strict>>;
+    limitations: z.ZodArray<z.ZodString>;
+}, z.core.$strict>;
+export declare const validationCaseResultSchema: z.ZodObject<{
+    caseId: z.ZodString;
+    ruleId: z.ZodString;
+    path: z.ZodString;
+    line: z.ZodOptional<z.ZodNumber>;
+    languageCompatible: z.ZodBoolean;
+    ruleCompatible: z.ZodBoolean;
+    disposition: z.ZodEnum<{
+        UNKNOWN: "UNKNOWN";
+        UNSUPPORTED: "UNSUPPORTED";
+        NOT_APPLICABLE: "NOT_APPLICABLE";
+        TRUE_POSITIVE: "TRUE_POSITIVE";
+        FALSE_POSITIVE: "FALSE_POSITIVE";
+        TRUE_NEGATIVE: "TRUE_NEGATIVE";
+        FALSE_NEGATIVE: "FALSE_NEGATIVE";
+        EXPECTED_BUT_DUPLICATE: "EXPECTED_BUT_DUPLICATE";
+        NEEDS_DOMAIN_CONTEXT: "NEEDS_DOMAIN_CONTEXT";
+    }>;
+    rationale: z.ZodString;
+}, z.core.$strict>;
+export declare const corpusValidationResultSchema: z.ZodObject<{
+    schemaVersion: z.ZodLiteral<"1.0.0">;
+    corpusId: z.ZodString;
+    immutableRevision: z.ZodString;
+    counts: z.ZodObject<{
+        total: z.ZodNumber;
+        languageCompatible: z.ZodNumber;
+        ruleCompatible: z.ZodNumber;
+        executed: z.ZodNumber;
+        truePositive: z.ZodNumber;
+        falsePositive: z.ZodNumber;
+        trueNegative: z.ZodNumber;
+        falseNegative: z.ZodNumber;
+        unknown: z.ZodNumber;
+        unsupported: z.ZodNumber;
+        notApplicable: z.ZodNumber;
+        duplicate: z.ZodNumber;
+        needsDomainContext: z.ZodNumber;
+    }, z.core.$strict>;
+    metrics: z.ZodObject<{
+        precision: z.ZodOptional<z.ZodObject<{
+            value: z.ZodNumber;
+            numerator: z.ZodNumber;
+            denominator: z.ZodNumber;
+        }, z.core.$strict>>;
+        recall: z.ZodOptional<z.ZodObject<{
+            value: z.ZodNumber;
+            numerator: z.ZodNumber;
+            denominator: z.ZodNumber;
+        }, z.core.$strict>>;
+        falsePositiveRate: z.ZodOptional<z.ZodObject<{
+            value: z.ZodNumber;
+            numerator: z.ZodNumber;
+            denominator: z.ZodNumber;
+        }, z.core.$strict>>;
+        specificity: z.ZodOptional<z.ZodObject<{
+            value: z.ZodNumber;
+            numerator: z.ZodNumber;
+            denominator: z.ZodNumber;
+        }, z.core.$strict>>;
+        f1: z.ZodOptional<z.ZodObject<{
+            value: z.ZodNumber;
+            numerator: z.ZodNumber;
+            denominator: z.ZodNumber;
+        }, z.core.$strict>>;
+        youden: z.ZodOptional<z.ZodObject<{
+            value: z.ZodNumber;
+            numerator: z.ZodNumber;
+            denominator: z.ZodNumber;
+        }, z.core.$strict>>;
+        limitations: z.ZodArray<z.ZodString>;
+    }, z.core.$strict>;
+    perRule: z.ZodArray<z.ZodObject<{
+        ruleId: z.ZodString;
+        counts: z.ZodObject<{
+            total: z.ZodNumber;
+            languageCompatible: z.ZodNumber;
+            ruleCompatible: z.ZodNumber;
+            executed: z.ZodNumber;
+            truePositive: z.ZodNumber;
+            falsePositive: z.ZodNumber;
+            trueNegative: z.ZodNumber;
+            falseNegative: z.ZodNumber;
+            unknown: z.ZodNumber;
+            unsupported: z.ZodNumber;
+            notApplicable: z.ZodNumber;
+            duplicate: z.ZodNumber;
+            needsDomainContext: z.ZodNumber;
+        }, z.core.$strict>;
+        metrics: z.ZodObject<{
+            precision: z.ZodOptional<z.ZodObject<{
+                value: z.ZodNumber;
+                numerator: z.ZodNumber;
+                denominator: z.ZodNumber;
+            }, z.core.$strict>>;
+            recall: z.ZodOptional<z.ZodObject<{
+                value: z.ZodNumber;
+                numerator: z.ZodNumber;
+                denominator: z.ZodNumber;
+            }, z.core.$strict>>;
+            falsePositiveRate: z.ZodOptional<z.ZodObject<{
+                value: z.ZodNumber;
+                numerator: z.ZodNumber;
+                denominator: z.ZodNumber;
+            }, z.core.$strict>>;
+            specificity: z.ZodOptional<z.ZodObject<{
+                value: z.ZodNumber;
+                numerator: z.ZodNumber;
+                denominator: z.ZodNumber;
+            }, z.core.$strict>>;
+            f1: z.ZodOptional<z.ZodObject<{
+                value: z.ZodNumber;
+                numerator: z.ZodNumber;
+                denominator: z.ZodNumber;
+            }, z.core.$strict>>;
+            youden: z.ZodOptional<z.ZodObject<{
+                value: z.ZodNumber;
+                numerator: z.ZodNumber;
+                denominator: z.ZodNumber;
+            }, z.core.$strict>>;
+            limitations: z.ZodArray<z.ZodString>;
+        }, z.core.$strict>;
+    }, z.core.$strict>>;
+    cases: z.ZodArray<z.ZodObject<{
+        caseId: z.ZodString;
+        ruleId: z.ZodString;
+        path: z.ZodString;
+        line: z.ZodOptional<z.ZodNumber>;
+        languageCompatible: z.ZodBoolean;
+        ruleCompatible: z.ZodBoolean;
+        disposition: z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            UNSUPPORTED: "UNSUPPORTED";
+            NOT_APPLICABLE: "NOT_APPLICABLE";
+            TRUE_POSITIVE: "TRUE_POSITIVE";
+            FALSE_POSITIVE: "FALSE_POSITIVE";
+            TRUE_NEGATIVE: "TRUE_NEGATIVE";
+            FALSE_NEGATIVE: "FALSE_NEGATIVE";
+            EXPECTED_BUT_DUPLICATE: "EXPECTED_BUT_DUPLICATE";
+            NEEDS_DOMAIN_CONTEXT: "NEEDS_DOMAIN_CONTEXT";
+        }>;
+        rationale: z.ZodString;
+    }, z.core.$strict>>;
+}, z.core.$strict>;
+export type CorpusManifest = z.infer<typeof corpusManifestSchema>;
+export type CorpusLabels = z.infer<typeof corpusLabelsSchema>;
+export type ValidationCounts = z.infer<typeof validationCountsSchema>;
+export type ValidationMetrics = z.infer<typeof validationMetricsSchema>;
+export type ValidationCaseResult = z.infer<typeof validationCaseResultSchema>;
+export type CorpusValidationResult = z.infer<typeof corpusValidationResultSchema>;
+//# sourceMappingURL=model.d.ts.map

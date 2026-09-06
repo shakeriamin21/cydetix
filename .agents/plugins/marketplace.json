@@ -1,0 +1,20 @@
+{
+  "name": "vibeshield",
+  "interface": {
+    "displayName": "VibeShield"
+  },
+  "plugins": [
+    {
+      "name": "vibeshield",
+      "source": {
+        "source": "local",
+        "path": "./plugins/vibeshield"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Productivity"
+    }
+  ]
+}

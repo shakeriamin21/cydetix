@@ -1,0 +1,41 @@
+{
+  "schemaVersion": "1.0.0",
+  "corpusId": "owasp-benchmark-python-0-1",
+  "expectedCases": [
+    {
+      "caseId": "BenchmarkTest00064",
+      "ruleId": "AS-SESSION-001",
+      "path": "testcode/BenchmarkTest00064.py",
+      "expected": "VULNERABLE",
+      "languageCompatible": true,
+      "ruleCompatible": false,
+      "expectedUnknown": false,
+      "cwe": "CWE-614",
+      "rationale": "The benchmark labels an arbitrary cookie, while InvariantSec claims only authenticated session-cookie configuration. Excluded as NOT_APPLICABLE."
+    },
+    {
+      "caseId": "BenchmarkTest00337",
+      "ruleId": "AS-SESSION-001",
+      "path": "testcode/BenchmarkTest00337.py",
+      "expected": "SECURE",
+      "languageCompatible": true,
+      "ruleCompatible": false,
+      "expectedUnknown": false,
+      "cwe": "CWE-614",
+      "rationale": "Secure arbitrary-cookie control case is outside the authenticated session-cookie invariant."
+    },
+    {
+      "caseId": "BenchmarkTest00007",
+      "ruleId": "AS-PASSWORD-001",
+      "path": "testcode/BenchmarkTest00007.py",
+      "expected": "VULNERABLE",
+      "languageCompatible": true,
+      "ruleCompatible": false,
+      "expectedUnknown": false,
+      "cwe": "CWE-328",
+      "rationale": "A generic weak-hash benchmark does not prove password credential storage, which is an AS-PASSWORD-001 prerequisite."
+    }
+  ],
+  "manualAdjudications": [],
+  "completeness": "PARTIAL"
+}

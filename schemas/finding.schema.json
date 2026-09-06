@@ -1,0 +1,414 @@
+{
+  "$id": "https://vibeshield.dev/schemas/v1/finding.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "fingerprint": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "ruleId": {
+      "type": "string"
+    },
+    "ruleVersion": {
+      "type": "string"
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "reachability": {
+      "type": "string",
+      "enum": [
+        "unknown",
+        "unlikely",
+        "possible",
+        "likely",
+        "confirmed"
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "category": {
+      "type": "string"
+    },
+    "affectedComponent": {
+      "type": "string"
+    },
+    "location": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "start": {
+          "type": "object",
+          "properties": {
+            "line": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            },
+            "column": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "offset": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "line",
+            "column",
+            "offset"
+          ],
+          "additionalProperties": false
+        },
+        "end": {
+          "type": "object",
+          "properties": {
+            "line": {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            },
+            "column": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "offset": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "line",
+            "column",
+            "offset"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "path",
+        "start",
+        "end"
+      ],
+      "additionalProperties": false
+    },
+    "evidence": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "minLength": 1
+          },
+          "excerpt": {
+            "type": "string",
+            "minLength": 1
+          },
+          "redacted": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "message",
+          "excerpt",
+          "redacted"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "evidencePath": {
+      "minItems": 2,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "route",
+              "call",
+              "identity",
+              "enforcement",
+              "resource",
+              "credential",
+              "authentication",
+              "session",
+              "token",
+              "oauth",
+              "validation",
+              "revocation",
+              "password-reset",
+              "dependency",
+              "advisory",
+              "workflow",
+              "secret"
+            ]
+          },
+          "irId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "start": {
+                "type": "object",
+                "properties": {
+                  "line": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "column": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "offset": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "line",
+                  "column",
+                  "offset"
+                ],
+                "additionalProperties": false
+              },
+              "end": {
+                "type": "object",
+                "properties": {
+                  "line": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "column": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "offset": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "line",
+                  "column",
+                  "offset"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "path",
+              "start",
+              "end"
+            ],
+            "additionalProperties": false
+          },
+          "message": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "order",
+          "kind",
+          "irId",
+          "location",
+          "message"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "securityInvariant": {
+      "type": "string"
+    },
+    "attackPrerequisite": {
+      "type": "string"
+    },
+    "impact": {
+      "type": "string"
+    },
+    "standards": {
+      "type": "object",
+      "properties": {
+        "cwe": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^CWE-\\d+$"
+          }
+        },
+        "owaspTop10": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^A\\d{2}:2025$"
+          }
+        },
+        "asvs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^v5\\.0\\.0-\\d+\\.\\d+\\.\\d+$"
+          }
+        },
+        "nist": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "cwe",
+        "owaspTop10",
+        "asvs",
+        "nist"
+      ],
+      "additionalProperties": false
+    },
+    "remediation": {
+      "type": "string"
+    },
+    "autofix": {
+      "type": "string",
+      "enum": [
+        "SAFE",
+        "REVIEW_REQUIRED",
+        "ARCHITECTURAL"
+      ]
+    },
+    "fix": {
+      "type": "object",
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1
+        },
+        "startOffset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "endOffset": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "expectedTextSha256": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "replacement": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "path",
+        "startOffset",
+        "endOffset",
+        "expectedTextSha256",
+        "replacement",
+        "description"
+      ],
+      "additionalProperties": false
+    },
+    "verificationStatus": {
+      "type": "string",
+      "enum": [
+        "not_attempted",
+        "verified",
+        "failed"
+      ]
+    },
+    "suppression": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string"
+        },
+        "owner": {
+          "type": "string"
+        },
+        "expires": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))$"
+        }
+      },
+      "required": [
+        "reason",
+        "owner"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "fingerprint",
+    "ruleId",
+    "ruleVersion",
+    "severity",
+    "confidence",
+    "reachability",
+    "title",
+    "category",
+    "affectedComponent",
+    "location",
+    "evidence",
+    "securityInvariant",
+    "attackPrerequisite",
+    "impact",
+    "standards",
+    "remediation",
+    "autofix",
+    "verificationStatus"
+  ],
+  "additionalProperties": false
+}

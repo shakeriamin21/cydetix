@@ -1,0 +1,158 @@
+{
+  "$id": "https://vibeshield.dev/schemas/v1/sandbox-capability.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "runner": {
+      "type": "string",
+      "enum": [
+        "NO_EXECUTION",
+        "LOCAL_EXPLICIT",
+        "CONTAINER_SANDBOX"
+      ]
+    },
+    "state": {
+      "type": "string",
+      "enum": [
+        "AVAILABLE_HARDENED",
+        "AVAILABLE_DEGRADED",
+        "UNAVAILABLE",
+        "MISCONFIGURED"
+      ]
+    },
+    "runtime": {
+      "type": "string",
+      "minLength": 1
+    },
+    "runtimeVersion": {
+      "type": "string",
+      "maxLength": 256
+    },
+    "imageIdentity": {
+      "type": "string",
+      "maxLength": 512
+    },
+    "controls": {
+      "type": "object",
+      "properties": {
+        "network": {
+          "type": "string",
+          "enum": [
+            "DENIED",
+            "ALLOWED_EXPLICIT",
+            "NOT_ISOLATED"
+          ]
+        },
+        "environment": {
+          "type": "string",
+          "enum": [
+            "SANITIZED",
+            "HOST_INHERITED"
+          ]
+        },
+        "workspace": {
+          "type": "string",
+          "enum": [
+            "EPHEMERAL_COPY",
+            "PRIMARY_REPOSITORY"
+          ]
+        },
+        "containerRoot": {
+          "type": "string",
+          "enum": [
+            "READ_ONLY",
+            "WRITABLE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "dockerSocketMounted": {
+          "type": "boolean"
+        },
+        "sshAgentMounted": {
+          "type": "boolean"
+        },
+        "privileged": {
+          "type": "boolean"
+        },
+        "nonRoot": {
+          "type": "boolean"
+        },
+        "noNewPrivileges": {
+          "type": "boolean"
+        },
+        "capabilitiesDropped": {
+          "type": "boolean"
+        },
+        "seccomp": {
+          "type": "string",
+          "enum": [
+            "RUNTIME_DEFAULT",
+            "CUSTOM",
+            "UNAVAILABLE",
+            "NOT_APPLICABLE"
+          ]
+        },
+        "memoryMegabytes": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        },
+        "cpuCount": {
+          "type": "number",
+          "exclusiveMinimum": 0
+        },
+        "pidLimit": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        },
+        "outputBytes": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        },
+        "timeoutMilliseconds": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "network",
+        "environment",
+        "workspace",
+        "containerRoot",
+        "dockerSocketMounted",
+        "sshAgentMounted",
+        "privileged",
+        "nonRoot",
+        "noNewPrivileges",
+        "capabilitiesDropped",
+        "seccomp",
+        "outputBytes",
+        "timeoutMilliseconds"
+      ],
+      "additionalProperties": false
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "runner",
+    "state",
+    "runtime",
+    "controls",
+    "limitations"
+  ],
+  "additionalProperties": false
+}

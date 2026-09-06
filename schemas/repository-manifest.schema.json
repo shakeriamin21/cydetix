@@ -1,0 +1,161 @@
+{
+  "$id": "https://vibeshield.dev/schemas/v1/repository-manifest.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "root": {
+      "type": "string"
+    },
+    "filesExamined": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "bytesExamined": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "files": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "skipped": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string",
+            "enum": [
+              "binary",
+              "too_large",
+              "symlink",
+              "ignored",
+              "archive",
+              "depth_limit",
+              "unreadable",
+              "file_limit"
+            ]
+          }
+        },
+        "required": [
+          "path",
+          "reason"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "languages": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "frameworks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "packageManagers": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "lockfiles": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "applicationEntrypoints": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "apiRoutes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "authenticationLibraries": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ormAndDatabases": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "sessionAndTokenTechnology": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "oauthOidcProviders": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "infrastructure": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "ci": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "monorepoBoundaries": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "testFrameworks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    }
+  },
+  "required": [
+    "root",
+    "filesExamined",
+    "bytesExamined",
+    "files",
+    "skipped",
+    "languages",
+    "frameworks",
+    "packageManagers",
+    "lockfiles",
+    "applicationEntrypoints",
+    "apiRoutes",
+    "authenticationLibraries",
+    "ormAndDatabases",
+    "sessionAndTokenTechnology",
+    "oauthOidcProviders",
+    "infrastructure",
+    "ci",
+    "monorepoBoundaries",
+    "testFrameworks"
+  ],
+  "additionalProperties": false
+}

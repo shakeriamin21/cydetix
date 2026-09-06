@@ -1,0 +1,9 @@
+{
+  "name": "invariantsec-phase2-false-positive-traps",
+  "private": true,
+  "dependencies": {
+    "@prisma/client": "6.19.0",
+    "express": "5.1.0",
+    "jsonwebtoken": "9.0.2"
+  }
+}

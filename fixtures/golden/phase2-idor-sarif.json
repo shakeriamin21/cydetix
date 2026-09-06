@@ -1,0 +1,16 @@
+{
+  "version": "2.1.0",
+  "ruleId": "AS-AUTHZ-001",
+  "resultPath": "src/repository.ts",
+  "codeFlowPaths": [
+    "src/routes.ts",
+    "src/controller.ts",
+    "src/service.ts",
+    "src/controller.ts",
+    "src/controller.ts",
+    "src/service.ts",
+    "src/repository.ts",
+    "src/repository.ts"
+  ],
+  "evidencePathLength": 8
+}

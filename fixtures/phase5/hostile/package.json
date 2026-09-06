@@ -1,0 +1,8 @@
+{
+  "name": "phase5-hostile-repository",
+  "private": true,
+  "scripts": {
+    "test": "node -e \"require('fs').writeFileSync('repository-script-executed','bad')\"",
+    "format": "node -e \"require('fs').writeFileSync('formatter-executed','bad')\""
+  }
+}

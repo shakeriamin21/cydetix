@@ -1,0 +1,8 @@
+{
+  "name": "invariantsec-auth-false-positive-traps",
+  "private": true,
+  "dependencies": {
+    "express": "5.1.0",
+    "jsonwebtoken": "9.0.2"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "name": "invariantsec-fixture-typescript-secure",
+  "private": true,
+  "dependencies": {
+    "argon2": "0.0.0-fixture",
+    "cors": "0.0.0-fixture",
+    "express": "0.0.0-fixture",
+    "jsonwebtoken": "0.0.0-fixture"
+  }
+}

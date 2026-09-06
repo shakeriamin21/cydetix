@@ -1,0 +1,25 @@
+{
+  "name": "vibeshield",
+  "version": "0.6.0-alpha.1",
+  "description": "Deterministic project security analysis and policy-bounded remediation backed by the VibeShield CLI.",
+  "author": {
+    "name": "VibeShield contributors"
+  },
+  "license": "Apache-2.0",
+  "keywords": ["application-security", "authentication", "supply-chain", "sbom", "sarif"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "VibeShield",
+    "shortDescription": "Deterministic local security checks and safe fixes.",
+    "longDescription": "Check application security, authentication, authorization, dependencies, secrets, supply chain, and CI/CD with a local deterministic engine.",
+    "developerName": "VibeShield contributors",
+    "category": "Productivity",
+    "capabilities": [],
+    "defaultPrompt": [
+      "Check this project for security issues.",
+      "Is this authentication flow secure?",
+      "Fix the security issues that are safe to remediate."
+    ]
+  }
+}

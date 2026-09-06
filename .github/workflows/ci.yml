@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  workflow_dispatch:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        node: ["22.18.0", "24.11.0"]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout without persisted credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: ${{ matrix.node }}
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts
+      - name: Check dependency advisories
+        run: npm run audit
+      - name: Run complete verification gate
+        run: npm run verify
+      - name: Verify versions and release package allowlist
+        run: npm run validate:version && npm run validate:package
+      - name: Install and smoke-test the packed artifact
+        run: npm run validate:install
+      - name: Ensure generated runtime is committed and current
+        run: git diff --exit-code -- dist schemas rules
+      - name: Self-scan with dated fixture suppressions
+        run: node dist/cli/main.js ci . --format json --fail-on high
+      - name: Review package contents
+        run: npm run validate:package
+
+  action-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout without persisted credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Run local composite action
+        uses: ./
+        with:
+          path: fixtures/typescript/secure
+          fail-on: high
+          output: vibeshield.sarif
+      - name: Confirm SARIF was produced
+        shell: bash
+        run: test -s vibeshield.sarif
+
+  sandbox-linux:
+    name: Hosted Linux container sandbox
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout without persisted credentials
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - name: Set up Node.js
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24.11.0"
+      - name: Install locked dependencies without lifecycle scripts
+        run: npm ci --ignore-scripts
+      - name: Pull the reviewed immutable verification image
+        run: >-
+          docker pull node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b
+      - name: Execute every container sandbox integration test
+        env:
+          VIBESHIELD_SANDBOX_IMAGE: sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b
+        run: npm run test:sandbox

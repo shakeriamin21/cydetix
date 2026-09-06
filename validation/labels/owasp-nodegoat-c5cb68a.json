@@ -1,0 +1,71 @@
+{
+  "schemaVersion": "1.0.0",
+  "corpusId": "owasp-nodegoat-c5cb68a",
+  "expectedCases": [],
+  "manualAdjudications": [
+    {
+      "caseId": "nodegoat-action-checkout-e2e",
+      "ruleId": "AS-CI-001",
+      "path": ".github/workflows/e2e-test.yml",
+      "line": 16,
+      "disposition": "TRUE_POSITIVE",
+      "reviewer": "Phase 6 implementation review (not independent human)",
+      "rationale": "External actions/checkout is pinned to mutable tag v2, not a full immutable commit SHA."
+    },
+    {
+      "caseId": "nodegoat-action-setup-e2e",
+      "ruleId": "AS-CI-001",
+      "path": ".github/workflows/e2e-test.yml",
+      "line": 21,
+      "disposition": "TRUE_POSITIVE",
+      "reviewer": "Phase 6 implementation review (not independent human)",
+      "rationale": "External actions/setup-node is pinned to mutable tag v1."
+    },
+    {
+      "caseId": "nodegoat-action-cache-e2e",
+      "ruleId": "AS-CI-001",
+      "path": ".github/workflows/e2e-test.yml",
+      "line": 26,
+      "disposition": "TRUE_POSITIVE",
+      "reviewer": "Phase 6 implementation review (not independent human)",
+      "rationale": "External actions/cache is pinned to mutable tag v2."
+    },
+    {
+      "caseId": "nodegoat-action-upload-e2e",
+      "ruleId": "AS-CI-001",
+      "path": ".github/workflows/e2e-test.yml",
+      "line": 58,
+      "disposition": "TRUE_POSITIVE",
+      "reviewer": "Phase 6 implementation review (not independent human)",
+      "rationale": "External actions/upload-artifact is pinned to mutable tag v2."
+    },
+    {
+      "caseId": "nodegoat-action-checkout-lint",
+      "ruleId": "AS-CI-001",
+      "path": ".github/workflows/lint.yml",
+      "line": 16,
+      "disposition": "TRUE_POSITIVE",
+      "reviewer": "Phase 6 implementation review (not independent human)",
+      "rationale": "External actions/checkout is pinned to mutable tag v2."
+    },
+    {
+      "caseId": "nodegoat-action-setup-lint",
+      "ruleId": "AS-CI-001",
+      "path": ".github/workflows/lint.yml",
+      "line": 21,
+      "disposition": "TRUE_POSITIVE",
+      "reviewer": "Phase 6 implementation review (not independent human)",
+      "rationale": "External actions/setup-node is pinned to mutable tag v1."
+    },
+    {
+      "caseId": "nodegoat-development-tls-key",
+      "ruleId": "AS-SECRET-001",
+      "path": "artifacts/cert/server.key",
+      "line": 1,
+      "disposition": "NEEDS_DOMAIN_CONTEXT",
+      "reviewer": "Phase 6 implementation review (not independent human)",
+      "rationale": "A private key is committed and loaded by server.js, but project context is required to determine whether this deliberately vulnerable training key protects any meaningful deployment identity."
+    }
+  ],
+  "completeness": "FINDINGS_ONLY"
+}

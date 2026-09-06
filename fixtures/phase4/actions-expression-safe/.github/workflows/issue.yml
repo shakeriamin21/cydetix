@@ -1,0 +1,13 @@
+name: issue-title-safe
+on:
+  issues:
+    types: [opened]
+permissions:
+  contents: read
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+        run: printf '%s\n' "$ISSUE_TITLE"

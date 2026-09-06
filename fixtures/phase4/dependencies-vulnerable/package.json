@@ -1,0 +1,8 @@
+{
+  "name": "dependency-vulnerable-fixture",
+  "version": "1.0.0",
+  "dependencies": {
+    "direct-vuln": "1.0.0",
+    "parent-package": "2.0.0"
+  }
+}

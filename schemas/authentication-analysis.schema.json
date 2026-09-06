@@ -1,0 +1,695 @@
+{
+  "$id": "https://vibeshield.dev/schemas/v1/authentication-analysis.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "graphVersion": {
+      "type": "string",
+      "const": "2.0.0"
+    },
+    "operations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^authop:[a-f0-9]{16}$"
+          },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "CredentialInput",
+              "CredentialVerifier",
+              "AuthenticationSuccess",
+              "SessionCreate",
+              "SessionLookup",
+              "SessionRotate",
+              "SessionRevoke",
+              "SessionRevokeAll",
+              "SessionExpiry",
+              "JWTIssue",
+              "JWTValidate",
+              "JWTSign",
+              "JWTVerify",
+              "JWTDecodeWithoutVerify",
+              "JWKSResolve",
+              "ClaimValidate",
+              "TokenAccept",
+              "AccessTokenIssue",
+              "RefreshTokenIssue",
+              "RefreshTokenValidate",
+              "RefreshTokenRotate",
+              "RefreshTokenRevoke",
+              "PasswordChange",
+              "PasswordResetRequest",
+              "PasswordResetCredentialIssue",
+              "PasswordResetValidate",
+              "PasswordResetConsume",
+              "EmailVerificationIssue",
+              "EmailVerificationConsume",
+              "OAuthAuthorizationRequest",
+              "OAuthCallback",
+              "AuthorizationCodeExchange",
+              "PKCEVerifier",
+              "OAuthStateValidation",
+              "OIDCNonceValidation",
+              "OIDCIssuerValidation",
+              "OIDCAudienceValidation",
+              "MFAChallenge",
+              "MFAValidation",
+              "PrivilegeChange",
+              "ReauthenticationBoundary"
+            ]
+          },
+          "protocol": {
+            "type": "string",
+            "enum": [
+              "session",
+              "password-reset",
+              "jwt",
+              "refresh-token",
+              "oauth",
+              "oidc",
+              "mfa"
+            ]
+          },
+          "adapter": {
+            "type": "string",
+            "minLength": 1
+          },
+          "guarantee": {
+            "type": "string",
+            "minLength": 1
+          },
+          "functionSymbolId": {
+            "type": "string",
+            "pattern": "^symbol:[a-f0-9]{16}$"
+          },
+          "routeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^route:[a-f0-9]{16}$"
+            }
+          },
+          "location": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1
+              },
+              "start": {
+                "type": "object",
+                "properties": {
+                  "line": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "column": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "offset": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "line",
+                  "column",
+                  "offset"
+                ],
+                "additionalProperties": false
+              },
+              "end": {
+                "type": "object",
+                "properties": {
+                  "line": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "column": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  },
+                  "offset": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9007199254740991
+                  }
+                },
+                "required": [
+                  "line",
+                  "column",
+                  "offset"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "path",
+              "start",
+              "end"
+            ],
+            "additionalProperties": false
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "attributes": {
+            "type": "object",
+            "propertyNames": {
+              "type": "string"
+            },
+            "additionalProperties": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "id",
+          "kind",
+          "protocol",
+          "adapter",
+          "guarantee",
+          "routeIds",
+          "location",
+          "confidence",
+          "attributes"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "invariants": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "id": {
+            "type": "string",
+            "enum": [
+              "SESSION_ROTATES_AFTER_AUTHENTICATION",
+              "SESSION_INVALIDATED_ON_LOGOUT",
+              "PASSWORD_RESET_CREDENTIAL_PROTECTED",
+              "PASSWORD_RESET_TOKEN_SINGLE_USE",
+              "PASSWORD_RESET_INVALIDATES_RELEVANT_SESSIONS",
+              "JWT_SIGNATURE_VERIFIED",
+              "JWT_EXPECTED_ISSUER_VALIDATED",
+              "JWT_EXPECTED_AUDIENCE_VALIDATED",
+              "REFRESH_TOKEN_REPLAY_MITIGATED",
+              "OAUTH_STATE_VALIDATED",
+              "PKCE_REQUIRED_WHERE_APPLICABLE",
+              "OIDC_NONCE_VALIDATED_WHERE_APPLICABLE"
+            ]
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "protocol": {
+            "type": "string",
+            "enum": [
+              "session",
+              "password-reset",
+              "jwt",
+              "refresh-token",
+              "oauth",
+              "oidc",
+              "mfa"
+            ]
+          },
+          "prerequisites": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "requiredGraphPattern": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "CredentialInput",
+                "CredentialVerifier",
+                "AuthenticationSuccess",
+                "SessionCreate",
+                "SessionLookup",
+                "SessionRotate",
+                "SessionRevoke",
+                "SessionRevokeAll",
+                "SessionExpiry",
+                "JWTIssue",
+                "JWTValidate",
+                "JWTSign",
+                "JWTVerify",
+                "JWTDecodeWithoutVerify",
+                "JWKSResolve",
+                "ClaimValidate",
+                "TokenAccept",
+                "AccessTokenIssue",
+                "RefreshTokenIssue",
+                "RefreshTokenValidate",
+                "RefreshTokenRotate",
+                "RefreshTokenRevoke",
+                "PasswordChange",
+                "PasswordResetRequest",
+                "PasswordResetCredentialIssue",
+                "PasswordResetValidate",
+                "PasswordResetConsume",
+                "EmailVerificationIssue",
+                "EmailVerificationConsume",
+                "OAuthAuthorizationRequest",
+                "OAuthCallback",
+                "AuthorizationCodeExchange",
+                "PKCEVerifier",
+                "OAuthStateValidation",
+                "OIDCNonceValidation",
+                "OIDCIssuerValidation",
+                "OIDCAudienceValidation",
+                "MFAChallenge",
+                "MFAValidation",
+                "PrivilegeChange",
+                "ReauthenticationBoundary"
+              ]
+            }
+          },
+          "secureEvidence": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "insecureEvidence": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "unresolvedConditions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "severityIfViolated": {
+            "type": "string",
+            "enum": [
+              "info",
+              "low",
+              "medium",
+              "high",
+              "critical"
+            ]
+          },
+          "defaultConfidence": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "standards": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "source": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "control": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "relationship": {
+                  "type": "string",
+                  "enum": [
+                    "REQUIRED",
+                    "RECOMMENDED",
+                    "CONTEXT_DEPENDENT"
+                  ]
+                },
+                "url": {
+                  "type": "string",
+                  "format": "uri"
+                }
+              },
+              "required": [
+                "source",
+                "control",
+                "relationship",
+                "url"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "remediationClass": {
+            "type": "string",
+            "enum": [
+              "SAFE",
+              "REVIEW_REQUIRED",
+              "ARCHITECTURAL"
+            ]
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "id",
+          "name",
+          "protocol",
+          "prerequisites",
+          "requiredGraphPattern",
+          "secureEvidence",
+          "insecureEvidence",
+          "unresolvedConditions",
+          "severityIfViolated",
+          "defaultConfidence",
+          "standards",
+          "remediationClass"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "results": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "id": {
+            "type": "string",
+            "pattern": "^authproof:[a-f0-9]{16}$"
+          },
+          "invariantId": {
+            "type": "string",
+            "enum": [
+              "SESSION_ROTATES_AFTER_AUTHENTICATION",
+              "SESSION_INVALIDATED_ON_LOGOUT",
+              "PASSWORD_RESET_CREDENTIAL_PROTECTED",
+              "PASSWORD_RESET_TOKEN_SINGLE_USE",
+              "PASSWORD_RESET_INVALIDATES_RELEVANT_SESSIONS",
+              "JWT_SIGNATURE_VERIFIED",
+              "JWT_EXPECTED_ISSUER_VALIDATED",
+              "JWT_EXPECTED_AUDIENCE_VALIDATED",
+              "REFRESH_TOKEN_REPLAY_MITIGATED",
+              "OAUTH_STATE_VALIDATED",
+              "PKCE_REQUIRED_WHERE_APPLICABLE",
+              "OIDC_NONCE_VALIDATED_WHERE_APPLICABLE"
+            ]
+          },
+          "applicability": {
+            "type": "string",
+            "enum": [
+              "APPLICABLE",
+              "NOT_APPLICABLE",
+              "UNKNOWN"
+            ]
+          },
+          "conclusion": {
+            "type": "string",
+            "enum": [
+              "PROVEN_SECURE",
+              "PROVEN_INSECURE",
+              "UNKNOWN"
+            ]
+          },
+          "confidence": {
+            "type": "string",
+            "enum": [
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "reachability": {
+            "type": "string",
+            "enum": [
+              "unknown",
+              "unlikely",
+              "possible",
+              "likely",
+              "confirmed"
+            ]
+          },
+          "operationIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^authop:[a-f0-9]{16}$"
+            }
+          },
+          "routeIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^route:[a-f0-9]{16}$"
+            }
+          },
+          "evidencePath": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "order": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "route",
+                    "call",
+                    "identity",
+                    "enforcement",
+                    "resource",
+                    "credential",
+                    "authentication",
+                    "session",
+                    "token",
+                    "oauth",
+                    "validation",
+                    "revocation",
+                    "password-reset",
+                    "dependency",
+                    "advisory",
+                    "workflow",
+                    "secret"
+                  ]
+                },
+                "irId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "location": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "start": {
+                      "type": "object",
+                      "properties": {
+                        "line": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "column": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "offset": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        }
+                      },
+                      "required": [
+                        "line",
+                        "column",
+                        "offset"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "end": {
+                      "type": "object",
+                      "properties": {
+                        "line": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "column": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        },
+                        "offset": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 9007199254740991
+                        }
+                      },
+                      "required": [
+                        "line",
+                        "column",
+                        "offset"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "start",
+                    "end"
+                  ],
+                  "additionalProperties": false
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "order",
+                "kind",
+                "irId",
+                "location",
+                "message"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "unresolvedConditions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "explanation": {
+            "type": "string",
+            "minLength": 1
+          },
+          "correlationKey": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "id",
+          "invariantId",
+          "applicability",
+          "conclusion",
+          "confidence",
+          "reachability",
+          "operationIds",
+          "routeIds",
+          "evidencePath",
+          "unresolvedConditions",
+          "explanation",
+          "correlationKey"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "metrics": {
+      "type": "object",
+      "properties": {
+        "applicable": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "provenSecure": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "provenInsecure": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "unknown": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "notApplicable": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "evidenceSteps": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "applicable",
+        "provenSecure",
+        "provenInsecure",
+        "unknown",
+        "notApplicable",
+        "evidenceSteps"
+      ],
+      "additionalProperties": false
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "graphVersion",
+    "operations",
+    "invariants",
+    "results",
+    "metrics",
+    "limitations"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,23 @@
+name: Framework or support request
+description: Request analysis coverage for a language, framework, or library.
+title: "[Support request]: "
+labels: ["enhancement", "support-scope"]
+body:
+  - type: input
+    id: technology
+    attributes:
+      label: Technology and version
+    validations:
+      required: true
+  - type: textarea
+    id: security_model
+    attributes:
+      label: Security behavior to analyze
+      description: Describe concrete APIs, evidence, and expected secure/insecure cases.
+    validations:
+      required: true
+  - type: textarea
+    id: examples
+    attributes:
+      label: Public or synthetic examples
+      description: Do not paste private source or secrets.

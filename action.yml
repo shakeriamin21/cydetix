@@ -1,0 +1,41 @@
+name: "VibeShield security scan"
+description: "Run VibeShield locally and gate CI on evidence-backed findings."
+author: "VibeShield contributors"
+
+inputs:
+  path:
+    description: "Repository path to scan, relative to the workspace."
+    required: false
+    default: "."
+  fail-on:
+    description: "Minimum severity that fails the action."
+    required: false
+    default: "high"
+  output:
+    description: "SARIF output path."
+    required: false
+    default: "vibeshield.sarif"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Set up supported Node.js runtime
+      uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+      with:
+        node-version: "24"
+    - name: Install locked runtime dependencies
+      shell: bash
+      run: npm ci --ignore-scripts --omit=dev --prefix "$GITHUB_ACTION_PATH"
+    - name: Run offline VibeShield scan
+      shell: bash
+      env:
+        VIBESHIELD_SCAN_PATH: ${{ inputs.path }}
+        VIBESHIELD_FAIL_ON: ${{ inputs.fail-on }}
+        VIBESHIELD_OUTPUT: ${{ inputs.output }}
+      run: >-
+        node "$GITHUB_ACTION_PATH/dist/cli/main.js" ci "$VIBESHIELD_SCAN_PATH" --format sarif
+        --fail-on "$VIBESHIELD_FAIL_ON" > "$VIBESHIELD_OUTPUT"
+
+branding:
+  icon: "shield"
+  color: "blue"

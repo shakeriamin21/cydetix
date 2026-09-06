@@ -1,0 +1,637 @@
+import { z } from "zod";
+export declare const authenticationAnalysisVersion: "1.0.0";
+export declare const authenticationGraphVersion: "2.0.0";
+export declare const authenticationOperationKindSchema: z.ZodEnum<{
+    CredentialInput: "CredentialInput";
+    CredentialVerifier: "CredentialVerifier";
+    AuthenticationSuccess: "AuthenticationSuccess";
+    SessionCreate: "SessionCreate";
+    SessionLookup: "SessionLookup";
+    SessionRotate: "SessionRotate";
+    SessionRevoke: "SessionRevoke";
+    SessionRevokeAll: "SessionRevokeAll";
+    SessionExpiry: "SessionExpiry";
+    JWTIssue: "JWTIssue";
+    JWTValidate: "JWTValidate";
+    JWTSign: "JWTSign";
+    JWTVerify: "JWTVerify";
+    JWTDecodeWithoutVerify: "JWTDecodeWithoutVerify";
+    JWKSResolve: "JWKSResolve";
+    ClaimValidate: "ClaimValidate";
+    TokenAccept: "TokenAccept";
+    AccessTokenIssue: "AccessTokenIssue";
+    RefreshTokenIssue: "RefreshTokenIssue";
+    RefreshTokenValidate: "RefreshTokenValidate";
+    RefreshTokenRotate: "RefreshTokenRotate";
+    RefreshTokenRevoke: "RefreshTokenRevoke";
+    PasswordChange: "PasswordChange";
+    PasswordResetRequest: "PasswordResetRequest";
+    PasswordResetCredentialIssue: "PasswordResetCredentialIssue";
+    PasswordResetValidate: "PasswordResetValidate";
+    PasswordResetConsume: "PasswordResetConsume";
+    EmailVerificationIssue: "EmailVerificationIssue";
+    EmailVerificationConsume: "EmailVerificationConsume";
+    OAuthAuthorizationRequest: "OAuthAuthorizationRequest";
+    OAuthCallback: "OAuthCallback";
+    AuthorizationCodeExchange: "AuthorizationCodeExchange";
+    PKCEVerifier: "PKCEVerifier";
+    OAuthStateValidation: "OAuthStateValidation";
+    OIDCNonceValidation: "OIDCNonceValidation";
+    OIDCIssuerValidation: "OIDCIssuerValidation";
+    OIDCAudienceValidation: "OIDCAudienceValidation";
+    MFAChallenge: "MFAChallenge";
+    MFAValidation: "MFAValidation";
+    PrivilegeChange: "PrivilegeChange";
+    ReauthenticationBoundary: "ReauthenticationBoundary";
+}>;
+export declare const authenticationProtocolSchema: z.ZodEnum<{
+    jwt: "jwt";
+    session: "session";
+    oauth: "oauth";
+    "password-reset": "password-reset";
+    "refresh-token": "refresh-token";
+    oidc: "oidc";
+    mfa: "mfa";
+}>;
+export declare const authenticationOperationSchema: z.ZodObject<{
+    id: z.ZodString;
+    kind: z.ZodEnum<{
+        CredentialInput: "CredentialInput";
+        CredentialVerifier: "CredentialVerifier";
+        AuthenticationSuccess: "AuthenticationSuccess";
+        SessionCreate: "SessionCreate";
+        SessionLookup: "SessionLookup";
+        SessionRotate: "SessionRotate";
+        SessionRevoke: "SessionRevoke";
+        SessionRevokeAll: "SessionRevokeAll";
+        SessionExpiry: "SessionExpiry";
+        JWTIssue: "JWTIssue";
+        JWTValidate: "JWTValidate";
+        JWTSign: "JWTSign";
+        JWTVerify: "JWTVerify";
+        JWTDecodeWithoutVerify: "JWTDecodeWithoutVerify";
+        JWKSResolve: "JWKSResolve";
+        ClaimValidate: "ClaimValidate";
+        TokenAccept: "TokenAccept";
+        AccessTokenIssue: "AccessTokenIssue";
+        RefreshTokenIssue: "RefreshTokenIssue";
+        RefreshTokenValidate: "RefreshTokenValidate";
+        RefreshTokenRotate: "RefreshTokenRotate";
+        RefreshTokenRevoke: "RefreshTokenRevoke";
+        PasswordChange: "PasswordChange";
+        PasswordResetRequest: "PasswordResetRequest";
+        PasswordResetCredentialIssue: "PasswordResetCredentialIssue";
+        PasswordResetValidate: "PasswordResetValidate";
+        PasswordResetConsume: "PasswordResetConsume";
+        EmailVerificationIssue: "EmailVerificationIssue";
+        EmailVerificationConsume: "EmailVerificationConsume";
+        OAuthAuthorizationRequest: "OAuthAuthorizationRequest";
+        OAuthCallback: "OAuthCallback";
+        AuthorizationCodeExchange: "AuthorizationCodeExchange";
+        PKCEVerifier: "PKCEVerifier";
+        OAuthStateValidation: "OAuthStateValidation";
+        OIDCNonceValidation: "OIDCNonceValidation";
+        OIDCIssuerValidation: "OIDCIssuerValidation";
+        OIDCAudienceValidation: "OIDCAudienceValidation";
+        MFAChallenge: "MFAChallenge";
+        MFAValidation: "MFAValidation";
+        PrivilegeChange: "PrivilegeChange";
+        ReauthenticationBoundary: "ReauthenticationBoundary";
+    }>;
+    protocol: z.ZodEnum<{
+        jwt: "jwt";
+        session: "session";
+        oauth: "oauth";
+        "password-reset": "password-reset";
+        "refresh-token": "refresh-token";
+        oidc: "oidc";
+        mfa: "mfa";
+    }>;
+    adapter: z.ZodString;
+    guarantee: z.ZodString;
+    functionSymbolId: z.ZodOptional<z.ZodString>;
+    routeIds: z.ZodArray<z.ZodString>;
+    location: z.ZodObject<{
+        path: z.ZodString;
+        start: z.ZodObject<{
+            line: z.ZodNumber;
+            column: z.ZodNumber;
+            offset: z.ZodNumber;
+        }, z.core.$strict>;
+        end: z.ZodObject<{
+            line: z.ZodNumber;
+            column: z.ZodNumber;
+            offset: z.ZodNumber;
+        }, z.core.$strict>;
+    }, z.core.$strict>;
+    confidence: z.ZodEnum<{
+        low: "low";
+        medium: "medium";
+        high: "high";
+    }>;
+    attributes: z.ZodRecord<z.ZodString, z.ZodString>;
+}, z.core.$strict>;
+export declare const standardsRelationshipSchema: z.ZodEnum<{
+    REQUIRED: "REQUIRED";
+    RECOMMENDED: "RECOMMENDED";
+    CONTEXT_DEPENDENT: "CONTEXT_DEPENDENT";
+}>;
+export declare const authenticationStandardMappingSchema: z.ZodObject<{
+    source: z.ZodString;
+    control: z.ZodString;
+    relationship: z.ZodEnum<{
+        REQUIRED: "REQUIRED";
+        RECOMMENDED: "RECOMMENDED";
+        CONTEXT_DEPENDENT: "CONTEXT_DEPENDENT";
+    }>;
+    url: z.ZodURL;
+}, z.core.$strict>;
+export declare const authenticationInvariantIdSchema: z.ZodEnum<{
+    SESSION_ROTATES_AFTER_AUTHENTICATION: "SESSION_ROTATES_AFTER_AUTHENTICATION";
+    SESSION_INVALIDATED_ON_LOGOUT: "SESSION_INVALIDATED_ON_LOGOUT";
+    PASSWORD_RESET_CREDENTIAL_PROTECTED: "PASSWORD_RESET_CREDENTIAL_PROTECTED";
+    PASSWORD_RESET_TOKEN_SINGLE_USE: "PASSWORD_RESET_TOKEN_SINGLE_USE";
+    PASSWORD_RESET_INVALIDATES_RELEVANT_SESSIONS: "PASSWORD_RESET_INVALIDATES_RELEVANT_SESSIONS";
+    JWT_SIGNATURE_VERIFIED: "JWT_SIGNATURE_VERIFIED";
+    JWT_EXPECTED_ISSUER_VALIDATED: "JWT_EXPECTED_ISSUER_VALIDATED";
+    JWT_EXPECTED_AUDIENCE_VALIDATED: "JWT_EXPECTED_AUDIENCE_VALIDATED";
+    REFRESH_TOKEN_REPLAY_MITIGATED: "REFRESH_TOKEN_REPLAY_MITIGATED";
+    OAUTH_STATE_VALIDATED: "OAUTH_STATE_VALIDATED";
+    PKCE_REQUIRED_WHERE_APPLICABLE: "PKCE_REQUIRED_WHERE_APPLICABLE";
+    OIDC_NONCE_VALIDATED_WHERE_APPLICABLE: "OIDC_NONCE_VALIDATED_WHERE_APPLICABLE";
+}>;
+export declare const authenticationInvariantSchema: z.ZodObject<{
+    schemaVersion: z.ZodLiteral<"1.0.0">;
+    id: z.ZodEnum<{
+        SESSION_ROTATES_AFTER_AUTHENTICATION: "SESSION_ROTATES_AFTER_AUTHENTICATION";
+        SESSION_INVALIDATED_ON_LOGOUT: "SESSION_INVALIDATED_ON_LOGOUT";
+        PASSWORD_RESET_CREDENTIAL_PROTECTED: "PASSWORD_RESET_CREDENTIAL_PROTECTED";
+        PASSWORD_RESET_TOKEN_SINGLE_USE: "PASSWORD_RESET_TOKEN_SINGLE_USE";
+        PASSWORD_RESET_INVALIDATES_RELEVANT_SESSIONS: "PASSWORD_RESET_INVALIDATES_RELEVANT_SESSIONS";
+        JWT_SIGNATURE_VERIFIED: "JWT_SIGNATURE_VERIFIED";
+        JWT_EXPECTED_ISSUER_VALIDATED: "JWT_EXPECTED_ISSUER_VALIDATED";
+        JWT_EXPECTED_AUDIENCE_VALIDATED: "JWT_EXPECTED_AUDIENCE_VALIDATED";
+        REFRESH_TOKEN_REPLAY_MITIGATED: "REFRESH_TOKEN_REPLAY_MITIGATED";
+        OAUTH_STATE_VALIDATED: "OAUTH_STATE_VALIDATED";
+        PKCE_REQUIRED_WHERE_APPLICABLE: "PKCE_REQUIRED_WHERE_APPLICABLE";
+        OIDC_NONCE_VALIDATED_WHERE_APPLICABLE: "OIDC_NONCE_VALIDATED_WHERE_APPLICABLE";
+    }>;
+    name: z.ZodString;
+    protocol: z.ZodEnum<{
+        jwt: "jwt";
+        session: "session";
+        oauth: "oauth";
+        "password-reset": "password-reset";
+        "refresh-token": "refresh-token";
+        oidc: "oidc";
+        mfa: "mfa";
+    }>;
+    prerequisites: z.ZodArray<z.ZodString>;
+    requiredGraphPattern: z.ZodArray<z.ZodEnum<{
+        CredentialInput: "CredentialInput";
+        CredentialVerifier: "CredentialVerifier";
+        AuthenticationSuccess: "AuthenticationSuccess";
+        SessionCreate: "SessionCreate";
+        SessionLookup: "SessionLookup";
+        SessionRotate: "SessionRotate";
+        SessionRevoke: "SessionRevoke";
+        SessionRevokeAll: "SessionRevokeAll";
+        SessionExpiry: "SessionExpiry";
+        JWTIssue: "JWTIssue";
+        JWTValidate: "JWTValidate";
+        JWTSign: "JWTSign";
+        JWTVerify: "JWTVerify";
+        JWTDecodeWithoutVerify: "JWTDecodeWithoutVerify";
+        JWKSResolve: "JWKSResolve";
+        ClaimValidate: "ClaimValidate";
+        TokenAccept: "TokenAccept";
+        AccessTokenIssue: "AccessTokenIssue";
+        RefreshTokenIssue: "RefreshTokenIssue";
+        RefreshTokenValidate: "RefreshTokenValidate";
+        RefreshTokenRotate: "RefreshTokenRotate";
+        RefreshTokenRevoke: "RefreshTokenRevoke";
+        PasswordChange: "PasswordChange";
+        PasswordResetRequest: "PasswordResetRequest";
+        PasswordResetCredentialIssue: "PasswordResetCredentialIssue";
+        PasswordResetValidate: "PasswordResetValidate";
+        PasswordResetConsume: "PasswordResetConsume";
+        EmailVerificationIssue: "EmailVerificationIssue";
+        EmailVerificationConsume: "EmailVerificationConsume";
+        OAuthAuthorizationRequest: "OAuthAuthorizationRequest";
+        OAuthCallback: "OAuthCallback";
+        AuthorizationCodeExchange: "AuthorizationCodeExchange";
+        PKCEVerifier: "PKCEVerifier";
+        OAuthStateValidation: "OAuthStateValidation";
+        OIDCNonceValidation: "OIDCNonceValidation";
+        OIDCIssuerValidation: "OIDCIssuerValidation";
+        OIDCAudienceValidation: "OIDCAudienceValidation";
+        MFAChallenge: "MFAChallenge";
+        MFAValidation: "MFAValidation";
+        PrivilegeChange: "PrivilegeChange";
+        ReauthenticationBoundary: "ReauthenticationBoundary";
+    }>>;
+    secureEvidence: z.ZodArray<z.ZodString>;
+    insecureEvidence: z.ZodArray<z.ZodString>;
+    unresolvedConditions: z.ZodArray<z.ZodString>;
+    severityIfViolated: z.ZodEnum<{
+        low: "low";
+        medium: "medium";
+        high: "high";
+        info: "info";
+        critical: "critical";
+    }>;
+    defaultConfidence: z.ZodEnum<{
+        low: "low";
+        medium: "medium";
+        high: "high";
+    }>;
+    standards: z.ZodArray<z.ZodObject<{
+        source: z.ZodString;
+        control: z.ZodString;
+        relationship: z.ZodEnum<{
+            REQUIRED: "REQUIRED";
+            RECOMMENDED: "RECOMMENDED";
+            CONTEXT_DEPENDENT: "CONTEXT_DEPENDENT";
+        }>;
+        url: z.ZodURL;
+    }, z.core.$strict>>;
+    remediationClass: z.ZodEnum<{
+        SAFE: "SAFE";
+        REVIEW_REQUIRED: "REVIEW_REQUIRED";
+        ARCHITECTURAL: "ARCHITECTURAL";
+    }>;
+}, z.core.$strict>;
+export declare const invariantApplicabilitySchema: z.ZodEnum<{
+    UNKNOWN: "UNKNOWN";
+    APPLICABLE: "APPLICABLE";
+    NOT_APPLICABLE: "NOT_APPLICABLE";
+}>;
+export declare const invariantConclusionSchema: z.ZodEnum<{
+    UNKNOWN: "UNKNOWN";
+    PROVEN_SECURE: "PROVEN_SECURE";
+    PROVEN_INSECURE: "PROVEN_INSECURE";
+}>;
+export declare const authenticationInvariantResultSchema: z.ZodObject<{
+    schemaVersion: z.ZodLiteral<"1.0.0">;
+    id: z.ZodString;
+    invariantId: z.ZodEnum<{
+        SESSION_ROTATES_AFTER_AUTHENTICATION: "SESSION_ROTATES_AFTER_AUTHENTICATION";
+        SESSION_INVALIDATED_ON_LOGOUT: "SESSION_INVALIDATED_ON_LOGOUT";
+        PASSWORD_RESET_CREDENTIAL_PROTECTED: "PASSWORD_RESET_CREDENTIAL_PROTECTED";
+        PASSWORD_RESET_TOKEN_SINGLE_USE: "PASSWORD_RESET_TOKEN_SINGLE_USE";
+        PASSWORD_RESET_INVALIDATES_RELEVANT_SESSIONS: "PASSWORD_RESET_INVALIDATES_RELEVANT_SESSIONS";
+        JWT_SIGNATURE_VERIFIED: "JWT_SIGNATURE_VERIFIED";
+        JWT_EXPECTED_ISSUER_VALIDATED: "JWT_EXPECTED_ISSUER_VALIDATED";
+        JWT_EXPECTED_AUDIENCE_VALIDATED: "JWT_EXPECTED_AUDIENCE_VALIDATED";
+        REFRESH_TOKEN_REPLAY_MITIGATED: "REFRESH_TOKEN_REPLAY_MITIGATED";
+        OAUTH_STATE_VALIDATED: "OAUTH_STATE_VALIDATED";
+        PKCE_REQUIRED_WHERE_APPLICABLE: "PKCE_REQUIRED_WHERE_APPLICABLE";
+        OIDC_NONCE_VALIDATED_WHERE_APPLICABLE: "OIDC_NONCE_VALIDATED_WHERE_APPLICABLE";
+    }>;
+    applicability: z.ZodEnum<{
+        UNKNOWN: "UNKNOWN";
+        APPLICABLE: "APPLICABLE";
+        NOT_APPLICABLE: "NOT_APPLICABLE";
+    }>;
+    conclusion: z.ZodEnum<{
+        UNKNOWN: "UNKNOWN";
+        PROVEN_SECURE: "PROVEN_SECURE";
+        PROVEN_INSECURE: "PROVEN_INSECURE";
+    }>;
+    confidence: z.ZodEnum<{
+        low: "low";
+        medium: "medium";
+        high: "high";
+    }>;
+    reachability: z.ZodEnum<{
+        unknown: "unknown";
+        unlikely: "unlikely";
+        possible: "possible";
+        likely: "likely";
+        confirmed: "confirmed";
+    }>;
+    operationIds: z.ZodArray<z.ZodString>;
+    routeIds: z.ZodArray<z.ZodString>;
+    evidencePath: z.ZodArray<z.ZodObject<{
+        order: z.ZodNumber;
+        kind: z.ZodEnum<{
+            dependency: "dependency";
+            workflow: "workflow";
+            call: "call";
+            authentication: "authentication";
+            route: "route";
+            identity: "identity";
+            resource: "resource";
+            enforcement: "enforcement";
+            credential: "credential";
+            session: "session";
+            token: "token";
+            oauth: "oauth";
+            validation: "validation";
+            revocation: "revocation";
+            "password-reset": "password-reset";
+            advisory: "advisory";
+            secret: "secret";
+        }>;
+        irId: z.ZodString;
+        location: z.ZodObject<{
+            path: z.ZodString;
+            start: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+            end: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+        }, z.core.$strict>;
+        message: z.ZodString;
+    }, z.core.$strict>>;
+    unresolvedConditions: z.ZodArray<z.ZodString>;
+    explanation: z.ZodString;
+    correlationKey: z.ZodString;
+}, z.core.$strict>;
+export declare const authenticationAnalysisSchema: z.ZodObject<{
+    schemaVersion: z.ZodLiteral<"1.0.0">;
+    graphVersion: z.ZodLiteral<"2.0.0">;
+    operations: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        kind: z.ZodEnum<{
+            CredentialInput: "CredentialInput";
+            CredentialVerifier: "CredentialVerifier";
+            AuthenticationSuccess: "AuthenticationSuccess";
+            SessionCreate: "SessionCreate";
+            SessionLookup: "SessionLookup";
+            SessionRotate: "SessionRotate";
+            SessionRevoke: "SessionRevoke";
+            SessionRevokeAll: "SessionRevokeAll";
+            SessionExpiry: "SessionExpiry";
+            JWTIssue: "JWTIssue";
+            JWTValidate: "JWTValidate";
+            JWTSign: "JWTSign";
+            JWTVerify: "JWTVerify";
+            JWTDecodeWithoutVerify: "JWTDecodeWithoutVerify";
+            JWKSResolve: "JWKSResolve";
+            ClaimValidate: "ClaimValidate";
+            TokenAccept: "TokenAccept";
+            AccessTokenIssue: "AccessTokenIssue";
+            RefreshTokenIssue: "RefreshTokenIssue";
+            RefreshTokenValidate: "RefreshTokenValidate";
+            RefreshTokenRotate: "RefreshTokenRotate";
+            RefreshTokenRevoke: "RefreshTokenRevoke";
+            PasswordChange: "PasswordChange";
+            PasswordResetRequest: "PasswordResetRequest";
+            PasswordResetCredentialIssue: "PasswordResetCredentialIssue";
+            PasswordResetValidate: "PasswordResetValidate";
+            PasswordResetConsume: "PasswordResetConsume";
+            EmailVerificationIssue: "EmailVerificationIssue";
+            EmailVerificationConsume: "EmailVerificationConsume";
+            OAuthAuthorizationRequest: "OAuthAuthorizationRequest";
+            OAuthCallback: "OAuthCallback";
+            AuthorizationCodeExchange: "AuthorizationCodeExchange";
+            PKCEVerifier: "PKCEVerifier";
+            OAuthStateValidation: "OAuthStateValidation";
+            OIDCNonceValidation: "OIDCNonceValidation";
+            OIDCIssuerValidation: "OIDCIssuerValidation";
+            OIDCAudienceValidation: "OIDCAudienceValidation";
+            MFAChallenge: "MFAChallenge";
+            MFAValidation: "MFAValidation";
+            PrivilegeChange: "PrivilegeChange";
+            ReauthenticationBoundary: "ReauthenticationBoundary";
+        }>;
+        protocol: z.ZodEnum<{
+            jwt: "jwt";
+            session: "session";
+            oauth: "oauth";
+            "password-reset": "password-reset";
+            "refresh-token": "refresh-token";
+            oidc: "oidc";
+            mfa: "mfa";
+        }>;
+        adapter: z.ZodString;
+        guarantee: z.ZodString;
+        functionSymbolId: z.ZodOptional<z.ZodString>;
+        routeIds: z.ZodArray<z.ZodString>;
+        location: z.ZodObject<{
+            path: z.ZodString;
+            start: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+            end: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+        }, z.core.$strict>;
+        confidence: z.ZodEnum<{
+            low: "low";
+            medium: "medium";
+            high: "high";
+        }>;
+        attributes: z.ZodRecord<z.ZodString, z.ZodString>;
+    }, z.core.$strict>>;
+    invariants: z.ZodArray<z.ZodObject<{
+        schemaVersion: z.ZodLiteral<"1.0.0">;
+        id: z.ZodEnum<{
+            SESSION_ROTATES_AFTER_AUTHENTICATION: "SESSION_ROTATES_AFTER_AUTHENTICATION";
+            SESSION_INVALIDATED_ON_LOGOUT: "SESSION_INVALIDATED_ON_LOGOUT";
+            PASSWORD_RESET_CREDENTIAL_PROTECTED: "PASSWORD_RESET_CREDENTIAL_PROTECTED";
+            PASSWORD_RESET_TOKEN_SINGLE_USE: "PASSWORD_RESET_TOKEN_SINGLE_USE";
+            PASSWORD_RESET_INVALIDATES_RELEVANT_SESSIONS: "PASSWORD_RESET_INVALIDATES_RELEVANT_SESSIONS";
+            JWT_SIGNATURE_VERIFIED: "JWT_SIGNATURE_VERIFIED";
+            JWT_EXPECTED_ISSUER_VALIDATED: "JWT_EXPECTED_ISSUER_VALIDATED";
+            JWT_EXPECTED_AUDIENCE_VALIDATED: "JWT_EXPECTED_AUDIENCE_VALIDATED";
+            REFRESH_TOKEN_REPLAY_MITIGATED: "REFRESH_TOKEN_REPLAY_MITIGATED";
+            OAUTH_STATE_VALIDATED: "OAUTH_STATE_VALIDATED";
+            PKCE_REQUIRED_WHERE_APPLICABLE: "PKCE_REQUIRED_WHERE_APPLICABLE";
+            OIDC_NONCE_VALIDATED_WHERE_APPLICABLE: "OIDC_NONCE_VALIDATED_WHERE_APPLICABLE";
+        }>;
+        name: z.ZodString;
+        protocol: z.ZodEnum<{
+            jwt: "jwt";
+            session: "session";
+            oauth: "oauth";
+            "password-reset": "password-reset";
+            "refresh-token": "refresh-token";
+            oidc: "oidc";
+            mfa: "mfa";
+        }>;
+        prerequisites: z.ZodArray<z.ZodString>;
+        requiredGraphPattern: z.ZodArray<z.ZodEnum<{
+            CredentialInput: "CredentialInput";
+            CredentialVerifier: "CredentialVerifier";
+            AuthenticationSuccess: "AuthenticationSuccess";
+            SessionCreate: "SessionCreate";
+            SessionLookup: "SessionLookup";
+            SessionRotate: "SessionRotate";
+            SessionRevoke: "SessionRevoke";
+            SessionRevokeAll: "SessionRevokeAll";
+            SessionExpiry: "SessionExpiry";
+            JWTIssue: "JWTIssue";
+            JWTValidate: "JWTValidate";
+            JWTSign: "JWTSign";
+            JWTVerify: "JWTVerify";
+            JWTDecodeWithoutVerify: "JWTDecodeWithoutVerify";
+            JWKSResolve: "JWKSResolve";
+            ClaimValidate: "ClaimValidate";
+            TokenAccept: "TokenAccept";
+            AccessTokenIssue: "AccessTokenIssue";
+            RefreshTokenIssue: "RefreshTokenIssue";
+            RefreshTokenValidate: "RefreshTokenValidate";
+            RefreshTokenRotate: "RefreshTokenRotate";
+            RefreshTokenRevoke: "RefreshTokenRevoke";
+            PasswordChange: "PasswordChange";
+            PasswordResetRequest: "PasswordResetRequest";
+            PasswordResetCredentialIssue: "PasswordResetCredentialIssue";
+            PasswordResetValidate: "PasswordResetValidate";
+            PasswordResetConsume: "PasswordResetConsume";
+            EmailVerificationIssue: "EmailVerificationIssue";
+            EmailVerificationConsume: "EmailVerificationConsume";
+            OAuthAuthorizationRequest: "OAuthAuthorizationRequest";
+            OAuthCallback: "OAuthCallback";
+            AuthorizationCodeExchange: "AuthorizationCodeExchange";
+            PKCEVerifier: "PKCEVerifier";
+            OAuthStateValidation: "OAuthStateValidation";
+            OIDCNonceValidation: "OIDCNonceValidation";
+            OIDCIssuerValidation: "OIDCIssuerValidation";
+            OIDCAudienceValidation: "OIDCAudienceValidation";
+            MFAChallenge: "MFAChallenge";
+            MFAValidation: "MFAValidation";
+            PrivilegeChange: "PrivilegeChange";
+            ReauthenticationBoundary: "ReauthenticationBoundary";
+        }>>;
+        secureEvidence: z.ZodArray<z.ZodString>;
+        insecureEvidence: z.ZodArray<z.ZodString>;
+        unresolvedConditions: z.ZodArray<z.ZodString>;
+        severityIfViolated: z.ZodEnum<{
+            low: "low";
+            medium: "medium";
+            high: "high";
+            info: "info";
+            critical: "critical";
+        }>;
+        defaultConfidence: z.ZodEnum<{
+            low: "low";
+            medium: "medium";
+            high: "high";
+        }>;
+        standards: z.ZodArray<z.ZodObject<{
+            source: z.ZodString;
+            control: z.ZodString;
+            relationship: z.ZodEnum<{
+                REQUIRED: "REQUIRED";
+                RECOMMENDED: "RECOMMENDED";
+                CONTEXT_DEPENDENT: "CONTEXT_DEPENDENT";
+            }>;
+            url: z.ZodURL;
+        }, z.core.$strict>>;
+        remediationClass: z.ZodEnum<{
+            SAFE: "SAFE";
+            REVIEW_REQUIRED: "REVIEW_REQUIRED";
+            ARCHITECTURAL: "ARCHITECTURAL";
+        }>;
+    }, z.core.$strict>>;
+    results: z.ZodArray<z.ZodObject<{
+        schemaVersion: z.ZodLiteral<"1.0.0">;
+        id: z.ZodString;
+        invariantId: z.ZodEnum<{
+            SESSION_ROTATES_AFTER_AUTHENTICATION: "SESSION_ROTATES_AFTER_AUTHENTICATION";
+            SESSION_INVALIDATED_ON_LOGOUT: "SESSION_INVALIDATED_ON_LOGOUT";
+            PASSWORD_RESET_CREDENTIAL_PROTECTED: "PASSWORD_RESET_CREDENTIAL_PROTECTED";
+            PASSWORD_RESET_TOKEN_SINGLE_USE: "PASSWORD_RESET_TOKEN_SINGLE_USE";
+            PASSWORD_RESET_INVALIDATES_RELEVANT_SESSIONS: "PASSWORD_RESET_INVALIDATES_RELEVANT_SESSIONS";
+            JWT_SIGNATURE_VERIFIED: "JWT_SIGNATURE_VERIFIED";
+            JWT_EXPECTED_ISSUER_VALIDATED: "JWT_EXPECTED_ISSUER_VALIDATED";
+            JWT_EXPECTED_AUDIENCE_VALIDATED: "JWT_EXPECTED_AUDIENCE_VALIDATED";
+            REFRESH_TOKEN_REPLAY_MITIGATED: "REFRESH_TOKEN_REPLAY_MITIGATED";
+            OAUTH_STATE_VALIDATED: "OAUTH_STATE_VALIDATED";
+            PKCE_REQUIRED_WHERE_APPLICABLE: "PKCE_REQUIRED_WHERE_APPLICABLE";
+            OIDC_NONCE_VALIDATED_WHERE_APPLICABLE: "OIDC_NONCE_VALIDATED_WHERE_APPLICABLE";
+        }>;
+        applicability: z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            APPLICABLE: "APPLICABLE";
+            NOT_APPLICABLE: "NOT_APPLICABLE";
+        }>;
+        conclusion: z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            PROVEN_SECURE: "PROVEN_SECURE";
+            PROVEN_INSECURE: "PROVEN_INSECURE";
+        }>;
+        confidence: z.ZodEnum<{
+            low: "low";
+            medium: "medium";
+            high: "high";
+        }>;
+        reachability: z.ZodEnum<{
+            unknown: "unknown";
+            unlikely: "unlikely";
+            possible: "possible";
+            likely: "likely";
+            confirmed: "confirmed";
+        }>;
+        operationIds: z.ZodArray<z.ZodString>;
+        routeIds: z.ZodArray<z.ZodString>;
+        evidencePath: z.ZodArray<z.ZodObject<{
+            order: z.ZodNumber;
+            kind: z.ZodEnum<{
+                dependency: "dependency";
+                workflow: "workflow";
+                call: "call";
+                authentication: "authentication";
+                route: "route";
+                identity: "identity";
+                resource: "resource";
+                enforcement: "enforcement";
+                credential: "credential";
+                session: "session";
+                token: "token";
+                oauth: "oauth";
+                validation: "validation";
+                revocation: "revocation";
+                "password-reset": "password-reset";
+                advisory: "advisory";
+                secret: "secret";
+            }>;
+            irId: z.ZodString;
+            location: z.ZodObject<{
+                path: z.ZodString;
+                start: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+                end: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+            }, z.core.$strict>;
+            message: z.ZodString;
+        }, z.core.$strict>>;
+        unresolvedConditions: z.ZodArray<z.ZodString>;
+        explanation: z.ZodString;
+        correlationKey: z.ZodString;
+    }, z.core.$strict>>;
+    metrics: z.ZodObject<{
+        applicable: z.ZodNumber;
+        provenSecure: z.ZodNumber;
+        provenInsecure: z.ZodNumber;
+        unknown: z.ZodNumber;
+        notApplicable: z.ZodNumber;
+        evidenceSteps: z.ZodNumber;
+    }, z.core.$strict>;
+    limitations: z.ZodArray<z.ZodString>;
+}, z.core.$strict>;
+export type AuthenticationOperationKind = z.infer<typeof authenticationOperationKindSchema>;
+export type AuthenticationProtocol = z.infer<typeof authenticationProtocolSchema>;
+export type AuthenticationOperation = z.infer<typeof authenticationOperationSchema>;
+export type AuthenticationInvariantId = z.infer<typeof authenticationInvariantIdSchema>;
+export type AuthenticationInvariant = z.infer<typeof authenticationInvariantSchema>;
+export type AuthenticationInvariantResult = z.infer<typeof authenticationInvariantResultSchema>;
+export type AuthenticationAnalysis = z.infer<typeof authenticationAnalysisSchema>;
+//# sourceMappingURL=model.d.ts.map

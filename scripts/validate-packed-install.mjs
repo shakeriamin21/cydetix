@@ -1,0 +1,320 @@
+import { spawnSync } from "node:child_process";
+import { copyFile, mkdir, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
+import path from "node:path";
+import { pathToFileURL } from "node:url";
+
+const npmCli = process.env.npm_execpath;
+if (npmCli === undefined) throw new Error("npm_execpath is required; invoke through npm run.");
+const root = path.resolve(".");
+const releaseTemporaryRoot = path.resolve(".vibeshield", "release-tests");
+await mkdir(releaseTemporaryRoot, { recursive: true });
+const temporary = await mkdtemp(path.join(releaseTemporaryRoot, "packed-install-"));
+const cache = path.resolve(".npm-cache");
+const evidenceDirectory = path.resolve(".vibeshield", "evidence");
+const evidencePath = path.join(evidenceDirectory, "packed-install.json");
+await mkdir(evidenceDirectory, { recursive: true });
+await rm(evidencePath, { force: true });
+function run(executable, arguments_, cwd, timeout = 120_000, acceptedStatuses = [0], input) {
+  const result = spawnSync(executable, arguments_, {
+    cwd,
+    encoding: "utf8",
+    shell: false,
+    windowsHide: true,
+    timeout,
+    maxBuffer: 5_000_000,
+    env: {
+      PATH: process.env.PATH,
+      SystemRoot: process.env.SystemRoot,
+      PATHEXT: process.env.PATHEXT,
+      TEMP: process.env.TEMP,
+      TMP: process.env.TMP,
+      npm_config_cache: cache,
+      NO_UPDATE_NOTIFIER: "1",
+    },
+    ...(input === undefined ? {} : { input }),
+  });
+  if (result.error !== undefined || !acceptedStatuses.includes(result.status)) {
+    const diagnostic = String(result.stderr ?? "")
+      .replaceAll(root, "<workspace>")
+      .replaceAll(temporary, "<temporary>")
+      .trim()
+      .slice(-1_000);
+    const stdoutDiagnostic = String(result.stdout ?? "")
+      .replaceAll(root, "<workspace>")
+      .replaceAll(temporary, "<temporary>")
+      .trim()
+      .slice(-1_500);
+    throw new Error(
+      `Packed installation command failed at ${path.basename(executable)} ${arguments_[1] ?? arguments_[0] ?? ""}; exit=${String(result.status)}; error=${String(result.error?.code ?? "none")}; stderr=${diagnostic || "none"}; stdout=${stdoutDiagnostic || "none"}.`,
+    );
+  }
+  return result.stdout;
+}
+try {
+  const packageDirectory = path.join(temporary, "package");
+  const consumer = path.join(temporary, "consumer");
+  const npxConsumer = path.join(temporary, "npx-consumer");
+  const npxFixture = path.join(npxConsumer, "fixture");
+  const globalPrefix = path.join(temporary, "global-prefix");
+  const fixture = path.join(consumer, "fixture");
+  await mkdir(packageDirectory);
+  await mkdir(fixture, { recursive: true });
+  await mkdir(npxFixture, { recursive: true });
+  const packageJson = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
+  const suppliedTarball = process.env.VIBESHIELD_PACKAGE_TARBALL;
+  let tarball;
+  if (suppliedTarball === undefined) {
+    const packOutput = run(
+      process.execPath,
+      [npmCli, "pack", "--json", "--ignore-scripts", "--pack-destination", packageDirectory],
+      root,
+    );
+    const packed = JSON.parse(packOutput)[0];
+    if (packed?.filename === undefined) throw new Error("npm pack returned no artifact name.");
+    tarball = path.join(packageDirectory, packed.filename);
+  } else {
+    tarball = path.join(packageDirectory, path.basename(suppliedTarball));
+    await copyFile(path.resolve(suppliedTarball), tarball);
+  }
+  await writeFile(
+    path.join(consumer, "package.json"),
+    `${JSON.stringify({ name: "vibeshield-packed-smoke", private: true }, null, 2)}\n`,
+    "utf8",
+  );
+  await writeFile(
+    path.join(fixture, "app.py"),
+    'app.config["SESSION_COOKIE_HTTPONLY"] = False\n',
+    "utf8",
+  );
+  await writeFile(
+    path.join(npxFixture, "app.py"),
+    'app.config["SESSION_COOKIE_HTTPONLY"] = False\n',
+    "utf8",
+  );
+  run(
+    process.execPath,
+    [npmCli, "install", "--ignore-scripts", "--prefer-offline", "--no-audit", "--no-fund", tarball],
+    consumer,
+  );
+  run(
+    process.execPath,
+    [
+      npmCli,
+      "install",
+      "--global",
+      "--prefix",
+      globalPrefix,
+      "--ignore-scripts",
+      "--prefer-offline",
+      "--no-audit",
+      "--no-fund",
+      tarball,
+    ],
+    temporary,
+  );
+  const installedRoot = path.join(consumer, "node_modules", ...packageJson.name.split("/"));
+  const cli = path.join(installedRoot, "dist", "cli", "main.js");
+  const version = run(process.execPath, [cli, "--version"], consumer).trim();
+  if (version !== packageJson.version) throw new Error("Packed CLI version mismatch.");
+  const binaryName = "vibeshield";
+  if (packageJson.bin?.[binaryName] !== "./dist/cli/main.js")
+    throw new Error("Packed package has no correctly mapped vibeshield binary.");
+  const globalInstalledRoot = path.join(
+    globalPrefix,
+    ...(process.platform === "win32" ? ["node_modules"] : ["lib", "node_modules"]),
+    ...packageJson.name.split("/"),
+  );
+  const globalCli = path.join(globalInstalledRoot, "dist", "cli", "main.js");
+  if ((await stat(globalCli)).isFile() !== true) throw new Error("Global CLI package is missing.");
+  const globalLauncher = path.join(
+    globalPrefix,
+    ...(process.platform === "win32" ? [] : ["bin"]),
+    process.platform === "win32" ? `${binaryName}.cmd` : binaryName,
+  );
+  if ((await stat(globalLauncher)).isFile() !== true)
+    throw new Error("Global CLI launcher is missing.");
+  const runGlobal = (arguments_, cwd) =>
+    process.platform === "win32"
+      ? run(
+          process.env.ComSpec ?? "C:\\Windows\\System32\\cmd.exe",
+          ["/d", "/s", "/c", globalLauncher, ...arguments_],
+          cwd,
+        )
+      : run(globalLauncher, arguments_, cwd);
+  const globalVersion = runGlobal(["--version"], npxConsumer).trim();
+  if (globalVersion !== packageJson.version) throw new Error("Global CLI version mismatch.");
+  const globalDefault = runGlobal([], fixture);
+  if (!globalDefault.startsWith("VibeShield\n\nScanning "))
+    throw new Error("Global vibeshield default scan failed.");
+  const globalSetup = runGlobal(
+    ["setup", "--agent", "generic-mcp", "--yes", "--project", fixture],
+    npxConsumer,
+  );
+  if (!globalSetup.includes("Now ask your AI")) throw new Error("Global vibeshield setup failed.");
+  const npxVersion = run(
+    process.execPath,
+    [
+      npmCli,
+      "exec",
+      "--offline",
+      "--yes",
+      `--package=${pathToFileURL(tarball).href}`,
+      "--",
+      binaryName,
+      "--version",
+    ],
+    npxConsumer,
+  ).trim();
+  if (npxVersion !== packageJson.version) throw new Error("Packed npx CLI version mismatch.");
+  const npxDefault = run(
+    process.execPath,
+    [
+      npmCli,
+      "exec",
+      "--offline",
+      "--yes",
+      `--package=${pathToFileURL(tarball).href}`,
+      "--",
+      binaryName,
+    ],
+    npxFixture,
+  );
+  if (!npxDefault.startsWith("VibeShield\n\nScanning "))
+    throw new Error("Packed npx zero-config scan failed.");
+  const npxSetup = run(
+    process.execPath,
+    [
+      npmCli,
+      "exec",
+      "--offline",
+      "--yes",
+      `--package=${pathToFileURL(tarball).href}`,
+      "--",
+      binaryName,
+      "setup",
+      "--agent",
+      "generic-mcp",
+      "--yes",
+      "--project",
+      npxFixture,
+    ],
+    npxConsumer,
+  );
+  if (!npxSetup.includes("Now ask your AI")) throw new Error("Packed npx setup flow failed.");
+  const help = run(process.execPath, [cli, "--help"], consumer);
+  if (!help.includes("Detect and configure supported AI coding agents"))
+    throw new Error("Packed CLI help contract failed.");
+  const doctor = JSON.parse(run(process.execPath, [cli, "doctor"], consumer));
+  if (doctor.deterministicEngine !== "available") throw new Error("Packed doctor failed.");
+  const scan = JSON.parse(
+    run(process.execPath, [cli, "scan", fixture, "--format", "json"], consumer),
+  );
+  if (!Array.isArray(scan.findings)) throw new Error("Packed scan did not return findings.");
+  const defaultHuman = run(process.execPath, [cli], fixture);
+  if (!defaultHuman.startsWith("VibeShield\n\nScanning "))
+    throw new Error("Packed zero-config default scan did not use concise human mode.");
+  const defaultJson = JSON.parse(run(process.execPath, [cli, "--json"], fixture));
+  if (defaultJson.tool?.name !== "vibeshield")
+    throw new Error("Packed zero-config JSON scan identity mismatch.");
+  const authentication = JSON.parse(
+    run(process.execPath, [cli, "auth", fixture, "--offline", "--format", "json"], consumer),
+  );
+  if (authentication.securityAnalysis?.authenticationAnalysis === undefined)
+    throw new Error("Packed authentication analysis was not produced.");
+  const supplyChain = JSON.parse(
+    run(
+      process.execPath,
+      [cli, "supply-chain", consumer, "--advisories", "offline", "--format", "json"],
+      consumer,
+    ),
+  );
+  if (!Array.isArray(supplyChain.inventory?.packages))
+    throw new Error("Packed supply-chain analysis was not produced.");
+  const sbom = JSON.parse(
+    run(process.execPath, [cli, "sbom", consumer, "--format", "json"], consumer),
+  );
+  if (sbom.bomFormat !== "CycloneDX") throw new Error("Packed CycloneDX SBOM was not produced.");
+  const dryRun = JSON.parse(
+    run(
+      process.execPath,
+      [cli, "fix", fixture, "--safe", "--dry-run", "--format", "json"],
+      consumer,
+      120_000,
+      [0, 1],
+    ),
+  );
+  if (
+    dryRun.dryRun !== true ||
+    dryRun.transactions.length !== 0 ||
+    !dryRun.plans.some((plan) => plan.classification === "SAFE")
+  )
+    throw new Error("Packed remediation dry-run contract failed.");
+  const skillNames = ["vibeshield"];
+  for (const name of skillNames) {
+    const skill = await readFile(
+      path.join(installedRoot, "agent-skills", name, "SKILL.md"),
+      "utf8",
+    );
+    if (
+      !skill.startsWith("---\n") ||
+      skill.includes(["Z:", "private-workspace-sentinel"].join("\\"))
+    )
+      throw new Error(`Packed Agent Skill is invalid or non-portable: ${name}`);
+  }
+  const setupOutput = run(
+    process.execPath,
+    [cli, "setup", "--agent", "generic-mcp", "--yes", "--project", fixture],
+    consumer,
+  );
+  if (!setupOutput.includes("Now ask your AI")) throw new Error("Packed setup UX failed.");
+  const setupConfig = JSON.parse(
+    await readFile(path.join(fixture, ".vibeshield", "mcp.json"), "utf8"),
+  );
+  if (!setupConfig.mcpServers?.vibeshield?.args?.includes(`vibeshield@${packageJson.version}`))
+    throw new Error("Packed setup did not pin the MCP package version.");
+  const mcpInput = `${JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list", params: {} })}\n`;
+  const mcpOutput = run(process.execPath, [cli, "mcp"], fixture, 120_000, [0], mcpInput);
+  const mcp = JSON.parse(mcpOutput);
+  if (mcp.result?.tools?.length !== 3) throw new Error("Packed MCP server validation failed.");
+  await writeFile(
+    evidencePath,
+    `${JSON.stringify(
+      {
+        schemaVersion: "1.0.0",
+        state: "PASSED",
+        version,
+        platform: `${process.platform}-${process.arch}`,
+        skillCount: skillNames.length,
+        globalLauncherPresent: true,
+        lifecycleScriptsExecuted: false,
+        artifactSource: suppliedTarball === undefined ? "SOURCE_PACK" : "SUPPLIED_RELEASE_TARBALL",
+        commands: [
+          "--version",
+          "global vibeshield launcher --version",
+          "global vibeshield default scan",
+          "global vibeshield setup",
+          "npm exec vibeshield from local tarball",
+          "npm exec vibeshield default scan from local tarball",
+          "npm exec vibeshield setup from local tarball",
+          "--help",
+          "doctor",
+          "zero-config default scan",
+          "zero-config --json scan",
+          "scan",
+          "auth",
+          "supply-chain --advisories offline",
+          "sbom",
+          "fix --safe --dry-run",
+          "setup --agent generic-mcp",
+          "mcp tools/list",
+        ],
+      },
+      null,
+      2,
+    )}\n`,
+    "utf8",
+  );
+  process.stdout.write(`Packed install smoke passed for ${packageJson.name} ${version}.\n`);
+} finally {
+  await rm(temporary, { recursive: true, force: true });
+}

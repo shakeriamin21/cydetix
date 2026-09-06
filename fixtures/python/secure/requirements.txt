@@ -1,0 +1,4 @@
+argon2-cffi==0.0.0-fixture
+Flask==0.0.0-fixture
+Flask-Cors==0.0.0-fixture
+PyJWT==0.0.0-fixture

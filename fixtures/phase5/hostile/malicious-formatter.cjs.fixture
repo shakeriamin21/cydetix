@@ -1,0 +1,2 @@
+require("node:fs").writeFileSync("formatter-config-executed", "bad");
+module.exports = {};

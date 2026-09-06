@@ -1,0 +1,272 @@
+import path from "node:path";
+import { createInterface } from "node:readline";
+
+import { PRODUCT } from "../core/brand.js";
+import { scanRepository } from "../core/engine.js";
+import { RULE_BY_ID } from "../rule-engine/catalogue.js";
+import { runRemediation } from "../remediation/fix.js";
+import { renderHuman, renderRemediationHuman } from "../reporting/human.js";
+import { terminalSafe } from "../reporting/terminal.js";
+
+type JsonRpcId = string | number | null;
+const MAX_REQUEST_CHARACTERS = 1_048_576;
+const MCP_PROJECT_ROOT = path.resolve(process.cwd());
+
+interface JsonRpcRequest {
+  readonly jsonrpc: "2.0";
+  readonly id?: JsonRpcId;
+  readonly method: string;
+  readonly params?: unknown;
+}
+
+interface JsonRpcResponse {
+  readonly jsonrpc: "2.0";
+  readonly id: JsonRpcId;
+  readonly result?: unknown;
+  readonly error?: { readonly code: number; readonly message: string; readonly data?: unknown };
+}
+
+function isJsonRpcRequest(value: unknown): value is JsonRpcRequest {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
+  const candidate = value as { readonly jsonrpc?: unknown; readonly method?: unknown };
+  return candidate.jsonrpc === "2.0" && typeof candidate.method === "string";
+}
+
+interface ToolDefinition {
+  readonly name: string;
+  readonly description: string;
+  readonly inputSchema: Record<string, unknown>;
+  readonly annotations: {
+    readonly readOnlyHint: boolean;
+    readonly destructiveHint: boolean;
+    readonly idempotentHint: boolean;
+    readonly openWorldHint: boolean;
+  };
+}
+
+const SCAN_DESCRIPTION =
+  "Use when the user asks to check, audit, review, secure, harden, verify, or assess vulnerabilities in the current software project, authentication, authorization, secrets, dependencies, supply chain, or CI/CD. Read-only and deterministic.";
+
+const FIX_DESCRIPTION =
+  "Use only when the user explicitly asks to fix, remediate, repair, or resolve security findings. Applies only policy-approved SAFE remediation; REVIEW_REQUIRED and ARCHITECTURAL work is never applied. Omit apply or set it false for a dry run.";
+
+const EXPLAIN_DESCRIPTION =
+  "Use when the user asks to explain a VibeShield finding, security rule, evidence, remediation class, or why a result is UNKNOWN. Read-only and deterministic.";
+
+export const VIBESHIELD_MCP_TOOLS: readonly ToolDefinition[] = [
+  {
+    name: "vibeshield_scan",
+    description: SCAN_DESCRIPTION,
+    inputSchema: {
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        path: {
+          type: "string",
+          description: "Project directory. Defaults to the MCP server working directory.",
+        },
+      },
+    },
+    annotations: {
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
+  },
+  {
+    name: "vibeshield_fix",
+    description: FIX_DESCRIPTION,
+    inputSchema: {
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        path: {
+          type: "string",
+          description: "Project directory. Defaults to the MCP server working directory.",
+        },
+        finding: {
+          type: "string",
+          description: "Optional finding fingerprint to scope remediation.",
+        },
+        apply: {
+          type: "boolean",
+          default: false,
+          description: "False plans only. True can apply SAFE fixes after explicit user intent.",
+        },
+        confirmedUserIntent: {
+          type: "string",
+          enum: ["fix-security-issues"],
+          description:
+            "Required with apply=true. Assert only when the user explicitly requested source remediation.",
+        },
+      },
+    },
+    annotations: {
+      readOnlyHint: false,
+      destructiveHint: true,
+      idempotentHint: false,
+      openWorldHint: false,
+    },
+  },
+  {
+    name: "vibeshield_explain",
+    description: EXPLAIN_DESCRIPTION,
+    inputSchema: {
+      type: "object",
+      additionalProperties: false,
+      properties: {
+        ruleId: { type: "string", description: "Stable VibeShield rule ID." },
+        finding: { type: "string", description: "Finding fingerprint to explain." },
+        path: {
+          type: "string",
+          description: "Project directory used to resolve a finding fingerprint.",
+        },
+      },
+      anyOf: [{ required: ["ruleId"] }, { required: ["finding"] }],
+    },
+    annotations: {
+      readOnlyHint: true,
+      destructiveHint: false,
+      idempotentHint: true,
+      openWorldHint: false,
+    },
+  },
+] as const;
+
+function parameters(value: unknown): Record<string, unknown> {
+  if (typeof value !== "object" || value === null || Array.isArray(value)) return {};
+  return value as Record<string, unknown>;
+}
+
+function optionalString(value: unknown, field: string): string | undefined {
+  if (value === undefined) return undefined;
+  if (typeof value !== "string" || value.trim() === "")
+    throw new Error(`${field} must be a non-empty string.`);
+  return value;
+}
+
+function targetFrom(arguments_: Record<string, unknown>): string {
+  const requested = optionalString(arguments_.path, "path") ?? MCP_PROJECT_ROOT;
+  const target = path.resolve(MCP_PROJECT_ROOT, requested);
+  const relative = path.relative(MCP_PROJECT_ROOT, target);
+  if (relative.startsWith(`..${path.sep}`) || relative === ".." || path.isAbsolute(relative))
+    throw new Error("MCP project path must stay within the server working directory.");
+  return target;
+}
+
+function toolResult(text: string, structuredContent: unknown): Record<string, unknown> {
+  return {
+    content: [{ type: "text", text }],
+    structuredContent,
+  };
+}
+
+async function callTool(name: string, rawArguments: unknown): Promise<Record<string, unknown>> {
+  const arguments_ = parameters(rawArguments);
+  if (name === "vibeshield_scan") {
+    const report = await scanRepository({ path: targetFrom(arguments_) });
+    return toolResult(renderHuman(report), { report });
+  }
+  if (name === "vibeshield_fix") {
+    const apply = arguments_.apply === true;
+    if (apply && arguments_.confirmedUserIntent !== "fix-security-issues") {
+      throw new Error(
+        "Source modification requires explicit fix intent; set confirmedUserIntent only after the user asks to fix security issues.",
+      );
+    }
+    const finding = optionalString(arguments_.finding, "finding");
+    const report = await runRemediation({
+      path: targetFrom(arguments_),
+      dryRun: !apply,
+      applySafe: apply,
+      nonInteractive: true,
+      ...(finding === undefined ? {} : { finding }),
+    });
+    return toolResult(renderRemediationHuman(report), { remediationReport: report });
+  }
+  if (name === "vibeshield_explain") {
+    const ruleId = optionalString(arguments_.ruleId, "ruleId");
+    const fingerprint = optionalString(arguments_.finding, "finding");
+    if (ruleId !== undefined) {
+      const rule = RULE_BY_ID.get(ruleId);
+      if (rule === undefined) throw new Error(`Unknown rule: ${ruleId}`);
+      return toolResult(`${rule.id}: ${rule.title}\n${rule.description}\n`, { rule });
+    }
+    if (fingerprint === undefined) throw new Error("ruleId or finding is required.");
+    const report = await scanRepository({ path: targetFrom(arguments_) });
+    const finding = [...report.findings, ...report.suppressedFindings].find(
+      (candidate) => candidate.fingerprint === fingerprint,
+    );
+    if (finding === undefined)
+      throw new Error("Finding fingerprint was not produced by this scan.");
+    return toolResult(
+      `${finding.ruleId}: ${finding.title}\n${finding.evidence[0]?.message ?? "No evidence message."}\n`,
+      { finding },
+    );
+  }
+  throw new Error(`Unknown tool: ${name}`);
+}
+
+function response(id: JsonRpcId, result: unknown): JsonRpcResponse {
+  return { jsonrpc: "2.0", id, result };
+}
+
+function failure(id: JsonRpcId, code: number, message: string): JsonRpcResponse {
+  return { jsonrpc: "2.0", id, error: { code, message: terminalSafe(message) } };
+}
+
+export async function handleMcpRequest(
+  request: JsonRpcRequest,
+): Promise<JsonRpcResponse | undefined> {
+  if (request.id === undefined) return undefined;
+  const id = request.id;
+  try {
+    if (request.method === "initialize") {
+      const requested = parameters(request.params).protocolVersion;
+      return response(id, {
+        protocolVersion: typeof requested === "string" ? requested : "2025-06-18",
+        capabilities: { tools: { listChanged: false } },
+        serverInfo: { name: "vibeshield", version: PRODUCT.version },
+        instructions:
+          "VibeShield scan and explain are read-only. Call vibeshield_fix only for explicit remediation requests. Source mutation requires confirmed user fix intent and remains limited to engine-classified SAFE changes; REVIEW_REQUIRED and ARCHITECTURAL changes are never applied.",
+      });
+    }
+    if (request.method === "ping") return response(id, {});
+    if (request.method === "tools/list") return response(id, { tools: VIBESHIELD_MCP_TOOLS });
+    if (request.method === "tools/call") {
+      const params = parameters(request.params);
+      const name = optionalString(params.name, "name");
+      if (name === undefined) return failure(id, -32_602, "Tool name is required.");
+      return response(id, await callTool(name, params.arguments));
+    }
+    return failure(id, -32_601, `Method not found: ${request.method}`);
+  } catch (error) {
+    return failure(id, -32_602, error instanceof Error ? error.message : String(error));
+  }
+}
+
+export async function runMcpServer(): Promise<void> {
+  const input = createInterface({ input: process.stdin, crlfDelay: Infinity, terminal: false });
+  for await (const line of input) {
+    if (line.trim() === "") continue;
+    if (line.length > MAX_REQUEST_CHARACTERS) {
+      process.stdout.write(`${JSON.stringify(failure(null, -32_600, "Request is too large."))}\n`);
+      continue;
+    }
+    let parsed: unknown;
+    try {
+      parsed = JSON.parse(line) as unknown;
+    } catch {
+      process.stdout.write(`${JSON.stringify(failure(null, -32_700, "Invalid JSON."))}\n`);
+      continue;
+    }
+    if (!isJsonRpcRequest(parsed)) {
+      process.stdout.write(`${JSON.stringify(failure(null, -32_600, "Invalid request."))}\n`);
+      continue;
+    }
+    const request = parsed;
+    const result = await handleMcpRequest(request);
+    if (result !== undefined) process.stdout.write(`${JSON.stringify(result)}\n`);
+  }
+}

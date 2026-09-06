@@ -1,0 +1,31 @@
+name: Security-rule proposal
+description: Propose a deterministic evidence-backed rule without publicly disclosing an exploit.
+title: "[Rule proposal]: "
+labels: ["rule-proposal", "needs-design"]
+body:
+  - type: markdown
+    attributes:
+      value:
+        "Sensitive or exploitable reports belong in the private channel described by SECURITY.md."
+  - type: textarea
+    id: invariant
+    attributes:
+      label: Security invariant
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Required deterministic evidence
+    validations:
+      required: true
+  - type: textarea
+    id: negatives
+    attributes:
+      label: Secure negatives and false-positive traps
+    validations:
+      required: true
+  - type: textarea
+    id: standards
+    attributes:
+      label: Primary standards or references

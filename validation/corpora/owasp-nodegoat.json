@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "corpusId": "owasp-nodegoat-c5cb68a",
+  "kind": "DELIBERATELY_VULNERABLE_APPLICATION",
+  "source": "https://github.com/OWASP/NodeGoat",
+  "sourceProject": "OWASP NodeGoat",
+  "immutableRevision": "c5cb68a7084e4ae7dcc60e6a98768720a81841e8",
+  "license": "Apache-2.0",
+  "language": ["JavaScript"],
+  "frameworks": ["Express", "MongoDB"],
+  "acquisition": "GIT_PINNED_COMMIT",
+  "labelsPath": "validation/labels/owasp-nodegoat-c5cb68a.json",
+  "inventory": {
+    "totalCases": 7,
+    "languageCompatible": 7,
+    "candidateRuleCompatible": 7,
+    "evaluatedCases": 7
+  },
+  "notes": [
+    "NodeGoat is a realistic deliberately vulnerable application, not a complete labeled SAST benchmark.",
+    "Precision is reported only for emitted findings manually adjudicated during implementation; independent human review remains outstanding and recall is unavailable.",
+    "The CommonJS application architecture is outside InvariantSec's bounded relative-ESM cross-file graph support."
+  ]
+}

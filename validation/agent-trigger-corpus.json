@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "1.0.0",
+  "description": "Descriptor-selection proxy corpus. This does not measure proprietary host-model behavior.",
+  "cases": [
+    { "prompt": "Check if this app is secure.", "expected": "vibeshield_scan" },
+    { "prompt": "Review authentication.", "expected": "vibeshield_scan" },
+    { "prompt": "Can I safely deploy this?", "expected": "vibeshield_scan" },
+    { "prompt": "Find vulnerabilities.", "expected": "vibeshield_scan" },
+    { "prompt": "Check my OAuth flow.", "expected": "vibeshield_scan" },
+    { "prompt": "Audit this API.", "expected": "vibeshield_scan" },
+    { "prompt": "Fix the security problems.", "expected": "vibeshield_fix" },
+    { "prompt": "Is this login implementation secure?", "expected": "vibeshield_scan" },
+    { "prompt": "Review this before production.", "expected": "vibeshield_scan" },
+    { "prompt": "Check this repo for security leaks.", "expected": "vibeshield_scan" },
+    { "prompt": "Change the button color.", "expected": null },
+    { "prompt": "Add pagination.", "expected": null },
+    { "prompt": "Explain this SQL query.", "expected": null },
+    { "prompt": "Rename this function.", "expected": null },
+    { "prompt": "Fix a CSS bug.", "expected": null },
+    { "prompt": "Make this component responsive.", "expected": null }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "schemaVersion": "1.0.0",
+  "maxFileBytes": 1048576,
+  "maxFiles": 100000,
+  "maxDepth": 40,
+  "additionalIgnore": [],
+  "baseline": [],
+  "suppressions": [
+    {
+      "rule": "AS-SESSION-001",
+      "scope": "fixtures",
+      "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+      "owner": "security-maintainers",
+      "created": "2026-08-30",
+      "expires": "2027-08-30"
+    },
+    {
+      "rule": "AS-PASSWORD-001",
+      "scope": "fixtures",
+      "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+      "owner": "security-maintainers",
+      "created": "2026-08-30",
+      "expires": "2027-08-30"
+    },
+    {
+      "rule": "AS-TOKEN-001",
+      "scope": "fixtures",
+      "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+      "owner": "security-maintainers",
+      "created": "2026-08-30",
+      "expires": "2027-08-30"
+    },
+    {
+      "rule": "AS-SECRET-001",
+      "scope": "fixtures",
+      "reason": "Synthetic non-working credential literals used to prove redaction",
+      "owner": "security-maintainers",
+      "created": "2026-08-30",
+      "expires": "2027-08-30"
+    },
+    {
+      "rule": "AS-CORS-001",
+      "scope": "fixtures",
+      "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+      "owner": "security-maintainers",
+      "created": "2026-08-30",
+      "expires": "2027-08-30"
+    },
+    {
+      "rule": "AS-AUTHZ-001",
+      "scope": "fixtures/phase2",
+      "reason": "Deliberately vulnerable cross-file authorization corpus with secure counterparts",
+      "owner": "security-maintainers",
+      "created": "2026-09-01",
+      "expires": "2027-09-01"
+    },
+    {
+      "rule": "AS-TENANT-001",
+      "scope": "fixtures/phase2",
+      "reason": "Deliberately vulnerable tenant-isolation corpus with secure counterparts",
+      "owner": "security-maintainers",
+      "created": "2026-09-01",
+      "expires": "2027-09-01"
+    },
+    {
+      "rule": "AS-AUTH-SESSION-001",
+      "scope": "fixtures/phase3",
+      "reason": "Deliberately vulnerable session-fixation corpus with a secure counterpart",
+      "owner": "security-maintainers",
+      "created": "2026-09-02",
+      "expires": "2027-09-02"
+    },
+    {
+      "rule": "AS-AUTH-SESSION-002",
+      "scope": "fixtures/phase3",
+      "reason": "Deliberately incomplete logout corpus with a secure revocation counterpart",
+      "owner": "security-maintainers",
+      "created": "2026-09-02",
+      "expires": "2027-09-02"
+    },
+    {
+      "rule": "AS-AUTH-RESET-001",
+      "scope": "fixtures/phase3",
+      "reason": "Deliberately persistent-session reset corpus with a secure counterpart",
+      "owner": "security-maintainers",
+      "created": "2026-09-02",
+      "expires": "2027-09-02"
+    },
+    {
+      "rule": "AS-AUTH-RESET-002",
+      "scope": "fixtures/phase3",
+      "reason": "Deliberately reusable reset-credential corpus with a secure counterpart",
+      "owner": "security-maintainers",
+      "created": "2026-09-02",
+      "expires": "2027-09-02"
+    },
+    {
+      "rule": "AS-AUTH-RESET-003",
+      "scope": "fixtures/phase3",
+      "reason": "Deliberately weak reset-credential corpus with a secure counterpart",
+      "owner": "security-maintainers",
+      "created": "2026-09-02",
+      "expires": "2027-09-02"
+    },
+    {
+      "rule": "AS-AUTH-JWT-001",
+      "scope": "fixtures/phase3",
+      "reason": "Deliberately decoded-but-unverified JWT corpus with a verified counterpart",
+      "owner": "security-maintainers",
+      "created": "2026-09-02",
+      "expires": "2027-09-02"
+    },
+    {
+      "rule": "AS-AUTH-OAUTH-001",
+      "scope": "fixtures/phase3",
+      "reason": "Deliberately broken OAuth state corpus with a secure counterpart",
+      "owner": "security-maintainers",
+      "created": "2026-09-02",
+      "expires": "2027-09-02"
+    },
+    {
+      "rule": "AS-AUTH-OAUTH-002",
+      "scope": "fixtures/phase3",
+      "reason": "Deliberately missing applicable PKCE corpus with a secure counterpart",
+      "owner": "security-maintainers",
+      "created": "2026-09-02",
+      "expires": "2027-09-02"
+    },
+    {
+      "rule": "AS-SCA-001",
+      "scope": "fixtures/phase4",
+      "reason": "Synthetic affected dependencies used with an injected advisory provider",
+      "owner": "security-maintainers",
+      "created": "2026-09-02",
+      "expires": "2027-09-02"
+    },
+    {
+      "rule": "AS-CI-001",
+      "scope": "fixtures/phase4",
+      "reason": "Deliberately mutable Action reference corpus with full-SHA and local counterparts",
+      "owner": "security-maintainers",
+      "created": "2026-09-02",
+      "expires": "2027-09-02"
+    },
+    {
+      "rule": "AS-CI-002",
+      "scope": "fixtures/phase4",
+      "reason": "Deliberately overbroad workflow-permission corpus with a narrow-write counterpart",
+      "owner": "security-maintainers",
+      "created": "2026-09-02",
+      "expires": "2027-09-02"
+    },
+    {
+      "rule": "AS-CI-003",
+      "scope": "fixtures/phase4",
+      "reason": "Deliberately dangerous pull_request_target corpus with a benign metadata counterpart",
+      "owner": "security-maintainers",
+      "created": "2026-09-02",
+      "expires": "2027-09-02"
+    },
+    {
+      "rule": "AS-CI-004",
+      "scope": "fixtures/phase4",
+      "reason": "Deliberately direct context-to-shell corpus with safe environment indirection",
+      "owner": "security-maintainers",
+      "created": "2026-09-02",
+      "expires": "2027-09-02"
+    },
+    {
+      "rule": "AS-SECRET-001",
+      "scope": "tests/security",
+      "reason": "Synthetic outside-root credential marker used by the symlink escape regression test",
+      "owner": "security-maintainers",
+      "created": "2026-08-30",
+      "expires": "2027-08-30"
+    }
+  ]
+}

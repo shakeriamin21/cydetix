@@ -1,0 +1,718 @@
+import { PRODUCT } from "../core/brand.js";
+import { ruleDefinitionSchema, type RuleDefinition } from "../core/schema.js";
+import catalogue from "../../rules/catalogue.json" with { type: "json" };
+
+const definitions = [
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-SESSION-001",
+    version: "1.0.0",
+    title: "Session cookie protection is explicitly disabled",
+    category: "session",
+    description:
+      "Detects session or authentication cookies whose Secure or HttpOnly protection is explicitly set to false.",
+    severity: "high",
+    confidence: "high",
+    standards: {
+      cwe: ["CWE-614", "CWE-1004"],
+      owaspTop10: ["A07:2025"],
+      asvs: ["v5.0.0-3.3.1", "v5.0.0-3.3.4"],
+      nist: ["NIST SP 800-63B-4 Section 5.1.1"],
+    },
+    supportedLanguages: ["javascript", "typescript", "python"],
+    supportedFrameworks: ["Express", "Flask", "Django"],
+    detectionStrategy: "ast-plus-context",
+    evidenceRequirements: [
+      "A session- or authentication-specific cookie configuration explicitly assigns false to Secure or HttpOnly.",
+    ],
+    reachabilityAssessment:
+      "Likely when the configuration is attached to a literal session cookie or framework session setting; deployment TLS behavior is not inferred.",
+    securityInvariant:
+      "Authentication session cookies must be protected from cleartext transport and client-side script access.",
+    attackPrerequisite:
+      "An attacker can observe an insecure transport path or execute script in the cookie's origin.",
+    impact:
+      "A stolen session token can allow account impersonation until the session is revoked or expires.",
+    remediation:
+      "Set Secure and HttpOnly for authentication cookies, verify SameSite and scope, and test the deployed HTTPS path.",
+    autofix: "SAFE",
+    references: [
+      "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
+      "https://owasp.org/www-project-application-security-verification-standard/",
+    ],
+    positiveTests: [
+      "fixtures/typescript/vulnerable/src/app.ts",
+      "fixtures/python/vulnerable/app.py",
+    ],
+    negativeTests: ["fixtures/typescript/secure/src/app.ts", "fixtures/python/secure/app.py"],
+  },
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-PASSWORD-001",
+    version: "1.0.0",
+    title: "Fast general-purpose hash used for password storage",
+    category: "password-storage",
+    description:
+      "Detects password-adjacent MD5, SHA-1, SHA-256, or SHA-512 hashing instead of an adaptive password hashing function.",
+    severity: "high",
+    confidence: "high",
+    standards: {
+      cwe: ["CWE-916"],
+      owaspTop10: ["A04:2025", "A07:2025"],
+      asvs: ["v5.0.0-11.4.2"],
+      nist: ["NIST SP 800-63B-4 Section 3.1.1.2"],
+    },
+    supportedLanguages: ["javascript", "typescript", "python"],
+    supportedFrameworks: [],
+    detectionStrategy: "ast-plus-context",
+    evidenceRequirements: [
+      "An AST-resolved fast hash constructor appears in the same expression or statement as password-adjacent data.",
+    ],
+    reachabilityAssessment:
+      "Likely when the fast hash consumes a password-named value; persistence and invocation are not yet proven by interprocedural data flow.",
+    securityInvariant:
+      "Stored passwords must use a salted, adaptive password hashing function with a work factor.",
+    attackPrerequisite:
+      "An attacker obtains the credential verifier database or stored hash values.",
+    impact: "Fast offline guessing can recover user passwords and enable credential reuse attacks.",
+    remediation:
+      "Use Argon2id where available, or an appropriately configured scrypt, bcrypt, or PBKDF2 implementation, and plan migration of existing hashes.",
+    autofix: "ARCHITECTURAL",
+    references: [
+      "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
+      "https://pages.nist.gov/800-63-4/sp800-63b.html",
+    ],
+    positiveTests: [
+      "fixtures/typescript/vulnerable/src/app.ts",
+      "fixtures/python/vulnerable/app.py",
+    ],
+    negativeTests: ["fixtures/typescript/secure/src/app.ts", "fixtures/python/secure/app.py"],
+  },
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-TOKEN-001",
+    version: "1.0.0",
+    title: "Unverified JWT claims drive authorization-sensitive logic",
+    category: "token-validation",
+    description:
+      "Detects explicit JWT verification bypass where decoded claims are subsequently used in authorization-sensitive control flow.",
+    severity: "critical",
+    confidence: "high",
+    standards: {
+      cwe: ["CWE-347"],
+      owaspTop10: ["A07:2025"],
+      asvs: ["v5.0.0-7.2.1"],
+      nist: [],
+    },
+    supportedLanguages: ["javascript", "typescript", "python"],
+    supportedFrameworks: ["Express", "NestJS", "FastAPI", "Flask", "Django"],
+    detectionStrategy: "ast-plus-context",
+    evidenceRequirements: [
+      "A known JWT decode API bypasses signature verification and its decoded role, permission, scope, subject, user, or tenant claim is used by a conditional branch.",
+    ],
+    reachabilityAssessment:
+      "Likely because the detector proves local authorization-sensitive claim use; route reachability remains bounded by local evidence.",
+    securityInvariant:
+      "A token used as proof of identity or authorization must have its signature and security claims verified before trust.",
+    attackPrerequisite:
+      "An attacker can submit a crafted bearer token to the affected validation path.",
+    impact: "A forged token can result in authentication bypass or unauthorized privilege claims.",
+    remediation:
+      "Use the library's verification API, pin allowed algorithms, and validate issuer, audience, expiry, and other required claims.",
+    autofix: "ARCHITECTURAL",
+    references: [
+      "https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html",
+      "https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_Cheat_Sheet.html",
+    ],
+    positiveTests: [
+      "fixtures/typescript/vulnerable/src/app.ts",
+      "fixtures/python/vulnerable/app.py",
+    ],
+    negativeTests: ["fixtures/typescript/secure/src/app.ts", "fixtures/python/secure/app.py"],
+  },
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-SECRET-001",
+    version: "1.0.0",
+    title: "Credential-like secret committed as a literal",
+    category: "secrets",
+    description:
+      "Detects high-risk credential variable names assigned a long literal or embedded private-key material, while redacting the value.",
+    severity: "high",
+    confidence: "medium",
+    standards: {
+      cwe: ["CWE-798"],
+      owaspTop10: ["A02:2025"],
+      asvs: ["v5.0.0-13.3.1"],
+      nist: [],
+    },
+    supportedLanguages: ["javascript", "typescript", "python", "configuration"],
+    supportedFrameworks: [],
+    detectionStrategy: "lexical-secret",
+    evidenceRequirements: [
+      "A high-risk credential variable is assigned a long literal, or a private-key header is present; the value is fingerprinted and redacted.",
+    ],
+    reachabilityAssessment:
+      "Unknown until credential validity, repository history, and consuming code are established; the plaintext exposure itself is concrete.",
+    securityInvariant: "Long-lived credentials must not be stored in source-controlled plaintext.",
+    attackPrerequisite:
+      "An attacker gains read access to the working tree, repository, artifact, log, or history.",
+    impact: "The exposed credential may permit unauthorized access to data or infrastructure.",
+    remediation:
+      "Revoke or rotate any real credential, move secret delivery to an approved secret store, and assess Git history under organizational policy.",
+    autofix: "ARCHITECTURAL",
+    references: [
+      "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html",
+      "https://cwe.mitre.org/data/definitions/798.html",
+    ],
+    positiveTests: [
+      "fixtures/typescript/vulnerable/src/app.ts",
+      "fixtures/python/vulnerable/app.py",
+    ],
+    negativeTests: ["fixtures/typescript/secure/src/app.ts", "fixtures/python/secure/app.py"],
+  },
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-CORS-001",
+    version: "1.0.0",
+    title: "Credentialed CORS trusts arbitrary request origins",
+    category: "configuration",
+    description:
+      "Detects explicit CORS configurations that reflect arbitrary request origins while enabling credential support.",
+    severity: "high",
+    confidence: "high",
+    standards: {
+      cwe: ["CWE-942"],
+      owaspTop10: ["A02:2025"],
+      asvs: ["v5.0.0-3.4.2"],
+      nist: [],
+    },
+    supportedLanguages: ["javascript", "typescript", "python"],
+    supportedFrameworks: ["Express", "Flask"],
+    detectionStrategy: "ast-plus-context",
+    evidenceRequirements: [
+      "The same literal CORS configuration enables credentials and reflects arbitrary JavaScript request origins, or uses a Flask-CORS wildcard origin/resource.",
+    ],
+    reachabilityAssessment:
+      "Possible when the configuration is passed directly to CORS middleware; cookie SameSite behavior and reverse-proxy header rewriting are not inferred.",
+    securityInvariant:
+      "Credentialed cross-origin requests must be restricted to an explicit allowlist of trusted origins.",
+    attackPrerequisite:
+      "A victim with an authenticated browser session visits an attacker-controlled origin.",
+    impact:
+      "An attacker-controlled origin may be able to issue authenticated cross-origin requests or read sensitive responses.",
+    remediation:
+      "Replace the wildcard with a strict, normalized allowlist and reject unrecognized origins.",
+    autofix: "REVIEW_REQUIRED",
+    references: [
+      "https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html",
+      "https://owasp.org/www-project-application-security-verification-standard/",
+    ],
+    positiveTests: [
+      "fixtures/typescript/vulnerable/src/app.ts",
+      "fixtures/python/vulnerable/app.py",
+    ],
+    negativeTests: [
+      "fixtures/typescript/secure/src/app.ts",
+      "fixtures/typescript/secure/src/wildcard-with-credentials.ts",
+      "fixtures/python/secure/app.py",
+    ],
+  },
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-AUTHZ-001",
+    version: "1.0.0",
+    title: "Attacker-selected object lookup omits authenticated subject constraint",
+    category: "authorization",
+    description:
+      "Detects a proven Express-to-Prisma call path where attacker-controlled object identity reaches a single-object operation, trusted authenticated subject identity reaches the resource function, and that subject is omitted from the selector.",
+    severity: "high",
+    confidence: "high",
+    standards: {
+      cwe: ["CWE-639"],
+      owaspTop10: ["A01:2025"],
+      asvs: ["v5.0.0-8.2.2", "v5.0.0-8.3.1"],
+      nist: [],
+    },
+    supportedLanguages: ["javascript", "typescript"],
+    supportedFrameworks: ["Express"],
+    detectionStrategy: "security-ir",
+    evidenceRequirements: [
+      "A literal Express route resolves through repository-local calls to a supported Prisma single-object operation.",
+      "The object selector is attacker-controlled, authenticated subject identity reaches the resource function, and no trusted ownership selector consumes it.",
+    ],
+    reachabilityAssessment:
+      "Likely only when the static route binding, local call chain, identity provenance, and Prisma operation are all resolved.",
+    securityInvariant:
+      "Access to an attacker-selected object must be constrained by the authenticated subject's authorization or ownership at a trusted enforcement point.",
+    attackPrerequisite:
+      "An authenticated attacker can alter the object identifier supplied to the affected route.",
+    impact:
+      "An authenticated user may read, update, or delete another user's object by changing its identifier.",
+    remediation:
+      "Constrain the resource operation with trusted authenticated subject identity or enforce an equivalent explicit server-side policy before returning or mutating the object.",
+    autofix: "ARCHITECTURAL",
+    references: [
+      "https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html",
+      "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x17-V8-Authorization.md",
+      "https://cwe.mitre.org/data/definitions/639.html",
+    ],
+    positiveTests: ["fixtures/phase2/express-prisma/idor-vulnerable/src/routes.ts"],
+    negativeTests: ["fixtures/phase2/express-prisma/idor-secure/src/routes.ts"],
+  },
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-TENANT-001",
+    version: "1.0.0",
+    title: "Resource access omits or overrides authenticated tenant scope",
+    category: "authorization",
+    description:
+      "Detects a proven Express-to-Prisma path where trusted authenticated tenant identity reaches a resource function but its selector omits tenant scope or substitutes attacker-controlled tenant identity.",
+    severity: "high",
+    confidence: "high",
+    standards: {
+      cwe: ["CWE-862"],
+      owaspTop10: ["A01:2025"],
+      asvs: ["v5.0.0-8.3.1", "v5.0.0-8.4.1"],
+      nist: [],
+    },
+    supportedLanguages: ["javascript", "typescript"],
+    supportedFrameworks: ["Express"],
+    detectionStrategy: "security-ir",
+    evidenceRequirements: [
+      "A literal Express route resolves through repository-local calls to a supported Prisma operation.",
+      "Trusted tenant identity from proven authenticated context reaches the resource function, but the selector omits it or uses request-controlled tenant identity.",
+    ],
+    reachabilityAssessment:
+      "Likely only when the static route binding, local call chain, tenant provenance, and Prisma operation are all resolved.",
+    securityInvariant:
+      "Multi-tenant resource access must be scoped by tenant identity derived from trusted authenticated state, not by an attacker-controlled request value.",
+    attackPrerequisite:
+      "An authenticated attacker can influence an object or tenant identifier used by the affected route.",
+    impact: "A user may read, modify, or delete resources belonging to another tenant.",
+    remediation:
+      "Derive tenant scope from verified authenticated identity and enforce it in the trusted service or repository query for every tenant-owned operation.",
+    autofix: "ARCHITECTURAL",
+    references: [
+      "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html",
+      "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x17-V8-Authorization.md",
+      "https://cwe.mitre.org/data/definitions/862.html",
+    ],
+    positiveTests: ["fixtures/phase2/express-prisma/tenant-vulnerable/src/routes.ts"],
+    negativeTests: ["fixtures/phase2/express-prisma/tenant-secure/src/routes.ts"],
+  },
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-AUTH-SESSION-001",
+    version: "1.0.0",
+    title: "Authenticated identity is bound without rotating the session",
+    category: "authentication",
+    description:
+      "Detects a resolved express-session login lifecycle that verifies credentials and upgrades the existing session without regeneration.",
+    severity: "high",
+    confidence: "high",
+    standards: {
+      cwe: ["CWE-384"],
+      owaspTop10: ["A07:2025"],
+      asvs: ["v5.0.0-7.2.4"],
+      nist: ["NIST SP 800-63B-4 Section 5"],
+    },
+    standardsTraceability: [
+      {
+        source: "OWASP ASVS 5.0.0",
+        control: "7.2.4",
+        relationship: "REQUIRED",
+        url: "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x16-V7-Session-Management.md",
+      },
+    ],
+    supportedLanguages: ["javascript", "typescript"],
+    supportedFrameworks: ["Express"],
+    detectionStrategy: "authentication-invariant",
+    evidenceRequirements: [
+      "A resolved express-session route verifies a credential and attaches authenticated identity to the current session.",
+      "No session regeneration operation occurs on the complete supported authentication path.",
+    ],
+    reachabilityAssessment:
+      "Likely only for literal Express routes and resolved local call paths using the guaranteed express-session API.",
+    securityInvariant: "SESSION_ROTATES_AFTER_AUTHENTICATION",
+    attackPrerequisite:
+      "An attacker can establish or know the victim's pre-authentication session identifier.",
+    impact: "The attacker may reuse a fixed session identifier after the victim authenticates.",
+    remediation:
+      "Regenerate the authoritative session after credential verification and before binding authenticated identity.",
+    autofix: "ARCHITECTURAL",
+    references: [
+      "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
+      "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x16-V7-Session-Management.md",
+    ],
+    positiveTests: ["fixtures/phase3/session-fixation/src/routes.ts"],
+    negativeTests: ["fixtures/phase3/session-secure/src/routes.ts"],
+  },
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-AUTH-SESSION-002",
+    version: "1.0.0",
+    title: "Logout clears only the client cookie",
+    category: "authentication",
+    description:
+      "Detects a resolved stateful logout path that removes the browser cookie without invalidating authoritative server-side session state.",
+    severity: "high",
+    confidence: "high",
+    standards: {
+      cwe: ["CWE-613"],
+      owaspTop10: ["A07:2025"],
+      asvs: ["v5.0.0-7.4.1"],
+      nist: ["NIST SP 800-63B-4 Section 5"],
+    },
+    standardsTraceability: [
+      {
+        source: "OWASP ASVS 5.0.0",
+        control: "7.4.1",
+        relationship: "REQUIRED",
+        url: "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x16-V7-Session-Management.md",
+      },
+    ],
+    supportedLanguages: ["javascript", "typescript"],
+    supportedFrameworks: ["Express"],
+    detectionStrategy: "authentication-invariant",
+    evidenceRequirements: [
+      "A resolved logout route clears an authentication cookie.",
+      "The supported stateful path contains no authoritative session destruction operation.",
+    ],
+    reachabilityAssessment: "Likely for resolved Express and express-session logout paths.",
+    securityInvariant: "SESSION_INVALIDATED_ON_LOGOUT",
+    attackPrerequisite: "An attacker retains a previously obtained server-side session identifier.",
+    impact:
+      "The supposedly logged-out session can remain usable until independent expiry or revocation.",
+    remediation:
+      "Destroy the authoritative server-side session, then clear the corresponding browser cookie.",
+    autofix: "ARCHITECTURAL",
+    references: [
+      "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x16-V7-Session-Management.md",
+      "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
+    ],
+    positiveTests: ["fixtures/phase3/logout-incomplete/src/routes.ts"],
+    negativeTests: ["fixtures/phase3/session-secure/src/routes.ts"],
+  },
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-AUTH-RESET-001",
+    version: "1.0.0",
+    title: "Password reset leaves existing authenticated sessions valid",
+    category: "password-reset",
+    description:
+      "Detects a resolved password reset that changes credential material while independently persisted sessions remain valid without revoke-all or session-generation enforcement.",
+    severity: "high",
+    confidence: "high",
+    standards: {
+      cwe: ["CWE-613"],
+      owaspTop10: ["A07:2025"],
+      asvs: ["v5.0.0-7.4.3"],
+      nist: [],
+    },
+    standardsTraceability: [
+      {
+        source: "OWASP ASVS 5.0.0",
+        control: "7.4.3",
+        relationship: "CONTEXT_DEPENDENT",
+        url: "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x16-V7-Session-Management.md",
+      },
+      {
+        source: "OWASP Forgot Password Cheat Sheet",
+        control: "Existing session handling",
+        relationship: "RECOMMENDED",
+        url: "https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html",
+      },
+    ],
+    supportedLanguages: ["javascript", "typescript"],
+    supportedFrameworks: ["Express"],
+    detectionStrategy: "authentication-invariant",
+    evidenceRequirements: [
+      "The resolved reset path validates a persisted reset credential and changes the password.",
+      "Supported server-side session creation and lookup remain independent of the password mutation.",
+      "No revoke-all or consumed session-generation change occurs on the resolved reset path.",
+    ],
+    reachabilityAssessment:
+      "Likely only when password reset and the authoritative server-side session architecture are both resolved.",
+    securityInvariant: "PASSWORD_RESET_INVALIDATES_RELEVANT_SESSIONS",
+    attackPrerequisite:
+      "An attacker retains an authenticated session created before the password reset.",
+    impact:
+      "A compromised pre-reset session can survive account recovery and continue accessing the account.",
+    remediation:
+      "Revoke relevant account sessions after password replacement or enforce a per-account session generation at every lookup.",
+    autofix: "ARCHITECTURAL",
+    references: [
+      "https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html",
+      "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x16-V7-Session-Management.md",
+    ],
+    positiveTests: ["fixtures/phase3/reset-persistent-sessions/src/routes.ts"],
+    negativeTests: ["fixtures/phase3/reset-secure/src/routes.ts"],
+  },
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-AUTH-RESET-002",
+    version: "1.0.0",
+    title: "Password reset credential remains reusable",
+    category: "password-reset",
+    description:
+      "Detects a supported persisted reset credential that remains unconsumed after the password is replaced.",
+    severity: "high",
+    confidence: "high",
+    standards: {
+      cwe: ["CWE-640"],
+      owaspTop10: ["A07:2025"],
+      asvs: ["v5.0.0-6.4.3"],
+      nist: [],
+    },
+    standardsTraceability: [
+      {
+        source: "OWASP Forgot Password Cheat Sheet",
+        control: "Reset tokens are single use and expire",
+        relationship: "REQUIRED",
+        url: "https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html",
+      },
+    ],
+    supportedLanguages: ["javascript", "typescript"],
+    supportedFrameworks: ["Express"],
+    detectionStrategy: "authentication-invariant",
+    evidenceRequirements: [
+      "A resolved path validates a supported persisted reset credential and replaces the password.",
+      "The path neither requires unused state nor consumes the credential.",
+    ],
+    reachabilityAssessment: "Likely for resolved Express-to-Prisma reset paths.",
+    securityInvariant: "PASSWORD_RESET_TOKEN_SINGLE_USE",
+    attackPrerequisite: "An attacker can obtain or replay a previously valid reset credential.",
+    impact: "The reset credential can be replayed to replace the password again.",
+    remediation:
+      "Atomically require unused, unexpired reset state and consume or delete the credential during password replacement.",
+    autofix: "ARCHITECTURAL",
+    references: ["https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html"],
+    positiveTests: ["fixtures/phase3/reset-persistent-sessions/src/routes.ts"],
+    negativeTests: ["fixtures/phase3/reset-secure/src/routes.ts"],
+  },
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-AUTH-RESET-003",
+    version: "1.0.0",
+    title: "Password reset credential protection is explicitly incomplete",
+    category: "password-reset",
+    description:
+      "Detects a supported application-owned reset lifecycle with explicit weak random generation, raw credential persistence, missing expiry storage, or missing expiry enforcement.",
+    severity: "high",
+    confidence: "high",
+    standards: {
+      cwe: ["CWE-640", "CWE-330"],
+      owaspTop10: ["A07:2025"],
+      asvs: ["v5.0.0-6.4.3"],
+      nist: [],
+    },
+    standardsTraceability: [
+      {
+        source: "OWASP Forgot Password Cheat Sheet",
+        control: "Randomly generated, securely stored, single-use, expiring reset tokens",
+        relationship: "REQUIRED",
+        url: "https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html",
+      },
+      {
+        source: "OWASP ASVS 5.0.0",
+        control: "6.4.3",
+        relationship: "CONTEXT_DEPENDENT",
+        url: "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x15-V6-Authentication.md",
+      },
+    ],
+    supportedLanguages: ["javascript", "typescript"],
+    supportedFrameworks: ["Express"],
+    detectionStrategy: "authentication-invariant",
+    evidenceRequirements: [
+      "A resolved request path generates and persists an application-owned reset credential.",
+      "Supported API evidence explicitly proves weak generation, raw persistence, omitted expiry storage, or omitted expiry validation.",
+    ],
+    reachabilityAssessment: "Likely for resolved Express-to-Prisma application-owned reset flows.",
+    securityInvariant: "PASSWORD_RESET_CREDENTIAL_PROTECTED",
+    attackPrerequisite: "An attacker can predict, obtain, or replay the affected reset credential.",
+    impact:
+      "An attacker may recover an account using a predictable, exposed, or stale reset credential.",
+    remediation:
+      "Generate reset credentials with a CSPRNG, persist only a digest, set a short expiry, and enforce expiry during atomic consumption.",
+    autofix: "ARCHITECTURAL",
+    references: [
+      "https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html",
+      "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x15-V6-Authentication.md",
+    ],
+    positiveTests: ["fixtures/phase3/reset-weak-credential/src/routes.ts"],
+    negativeTests: ["fixtures/phase3/reset-secure/src/routes.ts"],
+  },
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-AUTH-JWT-001",
+    version: "1.0.0",
+    title: "Decoded JWT claims become authenticated identity without verification",
+    category: "authentication",
+    description:
+      "Detects a resolved JWT decode-only boundary whose claims are subsequently accepted as authenticated request context.",
+    severity: "critical",
+    confidence: "high",
+    standards: {
+      cwe: ["CWE-347"],
+      owaspTop10: ["A07:2025"],
+      asvs: ["v5.0.0-9.1.1"],
+      nist: [],
+    },
+    standardsTraceability: [
+      {
+        source: "OWASP ASVS 5.0.0",
+        control: "9.1.1",
+        relationship: "REQUIRED",
+        url: "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x18-V9-Self-contained-Tokens.md",
+      },
+      {
+        source: "IETF RFC 8725 / BCP 225",
+        control: "Section 3.1",
+        relationship: "REQUIRED",
+        url: "https://www.rfc-editor.org/rfc/rfc8725.html",
+      },
+    ],
+    supportedLanguages: ["javascript", "typescript"],
+    supportedFrameworks: ["Express"],
+    detectionStrategy: "authentication-invariant",
+    evidenceRequirements: [
+      "A supported JWT decode API parses claims without signature verification.",
+      "The resolved middleware path assigns those claims to authenticated request context.",
+    ],
+    reachabilityAssessment: "Likely for literal Express routes with statically bound middleware.",
+    securityInvariant: "JWT_SIGNATURE_VERIFIED",
+    attackPrerequisite: "An attacker can submit a crafted bearer token to the affected route.",
+    impact: "Forged claims can establish an attacker-chosen authenticated identity or privileges.",
+    remediation:
+      "Use a supported cryptographic verification API and validate required algorithms and claims before establishing identity.",
+    autofix: "ARCHITECTURAL",
+    references: [
+      "https://www.rfc-editor.org/rfc/rfc8725.html",
+      "https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_Cheat_Sheet.html",
+    ],
+    positiveTests: ["fixtures/phase3/jwt-unverified/src/routes.ts"],
+    negativeTests: ["fixtures/phase3/jwt-verified/src/routes.ts"],
+  },
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-AUTH-OAUTH-001",
+    version: "1.0.0",
+    title: "OAuth callback is not bound to the initiating transaction",
+    category: "oauth",
+    description:
+      "Detects a supported OAuth authorization-code flow that explicitly skips state validation without another proven CSRF transaction binding.",
+    severity: "high",
+    confidence: "high",
+    standards: {
+      cwe: ["CWE-352"],
+      owaspTop10: ["A07:2025"],
+      asvs: ["v5.0.0-10.2.1"],
+      nist: [],
+    },
+    standardsTraceability: [
+      {
+        source: "IETF RFC 9700 / BCP 240",
+        control: "Sections 2.1 and 4.7",
+        relationship: "CONTEXT_DEPENDENT",
+        url: "https://www.rfc-editor.org/rfc/rfc9700.html",
+      },
+      {
+        source: "OWASP ASVS 5.0.0",
+        control: "10.2.1",
+        relationship: "CONTEXT_DEPENDENT",
+        url: "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x19-V10-OAuth-and-OIDC.md",
+      },
+    ],
+    supportedLanguages: ["javascript", "typescript"],
+    supportedFrameworks: ["Express"],
+    detectionStrategy: "authentication-invariant",
+    evidenceRequirements: [
+      "A supported OAuth authorization request and callback are resolved.",
+      "The callback explicitly skips state validation and complete PKCE binding is not proven.",
+    ],
+    reachabilityAssessment: "Likely for supported oauth4webapi authorization-code flows.",
+    securityInvariant: "OAUTH_STATE_VALIDATED",
+    attackPrerequisite:
+      "An attacker can initiate or inject an authorization response at the client callback.",
+    impact:
+      "The client can bind an attacker-controlled authorization result to the victim's session.",
+    remediation:
+      "Use transaction-specific, user-agent-bound state or a standards-compliant proven alternative and validate it at callback.",
+    autofix: "ARCHITECTURAL",
+    references: [
+      "https://www.rfc-editor.org/rfc/rfc9700.html",
+      "https://cheatsheetseries.owasp.org/cheatsheets/OAuth2_Cheat_Sheet.html",
+    ],
+    positiveTests: ["fixtures/phase3/oauth-broken-state/src/routes.ts"],
+    negativeTests: ["fixtures/phase3/oauth-secure/src/routes.ts"],
+  },
+  {
+    schemaVersion: PRODUCT.ruleSchemaVersion,
+    id: "AS-AUTH-OAUTH-002",
+    version: "1.0.0",
+    title: "Public OAuth authorization-code client omits PKCE",
+    category: "oauth",
+    description:
+      "Detects a proven public authorization-code client whose supported request and exchange omit the PKCE verifier/challenge lifecycle.",
+    severity: "high",
+    confidence: "high",
+    standards: {
+      cwe: ["CWE-345"],
+      owaspTop10: ["A07:2025"],
+      asvs: ["v5.0.0-10.4.6"],
+      nist: [],
+    },
+    standardsTraceability: [
+      {
+        source: "IETF RFC 9700 / BCP 240",
+        control: "Section 2.1.1",
+        relationship: "REQUIRED",
+        url: "https://www.rfc-editor.org/rfc/rfc9700.html",
+      },
+      {
+        source: "IETF RFC 7636",
+        control: "PKCE protocol",
+        relationship: "REQUIRED",
+        url: "https://www.rfc-editor.org/rfc/rfc7636.html",
+      },
+    ],
+    supportedLanguages: ["javascript", "typescript"],
+    supportedFrameworks: ["Express"],
+    detectionStrategy: "authentication-invariant",
+    evidenceRequirements: [
+      "Client metadata explicitly identifies a public client.",
+      "A supported authorization-code exchange is present without the complete S256 verifier/challenge lifecycle.",
+    ],
+    reachabilityAssessment: "Likely for supported oauth4webapi public-client code flows.",
+    securityInvariant: "PKCE_REQUIRED_WHERE_APPLICABLE",
+    attackPrerequisite: "An attacker can intercept or inject an authorization code.",
+    impact:
+      "An intercepted or injected authorization code may be redeemed outside the initiating client transaction.",
+    remediation:
+      "Generate a transaction-specific verifier, send its S256 challenge, bind the verifier to the user-agent transaction, and use it at token exchange.",
+    autofix: "ARCHITECTURAL",
+    references: [
+      "https://www.rfc-editor.org/rfc/rfc9700.html",
+      "https://www.rfc-editor.org/rfc/rfc7636.html",
+    ],
+    positiveTests: ["fixtures/phase3/oauth-missing-pkce/src/routes.ts"],
+    negativeTests: ["fixtures/phase3/oauth-secure/src/routes.ts"],
+  },
+] satisfies RuleDefinition[];
+
+const legacyIds = new Set(definitions.map((definition) => definition.id));
+export const RULES: readonly RuleDefinition[] = catalogue.rules.map((definition) =>
+  ruleDefinitionSchema.parse(definition),
+);
+if ([...legacyIds].some((id) => !RULES.some((rule) => rule.id === id))) {
+  throw new Error("rules/catalogue.json is missing a built-in rule definition");
+}
+
+export const RULE_BY_ID = new Map(RULES.map((rule) => [rule.id, rule]));
+
+export function requireRule(id: string): RuleDefinition {
+  const rule = RULE_BY_ID.get(id);
+  if (rule === undefined) throw new Error(`Missing rule definition: ${id}`);
+  return rule;
+}

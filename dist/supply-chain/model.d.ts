@@ -1,0 +1,1003 @@
+import { z } from "zod";
+export declare const supplyChainVersion: "1.0.0";
+export declare const advisoryProviderStateSchema: z.ZodEnum<{
+    CHECKED_NO_FINDINGS: "CHECKED_NO_FINDINGS";
+    CHECKED_FINDINGS: "CHECKED_FINDINGS";
+    NOT_CHECKED_OFFLINE: "NOT_CHECKED_OFFLINE";
+    PROVIDER_UNAVAILABLE: "PROVIDER_UNAVAILABLE";
+    UNKNOWN: "UNKNOWN";
+}>;
+export declare const historyAnalysisStateSchema: z.ZodEnum<{
+    CHECKED: "CHECKED";
+    NOT_CHECKED: "NOT_CHECKED";
+    GIT_UNAVAILABLE: "GIT_UNAVAILABLE";
+    NOT_A_GIT_REPOSITORY: "NOT_A_GIT_REPOSITORY";
+    TRUNCATED: "TRUNCATED";
+    FAILED: "FAILED";
+}>;
+export declare const supplyChainControlStateSchema: z.ZodEnum<{
+    UNKNOWN: "UNKNOWN";
+    PROVEN: "PROVEN";
+    PARTIAL: "PARTIAL";
+    NOT_PRESENT: "NOT_PRESENT";
+}>;
+export declare const supplyChainEvidenceSchema: z.ZodObject<{
+    id: z.ZodString;
+    kind: z.ZodEnum<{
+        manifest: "manifest";
+        lockfile: "lockfile";
+        dependency: "dependency";
+        workflow: "workflow";
+        "action-reference": "action-reference";
+        permission: "permission";
+        "workflow-step": "workflow-step";
+        "secret-exposure": "secret-exposure";
+        history: "history";
+        provenance: "provenance";
+    }>;
+    location: z.ZodObject<{
+        path: z.ZodString;
+        start: z.ZodObject<{
+            line: z.ZodNumber;
+            column: z.ZodNumber;
+            offset: z.ZodNumber;
+        }, z.core.$strict>;
+        end: z.ZodObject<{
+            line: z.ZodNumber;
+            column: z.ZodNumber;
+            offset: z.ZodNumber;
+        }, z.core.$strict>;
+    }, z.core.$strict>;
+    message: z.ZodString;
+    redacted: z.ZodBoolean;
+}, z.core.$strict>;
+export declare const packageDependencyKindSchema: z.ZodEnum<{
+    direct: "direct";
+    dev: "dev";
+    optional: "optional";
+    peer: "peer";
+    transitive: "transitive";
+}>;
+export declare const packageComponentSchema: z.ZodObject<{
+    id: z.ZodString;
+    ecosystem: z.ZodLiteral<"npm">;
+    name: z.ZodString;
+    version: z.ZodString;
+    purl: z.ZodString;
+    kind: z.ZodEnum<{
+        direct: "direct";
+        dev: "dev";
+        optional: "optional";
+        peer: "peer";
+        transitive: "transitive";
+    }>;
+    resolved: z.ZodBoolean;
+    integrity: z.ZodOptional<z.ZodString>;
+    source: z.ZodEnum<{
+        registry: "registry";
+        git: "git";
+        http: "http";
+        workspace: "workspace";
+        unknown: "unknown";
+    }>;
+    dev: z.ZodBoolean;
+    optional: z.ZodBoolean;
+    evidenceIds: z.ZodArray<z.ZodString>;
+}, z.core.$strict>;
+export declare const dependencyEdgeSchema: z.ZodObject<{
+    from: z.ZodString;
+    to: z.ZodString;
+    relationship: z.ZodLiteral<"DEPENDS_ON">;
+    evidenceIds: z.ZodArray<z.ZodString>;
+}, z.core.$strict>;
+export declare const dependencyPathSchema: z.ZodObject<{
+    packageId: z.ZodString;
+    path: z.ZodArray<z.ZodString>;
+}, z.core.$strict>;
+export declare const dependencyInventorySchema: z.ZodObject<{
+    status: z.ZodEnum<{
+        PARTIAL: "PARTIAL";
+        NOT_PRESENT: "NOT_PRESENT";
+        COMPLETE: "COMPLETE";
+        UNSUPPORTED: "UNSUPPORTED";
+    }>;
+    ecosystems: z.ZodArray<z.ZodLiteral<"npm">>;
+    manifests: z.ZodArray<z.ZodString>;
+    lockfiles: z.ZodArray<z.ZodString>;
+    rootComponent: z.ZodOptional<z.ZodString>;
+    lifecycleScripts: z.ZodArray<z.ZodObject<{
+        manifest: z.ZodString;
+        name: z.ZodEnum<{
+            preinstall: "preinstall";
+            install: "install";
+            postinstall: "postinstall";
+            prepare: "prepare";
+        }>;
+        location: z.ZodObject<{
+            path: z.ZodString;
+            start: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+            end: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+        }, z.core.$strict>;
+    }, z.core.$strict>>;
+    packages: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        ecosystem: z.ZodLiteral<"npm">;
+        name: z.ZodString;
+        version: z.ZodString;
+        purl: z.ZodString;
+        kind: z.ZodEnum<{
+            direct: "direct";
+            dev: "dev";
+            optional: "optional";
+            peer: "peer";
+            transitive: "transitive";
+        }>;
+        resolved: z.ZodBoolean;
+        integrity: z.ZodOptional<z.ZodString>;
+        source: z.ZodEnum<{
+            registry: "registry";
+            git: "git";
+            http: "http";
+            workspace: "workspace";
+            unknown: "unknown";
+        }>;
+        dev: z.ZodBoolean;
+        optional: z.ZodBoolean;
+        evidenceIds: z.ZodArray<z.ZodString>;
+    }, z.core.$strict>>;
+    edges: z.ZodArray<z.ZodObject<{
+        from: z.ZodString;
+        to: z.ZodString;
+        relationship: z.ZodLiteral<"DEPENDS_ON">;
+        evidenceIds: z.ZodArray<z.ZodString>;
+    }, z.core.$strict>>;
+    paths: z.ZodArray<z.ZodObject<{
+        packageId: z.ZodString;
+        path: z.ZodArray<z.ZodString>;
+    }, z.core.$strict>>;
+    directCount: z.ZodNumber;
+    transitiveCount: z.ZodNumber;
+    limitations: z.ZodArray<z.ZodString>;
+}, z.core.$strict>;
+export declare const normalizedAdvisorySchema: z.ZodObject<{
+    id: z.ZodString;
+    aliases: z.ZodArray<z.ZodString>;
+    packagePurl: z.ZodString;
+    severity: z.ZodOptional<z.ZodString>;
+    fixedVersions: z.ZodArray<z.ZodString>;
+    references: z.ZodArray<z.ZodURL>;
+    provider: z.ZodString;
+}, z.core.$strict>;
+export declare const advisoryAnalysisSchema: z.ZodObject<{
+    provider: z.ZodString;
+    state: z.ZodEnum<{
+        CHECKED_NO_FINDINGS: "CHECKED_NO_FINDINGS";
+        CHECKED_FINDINGS: "CHECKED_FINDINGS";
+        NOT_CHECKED_OFFLINE: "NOT_CHECKED_OFFLINE";
+        PROVIDER_UNAVAILABLE: "PROVIDER_UNAVAILABLE";
+        UNKNOWN: "UNKNOWN";
+    }>;
+    checkedAt: z.ZodOptional<z.ZodISODateTime>;
+    endpoint: z.ZodOptional<z.ZodURL>;
+    packagesSubmitted: z.ZodNumber;
+    advisories: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        aliases: z.ZodArray<z.ZodString>;
+        packagePurl: z.ZodString;
+        severity: z.ZodOptional<z.ZodString>;
+        fixedVersions: z.ZodArray<z.ZodString>;
+        references: z.ZodArray<z.ZodURL>;
+        provider: z.ZodString;
+    }, z.core.$strict>>;
+    message: z.ZodString;
+}, z.core.$strict>;
+export declare const secretExposureSchema: z.ZodObject<{
+    id: z.ZodString;
+    provider: z.ZodString;
+    type: z.ZodString;
+    location: z.ZodObject<{
+        path: z.ZodString;
+        start: z.ZodObject<{
+            line: z.ZodNumber;
+            column: z.ZodNumber;
+            offset: z.ZodNumber;
+        }, z.core.$strict>;
+        end: z.ZodObject<{
+            line: z.ZodNumber;
+            column: z.ZodNumber;
+            offset: z.ZodNumber;
+        }, z.core.$strict>;
+    }, z.core.$strict>;
+    redactedPreview: z.ZodString;
+    fingerprint: z.ZodString;
+    confidence: z.ZodEnum<{
+        low: "low";
+        medium: "medium";
+        high: "high";
+    }>;
+    sourceCategory: z.ZodEnum<{
+        "working-tree": "working-tree";
+        "git-history": "git-history";
+        "external-tool": "external-tool";
+    }>;
+    historyState: z.ZodEnum<{
+        current: "current";
+        historical: "historical";
+        "not-checked": "not-checked";
+    }>;
+    rotationGuidance: z.ZodArray<z.ZodEnum<{
+        CURRENT_TREE_REMOVAL: "CURRENT_TREE_REMOVAL";
+        CREDENTIAL_ROTATION_REQUIRED: "CREDENTIAL_ROTATION_REQUIRED";
+        HISTORY_REWRITE_CONSIDER: "HISTORY_REWRITE_CONSIDER";
+        PROVIDER_REVOCATION_REQUIRED: "PROVIDER_REVOCATION_REQUIRED";
+    }>>;
+    validationState: z.ZodLiteral<"PASSIVE_NOT_VALIDATED">;
+    engine: z.ZodString;
+}, z.core.$strict>;
+export declare const secretAnalysisSchema: z.ZodObject<{
+    workingTree: z.ZodEnum<{
+        CHECKED_NO_FINDINGS: "CHECKED_NO_FINDINGS";
+        CHECKED_FINDINGS: "CHECKED_FINDINGS";
+    }>;
+    history: z.ZodEnum<{
+        CHECKED: "CHECKED";
+        NOT_CHECKED: "NOT_CHECKED";
+        GIT_UNAVAILABLE: "GIT_UNAVAILABLE";
+        NOT_A_GIT_REPOSITORY: "NOT_A_GIT_REPOSITORY";
+        TRUNCATED: "TRUNCATED";
+        FAILED: "FAILED";
+    }>;
+    exposures: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        provider: z.ZodString;
+        type: z.ZodString;
+        location: z.ZodObject<{
+            path: z.ZodString;
+            start: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+            end: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+        }, z.core.$strict>;
+        redactedPreview: z.ZodString;
+        fingerprint: z.ZodString;
+        confidence: z.ZodEnum<{
+            low: "low";
+            medium: "medium";
+            high: "high";
+        }>;
+        sourceCategory: z.ZodEnum<{
+            "working-tree": "working-tree";
+            "git-history": "git-history";
+            "external-tool": "external-tool";
+        }>;
+        historyState: z.ZodEnum<{
+            current: "current";
+            historical: "historical";
+            "not-checked": "not-checked";
+        }>;
+        rotationGuidance: z.ZodArray<z.ZodEnum<{
+            CURRENT_TREE_REMOVAL: "CURRENT_TREE_REMOVAL";
+            CREDENTIAL_ROTATION_REQUIRED: "CREDENTIAL_ROTATION_REQUIRED";
+            HISTORY_REWRITE_CONSIDER: "HISTORY_REWRITE_CONSIDER";
+            PROVIDER_REVOCATION_REQUIRED: "PROVIDER_REVOCATION_REQUIRED";
+        }>>;
+        validationState: z.ZodLiteral<"PASSIVE_NOT_VALIDATED">;
+        engine: z.ZodString;
+    }, z.core.$strict>>;
+    redactionGuaranteed: z.ZodLiteral<true>;
+    activeValidation: z.ZodLiteral<"NOT_PERFORMED">;
+    limitations: z.ZodArray<z.ZodString>;
+}, z.core.$strict>;
+export declare const actionReferenceSchema: z.ZodObject<{
+    id: z.ZodString;
+    workflow: z.ZodString;
+    job: z.ZodString;
+    repository: z.ZodString;
+    reference: z.ZodString;
+    kind: z.ZodEnum<{
+        "external-action": "external-action";
+        "reusable-workflow": "reusable-workflow";
+        "local-action": "local-action";
+        docker: "docker";
+    }>;
+    pinning: z.ZodEnum<{
+        unknown: "unknown";
+        "full-sha": "full-sha";
+        "short-sha": "short-sha";
+        tag: "tag";
+        branch: "branch";
+        local: "local";
+        digest: "digest";
+    }>;
+    location: z.ZodObject<{
+        path: z.ZodString;
+        start: z.ZodObject<{
+            line: z.ZodNumber;
+            column: z.ZodNumber;
+            offset: z.ZodNumber;
+        }, z.core.$strict>;
+        end: z.ZodObject<{
+            line: z.ZodNumber;
+            column: z.ZodNumber;
+            offset: z.ZodNumber;
+        }, z.core.$strict>;
+    }, z.core.$strict>;
+}, z.core.$strict>;
+export declare const workflowPermissionSchema: z.ZodObject<{
+    workflow: z.ZodString;
+    job: z.ZodOptional<z.ZodString>;
+    name: z.ZodString;
+    access: z.ZodEnum<{
+        read: "read";
+        write: "write";
+        none: "none";
+        "write-all": "write-all";
+        "read-all": "read-all";
+    }>;
+    location: z.ZodObject<{
+        path: z.ZodString;
+        start: z.ZodObject<{
+            line: z.ZodNumber;
+            column: z.ZodNumber;
+            offset: z.ZodNumber;
+        }, z.core.$strict>;
+        end: z.ZodObject<{
+            line: z.ZodNumber;
+            column: z.ZodNumber;
+            offset: z.ZodNumber;
+        }, z.core.$strict>;
+    }, z.core.$strict>;
+}, z.core.$strict>;
+export declare const workflowAnalysisSchema: z.ZodObject<{
+    workflows: z.ZodArray<z.ZodString>;
+    actionReferences: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        workflow: z.ZodString;
+        job: z.ZodString;
+        repository: z.ZodString;
+        reference: z.ZodString;
+        kind: z.ZodEnum<{
+            "external-action": "external-action";
+            "reusable-workflow": "reusable-workflow";
+            "local-action": "local-action";
+            docker: "docker";
+        }>;
+        pinning: z.ZodEnum<{
+            unknown: "unknown";
+            "full-sha": "full-sha";
+            "short-sha": "short-sha";
+            tag: "tag";
+            branch: "branch";
+            local: "local";
+            digest: "digest";
+        }>;
+        location: z.ZodObject<{
+            path: z.ZodString;
+            start: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+            end: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+        }, z.core.$strict>;
+    }, z.core.$strict>>;
+    permissions: z.ZodArray<z.ZodObject<{
+        workflow: z.ZodString;
+        job: z.ZodOptional<z.ZodString>;
+        name: z.ZodString;
+        access: z.ZodEnum<{
+            read: "read";
+            write: "write";
+            none: "none";
+            "write-all": "write-all";
+            "read-all": "read-all";
+        }>;
+        location: z.ZodObject<{
+            path: z.ZodString;
+            start: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+            end: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+        }, z.core.$strict>;
+    }, z.core.$strict>>;
+    pullRequestTargetWorkflows: z.ZodArray<z.ZodString>;
+    provenanceWorkflows: z.ZodArray<z.ZodString>;
+    limitations: z.ZodArray<z.ZodString>;
+}, z.core.$strict>;
+export declare const supplyChainIrSchema: z.ZodObject<{
+    schemaVersion: z.ZodLiteral<"1.0.0">;
+    packages: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        ecosystem: z.ZodLiteral<"npm">;
+        name: z.ZodString;
+        version: z.ZodString;
+        purl: z.ZodString;
+        kind: z.ZodEnum<{
+            direct: "direct";
+            dev: "dev";
+            optional: "optional";
+            peer: "peer";
+            transitive: "transitive";
+        }>;
+        resolved: z.ZodBoolean;
+        integrity: z.ZodOptional<z.ZodString>;
+        source: z.ZodEnum<{
+            registry: "registry";
+            git: "git";
+            http: "http";
+            workspace: "workspace";
+            unknown: "unknown";
+        }>;
+        dev: z.ZodBoolean;
+        optional: z.ZodBoolean;
+        evidenceIds: z.ZodArray<z.ZodString>;
+    }, z.core.$strict>>;
+    workflows: z.ZodArray<z.ZodString>;
+    actions: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        workflow: z.ZodString;
+        job: z.ZodString;
+        repository: z.ZodString;
+        reference: z.ZodString;
+        kind: z.ZodEnum<{
+            "external-action": "external-action";
+            "reusable-workflow": "reusable-workflow";
+            "local-action": "local-action";
+            docker: "docker";
+        }>;
+        pinning: z.ZodEnum<{
+            unknown: "unknown";
+            "full-sha": "full-sha";
+            "short-sha": "short-sha";
+            tag: "tag";
+            branch: "branch";
+            local: "local";
+            digest: "digest";
+        }>;
+        location: z.ZodObject<{
+            path: z.ZodString;
+            start: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+            end: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+        }, z.core.$strict>;
+    }, z.core.$strict>>;
+    secrets: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        provider: z.ZodString;
+        type: z.ZodString;
+        location: z.ZodObject<{
+            path: z.ZodString;
+            start: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+            end: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+        }, z.core.$strict>;
+        redactedPreview: z.ZodString;
+        fingerprint: z.ZodString;
+        confidence: z.ZodEnum<{
+            low: "low";
+            medium: "medium";
+            high: "high";
+        }>;
+        sourceCategory: z.ZodEnum<{
+            "working-tree": "working-tree";
+            "git-history": "git-history";
+            "external-tool": "external-tool";
+        }>;
+        historyState: z.ZodEnum<{
+            current: "current";
+            historical: "historical";
+            "not-checked": "not-checked";
+        }>;
+        rotationGuidance: z.ZodArray<z.ZodEnum<{
+            CURRENT_TREE_REMOVAL: "CURRENT_TREE_REMOVAL";
+            CREDENTIAL_ROTATION_REQUIRED: "CREDENTIAL_ROTATION_REQUIRED";
+            HISTORY_REWRITE_CONSIDER: "HISTORY_REWRITE_CONSIDER";
+            PROVIDER_REVOCATION_REQUIRED: "PROVIDER_REVOCATION_REQUIRED";
+        }>>;
+        validationState: z.ZodLiteral<"PASSIVE_NOT_VALIDATED">;
+        engine: z.ZodString;
+    }, z.core.$strict>>;
+    evidence: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        kind: z.ZodEnum<{
+            manifest: "manifest";
+            lockfile: "lockfile";
+            dependency: "dependency";
+            workflow: "workflow";
+            "action-reference": "action-reference";
+            permission: "permission";
+            "workflow-step": "workflow-step";
+            "secret-exposure": "secret-exposure";
+            history: "history";
+            provenance: "provenance";
+        }>;
+        location: z.ZodObject<{
+            path: z.ZodString;
+            start: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+            end: z.ZodObject<{
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+                offset: z.ZodNumber;
+            }, z.core.$strict>;
+        }, z.core.$strict>;
+        message: z.ZodString;
+        redacted: z.ZodBoolean;
+    }, z.core.$strict>>;
+    edges: z.ZodArray<z.ZodObject<{
+        from: z.ZodString;
+        to: z.ZodString;
+        relationship: z.ZodLiteral<"DEPENDS_ON">;
+        evidenceIds: z.ZodArray<z.ZodString>;
+    }, z.core.$strict>>;
+    limitations: z.ZodArray<z.ZodString>;
+}, z.core.$strict>;
+export declare const supplyChainAnalysisSchema: z.ZodObject<{
+    schemaVersion: z.ZodLiteral<"1.0.0">;
+    inventory: z.ZodObject<{
+        status: z.ZodEnum<{
+            PARTIAL: "PARTIAL";
+            NOT_PRESENT: "NOT_PRESENT";
+            COMPLETE: "COMPLETE";
+            UNSUPPORTED: "UNSUPPORTED";
+        }>;
+        ecosystems: z.ZodArray<z.ZodLiteral<"npm">>;
+        manifests: z.ZodArray<z.ZodString>;
+        lockfiles: z.ZodArray<z.ZodString>;
+        rootComponent: z.ZodOptional<z.ZodString>;
+        lifecycleScripts: z.ZodArray<z.ZodObject<{
+            manifest: z.ZodString;
+            name: z.ZodEnum<{
+                preinstall: "preinstall";
+                install: "install";
+                postinstall: "postinstall";
+                prepare: "prepare";
+            }>;
+            location: z.ZodObject<{
+                path: z.ZodString;
+                start: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+                end: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+            }, z.core.$strict>;
+        }, z.core.$strict>>;
+        packages: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            ecosystem: z.ZodLiteral<"npm">;
+            name: z.ZodString;
+            version: z.ZodString;
+            purl: z.ZodString;
+            kind: z.ZodEnum<{
+                direct: "direct";
+                dev: "dev";
+                optional: "optional";
+                peer: "peer";
+                transitive: "transitive";
+            }>;
+            resolved: z.ZodBoolean;
+            integrity: z.ZodOptional<z.ZodString>;
+            source: z.ZodEnum<{
+                registry: "registry";
+                git: "git";
+                http: "http";
+                workspace: "workspace";
+                unknown: "unknown";
+            }>;
+            dev: z.ZodBoolean;
+            optional: z.ZodBoolean;
+            evidenceIds: z.ZodArray<z.ZodString>;
+        }, z.core.$strict>>;
+        edges: z.ZodArray<z.ZodObject<{
+            from: z.ZodString;
+            to: z.ZodString;
+            relationship: z.ZodLiteral<"DEPENDS_ON">;
+            evidenceIds: z.ZodArray<z.ZodString>;
+        }, z.core.$strict>>;
+        paths: z.ZodArray<z.ZodObject<{
+            packageId: z.ZodString;
+            path: z.ZodArray<z.ZodString>;
+        }, z.core.$strict>>;
+        directCount: z.ZodNumber;
+        transitiveCount: z.ZodNumber;
+        limitations: z.ZodArray<z.ZodString>;
+    }, z.core.$strict>;
+    advisories: z.ZodObject<{
+        provider: z.ZodString;
+        state: z.ZodEnum<{
+            CHECKED_NO_FINDINGS: "CHECKED_NO_FINDINGS";
+            CHECKED_FINDINGS: "CHECKED_FINDINGS";
+            NOT_CHECKED_OFFLINE: "NOT_CHECKED_OFFLINE";
+            PROVIDER_UNAVAILABLE: "PROVIDER_UNAVAILABLE";
+            UNKNOWN: "UNKNOWN";
+        }>;
+        checkedAt: z.ZodOptional<z.ZodISODateTime>;
+        endpoint: z.ZodOptional<z.ZodURL>;
+        packagesSubmitted: z.ZodNumber;
+        advisories: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            aliases: z.ZodArray<z.ZodString>;
+            packagePurl: z.ZodString;
+            severity: z.ZodOptional<z.ZodString>;
+            fixedVersions: z.ZodArray<z.ZodString>;
+            references: z.ZodArray<z.ZodURL>;
+            provider: z.ZodString;
+        }, z.core.$strict>>;
+        message: z.ZodString;
+    }, z.core.$strict>;
+    secrets: z.ZodObject<{
+        workingTree: z.ZodEnum<{
+            CHECKED_NO_FINDINGS: "CHECKED_NO_FINDINGS";
+            CHECKED_FINDINGS: "CHECKED_FINDINGS";
+        }>;
+        history: z.ZodEnum<{
+            CHECKED: "CHECKED";
+            NOT_CHECKED: "NOT_CHECKED";
+            GIT_UNAVAILABLE: "GIT_UNAVAILABLE";
+            NOT_A_GIT_REPOSITORY: "NOT_A_GIT_REPOSITORY";
+            TRUNCATED: "TRUNCATED";
+            FAILED: "FAILED";
+        }>;
+        exposures: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            provider: z.ZodString;
+            type: z.ZodString;
+            location: z.ZodObject<{
+                path: z.ZodString;
+                start: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+                end: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+            }, z.core.$strict>;
+            redactedPreview: z.ZodString;
+            fingerprint: z.ZodString;
+            confidence: z.ZodEnum<{
+                low: "low";
+                medium: "medium";
+                high: "high";
+            }>;
+            sourceCategory: z.ZodEnum<{
+                "working-tree": "working-tree";
+                "git-history": "git-history";
+                "external-tool": "external-tool";
+            }>;
+            historyState: z.ZodEnum<{
+                current: "current";
+                historical: "historical";
+                "not-checked": "not-checked";
+            }>;
+            rotationGuidance: z.ZodArray<z.ZodEnum<{
+                CURRENT_TREE_REMOVAL: "CURRENT_TREE_REMOVAL";
+                CREDENTIAL_ROTATION_REQUIRED: "CREDENTIAL_ROTATION_REQUIRED";
+                HISTORY_REWRITE_CONSIDER: "HISTORY_REWRITE_CONSIDER";
+                PROVIDER_REVOCATION_REQUIRED: "PROVIDER_REVOCATION_REQUIRED";
+            }>>;
+            validationState: z.ZodLiteral<"PASSIVE_NOT_VALIDATED">;
+            engine: z.ZodString;
+        }, z.core.$strict>>;
+        redactionGuaranteed: z.ZodLiteral<true>;
+        activeValidation: z.ZodLiteral<"NOT_PERFORMED">;
+        limitations: z.ZodArray<z.ZodString>;
+    }, z.core.$strict>;
+    ci: z.ZodObject<{
+        workflows: z.ZodArray<z.ZodString>;
+        actionReferences: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            workflow: z.ZodString;
+            job: z.ZodString;
+            repository: z.ZodString;
+            reference: z.ZodString;
+            kind: z.ZodEnum<{
+                "external-action": "external-action";
+                "reusable-workflow": "reusable-workflow";
+                "local-action": "local-action";
+                docker: "docker";
+            }>;
+            pinning: z.ZodEnum<{
+                unknown: "unknown";
+                "full-sha": "full-sha";
+                "short-sha": "short-sha";
+                tag: "tag";
+                branch: "branch";
+                local: "local";
+                digest: "digest";
+            }>;
+            location: z.ZodObject<{
+                path: z.ZodString;
+                start: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+                end: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+            }, z.core.$strict>;
+        }, z.core.$strict>>;
+        permissions: z.ZodArray<z.ZodObject<{
+            workflow: z.ZodString;
+            job: z.ZodOptional<z.ZodString>;
+            name: z.ZodString;
+            access: z.ZodEnum<{
+                read: "read";
+                write: "write";
+                none: "none";
+                "write-all": "write-all";
+                "read-all": "read-all";
+            }>;
+            location: z.ZodObject<{
+                path: z.ZodString;
+                start: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+                end: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+            }, z.core.$strict>;
+        }, z.core.$strict>>;
+        pullRequestTargetWorkflows: z.ZodArray<z.ZodString>;
+        provenanceWorkflows: z.ZodArray<z.ZodString>;
+        limitations: z.ZodArray<z.ZodString>;
+    }, z.core.$strict>;
+    controls: z.ZodObject<{
+        sourceIntegrity: z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            PROVEN: "PROVEN";
+            PARTIAL: "PARTIAL";
+            NOT_PRESENT: "NOT_PRESENT";
+        }>;
+        buildProvenance: z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            PROVEN: "PROVEN";
+            PARTIAL: "PARTIAL";
+            NOT_PRESENT: "NOT_PRESENT";
+        }>;
+        artifactIdentity: z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            PROVEN: "PROVEN";
+            PARTIAL: "PARTIAL";
+            NOT_PRESENT: "NOT_PRESENT";
+        }>;
+        signing: z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            PROVEN: "PROVEN";
+            PARTIAL: "PARTIAL";
+            NOT_PRESENT: "NOT_PRESENT";
+        }>;
+        dependencyInventory: z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            PROVEN: "PROVEN";
+            PARTIAL: "PARTIAL";
+            NOT_PRESENT: "NOT_PRESENT";
+        }>;
+        ciPermissions: z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            PROVEN: "PROVEN";
+            PARTIAL: "PARTIAL";
+            NOT_PRESENT: "NOT_PRESENT";
+        }>;
+    }, z.core.$strict>;
+    ir: z.ZodObject<{
+        schemaVersion: z.ZodLiteral<"1.0.0">;
+        packages: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            ecosystem: z.ZodLiteral<"npm">;
+            name: z.ZodString;
+            version: z.ZodString;
+            purl: z.ZodString;
+            kind: z.ZodEnum<{
+                direct: "direct";
+                dev: "dev";
+                optional: "optional";
+                peer: "peer";
+                transitive: "transitive";
+            }>;
+            resolved: z.ZodBoolean;
+            integrity: z.ZodOptional<z.ZodString>;
+            source: z.ZodEnum<{
+                registry: "registry";
+                git: "git";
+                http: "http";
+                workspace: "workspace";
+                unknown: "unknown";
+            }>;
+            dev: z.ZodBoolean;
+            optional: z.ZodBoolean;
+            evidenceIds: z.ZodArray<z.ZodString>;
+        }, z.core.$strict>>;
+        workflows: z.ZodArray<z.ZodString>;
+        actions: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            workflow: z.ZodString;
+            job: z.ZodString;
+            repository: z.ZodString;
+            reference: z.ZodString;
+            kind: z.ZodEnum<{
+                "external-action": "external-action";
+                "reusable-workflow": "reusable-workflow";
+                "local-action": "local-action";
+                docker: "docker";
+            }>;
+            pinning: z.ZodEnum<{
+                unknown: "unknown";
+                "full-sha": "full-sha";
+                "short-sha": "short-sha";
+                tag: "tag";
+                branch: "branch";
+                local: "local";
+                digest: "digest";
+            }>;
+            location: z.ZodObject<{
+                path: z.ZodString;
+                start: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+                end: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+            }, z.core.$strict>;
+        }, z.core.$strict>>;
+        secrets: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            provider: z.ZodString;
+            type: z.ZodString;
+            location: z.ZodObject<{
+                path: z.ZodString;
+                start: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+                end: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+            }, z.core.$strict>;
+            redactedPreview: z.ZodString;
+            fingerprint: z.ZodString;
+            confidence: z.ZodEnum<{
+                low: "low";
+                medium: "medium";
+                high: "high";
+            }>;
+            sourceCategory: z.ZodEnum<{
+                "working-tree": "working-tree";
+                "git-history": "git-history";
+                "external-tool": "external-tool";
+            }>;
+            historyState: z.ZodEnum<{
+                current: "current";
+                historical: "historical";
+                "not-checked": "not-checked";
+            }>;
+            rotationGuidance: z.ZodArray<z.ZodEnum<{
+                CURRENT_TREE_REMOVAL: "CURRENT_TREE_REMOVAL";
+                CREDENTIAL_ROTATION_REQUIRED: "CREDENTIAL_ROTATION_REQUIRED";
+                HISTORY_REWRITE_CONSIDER: "HISTORY_REWRITE_CONSIDER";
+                PROVIDER_REVOCATION_REQUIRED: "PROVIDER_REVOCATION_REQUIRED";
+            }>>;
+            validationState: z.ZodLiteral<"PASSIVE_NOT_VALIDATED">;
+            engine: z.ZodString;
+        }, z.core.$strict>>;
+        evidence: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            kind: z.ZodEnum<{
+                manifest: "manifest";
+                lockfile: "lockfile";
+                dependency: "dependency";
+                workflow: "workflow";
+                "action-reference": "action-reference";
+                permission: "permission";
+                "workflow-step": "workflow-step";
+                "secret-exposure": "secret-exposure";
+                history: "history";
+                provenance: "provenance";
+            }>;
+            location: z.ZodObject<{
+                path: z.ZodString;
+                start: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+                end: z.ZodObject<{
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                    offset: z.ZodNumber;
+                }, z.core.$strict>;
+            }, z.core.$strict>;
+            message: z.ZodString;
+            redacted: z.ZodBoolean;
+        }, z.core.$strict>>;
+        edges: z.ZodArray<z.ZodObject<{
+            from: z.ZodString;
+            to: z.ZodString;
+            relationship: z.ZodLiteral<"DEPENDS_ON">;
+            evidenceIds: z.ZodArray<z.ZodString>;
+        }, z.core.$strict>>;
+        limitations: z.ZodArray<z.ZodString>;
+    }, z.core.$strict>;
+    performanceMilliseconds: z.ZodObject<{
+        dependencyParsing: z.ZodNumber;
+        advisoryProcessing: z.ZodNumber;
+        secretScan: z.ZodNumber;
+        historyScan: z.ZodNumber;
+        workflowAnalysis: z.ZodNumber;
+        sbomGeneration: z.ZodNumber;
+    }, z.core.$strict>;
+}, z.core.$strict>;
+export type AdvisoryProviderState = z.infer<typeof advisoryProviderStateSchema>;
+export type PackageComponent = z.infer<typeof packageComponentSchema>;
+export type DependencyInventory = z.infer<typeof dependencyInventorySchema>;
+export type NormalizedAdvisory = z.infer<typeof normalizedAdvisorySchema>;
+export type AdvisoryAnalysis = z.infer<typeof advisoryAnalysisSchema>;
+export type SecretExposure = z.infer<typeof secretExposureSchema>;
+export type SecretAnalysis = z.infer<typeof secretAnalysisSchema>;
+export type ActionReference = z.infer<typeof actionReferenceSchema>;
+export type WorkflowAnalysis = z.infer<typeof workflowAnalysisSchema>;
+export type SupplyChainEvidence = z.infer<typeof supplyChainEvidenceSchema>;
+export type SupplyChainAnalysis = z.infer<typeof supplyChainAnalysisSchema>;
+//# sourceMappingURL=model.d.ts.map

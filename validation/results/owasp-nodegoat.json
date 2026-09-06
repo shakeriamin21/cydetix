@@ -1,0 +1,156 @@
+{
+  "schemaVersion": "1.0.0",
+  "corpusId": "owasp-nodegoat-c5cb68a",
+  "immutableRevision": "c5cb68a7084e4ae7dcc60e6a98768720a81841e8",
+  "counts": {
+    "total": 7,
+    "languageCompatible": 7,
+    "ruleCompatible": 7,
+    "executed": 6,
+    "truePositive": 6,
+    "falsePositive": 0,
+    "trueNegative": 0,
+    "falseNegative": 0,
+    "unknown": 0,
+    "unsupported": 0,
+    "notApplicable": 0,
+    "duplicate": 0,
+    "needsDomainContext": 1
+  },
+  "metrics": {
+    "precision": {
+      "value": 1,
+      "numerator": 6,
+      "denominator": 6
+    },
+    "limitations": [
+      "Recall, false-positive rate, specificity, F1, and Youden are withheld for incomplete labels."
+    ]
+  },
+  "perRule": [
+    {
+      "ruleId": "AS-CI-001",
+      "counts": {
+        "total": 6,
+        "languageCompatible": 6,
+        "ruleCompatible": 6,
+        "executed": 6,
+        "truePositive": 6,
+        "falsePositive": 0,
+        "trueNegative": 0,
+        "falseNegative": 0,
+        "unknown": 0,
+        "unsupported": 0,
+        "notApplicable": 0,
+        "duplicate": 0,
+        "needsDomainContext": 0
+      },
+      "metrics": {
+        "precision": {
+          "value": 1,
+          "numerator": 6,
+          "denominator": 6
+        },
+        "limitations": [
+          "Recall, false-positive rate, specificity, F1, and Youden are withheld for incomplete labels."
+        ]
+      }
+    },
+    {
+      "ruleId": "AS-SECRET-001",
+      "counts": {
+        "total": 1,
+        "languageCompatible": 1,
+        "ruleCompatible": 1,
+        "executed": 0,
+        "truePositive": 0,
+        "falsePositive": 0,
+        "trueNegative": 0,
+        "falseNegative": 0,
+        "unknown": 0,
+        "unsupported": 0,
+        "notApplicable": 0,
+        "duplicate": 0,
+        "needsDomainContext": 1
+      },
+      "metrics": {
+        "limitations": [
+          "Precision is unavailable without adjudicated positives.",
+          "Recall, false-positive rate, specificity, F1, and Youden are withheld for incomplete labels."
+        ]
+      }
+    }
+  ],
+  "cases": [
+    {
+      "caseId": "nodegoat-action-cache-e2e",
+      "ruleId": "AS-CI-001",
+      "path": ".github/workflows/e2e-test.yml",
+      "line": 26,
+      "languageCompatible": true,
+      "ruleCompatible": true,
+      "disposition": "TRUE_POSITIVE",
+      "rationale": "External actions/cache is pinned to mutable tag v2."
+    },
+    {
+      "caseId": "nodegoat-action-checkout-e2e",
+      "ruleId": "AS-CI-001",
+      "path": ".github/workflows/e2e-test.yml",
+      "line": 16,
+      "languageCompatible": true,
+      "ruleCompatible": true,
+      "disposition": "TRUE_POSITIVE",
+      "rationale": "External actions/checkout is pinned to mutable tag v2, not a full immutable commit SHA."
+    },
+    {
+      "caseId": "nodegoat-action-setup-e2e",
+      "ruleId": "AS-CI-001",
+      "path": ".github/workflows/e2e-test.yml",
+      "line": 21,
+      "languageCompatible": true,
+      "ruleCompatible": true,
+      "disposition": "TRUE_POSITIVE",
+      "rationale": "External actions/setup-node is pinned to mutable tag v1."
+    },
+    {
+      "caseId": "nodegoat-action-upload-e2e",
+      "ruleId": "AS-CI-001",
+      "path": ".github/workflows/e2e-test.yml",
+      "line": 58,
+      "languageCompatible": true,
+      "ruleCompatible": true,
+      "disposition": "TRUE_POSITIVE",
+      "rationale": "External actions/upload-artifact is pinned to mutable tag v2."
+    },
+    {
+      "caseId": "nodegoat-action-checkout-lint",
+      "ruleId": "AS-CI-001",
+      "path": ".github/workflows/lint.yml",
+      "line": 16,
+      "languageCompatible": true,
+      "ruleCompatible": true,
+      "disposition": "TRUE_POSITIVE",
+      "rationale": "External actions/checkout is pinned to mutable tag v2."
+    },
+    {
+      "caseId": "nodegoat-action-setup-lint",
+      "ruleId": "AS-CI-001",
+      "path": ".github/workflows/lint.yml",
+      "line": 21,
+      "languageCompatible": true,
+      "ruleCompatible": true,
+      "disposition": "TRUE_POSITIVE",
+      "rationale": "External actions/setup-node is pinned to mutable tag v1."
+    },
+    {
+      "caseId": "nodegoat-development-tls-key",
+      "ruleId": "AS-SECRET-001",
+      "path": "artifacts/cert/server.key",
+      "line": 1,
+      "languageCompatible": true,
+      "ruleCompatible": true,
+      "disposition": "NEEDS_DOMAIN_CONTEXT",
+      "rationale": "A private key is committed and loaded by server.js, but project context is required to determine whether this deliberately vulnerable training key protects any meaningful deployment identity."
+    }
+  ]
+}

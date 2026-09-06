@@ -1,0 +1,7 @@
+{
+  "name": "dependency-secure-fixture",
+  "version": "1.0.0",
+  "dependencies": {
+    "safe-package": "4.0.0"
+  }
+}

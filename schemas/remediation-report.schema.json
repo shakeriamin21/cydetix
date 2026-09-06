@@ -1,0 +1,1017 @@
+{
+  "$id": "https://vibeshield.dev/schemas/v1/remediation-report.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "generatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+    },
+    "dryRun": {
+      "type": "boolean"
+    },
+    "repository": {
+      "type": "object",
+      "properties": {
+        "identity": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "gitHead": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{40}$"
+        },
+        "changedPaths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "identity",
+        "changedPaths"
+      ],
+      "additionalProperties": false
+    },
+    "findingsConsidered": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 9007199254740991
+    },
+    "plans": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "planId": {
+            "type": "string",
+            "pattern": "^plan:[a-f0-9]{16}$"
+          },
+          "findingFingerprint": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "stableFindingId": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{64}$"
+          },
+          "ruleId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "classification": {
+            "type": "string",
+            "enum": [
+              "SAFE",
+              "REVIEW_REQUIRED",
+              "ARCHITECTURAL"
+            ]
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "PLANNED",
+              "NOT_APPLICABLE",
+              "UNSUPPORTED",
+              "REQUIRES_REVIEW",
+              "APPLIED_UNVERIFIED",
+              "APPLIED_VERIFIED",
+              "VERIFICATION_FAILED",
+              "ROLLBACK_SUCCEEDED",
+              "ROLLBACK_FAILED",
+              "PARTIALLY_REMEDIATED",
+              "RESIDUAL_RISK",
+              "STALE_FINDING",
+              "RESCAN_REQUIRED",
+              "SANDBOX_UNAVAILABLE",
+              "SANDBOX_MISCONFIGURED"
+            ]
+          },
+          "affectedFiles": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "fileBaselines": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "gitState": {
+                  "type": "string",
+                  "enum": [
+                    "CLEAN",
+                    "DIRTY",
+                    "UNKNOWN"
+                  ]
+                }
+              },
+              "required": [
+                "path",
+                "sha256",
+                "gitState"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "preconditions": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "transformations": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^transformation:[a-f0-9]{16}$"
+                },
+                "adapter": {
+                  "type": "string",
+                  "enum": [
+                    "session-http-only-v1",
+                    "github-action-pin-plan-v1",
+                    "dependency-upgrade-plan-v1",
+                    "secret-incident-plan-v1",
+                    "review-plan-v1",
+                    "architectural-plan-v1"
+                  ]
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "TEXT_REPLACEMENT",
+                    "PLAN_ONLY"
+                  ]
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "startOffset": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "endOffset": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "expectedTextSha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "replacement": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "unifiedDiff": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "adapter",
+                "kind",
+                "path",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "expectedSecurityInvariant": {
+            "type": "string",
+            "minLength": 1
+          },
+          "verificationStrategy": {
+            "type": "object",
+            "properties": {
+              "scope": {
+                "type": "string",
+                "enum": [
+                  "FILE",
+                  "MODULE",
+                  "AUTH_FLOW",
+                  "WORKFLOW",
+                  "DEPENDENCY_GRAPH",
+                  "REPOSITORY"
+                ]
+              },
+              "stages": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "PATCH_STRUCTURE",
+                    "PARSER",
+                    "TRUSTED_COMMANDS",
+                    "TARGETED_RESCAN",
+                    "SECURITY_INVARIANT"
+                  ]
+                }
+              },
+              "externalCommandsAuthorized": {
+                "type": "boolean"
+              }
+            },
+            "required": [
+              "scope",
+              "stages",
+              "externalCommandsAuthorized"
+            ],
+            "additionalProperties": false
+          },
+          "rollbackStrategy": {
+            "type": "string",
+            "minLength": 1
+          },
+          "remediationSteps": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "SOURCE_REMOVAL",
+                "ROTATION_REQUIRED",
+                "REVOCATION_REQUIRED",
+                "HISTORY_REVIEW_REQUIRED",
+                "HISTORY_REWRITE_REQUIRED",
+                "MONITORING_REVIEW",
+                "DEPENDENCY_UPGRADE_REVIEW",
+                "LOCKFILE_RESOLUTION_REQUIRED",
+                "ACTION_SHA_RESOLUTION_REQUIRED",
+                "BUSINESS_POLICY_REVIEW",
+                "ARCHITECTURE_CHANGE_REQUIRED"
+              ]
+            }
+          },
+          "residualRisk": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "planId",
+          "findingFingerprint",
+          "stableFindingId",
+          "ruleId",
+          "classification",
+          "state",
+          "affectedFiles",
+          "fileBaselines",
+          "preconditions",
+          "transformations",
+          "expectedSecurityInvariant",
+          "verificationStrategy",
+          "rollbackStrategy",
+          "remediationSteps",
+          "residualRisk"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "transactions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "schemaVersion": {
+            "type": "string",
+            "const": "1.0.0"
+          },
+          "transactionId": {
+            "type": "string",
+            "pattern": "^transaction:[a-f0-9-]{36}$"
+          },
+          "findingFingerprints": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^[a-f0-9]{64}$"
+            }
+          },
+          "ruleIds": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "repositoryBaseline": {
+            "type": "object",
+            "properties": {
+              "identity": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{64}$"
+              },
+              "gitHead": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{40}$"
+              },
+              "changedPaths": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              },
+              "files": {
+                "minItems": 1,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "path": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "sha256": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    "gitState": {
+                      "type": "string",
+                      "enum": [
+                        "CLEAN",
+                        "DIRTY",
+                        "UNKNOWN"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "path",
+                    "sha256",
+                    "gitState"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "identity",
+              "changedPaths",
+              "files"
+            ],
+            "additionalProperties": false
+          },
+          "classification": {
+            "type": "string",
+            "const": "SAFE"
+          },
+          "expectedSecurityInvariants": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "plannedTransformations": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "pattern": "^transformation:[a-f0-9]{16}$"
+                },
+                "adapter": {
+                  "type": "string",
+                  "enum": [
+                    "session-http-only-v1",
+                    "github-action-pin-plan-v1",
+                    "dependency-upgrade-plan-v1",
+                    "secret-incident-plan-v1",
+                    "review-plan-v1",
+                    "architectural-plan-v1"
+                  ]
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "TEXT_REPLACEMENT",
+                    "PLAN_ONLY"
+                  ]
+                },
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "startOffset": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "endOffset": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "expectedTextSha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "replacement": {
+                  "type": "string"
+                },
+                "description": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "unifiedDiff": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "id",
+                "adapter",
+                "kind",
+                "path",
+                "description"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "actualChanges": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "beforeSha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "afterSha256": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "unifiedDiff": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "path",
+                "beforeSha256",
+                "afterSha256",
+                "unifiedDiff"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "verificationResults": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "stage": {
+                  "type": "string",
+                  "enum": [
+                    "PRECONDITION",
+                    "PATCH_STRUCTURE",
+                    "PARSER",
+                    "TRUSTED_COMMAND",
+                    "TARGETED_RESCAN",
+                    "SECURITY_INVARIANT",
+                    "ROLLBACK"
+                  ]
+                },
+                "status": {
+                  "type": "string",
+                  "enum": [
+                    "PASSED",
+                    "FAILED",
+                    "SKIPPED",
+                    "NOT_AUTHORIZED",
+                    "UNAVAILABLE"
+                  ]
+                },
+                "message": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "durationMilliseconds": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "commandFingerprint": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "execution": {
+                  "type": "object",
+                  "properties": {
+                    "schemaVersion": {
+                      "type": "string",
+                      "const": "1.0.0"
+                    },
+                    "runner": {
+                      "type": "string",
+                      "enum": [
+                        "NO_EXECUTION",
+                        "LOCAL_EXPLICIT",
+                        "CONTAINER_SANDBOX"
+                      ]
+                    },
+                    "state": {
+                      "type": "string",
+                      "enum": [
+                        "NOT_RUN",
+                        "SUCCEEDED",
+                        "COMMAND_FAILED",
+                        "TIMED_OUT",
+                        "OUTPUT_LIMIT_EXCEEDED",
+                        "SANDBOX_UNAVAILABLE",
+                        "SANDBOX_MISCONFIGURED",
+                        "WORKSPACE_FAILED"
+                      ]
+                    },
+                    "commandFingerprint": {
+                      "type": "string",
+                      "pattern": "^[a-f0-9]{64}$"
+                    },
+                    "exitCode": {
+                      "anyOf": [
+                        {
+                          "type": "integer",
+                          "minimum": -9007199254740991,
+                          "maximum": 9007199254740991
+                        },
+                        {
+                          "type": "null"
+                        }
+                      ]
+                    },
+                    "durationMilliseconds": {
+                      "type": "number",
+                      "minimum": 0
+                    },
+                    "stdoutBytes": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "stderrBytes": {
+                      "type": "integer",
+                      "minimum": 0,
+                      "maximum": 9007199254740991
+                    },
+                    "outputTruncated": {
+                      "type": "boolean"
+                    },
+                    "capability": {
+                      "type": "object",
+                      "properties": {
+                        "schemaVersion": {
+                          "type": "string",
+                          "const": "1.0.0"
+                        },
+                        "runner": {
+                          "type": "string",
+                          "enum": [
+                            "NO_EXECUTION",
+                            "LOCAL_EXPLICIT",
+                            "CONTAINER_SANDBOX"
+                          ]
+                        },
+                        "state": {
+                          "type": "string",
+                          "enum": [
+                            "AVAILABLE_HARDENED",
+                            "AVAILABLE_DEGRADED",
+                            "UNAVAILABLE",
+                            "MISCONFIGURED"
+                          ]
+                        },
+                        "runtime": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "runtimeVersion": {
+                          "type": "string",
+                          "maxLength": 256
+                        },
+                        "imageIdentity": {
+                          "type": "string",
+                          "maxLength": 512
+                        },
+                        "controls": {
+                          "type": "object",
+                          "properties": {
+                            "network": {
+                              "type": "string",
+                              "enum": [
+                                "DENIED",
+                                "ALLOWED_EXPLICIT",
+                                "NOT_ISOLATED"
+                              ]
+                            },
+                            "environment": {
+                              "type": "string",
+                              "enum": [
+                                "SANITIZED",
+                                "HOST_INHERITED"
+                              ]
+                            },
+                            "workspace": {
+                              "type": "string",
+                              "enum": [
+                                "EPHEMERAL_COPY",
+                                "PRIMARY_REPOSITORY"
+                              ]
+                            },
+                            "containerRoot": {
+                              "type": "string",
+                              "enum": [
+                                "READ_ONLY",
+                                "WRITABLE",
+                                "NOT_APPLICABLE"
+                              ]
+                            },
+                            "dockerSocketMounted": {
+                              "type": "boolean"
+                            },
+                            "sshAgentMounted": {
+                              "type": "boolean"
+                            },
+                            "privileged": {
+                              "type": "boolean"
+                            },
+                            "nonRoot": {
+                              "type": "boolean"
+                            },
+                            "noNewPrivileges": {
+                              "type": "boolean"
+                            },
+                            "capabilitiesDropped": {
+                              "type": "boolean"
+                            },
+                            "seccomp": {
+                              "type": "string",
+                              "enum": [
+                                "RUNTIME_DEFAULT",
+                                "CUSTOM",
+                                "UNAVAILABLE",
+                                "NOT_APPLICABLE"
+                              ]
+                            },
+                            "memoryMegabytes": {
+                              "type": "integer",
+                              "exclusiveMinimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "cpuCount": {
+                              "type": "number",
+                              "exclusiveMinimum": 0
+                            },
+                            "pidLimit": {
+                              "type": "integer",
+                              "exclusiveMinimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "outputBytes": {
+                              "type": "integer",
+                              "exclusiveMinimum": 0,
+                              "maximum": 9007199254740991
+                            },
+                            "timeoutMilliseconds": {
+                              "type": "integer",
+                              "exclusiveMinimum": 0,
+                              "maximum": 9007199254740991
+                            }
+                          },
+                          "required": [
+                            "network",
+                            "environment",
+                            "workspace",
+                            "containerRoot",
+                            "dockerSocketMounted",
+                            "sshAgentMounted",
+                            "privileged",
+                            "nonRoot",
+                            "noNewPrivileges",
+                            "capabilitiesDropped",
+                            "seccomp",
+                            "outputBytes",
+                            "timeoutMilliseconds"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "limitations": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "minLength": 1
+                          }
+                        }
+                      },
+                      "required": [
+                        "schemaVersion",
+                        "runner",
+                        "state",
+                        "runtime",
+                        "controls",
+                        "limitations"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "message": {
+                      "type": "string",
+                      "minLength": 1
+                    }
+                  },
+                  "required": [
+                    "schemaVersion",
+                    "runner",
+                    "state",
+                    "commandFingerprint",
+                    "exitCode",
+                    "durationMilliseconds",
+                    "stdoutBytes",
+                    "stderrBytes",
+                    "outputTruncated",
+                    "capability",
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "stage",
+                "status",
+                "message",
+                "durationMilliseconds"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "findingStateTransitions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "findingFingerprint": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "stableFindingId": {
+                  "type": "string",
+                  "pattern": "^[a-f0-9]{64}$"
+                },
+                "ruleId": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "invariant": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "before": {
+                  "type": "string",
+                  "enum": [
+                    "PROVEN_SECURE",
+                    "PROVEN_INSECURE",
+                    "UNKNOWN",
+                    "NOT_APPLICABLE"
+                  ]
+                },
+                "after": {
+                  "type": "string",
+                  "enum": [
+                    "PROVEN_SECURE",
+                    "PROVEN_INSECURE",
+                    "UNKNOWN",
+                    "NOT_APPLICABLE"
+                  ]
+                },
+                "result": {
+                  "type": "string",
+                  "enum": [
+                    "RESOLVED_VERIFIED",
+                    "UNRESOLVED",
+                    "UNKNOWN"
+                  ]
+                },
+                "evidencePaths": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  }
+                }
+              },
+              "required": [
+                "findingFingerprint",
+                "stableFindingId",
+                "ruleId",
+                "invariant",
+                "before",
+                "after",
+                "result",
+                "evidencePaths"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "finalState": {
+            "type": "string",
+            "enum": [
+              "PLANNED",
+              "NOT_APPLICABLE",
+              "UNSUPPORTED",
+              "REQUIRES_REVIEW",
+              "APPLIED_UNVERIFIED",
+              "APPLIED_VERIFIED",
+              "VERIFICATION_FAILED",
+              "ROLLBACK_SUCCEEDED",
+              "ROLLBACK_FAILED",
+              "PARTIALLY_REMEDIATED",
+              "RESIDUAL_RISK",
+              "STALE_FINDING",
+              "RESCAN_REQUIRED",
+              "SANDBOX_UNAVAILABLE",
+              "SANDBOX_MISCONFIGURED"
+            ]
+          },
+          "residualRisk": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "startedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "completedAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+          },
+          "performanceMilliseconds": {
+            "type": "object",
+            "properties": {
+              "planning": {
+                "type": "number",
+                "minimum": 0
+              },
+              "transformation": {
+                "type": "number",
+                "minimum": 0
+              },
+              "fileTransaction": {
+                "type": "number",
+                "minimum": 0
+              },
+              "targetedRescan": {
+                "type": "number",
+                "minimum": 0
+              },
+              "verification": {
+                "type": "number",
+                "minimum": 0
+              }
+            },
+            "required": [
+              "planning",
+              "transformation",
+              "fileTransaction",
+              "targetedRescan",
+              "verification"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "schemaVersion",
+          "transactionId",
+          "findingFingerprints",
+          "ruleIds",
+          "repositoryBaseline",
+          "classification",
+          "expectedSecurityInvariants",
+          "plannedTransformations",
+          "actualChanges",
+          "verificationResults",
+          "findingStateTransitions",
+          "finalState",
+          "residualRisk",
+          "startedAt",
+          "completedAt",
+          "performanceMilliseconds"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "summary": {
+      "type": "object",
+      "properties": {
+        "safe": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "reviewRequired": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "architectural": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "applied": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "verified": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "verificationFailed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "rolledBack": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "residualFindings": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "safe",
+        "reviewRequired",
+        "architectural",
+        "applied",
+        "verified",
+        "verificationFailed",
+        "rolledBack",
+        "residualFindings"
+      ],
+      "additionalProperties": false
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "generatedAt",
+    "dryRun",
+    "repository",
+    "findingsConsidered",
+    "plans",
+    "transactions",
+    "summary",
+    "limitations"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,4 @@
+* text=auto eol=lf
+dist/** linguist-generated=true
+rules/*.json linguist-generated=true
+schemas/*.json linguist-generated=true

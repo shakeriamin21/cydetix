@@ -1,0 +1,11 @@
+node_modules/
+.npm-cache/
+coverage/
+.invariantsec/
+.vibeshield/
+*.log
+.DS_Store
+Thumbs.db
+target/
+.phase6-cache/
+.docker-vibeshield/

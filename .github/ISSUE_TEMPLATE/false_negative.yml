@@ -1,0 +1,41 @@
+name: False negative
+description: Report a security miss that appears to be within documented scope.
+title: "[False negative]: "
+labels: ["false-negative", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Do not disclose an exploitable private vulnerability here. Use SECURITY.md. Use synthetic
+        data and remove credentials, proprietary paths, and private source.
+  - type: input
+    id: version
+    attributes:
+      label: VibeShield version
+    validations:
+      required: true
+  - type: input
+    id: invariant
+    attributes:
+      label: Expected rule or invariant
+    validations:
+      required: true
+  - type: input
+    id: technology
+    attributes:
+      label: Language, framework, and relevant library
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Sanitized minimal reproduction
+    validations:
+      required: true
+  - type: textarea
+    id: scope
+    attributes:
+      label: Why this is within claimed scope
+      description: Point to SUPPORT_MATRIX.md or docs/CLAIMS.md where possible.
+    validations:
+      required: true

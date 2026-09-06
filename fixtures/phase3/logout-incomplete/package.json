@@ -1,0 +1,8 @@
+{
+  "name": "invariantsec-logout-incomplete-fixture",
+  "private": true,
+  "dependencies": {
+    "express": "5.1.0",
+    "express-session": "1.18.2"
+  }
+}

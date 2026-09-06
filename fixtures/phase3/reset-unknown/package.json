@@ -1,0 +1,9 @@
+{
+  "name": "invariantsec-reset-unknown-fixture",
+  "private": true,
+  "dependencies": {
+    "@prisma/client": "6.16.1",
+    "express": "5.1.0",
+    "external-session-provider": "1.0.0"
+  }
+}

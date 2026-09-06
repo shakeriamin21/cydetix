@@ -1,0 +1,314 @@
+{
+  "$id": "https://vibeshield.dev/schemas/v1/cyclonedx-1.7.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "$schema": {
+      "type": "string",
+      "const": "https://cyclonedx.org/schema/bom-1.7.schema.json"
+    },
+    "bomFormat": {
+      "type": "string",
+      "const": "CycloneDX"
+    },
+    "specVersion": {
+      "type": "string",
+      "const": "1.7"
+    },
+    "serialNumber": {
+      "type": "string",
+      "pattern": "^urn:uuid:[0-9a-f-]{36}$"
+    },
+    "version": {
+      "type": "integer",
+      "exclusiveMinimum": 0,
+      "maximum": 9007199254740991
+    },
+    "metadata": {
+      "type": "object",
+      "properties": {
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d:[0-5]\\d(?:\\.\\d+)?(?:Z))$"
+        },
+        "tools": {
+          "type": "object",
+          "properties": {
+            "components": {
+              "minItems": 1,
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "type": {
+                    "type": "string",
+                    "enum": [
+                      "application",
+                      "library"
+                    ]
+                  },
+                  "bom-ref": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "version": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "purl": {
+                    "type": "string",
+                    "pattern": "^pkg:"
+                  },
+                  "scope": {
+                    "type": "string",
+                    "enum": [
+                      "required",
+                      "optional",
+                      "excluded"
+                    ]
+                  },
+                  "properties": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "value": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "required": [
+                  "type",
+                  "bom-ref",
+                  "name",
+                  "version",
+                  "purl"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "components"
+          ],
+          "additionalProperties": false
+        },
+        "component": {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "enum": [
+                "application",
+                "library"
+              ]
+            },
+            "bom-ref": {
+              "type": "string",
+              "minLength": 1
+            },
+            "name": {
+              "type": "string",
+              "minLength": 1
+            },
+            "version": {
+              "type": "string",
+              "minLength": 1
+            },
+            "purl": {
+              "type": "string",
+              "pattern": "^pkg:"
+            },
+            "scope": {
+              "type": "string",
+              "enum": [
+                "required",
+                "optional",
+                "excluded"
+              ]
+            },
+            "properties": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "value": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "name",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": [
+            "type",
+            "bom-ref",
+            "name",
+            "version",
+            "purl"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "timestamp",
+        "tools"
+      ],
+      "additionalProperties": false
+    },
+    "components": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "application",
+              "library"
+            ]
+          },
+          "bom-ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "purl": {
+            "type": "string",
+            "pattern": "^pkg:"
+          },
+          "scope": {
+            "type": "string",
+            "enum": [
+              "required",
+              "optional",
+              "excluded"
+            ]
+          },
+          "properties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "name",
+                "value"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "type",
+          "bom-ref",
+          "name",
+          "version",
+          "purl"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "ref": {
+            "type": "string",
+            "minLength": 1
+          },
+          "dependsOn": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        },
+        "required": [
+          "ref",
+          "dependsOn"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "compositions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "aggregate": {
+            "type": "string",
+            "enum": [
+              "complete",
+              "incomplete",
+              "unknown"
+            ]
+          },
+          "assemblies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        },
+        "required": [
+          "aggregate",
+          "assemblies"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "$schema",
+    "bomFormat",
+    "specVersion",
+    "serialNumber",
+    "version",
+    "metadata",
+    "components",
+    "dependencies",
+    "compositions"
+  ],
+  "additionalProperties": false
+}

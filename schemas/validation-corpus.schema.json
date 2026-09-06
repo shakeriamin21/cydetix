@@ -1,0 +1,127 @@
+{
+  "$id": "https://vibeshield.dev/schemas/v1/validation-corpus.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "corpusId": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9-]+$"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "INTERNAL_REGRESSION",
+        "EXTERNAL_LABELED",
+        "DELIBERATELY_VULNERABLE_APPLICATION",
+        "REAL_WORLD_BENIGN",
+        "HOSTILE_REPOSITORY",
+        "PERFORMANCE"
+      ]
+    },
+    "source": {
+      "type": "string",
+      "format": "uri"
+    },
+    "sourceProject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "immutableRevision": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "license": {
+      "type": "string",
+      "minLength": 1
+    },
+    "language": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "frameworks": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "acquisition": {
+      "type": "string",
+      "enum": [
+        "GIT_PINNED_COMMIT",
+        "RELEASE_ARCHIVE_CHECKSUM"
+      ]
+    },
+    "checksum": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "labelsPath": {
+      "type": "string",
+      "minLength": 1
+    },
+    "inventory": {
+      "type": "object",
+      "properties": {
+        "totalCases": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "languageCompatible": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "candidateRuleCompatible": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "evaluatedCases": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "totalCases",
+        "languageCompatible",
+        "candidateRuleCompatible",
+        "evaluatedCases"
+      ],
+      "additionalProperties": false
+    },
+    "notes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "corpusId",
+    "kind",
+    "source",
+    "sourceProject",
+    "immutableRevision",
+    "license",
+    "language",
+    "frameworks",
+    "acquisition",
+    "labelsPath",
+    "inventory",
+    "notes"
+  ],
+  "additionalProperties": false
+}

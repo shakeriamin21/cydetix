@@ -1,0 +1,14 @@
+{
+  "version": "2.1.0",
+  "ruleCount": 20,
+  "resultRuleIds": [
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SESSION-001",
+    "AS-SESSION-001"
+  ],
+  "levels": ["error", "error", "error", "error", "error", "error"],
+  "uriBaseId": "%SRCROOT%"
+}

@@ -1,0 +1,283 @@
+{
+  "$id": "https://vibeshield.dev/schemas/v1/rule.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^AS-(?:[A-Z]+-)*[A-Z]+-\\d{3}$"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$"
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "category": {
+      "type": "string",
+      "enum": [
+        "session",
+        "password-storage",
+        "token-validation",
+        "secrets",
+        "configuration",
+        "authorization",
+        "authentication",
+        "password-reset",
+        "oauth",
+        "dependency-security",
+        "ci-cd",
+        "supply-chain"
+      ]
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1
+    },
+    "severity": {
+      "type": "string",
+      "enum": [
+        "info",
+        "low",
+        "medium",
+        "high",
+        "critical"
+      ]
+    },
+    "confidence": {
+      "type": "string",
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    },
+    "standards": {
+      "type": "object",
+      "properties": {
+        "cwe": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^CWE-\\d+$"
+          }
+        },
+        "owaspTop10": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^A\\d{2}:2025$"
+          }
+        },
+        "asvs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^v5\\.0\\.0-\\d+\\.\\d+\\.\\d+$"
+          }
+        },
+        "nist": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "cwe",
+        "owaspTop10",
+        "asvs",
+        "nist"
+      ],
+      "additionalProperties": false
+    },
+    "supplyChainStandards": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "standard": {
+            "type": "string",
+            "minLength": 1
+          },
+          "control": {
+            "type": "string",
+            "minLength": 1
+          },
+          "requirement": {
+            "type": "string",
+            "enum": [
+              "REQUIRED",
+              "RECOMMENDED",
+              "CONTEXT_DEPENDENT"
+            ]
+          }
+        },
+        "required": [
+          "standard",
+          "control",
+          "requirement"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "standardsTraceability": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "source": {
+            "type": "string",
+            "minLength": 1
+          },
+          "control": {
+            "type": "string",
+            "minLength": 1
+          },
+          "relationship": {
+            "type": "string",
+            "enum": [
+              "REQUIRED",
+              "RECOMMENDED",
+              "CONTEXT_DEPENDENT"
+            ]
+          },
+          "url": {
+            "type": "string",
+            "format": "uri"
+          }
+        },
+        "required": [
+          "source",
+          "control",
+          "relationship",
+          "url"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "supportedLanguages": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "javascript",
+          "typescript",
+          "python",
+          "configuration"
+        ]
+      }
+    },
+    "supportedFrameworks": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "detectionStrategy": {
+      "type": "string",
+      "enum": [
+        "ast",
+        "ast-plus-context",
+        "configuration",
+        "lexical-secret",
+        "security-ir",
+        "authentication-invariant",
+        "dependency-inventory",
+        "advisory-correlation",
+        "secret-correlation",
+        "workflow-correlation"
+      ]
+    },
+    "evidenceRequirements": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "reachabilityAssessment": {
+      "type": "string",
+      "minLength": 1
+    },
+    "securityInvariant": {
+      "type": "string",
+      "minLength": 1
+    },
+    "attackPrerequisite": {
+      "type": "string",
+      "minLength": 1
+    },
+    "impact": {
+      "type": "string",
+      "minLength": 1
+    },
+    "remediation": {
+      "type": "string",
+      "minLength": 1
+    },
+    "autofix": {
+      "type": "string",
+      "enum": [
+        "SAFE",
+        "REVIEW_REQUIRED",
+        "ARCHITECTURAL"
+      ]
+    },
+    "references": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "format": "uri"
+      }
+    },
+    "positiveTests": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "negativeTests": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "version",
+    "title",
+    "category",
+    "description",
+    "severity",
+    "confidence",
+    "standards",
+    "supportedLanguages",
+    "supportedFrameworks",
+    "detectionStrategy",
+    "evidenceRequirements",
+    "reachabilityAssessment",
+    "securityInvariant",
+    "attackPrerequisite",
+    "impact",
+    "remediation",
+    "autofix",
+    "references",
+    "positiveTests",
+    "negativeTests"
+  ],
+  "additionalProperties": false
+}

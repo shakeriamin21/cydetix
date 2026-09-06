@@ -1,0 +1,10 @@
+{
+  "name": "sbom-fixture",
+  "version": "1.0.0",
+  "dependencies": {
+    "runtime-component": "2.3.4"
+  },
+  "devDependencies": {
+    "build-component": "5.6.7"
+  }
+}

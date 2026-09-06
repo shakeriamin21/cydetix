@@ -1,0 +1,43 @@
+name: Bug report
+description: Report reproducible incorrect behavior that is not a sensitive vulnerability.
+title: "[Bug]: "
+labels: ["bug", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value: >-
+        Do not include credentials, private source, or exploitable vulnerability details. Use the
+        private security-reporting path in SECURITY.md for sensitive issues.
+  - type: input
+    id: version
+    attributes:
+      label: VibeShield version
+      placeholder: 0.6.0-alpha.1
+    validations:
+      required: true
+  - type: dropdown
+    id: platform
+    attributes:
+      label: Platform
+      options: [Windows, Linux, macOS, Other]
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Sanitized reproduction
+      description: Include minimal steps and synthetic data only.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true

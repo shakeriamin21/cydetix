@@ -1,0 +1,20 @@
+{
+  "schemaVersion": "1.0.0",
+  "decision": "IDENTITY_REQUESTED_PUBLICATION_BLOCKED",
+  "productName": "VibeShield",
+  "npmPackageName": "vibeshield",
+  "githubRepository": null,
+  "cliCommand": "vibeshield",
+  "version": "0.6.0-alpha.1",
+  "tagCandidate": "v0.6.0-alpha.1",
+  "npmDistTag": "alpha",
+  "npmPackageRegistration": "AVAILABLE_UNREGISTERED",
+  "npmAvailabilityCheckedAt": "2026-09-06",
+  "npmAvailabilityEvidence": "npm view vibeshield --json returned E404 from registry.npmjs.org",
+  "nameMarketConflict": "ACTIVE_USES_REVIEW_REQUIRED",
+  "trademarkClearance": "NOT_CLAIMED",
+  "npmTrustedPublisher": "NOT_CONFIGURED",
+  "githubEnvironment": "release",
+  "privateVulnerabilityReporting": "NOT_CONFIGURED",
+  "approvedHistoryAuthorEmailSha256": []
+}

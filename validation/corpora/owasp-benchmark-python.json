@@ -1,0 +1,24 @@
+{
+  "schemaVersion": "1.0.0",
+  "corpusId": "owasp-benchmark-python-0-1",
+  "kind": "EXTERNAL_LABELED",
+  "source": "https://github.com/OWASP-Benchmark/BenchmarkPython",
+  "sourceProject": "OWASP BenchmarkPython",
+  "immutableRevision": "f1291485808b66e20ddb6b01b10dc71b3df8c8ba",
+  "license": "GPL-3.0",
+  "language": ["Python"],
+  "frameworks": ["Flask"],
+  "acquisition": "GIT_PINNED_COMMIT",
+  "labelsPath": "validation/labels/owasp-benchmark-python-0-1.json",
+  "inventory": {
+    "totalCases": 1230,
+    "languageCompatible": 1230,
+    "candidateRuleCompatible": 0,
+    "evaluatedCases": 3
+  },
+  "notes": [
+    "The 39 CWE-614 cases set arbitrary response cookies; AS-SESSION-001 is intentionally scoped to authenticated session-cookie configuration.",
+    "The 151 hash cases do not establish InvariantSec's password-credential storage prerequisite.",
+    "No case is included in an accuracy denominator merely because its CWE looks adjacent to a narrower InvariantSec rule."
+  ]
+}

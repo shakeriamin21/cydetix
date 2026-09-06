@@ -1,0 +1,22 @@
+{
+  "schemaVersion": "2.0.0",
+  "filesExamined": 2,
+  "languages": ["typescript"],
+  "frameworks": ["Express"],
+  "ruleIds": [
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SESSION-001",
+    "AS-SESSION-001"
+  ],
+  "summary": {
+    "critical": 1,
+    "high": 5,
+    "medium": 0,
+    "low": 0,
+    "info": 0,
+    "suppressed": 0
+  }
+}

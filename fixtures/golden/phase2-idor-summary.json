@@ -1,0 +1,29 @@
+{
+  "schemaVersion": "2.0.0",
+  "ruleIds": ["AS-AUTHZ-001"],
+  "modules": 5,
+  "calls": 5,
+  "identities": 7,
+  "resourceOperations": 1,
+  "proofStates": ["object-authorization:VIOLATED", "tenant-isolation:UNKNOWN"],
+  "evidenceKinds": [
+    "route",
+    "call",
+    "call",
+    "identity",
+    "identity",
+    "identity",
+    "resource",
+    "enforcement"
+  ],
+  "evidencePaths": [
+    "src/routes.ts",
+    "src/controller.ts",
+    "src/service.ts",
+    "src/controller.ts",
+    "src/controller.ts",
+    "src/service.ts",
+    "src/repository.ts",
+    "src/repository.ts"
+  ]
+}

@@ -1,0 +1,46 @@
+name: False positive
+description: Report a finding that should not be emitted within documented scope.
+title: "[False positive]: "
+labels: ["false-positive", "needs-triage"]
+body:
+  - type: markdown
+    attributes:
+      value:
+        "Use synthetic or sanitized evidence only. Never paste secrets, tokens, or private source."
+  - type: input
+    id: version
+    attributes:
+      label: VibeShield version
+    validations:
+      required: true
+  - type: input
+    id: rule
+    attributes:
+      label: Rule ID
+      placeholder: AS-...
+    validations:
+      required: true
+  - type: input
+    id: framework
+    attributes:
+      label: Language and framework
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Sanitized evidence or minimal reproduction
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
