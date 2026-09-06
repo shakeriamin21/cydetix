@@ -94,7 +94,7 @@
     "@eslint/js": "10.0.1",
     "@microsoft/sarif-multitool": "5.7.0",
     "@types/babel__traverse": "7.28.0",
-    "@types/node": "26.4.0",
+    "@types/node": "26.4.1",
     "eslint": "10.9.1",
     "prettier": "3.9.6",
     "tsx": "4.23.13",
