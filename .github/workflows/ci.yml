@@ -83,5 +83,5 @@ jobs:
           docker pull node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b
       - name: Execute every container sandbox integration test
         env:
-          CYDETIX_SANDBOX_IMAGE: sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b
+          CYDETIX_SANDBOX_IMAGE: node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b
         run: npm run test:sandbox

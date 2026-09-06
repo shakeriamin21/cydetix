@@ -62,7 +62,7 @@ jobs:
         run: npm run audit
       - name: Run complete verification with mandatory sandbox tests
         env:
-          CYDETIX_SANDBOX_IMAGE: sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b
+          CYDETIX_SANDBOX_IMAGE: node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b
         run: npm run verify
       - name: Run explicit online OSV gate
         run: npm run validate:online-osv

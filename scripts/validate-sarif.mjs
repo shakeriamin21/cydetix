@@ -2,11 +2,12 @@ import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
-import multitoolPath from "@microsoft/sarif-multitool";
 
 import { scanRepository } from "../dist/core/engine.js";
 import { renderSarif } from "../dist/reporting/sarif.js";
+import { resolveSarifMultitoolExecutable } from "../dist/validation/sarif-multitool.js";
 
+const multitoolPath = await resolveSarifMultitoolExecutable();
 const temporary = await mkdtemp(path.join(os.tmpdir(), "cydetix-sarif-"));
 try {
   const fixtures = [
@@ -69,6 +70,8 @@ try {
         shell: false,
         windowsHide: true,
         timeout: 90_000,
+        maxBuffer: 1_000_000,
+        stdio: ["ignore", "pipe", "pipe"],
       },
     );
     if (result.status !== 0) {

@@ -16,6 +16,13 @@ package; report and rule schemas are versioned independently.
   remediation, sandbox, or reporting behavior.
 - Recorded the maintainer-provided state that npm Trusted Publishing and GitHub private
   vulnerability reporting are configured, while retaining the fail-closed name-review gate.
+- Restored hosted Unix Microsoft SARIF Multitool execution after script-disabled installs by
+  validating the package-owned native launcher before restoring only its missing user execute bit;
+  Multitool validation remains mandatory, bounded, non-shell, and fail-closed.
+- Made the hosted sandbox use the same repository-qualified immutable Node digest it pulls, accepted
+  only Docker's semantically equivalent empty-entrypoint and no-new-privileges inspect forms, and
+  added control-specific redacted probe diagnostics and regression coverage. Composite Docker test
+  cases now have outer harness deadlines that encompass their unchanged bounded operations.
 
 The npm registry still contains only `cydetix@0.6.0-alpha.1`; alpha.2 was not published. Package
 registration and release preparation do not establish product-name exclusivity or trademark

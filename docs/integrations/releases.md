@@ -32,7 +32,7 @@ From a clean reviewed source commit:
 ```powershell
 npm ci --ignore-scripts
 npm run audit
-$env:CYDETIX_SANDBOX_IMAGE = "sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b"
+$env:CYDETIX_SANDBOX_IMAGE = "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b"
 npm run verify
 npm run release:self-scan
 npm run validate:online-osv

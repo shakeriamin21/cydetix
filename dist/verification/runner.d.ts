@@ -12,6 +12,7 @@ interface ContainerRunnerOptions {
     readonly temporaryRoot?: string;
 }
 export declare function buildContainerArguments(image: string, containerName: string, workspace: string, command: VerificationCommand): string[];
+export declare function hardenedContainerProfileFailures(inspected: unknown): string[];
 export declare function createContainerSandboxRunner(options: ContainerRunnerOptions): VerificationRunner;
 export {};
 //# sourceMappingURL=runner.d.ts.map

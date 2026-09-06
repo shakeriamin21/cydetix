@@ -70,17 +70,20 @@ tests, Dockerfiles, hooks, or application code from downloaded corpora.
 
 ## Internal, hostile, and sandbox results
 
-The final local Cydetix regression run has 32 passing test files and 197 passing tests, with zero
-failed and zero skipped tests. All 13 container tests executed. The pre-change baseline was 32 files
-and 152 tests; the 45 added assertions cover agent discovery and state, consent and non-interactive
-boundaries, safe configuration transactions, trigger selection, MCP identity, concise CLI output,
-and packed execution.
+The final local Cydetix regression evidence has 33 passing test files and 207 passing tests, with
+zero failed tests. The exact default `npm run verify` invocation passed 194 tests and recorded 13
+Docker capability skips; the separate pinned-image command passed all 13 container tests. The
+pre-change baseline was 32 files and 152 tests; the 55 added tests cover agent discovery and state,
+consent and non-interactive boundaries, safe configuration transactions, trigger selection, MCP
+identity, concise CLI output, packed execution, trusted SARIF launcher handling, and strict Docker
+inspect normalization.
 
-The immutable local test image was
-`sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b`
-(`node:22.18.0-alpine3.22`). It was explicitly pulled by the operator before testing; Cydetix did
-not pull it. Docker Desktop 4.52.0 / Engine 29.0.1 served Linux/amd64 containers through WSL2 kernel
-6.18.33.2 with cgroup v2 and built-in seccomp.
+The immutable local test image reference was
+`node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b`
+(`node:22.18.0-alpine3.22`). The repository-qualified digest is passed unchanged after the operator
+explicitly pulls it because not every Docker image store resolves a bare manifest digest. Cydetix
+does not pull it. Docker Desktop 4.52.0 / Engine 29.0.1 served Linux/amd64 containers through WSL2
+kernel 6.18.33.2 with cgroup v2 and built-in seccomp.
 
 The in-container network program attempted DNS resolution of `example.com`, a TCP connection to the
 RFC 5737 TEST-NET-3 address `203.0.113.1`, and HTTP/HTTPS requests to `example.com`. DNS returned an
@@ -126,7 +129,7 @@ fixture/schema findings in each applicable scope were reviewed and fully redacte
 Git-history metadata audit passes for four commits against the two preserved, explicitly approved
 author-email hashes; the audit stores hashes rather than public email addresses.
 
-The alpha.3 package allowlist has 320 entries, 297,437 packed bytes, 1,875,499 unpacked bytes, no
+The alpha.3 package allowlist has 324 entries, 301,026 packed bytes, 1,890,368 unpacked bytes, no
 lifecycle scripts, and exactly one `cydetix` binary. Isolated npm-exec and global-prefix
 installation exercise version/help/default scan/setup/status/SAFE fix/machine output/MCP paths
 successfully. The isolated plugin archive validates one skill. Self-scan has zero active and 28

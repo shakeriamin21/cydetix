@@ -201,7 +201,7 @@ describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => 
       networkPolicy: "DENIED",
     });
     expect(result.state).toBe("SUCCEEDED");
-  });
+  }, 60_000);
 
   it("enforces memory and temporary-filesystem exhaustion bounds", async () => {
     const memory = await runner.run(root, {
@@ -332,7 +332,7 @@ describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => 
       runDocker(["rm", "--force", seedName]);
       runDocker(["image", "rm", "--force", imageName]);
     }
-  });
+  }, 120_000);
 
   it("completes a sandbox-verified SAFE remediation and remains idempotent", async () => {
     const temporary = await mkdtemp(path.join(os.tmpdir(), "cydetix-container-fix-"));

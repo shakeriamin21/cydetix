@@ -257,6 +257,48 @@ export function buildContainerArguments(image, containerName, workspace, command
         ...command.arguments,
     ];
 }
+function strings(value) {
+    return Array.isArray(value)
+        ? value.filter((item) => typeof item === "string")
+        : [];
+}
+export function hardenedContainerProfileFailures(inspected) {
+    if (typeof inspected !== "object" || inspected === null)
+        return ["container inspection JSON"];
+    const container = inspected;
+    const containerEnvironment = strings(container.Config?.Env);
+    const capabilityDrop = strings(container.HostConfig?.CapDrop);
+    const securityConfiguration = strings(container.HostConfig?.SecurityOpt);
+    const mounts = Array.isArray(container.Mounts) ? container.Mounts : [];
+    const entrypoint = container.Config?.Entrypoint;
+    const emptyEntrypoint = entrypoint === null || (Array.isArray(entrypoint) && entrypoint.length === 0);
+    const noNewPrivileges = securityConfiguration.some((item) => item === "no-new-privileges" || item === "no-new-privileges=true");
+    const workspaceMount = mounts.length === 1 &&
+        mounts.every((mount) => typeof mount === "object" &&
+            mount !== null &&
+            Reflect.get(mount, "Type") === "bind" &&
+            Reflect.get(mount, "Destination") === "/workspace" &&
+            Reflect.get(mount, "RW") === true);
+    return [
+        ...(container.Config?.User === "65534:65534" ? [] : ["non-root user"]),
+        ...(container.Config?.WorkingDir === "/workspace" ? [] : ["bounded working directory"]),
+        ...(emptyEntrypoint ? [] : ["explicit empty entrypoint"]),
+        ...(containerEnvironment.includes("CI=true") ? [] : ["sanitized CI environment"]),
+        ...(containerEnvironment.includes("CYDETIX_VERIFICATION=1")
+            ? []
+            : ["sanitized verification environment"]),
+        ...(container.HostConfig?.Privileged === false ? [] : ["unprivileged container"]),
+        ...(container.HostConfig?.ReadonlyRootfs === true ? [] : ["read-only root filesystem"]),
+        ...(capabilityDrop.includes("ALL") ? [] : ["all Linux capabilities dropped"]),
+        ...(noNewPrivileges ? [] : ["no-new-privileges"]),
+        ...(container.HostConfig?.NetworkMode === "none" ? [] : ["network denial"]),
+        ...(container.HostConfig?.PidsLimit === 128 ? [] : ["PID limit"]),
+        ...(container.HostConfig?.Memory === 536_870_912 ? [] : ["memory limit"]),
+        ...(container.HostConfig?.MemorySwap === 536_870_912 ? [] : ["memory-swap limit"]),
+        ...(container.HostConfig?.NanoCpus === 1_000_000_000 ? [] : ["CPU limit"]),
+        ...(workspaceMount ? [] : ["ephemeral workspace mount"]),
+    ];
+}
 async function runBoundedProcess(executable, arguments_, environment, timeoutMilliseconds, onTerminate) {
     return new Promise((resolve) => {
         let stdoutBytes = 0;
@@ -371,7 +413,7 @@ export function createContainerSandboxRunner(options) {
                     imageIdentity: options.image,
                     controls: baseControls("CONTAINER_SANDBOX"),
                     limitations: [
-                        "The pinned verification image is not present locally; Cydetix did not pull it implicitly.",
+                        "The exact pinned verification image reference is not present locally; Cydetix did not pull it implicitly. Use the same repository-qualified digest that was pulled when the image store requires one.",
                     ],
                 });
                 return cachedCapability;
@@ -473,40 +515,15 @@ export function createContainerSandboxRunner(options) {
             catch {
                 inspected = undefined;
             }
-            const containerEnvironment = Array.isArray(inspected?.Config?.Env)
-                ? inspected.Config.Env.filter((item) => typeof item === "string")
-                : [];
-            const capabilityDrop = Array.isArray(inspected?.HostConfig?.CapDrop)
-                ? inspected.HostConfig.CapDrop
-                : [];
-            const securityConfiguration = Array.isArray(inspected?.HostConfig?.SecurityOpt)
-                ? inspected.HostConfig.SecurityOpt
-                : [];
-            const mounts = Array.isArray(inspected?.Mounts) ? inspected.Mounts : [];
-            const profileReceived = create.error === undefined &&
-                create.status === 0 &&
-                inspection.error === undefined &&
-                inspection.status === 0 &&
-                inspected?.Config?.User === "65534:65534" &&
-                inspected.Config.WorkingDir === "/workspace" &&
-                inspected.Config.Entrypoint === null &&
-                containerEnvironment.includes("CI=true") &&
-                containerEnvironment.includes("CYDETIX_VERIFICATION=1") &&
-                inspected.HostConfig?.Privileged === false &&
-                inspected.HostConfig.ReadonlyRootfs === true &&
-                capabilityDrop.includes("ALL") &&
-                securityConfiguration.includes("no-new-privileges=true") &&
-                inspected.HostConfig.NetworkMode === "none" &&
-                inspected.HostConfig.PidsLimit === 128 &&
-                inspected.HostConfig.Memory === 536_870_912 &&
-                inspected.HostConfig.MemorySwap === 536_870_912 &&
-                inspected.HostConfig.NanoCpus === 1_000_000_000 &&
-                mounts.length === 1 &&
-                mounts.every((mount) => typeof mount === "object" &&
-                    mount !== null &&
-                    Reflect.get(mount, "Type") === "bind" &&
-                    Reflect.get(mount, "Destination") === "/workspace" &&
-                    Reflect.get(mount, "RW") === true);
+            const profileFailures = hardenedContainerProfileFailures(inspected);
+            const probeFailures = [
+                ...(create.error === undefined && create.status === 0 ? [] : ["container creation"]),
+                ...(inspection.error === undefined && inspection.status === 0
+                    ? []
+                    : ["container inspection command"]),
+                ...profileFailures,
+            ];
+            const profileReceived = probeFailures.length === 0;
             const probe = profileReceived
                 ? await runBoundedProcess(docker, ["start", "--attach", probeContainerName], environment, 15_000, () => {
                     spawnSync(docker, ["kill", probeContainerName ?? ""], {
@@ -524,6 +541,13 @@ export function createContainerSandboxRunner(options) {
                 probe.timedOut ||
                 probe.outputExceeded ||
                 probe.exitCode !== 0) {
+                const launchFailures = [
+                    ...probeFailures,
+                    ...(probe?.spawnFailed === true ? ["container start"] : []),
+                    ...(probe?.timedOut === true ? ["container start timeout"] : []),
+                    ...(probe?.outputExceeded === true ? ["container start output bound"] : []),
+                    ...(probe !== undefined && probe.exitCode !== 0 ? ["container start exit status"] : []),
+                ];
                 cachedCapability = sandboxCapabilitySchema.parse({
                     schemaVersion: "1.0.0",
                     runner: "CONTAINER_SANDBOX",
@@ -534,6 +558,7 @@ export function createContainerSandboxRunner(options) {
                     controls: baseControls("CONTAINER_SANDBOX"),
                     limitations: [
                         "The daemon and image are present, but the mandatory hardened Linux launch/inspection probe failed.",
+                        `Failed mandatory probe checks: ${launchFailures.join(", ")}.`,
                         "The verification image must provide /bin/true for the capability probe.",
                         "Local execution was not attempted.",
                     ],

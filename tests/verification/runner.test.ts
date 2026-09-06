@@ -10,6 +10,7 @@ import {
   createContainerSandboxRunner,
   createLocalExplicitRunner,
   createNoExecutionRunner,
+  hardenedContainerProfileFailures,
 } from "../../src/verification/runner.js";
 
 const temporaryDirectories: string[] = [];
@@ -49,6 +50,8 @@ describe("verification runners", () => {
         "--network",
         "none",
         "--read-only",
+        "/tmp:rw,noexec,nosuid,size=64m",
+        "/run:rw,noexec,nosuid,size=16m",
         "--cap-drop",
         "ALL",
         "no-new-privileges=true",
@@ -58,8 +61,12 @@ describe("verification runners", () => {
         "512m",
         "--memory-swap",
         "512m",
+        "--cpus",
+        "1",
         "--user",
         "65534:65534",
+        "CI=true",
+        "CYDETIX_VERIFICATION=1",
       ]),
     );
     expect(arguments_.at(-2)).toBe("node");
@@ -70,6 +77,63 @@ describe("verification runners", () => {
         workingDirectory: "../workspace-escape",
       }),
     ).toThrow(/escapes workspace/u);
+  });
+
+  it.each([
+    { entrypoint: null, securityOption: "no-new-privileges=true" },
+    { entrypoint: [], securityOption: "no-new-privileges" },
+  ])("accepts equivalent hardened Docker inspect forms: $securityOption", (representation) => {
+    expect(
+      hardenedContainerProfileFailures({
+        Config: {
+          User: "65534:65534",
+          Env: ["CI=true", "CYDETIX_VERIFICATION=1"],
+          WorkingDir: "/workspace",
+          Entrypoint: representation.entrypoint,
+        },
+        HostConfig: {
+          Privileged: false,
+          ReadonlyRootfs: true,
+          CapDrop: ["ALL"],
+          SecurityOpt: [representation.securityOption],
+          NetworkMode: "none",
+          PidsLimit: 128,
+          Memory: 536_870_912,
+          MemorySwap: 536_870_912,
+          NanoCpus: 1_000_000_000,
+        },
+        Mounts: [{ Type: "bind", Destination: "/workspace", RW: true }],
+      }),
+    ).toEqual([]);
+  });
+
+  it("rejects absent or non-equivalent hardened Docker controls", () => {
+    const failures = hardenedContainerProfileFailures({
+      Config: {
+        User: "65534:65534",
+        Env: ["CI=true", "CYDETIX_VERIFICATION=1"],
+        WorkingDir: "/workspace",
+        Entrypoint: ["/repository-controlled-entrypoint"],
+      },
+      HostConfig: {
+        Privileged: false,
+        ReadonlyRootfs: true,
+        CapDrop: ["ALL"],
+        SecurityOpt: [],
+        NetworkMode: "none",
+        PidsLimit: "128",
+        Memory: 536_870_912,
+        MemorySwap: 536_870_912,
+        NanoCpus: 1_000_000_000,
+      },
+      Mounts: [{ Type: "bind", Destination: "/workspace", RW: false }],
+    });
+    expect(failures).toEqual([
+      "explicit empty entrypoint",
+      "no-new-privileges",
+      "PID limit",
+      "ephemeral workspace mount",
+    ]);
   });
 
   it("keeps commands inert under NO_EXECUTION", async () => {
