@@ -5,6 +5,27 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+## [0.6.0-alpha.4] - 2026-09-07
+
+### Changed
+
+- Prepared `0.6.0-alpha.4` after the immutable alpha.3 release attempt passed its preceding release
+  gates but stopped at Git-history privacy enforcement before npm publication.
+- Replaced the release privacy audit's implicit all-ref traversal with a required, explicit history
+  scope. Release mode resolves the validated tag to one commit and audits that commit plus every
+  reachable ancestor; the distinct `--all` mode remains available for repository-wide maintainer
+  audits.
+- Kept approved author-email fingerprint checks and forbidden path/name checks fail-closed, added
+  deterministic scope evidence, and added regression repositories proving that unrelated branches
+  are excluded until their commits become reachable through a merge.
+- Made workflow-security validation require the tag-scoped privacy command while leaving the
+  independent Gitleaks full-history scan unchanged.
+
+The `v0.6.0-alpha.3` tag remains fixed at `7aa5007332b4f961b2812d739abd638fba6645cf`. Release run
+`34093517082` failed before npm publication because the old all-ref privacy scope included an
+unrelated Dependabot branch commit. The alpha.2 and alpha.3 attempts were not published and are not
+reused by this candidate.
+
 ## [0.6.0-alpha.3] - 2026-09-06
 
 ### Changed

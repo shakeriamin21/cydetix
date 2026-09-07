@@ -2,7 +2,7 @@
   "mcpServers": {
     "cydetix": {
       "command": "npx",
-      "args": ["--yes", "cydetix@0.6.0-alpha.3", "mcp"]
+      "args": ["--yes", "cydetix@0.6.0-alpha.4", "mcp"]
     }
   }
 }

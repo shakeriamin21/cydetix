@@ -12,7 +12,7 @@ body:
     id: version
     attributes:
       label: Cydetix version
-      placeholder: 0.6.0-alpha.3
+      placeholder: 0.6.0-alpha.4
     validations:
       required: true
   - type: dropdown

@@ -48,6 +48,15 @@ for (const [permission, expected] of [
 }
 if (release?.jobs?.["verify-release"]?.permissions?.["id-token"] !== undefined)
   issues.push("release.yml: verification job must not receive OIDC identity");
+const historyAuditStep = release?.jobs?.["verify-release"]?.steps?.find(
+  (step) => step?.name === "Reject unsanitized reachable history",
+);
+if (
+  historyAuditStep?.env?.CYDETIX_EXPECTED_TAG !== "${{ github.ref_name }}" ||
+  historyAuditStep?.run !==
+    'npm run audit:history -- --enforce --ref "refs/tags/${CYDETIX_EXPECTED_TAG}"'
+)
+  issues.push("release.yml: Git-history privacy audit is not scoped to the validated release tag");
 
 const result = {
   schemaVersion: "1.0.0",
@@ -60,6 +69,7 @@ const result = {
     "TAG_ONLY_RELEASE_TRIGGER",
     "PROTECTED_RELEASE_ENVIRONMENT",
     "OIDC_ONLY_IN_PUBLISH_JOB",
+    "RELEASE_REACHABLE_HISTORY_SCOPE",
   ],
   issues,
 };

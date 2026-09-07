@@ -79,17 +79,17 @@ describe("universal agent setup", () => {
     const base = {
       projectRoot: "project",
       homeDirectory: "home",
-      packageVersion: "0.6.0-alpha.3",
+      packageVersion: "0.6.0-alpha.4",
       executablePath: "",
     };
     expect(pinnedMcpServer({ ...base, platform: "win32" })).toEqual({
       command: "cmd",
-      args: ["/c", "npx", "--yes", "cydetix@0.6.0-alpha.3", "mcp"],
+      args: ["/c", "npx", "--yes", "cydetix@0.6.0-alpha.4", "mcp"],
     });
     for (const platform of ["linux", "darwin"] as const)
       expect(pinnedMcpServer({ ...base, platform })).toEqual({
         command: "npx",
-        args: ["--yes", "cydetix@0.6.0-alpha.3", "mcp"],
+        args: ["--yes", "cydetix@0.6.0-alpha.4", "mcp"],
       });
   });
 
@@ -136,10 +136,10 @@ describe("universal agent setup", () => {
     const cursor = JSON.parse(
       await readFile(path.join(project, ".cursor", "mcp.json"), "utf8"),
     ) as { mcpServers: { cydetix: { args: string[] } } };
-    expect(cursor.mcpServers.cydetix.args).toContain("cydetix@0.6.0-alpha.3");
+    expect(cursor.mcpServers.cydetix.args).toContain("cydetix@0.6.0-alpha.4");
     const codex = await readFile(path.join(home, ".codex", "config.toml"), "utf8");
     expect(codex).toContain("[mcp_servers.cydetix]");
-    expect(codex).toContain('"cydetix@0.6.0-alpha.3"');
+    expect(codex).toContain('"cydetix@0.6.0-alpha.4"');
     const copilot = JSON.parse(
       await readFile(path.join(project, ".vscode", "mcp.json"), "utf8"),
     ) as { servers: { cydetix: { type: string } } };
@@ -166,7 +166,7 @@ describe("universal agent setup", () => {
     await mkdir(path.dirname(config), { recursive: true });
     await writeFile(
       config,
-      `${JSON.stringify({ mcpServers: { cydetix: process.platform === "win32" ? { command: "cmd", args: ["/c", "npx", "--yes", "cydetix@0.6.0-alpha.3", "mcp"] } : { command: "npx", args: ["--yes", "cydetix@0.6.0-alpha.3", "mcp"] } } })}\n`,
+      `${JSON.stringify({ mcpServers: { cydetix: process.platform === "win32" ? { command: "cmd", args: ["/c", "npx", "--yes", "cydetix@0.6.0-alpha.4", "mcp"] } : { command: "npx", args: ["--yes", "cydetix@0.6.0-alpha.4", "mcp"] } } })}\n`,
     );
     expect((await detection("cursor", project, home)).integration).toBe("partially_configured");
   });
@@ -267,7 +267,7 @@ describe("universal agent setup", () => {
       path.join(boundary.root, ".cydetix", "mcp.json"),
     );
     expect(await readFile(path.join(canonicalProject, ".cydetix", "mcp.json"), "utf8")).toContain(
-      "cydetix@0.6.0-alpha.3",
+      "cydetix@0.6.0-alpha.4",
     );
   });
 
@@ -446,7 +446,7 @@ describe("universal agent setup", () => {
     });
     expect(report.verified).toBe(true);
     const content = await readFile(path.join(project, ".cydetix", "mcp.json"), "utf8");
-    expect(content).toContain("cydetix@0.6.0-alpha.3");
+    expect(content).toContain("cydetix@0.6.0-alpha.4");
   });
 
   it("installs a pinned CLI fallback in host instructions", async () => {
@@ -460,7 +460,7 @@ describe("universal agent setup", () => {
       quiet: true,
     });
     const rule = await readFile(path.join(project, ".cursor", "rules", "cydetix.mdc"), "utf8");
-    expect(rule).toContain("npx --yes cydetix@0.6.0-alpha.3 --json");
+    expect(rule).toContain("npx --yes cydetix@0.6.0-alpha.4 --json");
   });
 
   it("removes only Cydetix-owned entries", async () => {

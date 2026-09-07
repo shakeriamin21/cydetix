@@ -98,7 +98,7 @@ const sourceTreeSha256 = sourceTreeHash.digest("hex");
 const historyAudit = JSON.parse(
   run(
     process.execPath,
-    [path.join(root, "scripts", "audit-git-history.mjs")],
+    [path.join(root, "scripts", "audit-git-history.mjs"), "--ref", "HEAD"],
     120_000,
     {},
     preview ? [0, 1] : [0],

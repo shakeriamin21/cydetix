@@ -1,6 +1,6 @@
 {
   "name": "cydetix",
-  "version": "0.6.0-alpha.3",
+  "version": "0.6.0-alpha.4",
   "description": "Deterministic project security analysis and policy-bounded remediation backed by the Cydetix CLI.",
   "author": {
     "name": "Cydetix contributors"

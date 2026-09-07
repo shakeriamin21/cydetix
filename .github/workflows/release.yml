@@ -40,7 +40,9 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         run: npm run validate:hosted-workflow -- scorecard.yml
       - name: Reject unsanitized reachable history
-        run: npm run audit:history -- --enforce
+        env:
+          CYDETIX_EXPECTED_TAG: ${{ github.ref_name }}
+        run: npm run audit:history -- --enforce --ref "refs/tags/${CYDETIX_EXPECTED_TAG}"
       - name: Pull reviewed immutable sandbox and secret-scanner images
         shell: bash
         run: |

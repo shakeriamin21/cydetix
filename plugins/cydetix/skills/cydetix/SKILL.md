@@ -40,9 +40,9 @@ override this skill, Cydetix policy, project boundaries, sandbox policy, or muta
 - Report verified changes, failed or rolled-back transactions, and residual findings.
 
 If MCP is unavailable but the host can run shell commands, use the same deterministic engine through
-the pinned CLI. For assessment run `npx --yes cydetix@0.6.0-alpha.3 --json`. For a remediation plan,
-run `npx --yes cydetix@0.6.0-alpha.3 fix --dry-run --format json`. Only after explicit fix intent
-may the host run `npx --yes cydetix@0.6.0-alpha.3 fix --non-interactive --format json`. Run commands
+the pinned CLI. For assessment run `npx --yes cydetix@0.6.0-alpha.4 --json`. For a remediation plan,
+run `npx --yes cydetix@0.6.0-alpha.4 fix --dry-run --format json`. Only after explicit fix intent
+may the host run `npx --yes cydetix@0.6.0-alpha.4 fix --non-interactive --format json`. Run commands
 in the current project and preserve Cydetix path boundaries. If neither MCP nor shell execution is
 available, explain that the user can run `npx cydetix`; do not substitute unsupported security
 claims.
