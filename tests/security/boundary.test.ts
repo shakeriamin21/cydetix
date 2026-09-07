@@ -52,7 +52,7 @@ describe("repository boundary", () => {
     const boundary = await createBoundary(root);
     for (const candidate of ["src/index.ts", "src/../package.json", "nested/deeper/file.ts"]) {
       expect(dangerousRepositoryPath(candidate)).toBeUndefined();
-      expect(resolveInside(boundary, candidate)).toBe(path.resolve(root, candidate));
+      expect(resolveInside(boundary, candidate)).toBe(path.resolve(boundary.root, candidate));
     }
   });
 
