@@ -20,39 +20,39 @@ selected repository is adversarial data even when the operator owns it.
 
 ## Primary threats and controls
 
-| Threat                             | Current control                                                                                                                                     |
-| ---------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Path traversal or symlink escape   | Canonical root, component-aware containment, no symlink follow, regular-file check, canonical check before read/write, hostile-path tests           |
-| Command or argument injection      | Scan launches no target command; explicit history and tool probes use `spawnSync` without a shell and fixed arguments                               |
-| Malicious Git configuration/hooks  | History disables global/system config, hooks and prompts, uses bounded read-only patch inspection, and never checks out commits                     |
-| Resource exhaustion                | Iterative traversal; file count, depth, per-file size, SARIF subprocess timeout/buffer; archives and binaries skipped                               |
-| Archive/recursive bombs            | Archives are never expanded; symlinked directories are skipped                                                                                      |
-| Credential disclosure              | No environment dump; detected values are hashed/redacted; auth evidence never emits JWTs, reset tokens, cookies, OAuth secrets, or private keys     |
-| Prompt injection                   | Repository prose is evidence only; CLI correctness does not use an LLM; skills explicitly prohibit repository instructions from changing boundaries |
-| Unexpected network access          | Ordinary scan is offline; OSV is explicit and transmits only npm ecosystem/name/version with bounded timeout and structured failure states          |
-| Unauthorized mutation              | `scan`/`auth` cannot write; only explicit `fix` intent can enter root-bounded, hash-preconditioned, transactional, verified SAFE remediation        |
-| Stale or concurrent patch          | Whole-file and exact-range hashes, affected dirty-file refusal, final identity/hash check, stable finding identity, `STALE_FINDING`                 |
-| Partial or interrupted write       | Complete in-memory preparation, exclusive same-directory temporary, file flush, atomic replacement, per-file change journal                         |
-| Destructive rollback               | Restore only Cydetix-written paths whose current hash is still the expected patched hash; never repository-wide Git reset/checkout/clean            |
-| Malicious verifier/formatter       | No implicit execution; explicit JSON argument arrays, `shell: false`, fixed cwd, stripped environment, no stdin, time/output bounds                 |
-| Remediation false-success          | Only `APPLIED_VERIFIED` after parser/authorized checks, deterministic rescan, intended hashes, and invariant transition; rollback remains failure   |
-| Secret leakage in patch journal    | Exact secret-range replacements are redacted in unified diffs; portable reports omit source backups, command arguments/output, and absolute root    |
-| Encoding or line-ending corruption | Bounded byte-preserving replacement; original line endings, final newline, and mode preserved where supported                                       |
-| Misleading assurance               | Coverage and unavailable engines are mandatory; parser failures and unsupported scope are reported                                                  |
-| False authorization certainty      | Proofs are tri-state; only supported evidence chains can produce `PROVEN`/`VIOLATED`, and ambiguity returns `UNKNOWN`                               |
-| Graph/path resource exhaustion     | Static import/call resolution only; authorization and authentication proof exploration are capped at 10,000 states/items                            |
-| False authentication certainty     | Applicability is evaluated first; only supported adapter guarantees can prove a lifecycle, and ambiguity returns `UNKNOWN` without a finding        |
-| Supply-chain compromise            | Exact lockfile, no install scripts in CI, pinned Actions, minimal permissions, checksums and attestations in release workflow                       |
-| Advisory false-clean result        | Offline, checked-clean, checked-findings, unavailable, and unknown provider states are distinct                                                     |
-| Secret leakage through reports     | Raw values never enter normalized exposures; terminal, JSON, SARIF, history, and Agent Skills retain only redaction/fingerprints                    |
-| Workflow YAML abuse                | YAML is parsed as bounded untrusted data; workflows and repository scripts are never executed                                                       |
-| Container/runtime escape           | Immutable local image; no repository Dockerfile; network none; non-root/read-only; no sockets/devices/privilege; caps dropped; runtime limits       |
-| Silent sandbox degradation         | Explicit capability states; unavailable/misconfigured container execution never falls back locally and causes rollback                              |
-| Environment or host-file exposure  | Sanitized allowlist and ephemeral repository copy; home, cloud credentials, SSH agent, and Docker socket are not mounted                            |
-| Terminal/control injection         | Human-readable untrusted strings are escaped; JSON/SARIF use structural serialization                                                               |
-| Benchmark gaming                   | Scanner/evaluator separation; labels load only after scanning and never enter rule execution                                                        |
-| External tool/provider failure     | Non-shell bounded probes, sanitized environment, output cap, timeout, validation, and explicit unavailable states                                   |
-| Release-package contamination      | npm path/content allowlist, size gate, clean install, developer-path scan, lifecycle ban, SBOM and artifact hashes                                  |
+| Threat                             | Current control                                                                                                                                                                             |
+| ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Path traversal or symlink escape   | Cross-platform absolute/traversal classification, canonical root, component-aware containment, no symlink follow, regular-file check, canonical check before read/write, hostile-path tests |
+| Command or argument injection      | Scan launches no target command; explicit history and tool probes use `spawnSync` without a shell and fixed arguments                                                                       |
+| Malicious Git configuration/hooks  | History disables global/system config, hooks and prompts, uses bounded read-only patch inspection, and never checks out commits                                                             |
+| Resource exhaustion                | Iterative traversal; file count, depth, per-file size, SARIF subprocess timeout/buffer; archives and binaries skipped                                                                       |
+| Archive/recursive bombs            | Archives are never expanded; symlinked directories are skipped                                                                                                                              |
+| Credential disclosure              | No environment dump; detected values are hashed/redacted; auth evidence never emits JWTs, reset tokens, cookies, OAuth secrets, or private keys                                             |
+| Prompt injection                   | Repository prose is evidence only; CLI correctness does not use an LLM; skills explicitly prohibit repository instructions from changing boundaries                                         |
+| Unexpected network access          | Ordinary scan is offline; OSV is explicit and transmits only npm ecosystem/name/version with bounded timeout and structured failure states                                                  |
+| Unauthorized mutation              | `scan`/`auth` cannot write; only explicit `fix` intent can enter root-bounded, hash-preconditioned, transactional, verified SAFE remediation                                                |
+| Stale or concurrent patch          | Whole-file and exact-range hashes, affected dirty-file refusal, final identity/hash check, stable finding identity, `STALE_FINDING`                                                         |
+| Partial or interrupted write       | Complete in-memory preparation, exclusive same-directory temporary, file flush, atomic replacement, per-file change journal                                                                 |
+| Destructive rollback               | Restore only Cydetix-written paths whose current hash is still the expected patched hash; never repository-wide Git reset/checkout/clean                                                    |
+| Malicious verifier/formatter       | No implicit execution; explicit JSON argument arrays, `shell: false`, fixed cwd, stripped environment, no stdin, time/output bounds                                                         |
+| Remediation false-success          | Only `APPLIED_VERIFIED` after parser/authorized checks, deterministic rescan, intended hashes, and invariant transition; rollback remains failure                                           |
+| Secret leakage in patch journal    | Exact secret-range replacements are redacted in unified diffs; portable reports omit source backups, command arguments/output, and absolute root                                            |
+| Encoding or line-ending corruption | Bounded byte-preserving replacement; original line endings, final newline, and mode preserved where supported                                                                               |
+| Misleading assurance               | Coverage and unavailable engines are mandatory; parser failures and unsupported scope are reported                                                                                          |
+| False authorization certainty      | Proofs are tri-state; only supported evidence chains can produce `PROVEN`/`VIOLATED`, and ambiguity returns `UNKNOWN`                                                                       |
+| Graph/path resource exhaustion     | Static import/call resolution only; authorization and authentication proof exploration are capped at 10,000 states/items                                                                    |
+| False authentication certainty     | Applicability is evaluated first; only supported adapter guarantees can prove a lifecycle, and ambiguity returns `UNKNOWN` without a finding                                                |
+| Supply-chain compromise            | Exact lockfile, no install scripts in CI, pinned Actions, minimal permissions, checksums and attestations in release workflow                                                               |
+| Advisory false-clean result        | Offline, checked-clean, checked-findings, unavailable, and unknown provider states are distinct                                                                                             |
+| Secret leakage through reports     | Raw values never enter normalized exposures; terminal, JSON, SARIF, history, and Agent Skills retain only redaction/fingerprints                                                            |
+| Workflow YAML abuse                | YAML is parsed as bounded untrusted data; workflows and repository scripts are never executed                                                                                               |
+| Container/runtime escape           | Immutable local image; no repository Dockerfile; network none; non-root/read-only; no sockets/devices/privilege; caps dropped; runtime limits                                               |
+| Silent sandbox degradation         | Explicit capability states; unavailable/misconfigured container execution never falls back locally and causes rollback                                                                      |
+| Environment or host-file exposure  | Sanitized allowlist and ephemeral repository copy; home, cloud credentials, SSH agent, and Docker socket are not mounted                                                                    |
+| Terminal/control injection         | Human-readable untrusted strings are escaped; JSON/SARIF use structural serialization                                                                                                       |
+| Benchmark gaming                   | Scanner/evaluator separation; labels load only after scanning and never enter rule execution                                                                                                |
+| External tool/provider failure     | Non-shell bounded probes, sanitized environment, output cap, timeout, validation, and explicit unavailable states                                                                           |
+| Release-package contamination      | npm path/content allowlist, size gate, clean install, developer-path scan, lifecycle ban, SBOM and artifact hashes                                                                          |
 
 ## Residual risks
 

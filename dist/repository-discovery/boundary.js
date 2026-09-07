@@ -11,6 +11,26 @@ export function isWithinRoot(root, candidate) {
     const relative = path.relative(normalizedRoot, normalizedCandidate);
     return relative === "" || (!relative.startsWith("..") && !path.isAbsolute(relative));
 }
+function traversesAboveRoot(relativePath, implementation) {
+    const normalized = implementation.normalize(relativePath);
+    return normalized === ".." || normalized.startsWith(`..${implementation.sep}`);
+}
+/**
+ * Repository-controlled paths remain untrusted if they use another supported platform's syntax.
+ * Classify them before applying host-native resolution so, for example, POSIX cannot reinterpret a
+ * Windows UNC path or backslash traversal as an ordinary filename.
+ */
+export function dangerousRepositoryPath(relativePath) {
+    if (relativePath.includes("\0"))
+        return "nul";
+    if (path.isAbsolute(relativePath) ||
+        path.posix.isAbsolute(relativePath) ||
+        path.win32.isAbsolute(relativePath))
+        return "absolute";
+    if (traversesAboveRoot(relativePath, path.posix) || traversesAboveRoot(relativePath, path.win32))
+        return "traversal";
+    return undefined;
+}
 export async function createBoundary(inputPath) {
     const requested = path.resolve(inputPath);
     const stat = await lstat(requested).catch((error) => {
@@ -24,9 +44,12 @@ export async function createBoundary(inputPath) {
     return { root: await realpath(requested) };
 }
 export function resolveInside(boundary, relativePath) {
-    if (relativePath.includes("\0") || path.isAbsolute(relativePath)) {
+    const dangerous = dangerousRepositoryPath(relativePath);
+    if (dangerous === "nul" || dangerous === "absolute") {
         throw new CydetixError("Refusing an absolute or NUL-containing repository path.", EXIT.scanFailure);
     }
+    if (dangerous === "traversal")
+        throw new CydetixError(`Path escapes repository root: ${relativePath}`, EXIT.scanFailure);
     const resolved = path.resolve(boundary.root, relativePath);
     if (!isWithinRoot(boundary.root, resolved)) {
         throw new CydetixError(`Path escapes repository root: ${relativePath}`, EXIT.scanFailure);

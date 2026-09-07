@@ -5,12 +5,12 @@ function configPath(context) {
     return path.join(context.projectRoot, ".cydetix", "mcp.json");
 }
 async function state(context) {
-    return inspectJsonServer(configPath(context), "mcpServers", pinnedMcpServer(context));
+    return inspectJsonServer(context.projectBoundary, configPath(context), "mcpServers", pinnedMcpServer(context));
 }
 async function change(context, remove, dryRun) {
     const before = await state(context);
     const config = configPath(context);
-    const changed = await updateJsonServer(config, "mcpServers", pinnedMcpServer(context), remove, dryRun);
+    const changed = await updateJsonServer(context.projectBoundary, config, "mcpServers", pinnedMcpServer(context), remove, dryRun);
     const after = dryRun ? (remove ? "not_configured" : "configured") : await state(context);
     return {
         id: "generic-mcp",

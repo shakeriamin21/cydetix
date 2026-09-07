@@ -12,15 +12,15 @@ function targets(context) {
 async function integrationState(context) {
     const target = targets(context);
     return combineIntegrationStates([
-        await inspectJsonServer(target.config, "servers", pinnedMcpServer(context, true)),
-        await inspectManagedFile(target.skillFile),
+        await inspectJsonServer(context.projectBoundary, target.config, "servers", pinnedMcpServer(context, true)),
+        await inspectManagedFile(context.projectBoundary, target.skillFile),
     ]);
 }
 async function change(context, remove, dryRun) {
     const before = await integrationState(context);
     const target = targets(context);
-    const changed = await installSkill(target.skill, false, remove, dryRun);
-    if (await updateJsonServer(target.config, "servers", pinnedMcpServer(context, true), remove, dryRun))
+    const changed = await installSkill(context.projectBoundary, target.skill, false, remove, dryRun);
+    if (await updateJsonServer(context.projectBoundary, target.config, "servers", pinnedMcpServer(context, true), remove, dryRun))
         changed.push(target.config);
     const after = dryRun
         ? remove

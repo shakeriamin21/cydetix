@@ -25,9 +25,9 @@ function paths(context: SetupContext): { config: string; skill: string; metadata
 async function integrationState(context: SetupContext) {
   const target = paths(context);
   return combineIntegrationStates([
-    await inspectCodexToml(target.config, pinnedMcpServer(context)),
-    await inspectManagedFile(path.join(target.skill, "SKILL.md")),
-    await inspectManagedFile(target.metadata),
+    await inspectCodexToml(context.homeBoundary, target.config, pinnedMcpServer(context)),
+    await inspectManagedFile(context.homeBoundary, path.join(target.skill, "SKILL.md")),
+    await inspectManagedFile(context.homeBoundary, target.metadata),
   ]);
 }
 
@@ -38,8 +38,16 @@ async function change(
 ): Promise<AdapterResult> {
   const before = await integrationState(context);
   const target = paths(context);
-  const changed = await installSkill(target.skill, true, remove, dryRun);
-  if (await updateCodexToml(target.config, pinnedMcpServer(context), remove, dryRun))
+  const changed = await installSkill(context.homeBoundary, target.skill, true, remove, dryRun);
+  if (
+    await updateCodexToml(
+      context.homeBoundary,
+      target.config,
+      pinnedMcpServer(context),
+      remove,
+      dryRun,
+    )
+  )
     changed.push(target.config);
   const after = dryRun
     ? remove

@@ -24,7 +24,7 @@ export interface SetupReport {
     readonly dryRun: boolean;
     readonly verified: boolean;
 }
-export declare function integrationContext(options?: SetupOptions): SetupContext;
+export declare function integrationContext(options?: SetupOptions): Promise<SetupContext>;
 export declare function parseAgentId(value: string): AgentId;
 export declare function runSetup(options?: SetupOptions): Promise<SetupReport>;
 export declare function runAutomaticIntegration(options?: SetupOptions): Promise<SetupReport>;

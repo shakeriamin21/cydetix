@@ -1,5 +1,4 @@
 import os from "node:os";
-import path from "node:path";
 import { createInterface } from "node:readline/promises";
 
 import { PRODUCT } from "../core/brand.js";
@@ -9,6 +8,7 @@ import { copilotAdapter } from "./copilot/index.js";
 import { cursorAdapter } from "./cursor/index.js";
 import { discoverAgents, needsConfiguration } from "./discovery/index.js";
 import { genericMcpAdapter } from "./generic-mcp/index.js";
+import { createTrustedIntegrationRoot } from "./common.js";
 import {
   readIntegrationState,
   writeIntegrationState,
@@ -58,12 +58,18 @@ export interface SetupReport {
   readonly verified: boolean;
 }
 
-export function integrationContext(options: SetupOptions = {}): SetupContext {
-  return {
-    projectRoot: path.resolve(options.projectRoot ?? process.cwd()),
-    homeDirectory: path.resolve(
+export async function integrationContext(options: SetupOptions = {}): Promise<SetupContext> {
+  const [projectBoundary, homeBoundary] = await Promise.all([
+    createTrustedIntegrationRoot(options.projectRoot ?? process.cwd()),
+    createTrustedIntegrationRoot(
       options.homeDirectory ?? process.env.CYDETIX_SETUP_HOME ?? os.homedir(),
     ),
+  ]);
+  return {
+    projectRoot: projectBoundary.root,
+    homeDirectory: homeBoundary.root,
+    projectBoundary,
+    homeBoundary,
     packageVersion: PRODUCT.version,
     platform: options.platform ?? process.platform,
     executablePath: options.executablePath ?? process.env.PATH ?? "",
@@ -139,7 +145,7 @@ async function persistState(
   detections: readonly AgentDetection[],
   status: LocalIntegrationStatus,
 ): Promise<void> {
-  await writeIntegrationState(context.projectRoot, {
+  await writeIntegrationState(context.projectBoundary, {
     schemaVersion: "1.0.0",
     status,
     packageVersion: context.packageVersion,
@@ -149,7 +155,7 @@ async function persistState(
 }
 
 export async function runSetup(options: SetupOptions = {}): Promise<SetupReport> {
-  const context = integrationContext(options);
+  const context = await integrationContext(options);
   const dryRun = options.dryRun === true;
   let detections = await discoverAgents(INTEGRATION_ADAPTERS, context);
   const selected = selectedAgents(options, detections);
@@ -249,7 +255,7 @@ export async function runSetup(options: SetupOptions = {}): Promise<SetupReport>
 }
 
 export async function runAutomaticIntegration(options: SetupOptions = {}): Promise<SetupReport> {
-  const context = integrationContext(options);
+  const context = await integrationContext(options);
   const detections = await discoverAgents(INTEGRATION_ADAPTERS, context);
   const candidates = detections.filter(
     (detection) => detection.id !== "generic-mcp" && needsConfiguration(detection),
@@ -263,7 +269,7 @@ export async function runAutomaticIntegration(options: SetupOptions = {}): Promi
       dryRun: false,
       verified: candidates.length === 0,
     };
-  const previous = await readIntegrationState(context.projectRoot);
+  const previous = await readIntegrationState(context.projectBoundary);
   if (previous?.status === "declined")
     return {
       detections,

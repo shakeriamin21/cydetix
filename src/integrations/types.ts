@@ -8,9 +8,18 @@ export type IntegrationState =
   | "unsupported_version"
   | "configuration_inaccessible";
 
+export interface TrustedIntegrationRoot {
+  /** Absolute path supplied by the trusted setup caller. */
+  readonly requestedRoot: string;
+  /** One-time canonical identity used for all integration filesystem access. */
+  readonly root: string;
+}
+
 export interface SetupContext {
   readonly projectRoot: string;
   readonly homeDirectory: string;
+  readonly projectBoundary: TrustedIntegrationRoot;
+  readonly homeBoundary: TrustedIntegrationRoot;
   readonly packageVersion: string;
   readonly platform: NodeJS.Platform;
   readonly executablePath: string;

@@ -1,5 +1,4 @@
 import os from "node:os";
-import path from "node:path";
 import { createInterface } from "node:readline/promises";
 import { PRODUCT } from "../core/brand.js";
 import { claudeAdapter } from "./claude/index.js";
@@ -8,6 +7,7 @@ import { copilotAdapter } from "./copilot/index.js";
 import { cursorAdapter } from "./cursor/index.js";
 import { discoverAgents, needsConfiguration } from "./discovery/index.js";
 import { genericMcpAdapter } from "./generic-mcp/index.js";
+import { createTrustedIntegrationRoot } from "./common.js";
 import { readIntegrationState, writeIntegrationState, } from "./state.js";
 import { windsurfAdapter } from "./windsurf/index.js";
 export const INTEGRATION_ADAPTERS = [
@@ -18,10 +18,16 @@ export const INTEGRATION_ADAPTERS = [
     windsurfAdapter,
     genericMcpAdapter,
 ];
-export function integrationContext(options = {}) {
+export async function integrationContext(options = {}) {
+    const [projectBoundary, homeBoundary] = await Promise.all([
+        createTrustedIntegrationRoot(options.projectRoot ?? process.cwd()),
+        createTrustedIntegrationRoot(options.homeDirectory ?? process.env.CYDETIX_SETUP_HOME ?? os.homedir()),
+    ]);
     return {
-        projectRoot: path.resolve(options.projectRoot ?? process.cwd()),
-        homeDirectory: path.resolve(options.homeDirectory ?? process.env.CYDETIX_SETUP_HOME ?? os.homedir()),
+        projectRoot: projectBoundary.root,
+        homeDirectory: homeBoundary.root,
+        projectBoundary,
+        homeBoundary,
         packageVersion: PRODUCT.version,
         platform: options.platform ?? process.platform,
         executablePath: options.executablePath ?? process.env.PATH ?? "",
@@ -90,7 +96,7 @@ function displayStatus(detection) {
     return detection.integration.replaceAll("_", " ");
 }
 async function persistState(context, detections, status) {
-    await writeIntegrationState(context.projectRoot, {
+    await writeIntegrationState(context.projectBoundary, {
         schemaVersion: "1.0.0",
         status,
         packageVersion: context.packageVersion,
@@ -99,7 +105,7 @@ async function persistState(context, detections, status) {
     });
 }
 export async function runSetup(options = {}) {
-    const context = integrationContext(options);
+    const context = await integrationContext(options);
     const dryRun = options.dryRun === true;
     let detections = await discoverAgents(INTEGRATION_ADAPTERS, context);
     const selected = selectedAgents(options, detections);
@@ -169,7 +175,7 @@ export async function runSetup(options = {}) {
     return { detections, selected, results, cancelled: false, dryRun, verified };
 }
 export async function runAutomaticIntegration(options = {}) {
-    const context = integrationContext(options);
+    const context = await integrationContext(options);
     const detections = await discoverAgents(INTEGRATION_ADAPTERS, context);
     const candidates = detections.filter((detection) => detection.id !== "generic-mcp" && needsConfiguration(detection));
     if (candidates.length === 0 || !interactive(options))
@@ -181,7 +187,7 @@ export async function runAutomaticIntegration(options = {}) {
             dryRun: false,
             verified: candidates.length === 0,
         };
-    const previous = await readIntegrationState(context.projectRoot);
+    const previous = await readIntegrationState(context.projectBoundary);
     if (previous?.status === "declined")
         return {
             detections,

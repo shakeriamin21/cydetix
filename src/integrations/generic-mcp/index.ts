@@ -9,7 +9,12 @@ function configPath(context: SetupContext): string {
 }
 
 async function state(context: SetupContext) {
-  return inspectJsonServer(configPath(context), "mcpServers", pinnedMcpServer(context));
+  return inspectJsonServer(
+    context.projectBoundary,
+    configPath(context),
+    "mcpServers",
+    pinnedMcpServer(context),
+  );
 }
 
 async function change(
@@ -20,6 +25,7 @@ async function change(
   const before = await state(context);
   const config = configPath(context);
   const changed = await updateJsonServer(
+    context.projectBoundary,
     config,
     "mcpServers",
     pinnedMcpServer(context),

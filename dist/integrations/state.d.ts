@@ -1,4 +1,4 @@
-import type { AgentId, IntegrationState } from "./types.js";
+import type { AgentId, IntegrationState, TrustedIntegrationRoot } from "./types.js";
 export type LocalIntegrationStatus = "configured" | "declined" | "partial";
 export interface LocalIntegrationState {
     readonly schemaVersion: "1.0.0";
@@ -8,6 +8,6 @@ export interface LocalIntegrationState {
     readonly hosts: Partial<Record<AgentId, IntegrationState>>;
 }
 export declare function integrationStatePath(projectRoot: string): string;
-export declare function readIntegrationState(projectRoot: string): Promise<LocalIntegrationState | undefined>;
-export declare function writeIntegrationState(projectRoot: string, state: LocalIntegrationState): Promise<void>;
+export declare function readIntegrationState(projectBoundary: TrustedIntegrationRoot): Promise<LocalIntegrationState | undefined>;
+export declare function writeIntegrationState(projectBoundary: TrustedIntegrationRoot, state: LocalIntegrationState): Promise<void>;
 //# sourceMappingURL=state.d.ts.map

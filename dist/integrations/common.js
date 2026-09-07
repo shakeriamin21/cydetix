@@ -1,7 +1,8 @@
 import { accessSync, constants, existsSync } from "node:fs";
-import { lstat, mkdir, readFile, rename, rm, writeFile } from "node:fs/promises";
+import { lstat, mkdir, readFile, realpath, rename, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { dangerousRepositoryPath, isWithinRoot } from "../repository-discovery/boundary.js";
 export const MANAGED_MARKER = "Managed by cydetix setup";
 const MAX_CONFIG_BYTES = 1_048_576;
 function errorCode(error) {
@@ -9,20 +10,75 @@ function errorCode(error) {
         return undefined;
     return typeof error.code === "string" ? error.code : undefined;
 }
-async function assertNoSymlinkAncestors(filePath) {
-    let current = path.resolve(path.dirname(filePath));
-    for (;;) {
+export async function createTrustedIntegrationRoot(inputRoot) {
+    const requestedRoot = path.resolve(inputRoot);
+    const root = await realpath(requestedRoot);
+    const metadata = await lstat(root);
+    if (!metadata.isDirectory() || metadata.isSymbolicLink())
+        throw new Error(`Refusing unsafe integration root: ${inputRoot}`);
+    return { requestedRoot, root };
+}
+function samePath(left, right) {
+    return isWithinRoot(left, right) && isWithinRoot(right, left);
+}
+export function resolveTrustedIntegrationPath(boundary, filePath) {
+    if (filePath.includes("\0") || !path.isAbsolute(filePath))
+        throw new Error(`Refusing integration path outside its trusted root: ${filePath}`);
+    const requestedTarget = path.resolve(filePath);
+    const relative = isWithinRoot(boundary.root, requestedTarget)
+        ? path.relative(boundary.root, requestedTarget)
+        : isWithinRoot(boundary.requestedRoot, requestedTarget)
+            ? path.relative(boundary.requestedRoot, requestedTarget)
+            : undefined;
+    if (relative === undefined || dangerousRepositoryPath(relative) !== undefined)
+        throw new Error(`Refusing integration path outside its trusted root: ${filePath}`);
+    const canonicalTarget = path.resolve(boundary.root, relative);
+    if (!isWithinRoot(boundary.root, canonicalTarget))
+        throw new Error(`Refusing integration path outside its trusted root: ${filePath}`);
+    return canonicalTarget;
+}
+async function assertNoSymlinkAncestors(boundary, filePath) {
+    const target = resolveTrustedIntegrationPath(boundary, filePath);
+    const directory = path.dirname(target);
+    const relativeDirectory = path.relative(boundary.root, directory);
+    const components = relativeDirectory === "" ? [] : relativeDirectory.split(path.sep);
+    let current = boundary.root;
+    for (const component of ["", ...components]) {
+        if (component !== "")
+            current = path.join(current, component);
         const metadata = await lstat(current).catch((error) => {
             if (errorCode(error) === "ENOENT")
                 return undefined;
             throw error;
         });
-        if (metadata !== undefined && (metadata.isSymbolicLink() || !metadata.isDirectory()))
+        if (metadata === undefined)
+            break;
+        if (metadata.isSymbolicLink() || !metadata.isDirectory())
             throw new Error(`Refusing integration path with an unsafe parent: ${filePath}`);
-        const parent = path.dirname(current);
-        if (parent === current)
-            return;
-        current = parent;
+        const canonical = await realpath(current);
+        if (!isWithinRoot(boundary.root, canonical) ||
+            (samePath(current, boundary.root) && !samePath(canonical, boundary.root)))
+            throw new Error(`Refusing integration path with an unsafe parent: ${filePath}`);
+    }
+    return target;
+}
+async function createSafeParentDirectories(boundary, filePath) {
+    const target = resolveTrustedIntegrationPath(boundary, filePath);
+    const relativeDirectory = path.relative(boundary.root, path.dirname(target));
+    const components = relativeDirectory === "" ? [] : relativeDirectory.split(path.sep);
+    let current = boundary.root;
+    for (const component of components) {
+        current = path.join(current, component);
+        await mkdir(current, { mode: 0o700 }).catch((error) => {
+            if (errorCode(error) !== "EEXIST")
+                throw error;
+        });
+        const metadata = await lstat(current);
+        if (metadata.isSymbolicLink() || !metadata.isDirectory())
+            throw new Error(`Refusing integration path with an unsafe parent: ${filePath}`);
+        const canonical = await realpath(current);
+        if (!isWithinRoot(boundary.root, canonical))
+            throw new Error(`Refusing integration path with an unsafe parent: ${filePath}`);
     }
 }
 export function commandAvailable(command, platform = process.platform, executablePath = process.env.PATH ?? "") {
@@ -60,9 +116,9 @@ export function pinnedMcpServer(context, includeType = false) {
         args: ["--yes", packageSpec, "mcp"],
     };
 }
-export async function readRegularFile(filePath) {
-    await assertNoSymlinkAncestors(filePath);
-    const metadata = await lstat(filePath).catch((error) => {
+export async function readRegularFile(boundary, filePath) {
+    const target = await assertNoSymlinkAncestors(boundary, filePath);
+    const metadata = await lstat(target).catch((error) => {
         if (errorCode(error) === "ENOENT")
             return undefined;
         throw error;
@@ -71,41 +127,68 @@ export async function readRegularFile(filePath) {
         return undefined;
     if (!metadata.isFile() || metadata.isSymbolicLink() || metadata.size > MAX_CONFIG_BYTES)
         throw new Error(`Refusing to modify unsafe integration file: ${filePath}`);
-    return readFile(filePath, "utf8");
+    const canonical = await realpath(target);
+    if (!isWithinRoot(boundary.root, canonical))
+        throw new Error(`Refusing to modify unsafe integration file: ${filePath}`);
+    return readFile(canonical, "utf8");
 }
-async function replaceFile(filePath, content, suffix) {
-    await assertNoSymlinkAncestors(filePath);
-    await mkdir(path.dirname(filePath), { recursive: true });
-    const temporary = `${filePath}.cydetix-${process.pid}-${suffix}.tmp`;
+async function replaceFile(boundary, filePath, content, suffix) {
+    const target = await assertNoSymlinkAncestors(boundary, filePath);
+    await createSafeParentDirectories(boundary, target);
+    await assertNoSymlinkAncestors(boundary, target);
+    const temporary = `${target}.cydetix-${process.pid}-${suffix}.tmp`;
+    resolveTrustedIntegrationPath(boundary, temporary);
     await writeFile(temporary, content, { encoding: "utf8", flag: "wx", mode: 0o600 });
-    await rename(temporary, filePath).catch(async (error) => {
+    await assertNoSymlinkAncestors(boundary, target);
+    const targetMetadata = await lstat(target).catch((error) => {
+        if (errorCode(error) === "ENOENT")
+            return undefined;
+        throw error;
+    });
+    if (targetMetadata !== undefined &&
+        (!targetMetadata.isFile() || targetMetadata.isSymbolicLink())) {
+        await rm(temporary, { force: true });
+        throw new Error(`Refusing to modify unsafe integration file: ${filePath}`);
+    }
+    const temporaryMetadata = await lstat(temporary);
+    const temporaryCanonical = await realpath(temporary);
+    if (!temporaryMetadata.isFile() ||
+        temporaryMetadata.isSymbolicLink() ||
+        !isWithinRoot(boundary.root, temporaryCanonical)) {
+        await rm(temporary, { force: true });
+        throw new Error(`Refusing unsafe integration temporary file: ${temporary}`);
+    }
+    await rename(temporary, target).catch(async (error) => {
         await rm(temporary, { force: true });
         throw error;
     });
 }
-export async function atomicValidatedWrite(filePath, content, validate) {
-    const previous = await readRegularFile(filePath);
+export async function atomicValidatedWrite(boundary, filePath, content, validate) {
+    const target = resolveTrustedIntegrationPath(boundary, filePath);
+    const previous = await readRegularFile(boundary, target);
     const backup = previous === undefined
         ? undefined
-        : `${filePath}.cydetix-${process.pid}-${Date.now().toString(36)}.bak`;
-    if (backup !== undefined && previous !== undefined)
+        : `${target}.cydetix-${process.pid}-${Date.now().toString(36)}.bak`;
+    if (backup !== undefined && previous !== undefined) {
+        await assertNoSymlinkAncestors(boundary, backup);
         await writeFile(backup, previous, { encoding: "utf8", flag: "wx", mode: 0o600 });
+    }
     try {
-        await replaceFile(filePath, content, "next");
-        await validate(filePath, backup);
+        await replaceFile(boundary, target, content, "next");
+        await validate(target, backup);
     }
     catch (error) {
         try {
             if (previous === undefined)
-                await rm(filePath, { force: true });
+                await rm(target, { force: true });
             else
-                await replaceFile(filePath, previous, "rollback");
-            const restored = await readRegularFile(filePath);
+                await replaceFile(boundary, target, previous, "rollback");
+            const restored = await readRegularFile(boundary, target);
             if (restored !== previous)
                 throw new Error("Rollback could not be proven.", { cause: error });
         }
         catch (rollbackError) {
-            throw new Error(`Integration update failed and rollback could not be proven for ${filePath}.`, {
+            throw new Error(`Integration update failed and rollback could not be proven for ${target}.`, {
                 cause: rollbackError,
             });
         }
@@ -116,25 +199,27 @@ export async function atomicValidatedWrite(filePath, content, validate) {
             await rm(backup, { force: true });
     }
 }
-async function removeValidatedFile(filePath) {
-    const previous = await readRegularFile(filePath);
+async function removeValidatedFile(boundary, filePath) {
+    const target = resolveTrustedIntegrationPath(boundary, filePath);
+    const previous = await readRegularFile(boundary, target);
     if (previous === undefined)
         return;
-    const backup = `${filePath}.cydetix-${process.pid}-${Date.now().toString(36)}.bak`;
+    const backup = `${target}.cydetix-${process.pid}-${Date.now().toString(36)}.bak`;
+    await assertNoSymlinkAncestors(boundary, backup);
     await writeFile(backup, previous, { encoding: "utf8", flag: "wx", mode: 0o600 });
     try {
-        await rm(filePath, { force: true });
-        if ((await readRegularFile(filePath)) !== undefined)
-            throw new Error(`Removal could not be verified: ${filePath}`);
+        await rm(target, { force: true });
+        if ((await readRegularFile(boundary, target)) !== undefined)
+            throw new Error(`Removal could not be verified: ${target}`);
     }
     catch (error) {
         try {
-            await replaceFile(filePath, previous, "rollback");
-            if ((await readRegularFile(filePath)) !== previous)
+            await replaceFile(boundary, target, previous, "rollback");
+            if ((await readRegularFile(boundary, target)) !== previous)
                 throw new Error("Rollback could not be proven.", { cause: error });
         }
         catch (rollbackError) {
-            throw new Error(`Integration removal failed and rollback could not be proven for ${filePath}.`, {
+            throw new Error(`Integration removal failed and rollback could not be proven for ${target}.`, {
                 cause: rollbackError,
             });
         }
@@ -166,9 +251,9 @@ function sameServer(value, expected) {
         return false;
     return expected.type === undefined || entry.type === expected.type;
 }
-export async function inspectJsonServer(filePath, rootKey, expected) {
+export async function inspectJsonServer(boundary, filePath, rootKey, expected) {
     try {
-        const existing = await readRegularFile(filePath);
+        const existing = await readRegularFile(boundary, filePath);
         if (existing === undefined)
             return "not_configured";
         const root = parseJsonObject(existing, filePath);
@@ -188,8 +273,8 @@ export async function inspectJsonServer(filePath, rootKey, expected) {
         return "configuration_inaccessible";
     }
 }
-export async function updateJsonServer(filePath, rootKey, server, remove, dryRun) {
-    const existing = await readRegularFile(filePath);
+export async function updateJsonServer(boundary, filePath, rootKey, server, remove, dryRun) {
+    const existing = await readRegularFile(boundary, filePath);
     const root = existing === undefined ? {} : parseJsonObject(existing, filePath);
     const servers = root[rootKey] === undefined ? {} : { ...objectRecord(root[rootKey]) };
     const before = JSON.stringify(root);
@@ -202,8 +287,8 @@ export async function updateJsonServer(filePath, rootKey, server, remove, dryRun
         return false;
     if (!dryRun) {
         const next = `${JSON.stringify(root, null, 2)}\n`;
-        await atomicValidatedWrite(filePath, next, async (writtenPath) => {
-            const written = parseJsonObject((await readRegularFile(writtenPath)) ?? "", writtenPath);
+        await atomicValidatedWrite(boundary, filePath, next, async (writtenPath) => {
+            const written = parseJsonObject((await readRegularFile(boundary, writtenPath)) ?? "", writtenPath);
             const managed = objectRecord(written[rootKey]);
             if (remove ? managed.cydetix !== undefined : !sameServer(managed.cydetix, server))
                 throw new Error(`Cydetix integration validation failed: ${writtenPath}`);
@@ -220,9 +305,9 @@ function codexManagedPattern() {
         pattern: new RegExp(`${start.replaceAll(/[.*+?^${}()|[\]\\]/g, "\\$&")}[\\s\\S]*?${end.replaceAll(/[.*+?^${}()|[\]\\]/g, "\\$&")}\\r?\\n?`, "u"),
     };
 }
-export async function inspectCodexToml(filePath, server) {
+export async function inspectCodexToml(boundary, filePath, server) {
     try {
-        const existing = await readRegularFile(filePath);
+        const existing = await readRegularFile(boundary, filePath);
         if (existing === undefined)
             return "not_configured";
         const { pattern } = codexManagedPattern();
@@ -241,9 +326,9 @@ export async function inspectCodexToml(filePath, server) {
         return "configuration_inaccessible";
     }
 }
-export async function updateCodexToml(filePath, server, remove, dryRun) {
+export async function updateCodexToml(boundary, filePath, server, remove, dryRun) {
     const { start, end, pattern } = codexManagedPattern();
-    const existing = (await readRegularFile(filePath)) ?? "";
+    const existing = (await readRegularFile(boundary, filePath)) ?? "";
     const withoutManaged = existing.replace(pattern, "").trimEnd();
     if (!pattern.test(existing) && /^\s*\[mcp_servers\.cydetix\]\s*$/mu.test(existing))
         throw new Error(`A non-managed Cydetix MCP entry already exists in ${filePath}.`);
@@ -263,16 +348,16 @@ export async function updateCodexToml(filePath, server, remove, dryRun) {
     if (next === existing)
         return false;
     if (!dryRun)
-        await atomicValidatedWrite(filePath, next, async (writtenPath) => {
-            const state = await inspectCodexToml(writtenPath, server);
+        await atomicValidatedWrite(boundary, filePath, next, async (writtenPath) => {
+            const state = await inspectCodexToml(boundary, writtenPath, server);
             if (remove ? state !== "not_configured" : state !== "configured")
                 throw new Error(`Cydetix Codex integration validation failed: ${writtenPath}`);
         });
     return true;
 }
-export async function inspectManagedFile(filePath) {
+export async function inspectManagedFile(boundary, filePath) {
     try {
-        const existing = await readRegularFile(filePath);
+        const existing = await readRegularFile(boundary, filePath);
         if (existing === undefined)
             return "not_configured";
         return existing.includes(MANAGED_MARKER) ? "configured" : "partially_configured";
@@ -281,13 +366,13 @@ export async function inspectManagedFile(filePath) {
         return "configuration_inaccessible";
     }
 }
-export async function writeManagedFile(filePath, content, remove, dryRun) {
-    const existing = await readRegularFile(filePath);
+export async function writeManagedFile(boundary, filePath, content, remove, dryRun) {
+    const existing = await readRegularFile(boundary, filePath);
     if (remove) {
         if (existing === undefined || !existing.includes(MANAGED_MARKER))
             return false;
         if (!dryRun)
-            await removeValidatedFile(filePath);
+            await removeValidatedFile(boundary, filePath);
         return true;
     }
     if (existing !== undefined && !existing.includes(MANAGED_MARKER))
@@ -295,8 +380,8 @@ export async function writeManagedFile(filePath, content, remove, dryRun) {
     if (existing === content)
         return false;
     if (!dryRun)
-        await atomicValidatedWrite(filePath, content, async (writtenPath) => {
-            if ((await inspectManagedFile(writtenPath)) !== "configured")
+        await atomicValidatedWrite(boundary, filePath, content, async (writtenPath) => {
+            if ((await inspectManagedFile(boundary, writtenPath)) !== "configured")
                 throw new Error(`Cydetix managed-file validation failed: ${writtenPath}`);
         });
     return true;
@@ -305,7 +390,7 @@ function skillSource(relative) {
     const here = path.dirname(fileURLToPath(import.meta.url));
     return path.resolve(here, "..", "..", "agent-skills", "cydetix", relative);
 }
-export async function installSkill(destination, includeOpenAiMetadata, remove, dryRun) {
+export async function installSkill(boundary, destination, includeOpenAiMetadata, remove, dryRun) {
     const targets = [
         { source: skillSource("SKILL.md"), destination: path.join(destination, "SKILL.md") },
     ];
@@ -317,7 +402,7 @@ export async function installSkill(destination, includeOpenAiMetadata, remove, d
     const changed = [];
     for (const target of targets) {
         const content = remove ? "" : await readFile(target.source, "utf8");
-        if (await writeManagedFile(target.destination, content, remove, dryRun))
+        if (await writeManagedFile(boundary, target.destination, content, remove, dryRun))
             changed.push(target.destination);
     }
     return changed;

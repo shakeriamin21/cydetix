@@ -18,17 +18,17 @@ ${agentInstructions(version)}`;
 async function integrationState(context) {
     const target = targets(context);
     return combineIntegrationStates([
-        await inspectJsonServer(target.config, "mcpServers", pinnedMcpServer(context)),
-        await inspectManagedFile(target.rule),
+        await inspectJsonServer(context.projectBoundary, target.config, "mcpServers", pinnedMcpServer(context)),
+        await inspectManagedFile(context.projectBoundary, target.rule),
     ]);
 }
 async function change(context, remove, dryRun) {
     const before = await integrationState(context);
     const target = targets(context);
     const changed = [];
-    if (await updateJsonServer(target.config, "mcpServers", pinnedMcpServer(context), remove, dryRun))
+    if (await updateJsonServer(context.projectBoundary, target.config, "mcpServers", pinnedMcpServer(context), remove, dryRun))
         changed.push(target.config);
-    if (await writeManagedFile(target.rule, rule(context.packageVersion), remove, dryRun))
+    if (await writeManagedFile(context.projectBoundary, target.rule, rule(context.packageVersion), remove, dryRun))
         changed.push(target.rule);
     const after = dryRun
         ? remove

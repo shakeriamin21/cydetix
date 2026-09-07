@@ -1,8 +1,14 @@
-﻿import { access, mkdir, readFile, writeFile } from "node:fs/promises";
+﻿import { access, mkdir, readFile, realpath, symlink, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
 
-import { atomicValidatedWrite, pinnedMcpServer } from "../../src/integrations/common.js";
+import {
+  atomicValidatedWrite,
+  createTrustedIntegrationRoot,
+  pinnedMcpServer,
+  readRegularFile,
+  resolveTrustedIntegrationPath,
+} from "../../src/integrations/common.js";
 import {
   integrationContext,
   INTEGRATION_ADAPTERS,
@@ -37,13 +43,23 @@ async function detection(id: AgentId, project: string, home: string) {
   const adapter = INTEGRATION_ADAPTERS.find((candidate) => candidate.id === id);
   if (adapter === undefined) throw new Error(`Missing adapter: ${id}`);
   return adapter.detect(
-    integrationContext({
+    await integrationContext({
       projectRoot: project,
       homeDirectory: home,
       executablePath: "",
       platform: process.platform,
     }),
   );
+}
+
+async function directorySymlink(target: string, link: string): Promise<boolean> {
+  try {
+    await symlink(target, link, process.platform === "win32" ? "junction" : "dir");
+    return true;
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "EPERM") return false;
+    throw error;
+  }
 }
 
 describe("universal agent setup", () => {
@@ -175,10 +191,11 @@ describe("universal agent setup", () => {
 
   it("creates a transient backup during an atomic update", async () => {
     const { project } = await environment();
+    const boundary = await createTrustedIntegrationRoot(project);
     const config = path.join(project, "config.json");
     await writeFile(config, "before\n");
     let observed = false;
-    await atomicValidatedWrite(config, "after\n", async (_written, backup) => {
+    await atomicValidatedWrite(boundary, config, "after\n", async (_written, backup) => {
       if (backup !== undefined) {
         observed = (await readFile(backup, "utf8")) === "before\n";
       }
@@ -213,14 +230,91 @@ describe("universal agent setup", () => {
 
   it("rolls back and proves restoration when validation fails", async () => {
     const { project } = await environment();
+    const boundary = await createTrustedIntegrationRoot(project);
     const config = path.join(project, "rollback.json");
     await writeFile(config, "original\n");
     await expect(
-      atomicValidatedWrite(config, "invalid\n", () => {
+      atomicValidatedWrite(boundary, config, "invalid\n", () => {
         throw new Error("validation failed");
       }),
     ).rejects.toThrow("validation failed");
     expect(await readFile(config, "utf8")).toBe("original\n");
+  });
+
+  it("accepts a canonical system alias above the trusted integration root", async () => {
+    const { root } = await environment("cydetix-macos-alias-");
+    const canonicalParent = path.join(root, "private", "var");
+    const alias = path.join(root, "var");
+    const canonicalProject = path.join(canonicalParent, "folders", "project");
+    await mkdir(canonicalProject, { recursive: true });
+    if (!(await directorySymlink(canonicalParent, alias))) return;
+
+    const requestedProject = path.join(alias, "folders", "project");
+    const boundary = await createTrustedIntegrationRoot(requestedProject);
+    const requestedTarget = path.join(requestedProject, ".cydetix", "mcp.json");
+    const report = await runSetup({
+      projectRoot: requestedProject,
+      homeDirectory: path.join(root, "home"),
+      executablePath: "",
+      agents: ["generic-mcp"],
+      yes: true,
+      quiet: true,
+    });
+
+    expect(report.verified).toBe(true);
+    expect(boundary.root).toBe(await realpath(requestedProject));
+    expect(resolveTrustedIntegrationPath(boundary, requestedTarget)).toBe(
+      path.join(boundary.root, ".cydetix", "mcp.json"),
+    );
+    expect(await readFile(path.join(canonicalProject, ".cydetix", "mcp.json"), "utf8")).toContain(
+      "cydetix@0.6.0-alpha.3",
+    );
+  });
+
+  it("rejects targets outside their explicit integration boundary", async () => {
+    const { project, root } = await environment();
+    const boundary = await createTrustedIntegrationRoot(project);
+    const outside = path.join(root, "outside.json");
+    expect(() => resolveTrustedIntegrationPath(boundary, outside)).toThrow(/trusted root/);
+    await expect(
+      atomicValidatedWrite(boundary, outside, "escape\n", () => undefined),
+    ).rejects.toThrow(/trusted root/);
+    await expect(access(outside)).rejects.toThrow();
+  });
+
+  it("rejects an attacker-created symlink ancestor below the trusted root", async () => {
+    const { project, root } = await environment();
+    const outside = path.join(root, "outside");
+    const linkedParent = path.join(project, "linked-parent");
+    await mkdir(outside);
+    if (!(await directorySymlink(outside, linkedParent))) return;
+    const boundary = await createTrustedIntegrationRoot(project);
+
+    await expect(
+      atomicValidatedWrite(
+        boundary,
+        path.join(linkedParent, "config.json"),
+        "escape\n",
+        () => undefined,
+      ),
+    ).rejects.toThrow(/unsafe parent/);
+    await expect(access(path.join(outside, "config.json"))).rejects.toThrow();
+  });
+
+  it("rejects an existing target symlink", async () => {
+    const { project, root } = await environment();
+    const outside = path.join(root, "outside-target");
+    const linkedTarget = path.join(project, "config.json");
+    await mkdir(outside);
+    if (!(await directorySymlink(outside, linkedTarget))) return;
+    const boundary = await createTrustedIntegrationRoot(project);
+
+    await expect(readRegularFile(boundary, linkedTarget)).rejects.toThrow(
+      /unsafe integration file/,
+    );
+    await expect(
+      atomicValidatedWrite(boundary, linkedTarget, "replacement\n", () => undefined),
+    ).rejects.toThrow(/unsafe integration file/);
   });
 
   it("prevents duplicate registration", async () => {
@@ -255,7 +349,9 @@ describe("universal agent setup", () => {
       confirm: () => false,
     });
     expect(report.cancelled).toBe(true);
-    expect((await readIntegrationState(project))?.status).toBe("declined");
+    expect((await readIntegrationState(await createTrustedIntegrationRoot(project)))?.status).toBe(
+      "declined",
+    );
     expect((await detection("cursor", project, home)).integration).toBe("not_configured");
   });
 

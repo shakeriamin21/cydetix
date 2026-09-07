@@ -18,6 +18,14 @@ checks. It uses a sibling temporary file, atomic replacement, postcondition resc
 rollback. Reports and release evidence are written only where the operator explicitly redirects them
 or where project development scripts use the ignored `.cydetix/` workspace.
 
+Integration setup gives every read and mutation an explicit project or home trust boundary. The
+boundary root is canonicalized once, targets must remain both lexically and canonically contained,
+and directory ancestors are checked only from that root downward. This permits canonical operating
+system aliases above the boundary (for example macOS `/var` to `/private/var`) without permitting a
+repository- or user-created symlink below it. Missing directories are created one component at a
+time and revalidated; existing targets, temporary siblings, and rollback backups remain bounded,
+regular-file-only, exclusive, and atomically replaced.
+
 ## When code executes
 
 Repository content never authorizes execution. No ordinary scan runs application code, package

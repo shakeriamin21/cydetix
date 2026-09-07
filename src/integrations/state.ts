@@ -1,7 +1,7 @@
 import path from "node:path";
 
 import { atomicValidatedWrite, readRegularFile } from "./common.js";
-import type { AgentId, IntegrationState } from "./types.js";
+import type { AgentId, IntegrationState, TrustedIntegrationRoot } from "./types.js";
 
 export type LocalIntegrationStatus = "configured" | "declined" | "partial";
 
@@ -34,10 +34,13 @@ function parseState(value: unknown): LocalIntegrationState | undefined {
 }
 
 export async function readIntegrationState(
-  projectRoot: string,
+  projectBoundary: TrustedIntegrationRoot,
 ): Promise<LocalIntegrationState | undefined> {
   try {
-    const content = await readRegularFile(integrationStatePath(projectRoot));
+    const content = await readRegularFile(
+      projectBoundary,
+      integrationStatePath(projectBoundary.root),
+    );
     if (content === undefined) return undefined;
     return parseState(JSON.parse(content) as unknown);
   } catch {
@@ -46,13 +49,13 @@ export async function readIntegrationState(
 }
 
 export async function writeIntegrationState(
-  projectRoot: string,
+  projectBoundary: TrustedIntegrationRoot,
   state: LocalIntegrationState,
 ): Promise<void> {
-  const target = integrationStatePath(projectRoot);
+  const target = integrationStatePath(projectBoundary.root);
   const content = `${JSON.stringify(state, null, 2)}\n`;
-  await atomicValidatedWrite(target, content, async (writtenPath) => {
-    const written = await readRegularFile(writtenPath);
+  await atomicValidatedWrite(projectBoundary, target, content, async (writtenPath) => {
+    const written = await readRegularFile(projectBoundary, writtenPath);
     if (written === undefined || parseState(JSON.parse(written) as unknown) === undefined)
       throw new Error("Cydetix integration state validation failed.");
   });

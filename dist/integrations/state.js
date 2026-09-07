@@ -17,9 +17,9 @@ function parseState(value) {
         return undefined;
     return candidate;
 }
-export async function readIntegrationState(projectRoot) {
+export async function readIntegrationState(projectBoundary) {
     try {
-        const content = await readRegularFile(integrationStatePath(projectRoot));
+        const content = await readRegularFile(projectBoundary, integrationStatePath(projectBoundary.root));
         if (content === undefined)
             return undefined;
         return parseState(JSON.parse(content));
@@ -28,11 +28,11 @@ export async function readIntegrationState(projectRoot) {
         return undefined;
     }
 }
-export async function writeIntegrationState(projectRoot, state) {
-    const target = integrationStatePath(projectRoot);
+export async function writeIntegrationState(projectBoundary, state) {
+    const target = integrationStatePath(projectBoundary.root);
     const content = `${JSON.stringify(state, null, 2)}\n`;
-    await atomicValidatedWrite(target, content, async (writtenPath) => {
-        const written = await readRegularFile(writtenPath);
+    await atomicValidatedWrite(projectBoundary, target, content, async (writtenPath) => {
+        const written = await readRegularFile(projectBoundary, writtenPath);
         if (written === undefined || parseState(JSON.parse(written)) === undefined)
             throw new Error("Cydetix integration state validation failed.");
     });

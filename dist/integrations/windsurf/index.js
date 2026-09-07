@@ -15,21 +15,21 @@ function targets(context) {
 async function integrationState(context) {
     const target = targets(context);
     const states = [
-        await inspectJsonServer(target.currentConfig, "mcpServers", pinnedMcpServer(context)),
-        await inspectManagedFile(target.skillFile),
+        await inspectJsonServer(context.projectBoundary, target.currentConfig, "mcpServers", pinnedMcpServer(context)),
+        await inspectManagedFile(context.projectBoundary, target.skillFile),
     ];
     if (target.legacyPresent)
-        states.push(await inspectJsonServer(target.legacyConfig, "mcpServers", pinnedMcpServer(context)));
+        states.push(await inspectJsonServer(context.homeBoundary, target.legacyConfig, "mcpServers", pinnedMcpServer(context)));
     return combineIntegrationStates(states);
 }
 async function change(context, remove, dryRun) {
     const before = await integrationState(context);
     const target = targets(context);
-    const changed = await installSkill(target.skill, false, remove, dryRun);
-    if (await updateJsonServer(target.currentConfig, "mcpServers", pinnedMcpServer(context), remove, dryRun))
+    const changed = await installSkill(context.projectBoundary, target.skill, false, remove, dryRun);
+    if (await updateJsonServer(context.projectBoundary, target.currentConfig, "mcpServers", pinnedMcpServer(context), remove, dryRun))
         changed.push(target.currentConfig);
     if (target.legacyPresent &&
-        (await updateJsonServer(target.legacyConfig, "mcpServers", pinnedMcpServer(context), remove, dryRun)))
+        (await updateJsonServer(context.homeBoundary, target.legacyConfig, "mcpServers", pinnedMcpServer(context), remove, dryRun)))
         changed.push(target.legacyConfig);
     const after = dryRun
         ? remove

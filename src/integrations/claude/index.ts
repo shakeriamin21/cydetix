@@ -25,8 +25,13 @@ function targets(context: SetupContext) {
 async function integrationState(context: SetupContext) {
   const target = targets(context);
   return combineIntegrationStates([
-    await inspectJsonServer(target.config, "mcpServers", pinnedMcpServer(context)),
-    await inspectManagedFile(target.skillFile),
+    await inspectJsonServer(
+      context.projectBoundary,
+      target.config,
+      "mcpServers",
+      pinnedMcpServer(context),
+    ),
+    await inspectManagedFile(context.projectBoundary, target.skillFile),
   ]);
 }
 
@@ -37,8 +42,17 @@ async function change(
 ): Promise<AdapterResult> {
   const before = await integrationState(context);
   const target = targets(context);
-  const changed = await installSkill(target.skill, false, remove, dryRun);
-  if (await updateJsonServer(target.config, "mcpServers", pinnedMcpServer(context), remove, dryRun))
+  const changed = await installSkill(context.projectBoundary, target.skill, false, remove, dryRun);
+  if (
+    await updateJsonServer(
+      context.projectBoundary,
+      target.config,
+      "mcpServers",
+      pinnedMcpServer(context),
+      remove,
+      dryRun,
+    )
+  )
     changed.push(target.config);
   const after = dryRun
     ? remove
