@@ -3,7 +3,7 @@
   "generatedAt": "2026-09-06T17:34:53.245Z",
   "product": {
     "name": "cydetix",
-    "version": "0.6.0-alpha.4",
+    "version": "0.6.0-alpha.5",
     "evidenceOrigin": "PUBLIC_GIT_COMMIT",
     "publicSourceCommit": "90d7e1935e4c2f2bfb167be7d9208f6411066cd9"
   },
@@ -602,7 +602,7 @@
     "sizeGateBytes": 400000,
     "hashes": [
       {
-        "artifact": "cydetix-0.6.0-alpha.4.tgz",
+        "artifact": "cydetix-0.6.0-alpha.5.tgz",
         "sha256": "941e3975fbf81676376649897e38aa2a7e2b64ed860b7ce6452af63f2c6238a2",
         "bytes": 297437
       },
@@ -612,12 +612,12 @@
         "bytes": 151992
       },
       {
-        "artifact": "cydetix-codex-plugin-0.6.0-alpha.4.tar.gz",
+        "artifact": "cydetix-codex-plugin-0.6.0-alpha.5.tar.gz",
         "sha256": "864e5d91190b6e9367835612e5feb586ea21d92a7304cd8e536e87c9bd3d9a27",
         "bytes": 6467
       },
       {
-        "artifact": "cydetix-release-validation-0.6.0-alpha.4.json",
+        "artifact": "cydetix-release-validation-0.6.0-alpha.5.json",
         "sha256": "6ff43eb730bc64689b73b8d0b1821430fc0e27e2f433411e04f3ba99491df05c",
         "bytes": 2106
       }

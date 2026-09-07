@@ -5,6 +5,26 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+## [0.6.0-alpha.5] - 2026-09-07
+
+### Changed
+
+- Prepared `0.6.0-alpha.5` after the immutable alpha.4 release attempt completed every verification,
+  artifact, checksum, provenance, SBOM-attestation, and draft-prerelease gate but stopped before npm
+  publication.
+- Made npm publication require exactly one downloaded `.tgz` and pass it as a quoted explicit local
+  package spec beginning with `./`; this prevents npm from parsing `release-bundle/...` as GitHub
+  shorthand while preserving public access, the `alpha` dist-tag, ignored lifecycle scripts, and
+  direct OIDC publication.
+- Extended workflow-security validation and regression coverage to reject the former ambiguous
+  package spec, a missing `./`, directory publication, missing `--ignore-scripts`, or a weakened
+  single-tarball check.
+
+The `v0.6.0-alpha.4` tag remains fixed at `a7faa9ae085e553334e196a4cdbe5153fbceb1f9`. Release run
+`34098600275` failed before registry authentication because npm interpreted the relative tarball
+path as a GitHub repository shorthand. No alpha.4 npm publication occurred, and its draft GitHub
+prerelease remained non-public because the finalization step was skipped.
+
 ## [0.6.0-alpha.4] - 2026-09-07
 
 ### Changed

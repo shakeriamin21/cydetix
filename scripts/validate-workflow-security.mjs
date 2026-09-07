@@ -57,6 +57,20 @@ if (
     'npm run audit:history -- --enforce --ref "refs/tags/${CYDETIX_EXPECTED_TAG}"'
 )
   issues.push("release.yml: Git-history privacy audit is not scoped to the validated release tag");
+const npmPublishStep = publish?.steps?.find(
+  (step) => step?.name === "Publish approved prerelease through npm OIDC",
+);
+const expectedNpmPublishScript = `shopt -s nullglob
+tarballs=(release-bundle/*.tgz)
+if [ "\${#tarballs[@]}" -ne 1 ]; then
+  echo "Expected exactly one npm tarball, found \${#tarballs[@]}" >&2
+  exit 1
+fi
+npm publish "./\${tarballs[0]}" --access public --tag alpha --ignore-scripts`;
+if (npmPublishStep?.shell !== "bash" || npmPublishStep?.run?.trim() !== expectedNpmPublishScript)
+  issues.push(
+    "release.yml: npm publish must require exactly one verified tarball and use an explicit local ./ package path",
+  );
 
 const result = {
   schemaVersion: "1.0.0",
@@ -70,6 +84,7 @@ const result = {
     "PROTECTED_RELEASE_ENVIRONMENT",
     "OIDC_ONLY_IN_PUBLISH_JOB",
     "RELEASE_REACHABLE_HISTORY_SCOPE",
+    "EXPLICIT_SINGLE_LOCAL_NPM_TARBALL",
   ],
   issues,
 };

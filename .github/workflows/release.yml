@@ -159,7 +159,14 @@ jobs:
             --title "$title" --notes-file "docs/releases/$GITHUB_REF_NAME.md"
       - name: Publish approved prerelease through npm OIDC
         shell: bash
-        run: npm publish release-bundle/*.tgz --access public --tag alpha --ignore-scripts
+        run: |
+          shopt -s nullglob
+          tarballs=(release-bundle/*.tgz)
+          if [ "${#tarballs[@]}" -ne 1 ]; then
+            echo "Expected exactly one npm tarball, found ${#tarballs[@]}" >&2
+            exit 1
+          fi
+          npm publish "./${tarballs[0]}" --access public --tag alpha --ignore-scripts
       - name: Publish the prepared GitHub prerelease
         env:
           GH_TOKEN: ${{ github.token }}

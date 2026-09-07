@@ -2,9 +2,11 @@
 
 Checked: 2026-09-06
 
-`cydetix@0.6.0-alpha.1` exists on npm. The tagged alpha.2 GitHub Actions attempt failed at
-`validate:publication-config` before npm publication. This alpha.3 preparation does not publish,
-push, create or modify tags, or create a GitHub release.
+`cydetix@0.6.0-alpha.1` exists on npm. The immutable alpha.2, alpha.3, and alpha.4 GitHub Actions
+attempts failed before npm publication. Alpha.4 completed verification and artifact attestations,
+then npm interpreted its non-`./` relative tarball package spec as GitHub shorthand before registry
+authentication; its draft GitHub prerelease remained non-public. This alpha.5 preparation does not
+publish, push, create or modify tags, or create a GitHub release.
 
 ## Identity state
 
@@ -16,7 +18,7 @@ push, create or modify tags, or create a GitHub release.
 | Obvious exact-name web collision  | NOT_FOUND_IN_LIMITED_SEARCH | Four exact-name queries returned no results     |
 | Trademark/exclusivity clearance   | NOT_CLAIMED                 | No legal conclusion was performed               |
 | Scoped fallback                   | FORBIDDEN                   | A different identity requires explicit approval |
-| Alpha.3 publication authorization | NOT_GRANTED                 | This preparation explicitly forbids publication |
+| Alpha.5 publication authorization | NOT_GRANTED                 | This preparation explicitly forbids publication |
 
 ## Local preparation gates
 
