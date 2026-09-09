@@ -63,9 +63,10 @@ compliant.
 - npm Trusted Publishing must be configured from the existing package's settings for the exact
   repository, workflow, and `release` environment. No token fallback is present in the workflow, and
   local preparation does not prove the external setting is configured.
-- The public identity is Cydetix and the unscoped npm/CLI name is `cydetix`. An exact registry
-  lookup returned the public `cydetix@0.6.0-alpha.1` package on 2026-09-06. Registration does not
-  provide brand/legal review, exclusivity, or trademark clearance; none is claimed.
+- The public identity is Cydetix and the unscoped npm/CLI name is `cydetix`. A historical exact
+  registry lookup returned `cydetix@0.6.0-alpha.1` on 2026-09-06; current registry and dist-tag
+  state is not asserted and must be rechecked before release. Registration does not provide
+  brand/legal review, exclusivity, or trademark clearance; none is claimed.
 - Setup adapters and the Codex plugin validate locally. Host-controlled implicit tool selection,
   remote plugin installation, Copilot CLI MCP consumption, marketplace acceptance, and live npm
   behavior are not claimed until their external tests execute.

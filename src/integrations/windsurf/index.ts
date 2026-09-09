@@ -55,7 +55,14 @@ async function change(
 ): Promise<AdapterResult> {
   const before = await integrationState(context);
   const target = targets(context);
-  const changed = await installSkill(context.projectBoundary, target.skill, false, remove, dryRun);
+  const changed = await installSkill(
+    context.projectBoundary,
+    target.skill,
+    false,
+    remove,
+    dryRun,
+    context,
+  );
   if (
     await updateJsonServer(
       context.projectBoundary,

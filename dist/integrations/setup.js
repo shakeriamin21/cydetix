@@ -8,7 +8,8 @@ import { cursorAdapter } from "./cursor/index.js";
 import { discoverAgents, needsConfiguration } from "./discovery/index.js";
 import { genericMcpAdapter } from "./generic-mcp/index.js";
 import { createTrustedIntegrationRoot } from "./common.js";
-import { readIntegrationState, writeIntegrationState, } from "./state.js";
+import { resolvePersistentRuntime } from "./runtime.js";
+import { readIntegrationState, removeIntegrationState, writeIntegrationState, } from "./state.js";
 import { windsurfAdapter } from "./windsurf/index.js";
 export const INTEGRATION_ADAPTERS = [
     codexAdapter,
@@ -19,16 +20,25 @@ export const INTEGRATION_ADAPTERS = [
     genericMcpAdapter,
 ];
 export async function integrationContext(options = {}) {
-    const [projectBoundary, homeBoundary] = await Promise.all([
-        createTrustedIntegrationRoot(options.projectRoot ?? process.cwd()),
-        createTrustedIntegrationRoot(options.homeDirectory ?? process.env.CYDETIX_SETUP_HOME ?? os.homedir()),
-    ]);
+    const projectBoundary = await createTrustedIntegrationRoot(options.projectRoot ?? process.cwd());
+    const projectOnly = options.all !== true &&
+        options.agents !== undefined &&
+        options.agents.length > 0 &&
+        options.agents.every((agent) => agent === "generic-mcp");
+    const homeBoundary = projectOnly
+        ? projectBoundary
+        : await createTrustedIntegrationRoot(options.homeDirectory ?? process.env.CYDETIX_SETUP_HOME ?? os.homedir());
+    const runtime = await resolvePersistentRuntime({
+        projectRoot: projectBoundary.root,
+        expectedVersion: PRODUCT.version,
+    });
     return {
         projectRoot: projectBoundary.root,
         homeDirectory: homeBoundary.root,
         projectBoundary,
         homeBoundary,
         packageVersion: PRODUCT.version,
+        runtime,
         platform: options.platform ?? process.platform,
         executablePath: options.executablePath ?? process.env.PATH ?? "",
     };
@@ -53,14 +63,14 @@ export function parseAgentId(value) {
     return id;
 }
 function interactive(options) {
+    if (process.env.CI !== undefined ||
+        process.env.CYDETIX_NO_AUTO_SETUP === "1" ||
+        process.env.CYDETIX_AGENT_SUBPROCESS === "1" ||
+        process.env.CYDETIX_MCP === "1")
+        return false;
     if (options.interactive !== undefined)
         return options.interactive;
-    return (process.stdin.isTTY &&
-        process.stdout.isTTY &&
-        process.env.CI === undefined &&
-        process.env.CYDETIX_NO_AUTO_SETUP !== "1" &&
-        process.env.CYDETIX_AGENT_SUBPROCESS !== "1" &&
-        process.env.CYDETIX_MCP !== "1");
+    return process.stdin.isTTY && process.stdout.isTTY;
 }
 async function confirm(prompt, options) {
     if (!interactive(options))
@@ -86,6 +96,10 @@ function selectedAgents(options, detections) {
         return INTEGRATION_ADAPTERS.map((adapter) => adapter.id);
     if (explicit.length > 0)
         return explicit;
+    if (options.remove === true)
+        return detections
+            .filter((detection) => detection.integration !== "not_configured")
+            .map((detection) => detection.id);
     return detections
         .filter((detection) => detection.id !== "generic-mcp" && detection.detected)
         .map((detection) => detection.id);
@@ -100,6 +114,12 @@ async function persistState(context, detections, status) {
         schemaVersion: "1.0.0",
         status,
         packageVersion: context.packageVersion,
+        runtime: {
+            packageRoot: context.runtime.packageRoot,
+            entrypoint: context.runtime.entrypoint,
+            nodeExecutable: context.runtime.nodeExecutable,
+            version: context.runtime.version,
+        },
         updatedAt: new Date().toISOString(),
         hosts: Object.fromEntries(detections.map((detection) => [detection.id, detection.integration])),
     });
@@ -131,7 +151,11 @@ export async function runSetup(options = {}) {
         return { detections, selected, results: [], cancelled: false, dryRun, verified };
     }
     if (selected.length === 0) {
-        emit(options, "\nNo supported agent was detected. Use --agent generic-mcp for a portable pinned config.\n");
+        if (options.remove === true && !dryRun)
+            await removeIntegrationState(context.projectBoundary);
+        emit(options, options.remove === true
+            ? "\nNo Cydetix-managed integration was found.\n"
+            : "\nNo supported agent was detected. Use --agent generic-mcp for a project-bound config.\n");
         return { detections, selected, results: [], cancelled: false, dryRun, verified: true };
     }
     emit(options, `\n${options.remove ? "Remove" : "Install or update"}:\n`);
@@ -165,8 +189,12 @@ export async function runSetup(options = {}) {
     }
     detections = dryRun ? detections : await discoverAgents(INTEGRATION_ADAPTERS, context);
     const verified = results.every((result) => result.verified);
-    if (!dryRun)
-        await persistState(context, detections, options.remove ? "declined" : verified ? "configured" : "partial");
+    if (!dryRun) {
+        if (options.remove)
+            await removeIntegrationState(context.projectBoundary);
+        else
+            await persistState(context, detections, verified ? "configured" : "partial");
+    }
     emit(options, dryRun
         ? "\nPreview complete. No files were changed.\n"
         : options.remove
@@ -175,17 +203,26 @@ export async function runSetup(options = {}) {
     return { detections, selected, results, cancelled: false, dryRun, verified };
 }
 export async function runAutomaticIntegration(options = {}) {
+    if (!interactive(options))
+        return {
+            detections: [],
+            selected: [],
+            results: [],
+            cancelled: false,
+            dryRun: false,
+            verified: true,
+        };
     const context = await integrationContext(options);
     const detections = await discoverAgents(INTEGRATION_ADAPTERS, context);
     const candidates = detections.filter((detection) => detection.id !== "generic-mcp" && needsConfiguration(detection));
-    if (candidates.length === 0 || !interactive(options))
+    if (candidates.length === 0)
         return {
             detections,
             selected: [],
             results: [],
             cancelled: false,
             dryRun: false,
-            verified: candidates.length === 0,
+            verified: true,
         };
     const previous = await readIntegrationState(context.projectBoundary);
     if (previous?.status === "declined")

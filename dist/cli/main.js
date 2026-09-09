@@ -8,7 +8,8 @@ import { scanRepository } from "../core/engine.js";
 import { CydetixError, EXIT } from "../core/errors.js";
 import { probeExternalTool } from "../external-tools/model.js";
 import { parseAgentId, runAutomaticIntegration, runSetup } from "../integrations/setup.js";
-import { runMcpServer } from "../mcp/server.js";
+import { resolvePersistentRuntime } from "../integrations/runtime.js";
+import { createMcpServerContext, runMcpServer } from "../mcp/server.js";
 import { createBoundary } from "../repository-discovery/boundary.js";
 import { CONFIG_NAME } from "../repository-discovery/config.js";
 import { RULES, RULE_BY_ID } from "../rule-engine/catalogue.js";
@@ -127,7 +128,14 @@ async function executeScan(target, options) {
     if (!options.offline) {
         throw new CydetixError("Cydetix is deliberately offline-only; network-backed adapters are not implemented.", EXIT.usage);
     }
-    return filterReport(await scanRepository({ path: target }), options.severity, options.confidence);
+    try {
+        return filterReport(await scanRepository({ path: target }), options.severity, options.confidence);
+    }
+    catch (error) {
+        if (error instanceof CydetixError)
+            throw new CydetixError(error.message, EXIT.scanFailure, { cause: error });
+        throw error;
+    }
 }
 async function initRepository(target) {
     const boundary = await createBoundary(target);
@@ -211,9 +219,9 @@ export function buildProgram() {
             try {
                 await runAutomaticIntegration({ projectRoot: "." });
             }
-            catch {
+            catch (error) {
                 if (process.stdin.isTTY && process.stdout.isTTY)
-                    process.stdout.write("\nAI integration: needs attention. Run cydetix setup --status.\n");
+                    process.stdout.write(`\nAI integration: ${terminalSafe(error instanceof Error ? error.message : "needs attention. Run cydetix setup --status.")}\n`);
             }
         }
     });
@@ -257,7 +265,10 @@ export function buildProgram() {
         .option("--severity <level>", "minimum severity", severity, "info")
         .option("--confidence <level>", "minimum confidence", confidence, "low")
         .option("--offline", "forbid network-backed analysis", true)
+        .option("--non-interactive", "disable prompts, setup, progress, and terminal styling", false)
         .action(async (target, options) => {
+        if (options.nonInteractive)
+            process.env.CYDETIX_AGENT_SUBPROCESS = "1";
         output(await executeScan(target, options), options.format);
     });
     program
@@ -429,7 +440,16 @@ export function buildProgram() {
     program
         .command("mcp")
         .description("Run the first-party Cydetix stdio MCP server")
-        .action(runMcpServer);
+        .option("--project-root <path>", "explicit project boundary", ".")
+        .option("--require-version <version>", "require an exact Cydetix version before startup")
+        .action(async (options) => {
+        await runMcpServer({
+            projectRoot: options.projectRoot,
+            ...(options.requireVersion === undefined
+                ? {}
+                : { requiredVersion: options.requireVersion }),
+        });
+    });
     program
         .command("verify")
         .argument("[path]", "repository root", ".")
@@ -499,6 +519,8 @@ export function buildProgram() {
     program
         .command("doctor")
         .description("Report local engine and optional adapter availability")
+        .option("--agent", "verify the persistent agent runtime without changing integration state")
+        .option("--project-root <path>", "explicit project boundary for agent checks", ".")
         .option("--sandbox-image <digest>", "inspect a locally present immutable container verification image")
         .action(async (options) => {
         const sandbox = options.sandboxImage === undefined
@@ -507,6 +529,41 @@ export function buildProgram() {
                 message: "Pass --sandbox-image to probe container isolation.",
             }
             : await createContainerSandboxRunner({ image: options.sandboxImage }).capability();
+        const agent = options.agent === true
+            ? await (async () => {
+                const projectBoundary = await createBoundary(options.projectRoot);
+                const runtime = await resolvePersistentRuntime({
+                    projectRoot: projectBoundary.root,
+                    expectedVersion: PRODUCT.version,
+                });
+                await createMcpServerContext({
+                    projectRoot: projectBoundary.root,
+                    requiredVersion: PRODUCT.version,
+                });
+                const [major, minor] = process.versions.node
+                    .split(".")
+                    .slice(0, 2)
+                    .map((value) => Number(value));
+                const nodeSupported = (major === 22 && (minor ?? 0) >= 18) || (major === 24 && (minor ?? 0) >= 11);
+                return {
+                    mode: "agent",
+                    packageName: "cydetix",
+                    version: runtime.version,
+                    versionExact: runtime.version === PRODUCT.version,
+                    nodeExecutable: runtime.nodeExecutable,
+                    nodeSupported,
+                    entrypoint: runtime.entrypoint,
+                    runtimeSource: runtime.source,
+                    projectRoot: projectBoundary.root,
+                    projectRootCanonical: true,
+                    jsonOutput: true,
+                    mcpStartup: "available",
+                    packageManagerRequired: false,
+                    networkRequired: false,
+                    agentSubprocessMode: true,
+                };
+            })()
+            : undefined;
         const result = {
             version: PRODUCT.version,
             node: process.version,
@@ -525,6 +582,7 @@ export function buildProgram() {
                 cosign: probeExternalTool("cosign", "cosign"),
             },
             sandbox,
+            ...(agent === undefined ? {} : { agent }),
         };
         process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
     });

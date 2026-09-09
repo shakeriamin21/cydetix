@@ -137,11 +137,12 @@ dated fixture-suppressed findings; npm audit reports zero vulnerabilities; onlin
 findings across 214 resolved identities; CycloneDX, SARIF, schemas, remediation, license, and
 workflow-security gates pass.
 
-The exact npm lookup returned the existing public `cydetix@0.6.0-alpha.1` package on 2026-09-06. The
-alpha.2 GitHub Actions attempt stopped at `validate:publication-config` and did not publish to npm;
-alpha.3 is also not published. Registration does not establish trademark clearance or release
-authorization. The maintainer-provided configuration records npm Trusted Publishing and private
-vulnerability reporting as configured, but local preparation does not prove an OIDC publication or
-rerun hosted Windows/Linux/macOS CI, the external Action consumer, CodeQL, Scorecard, attestations,
-or GitHub settings. Generated checksums and manifests must be regenerated from a clean approved
-commit before any separately authorized release.
+The historical npm lookup returned `cydetix@0.6.0-alpha.1` on 2026-09-06; it is not current registry
+evidence and must be repeated before release. The alpha.2 GitHub Actions attempt stopped at
+`validate:publication-config` and did not publish to npm; alpha.3 is also not published.
+Registration does not establish trademark clearance or release authorization. The
+maintainer-provided configuration records npm Trusted Publishing and private vulnerability reporting
+as configured, but local preparation does not prove an OIDC publication or rerun hosted
+Windows/Linux/macOS CI, the external Action consumer, CodeQL, Scorecard, attestations, or GitHub
+settings. Generated checksums and manifests must be regenerated from a clean approved commit before
+any separately authorized release.

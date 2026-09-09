@@ -41,8 +41,15 @@ function run(
       ...extraEnvironment,
     },
   });
-  if (result.error !== undefined || !acceptedStatuses.includes(result.status))
-    throw new Error(`Release artifact command failed safely: ${executable}.`);
+  if (result.error !== undefined || !acceptedStatuses.includes(result.status)) {
+    const diagnostic = String(result.stderr ?? "")
+      .replaceAll(root, "<workspace>")
+      .trim()
+      .slice(-1_000);
+    throw new Error(
+      `Release artifact command failed safely: ${path.basename(executable)}; exit=${String(result.status)}; error=${String(result.error?.code ?? "none")}; stderr=${diagnostic || "none"}.`,
+    );
+  }
   return result.stdout;
 }
 

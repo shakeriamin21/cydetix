@@ -1,4 +1,4 @@
-import path from "node:path";
+import { lstat, realpath } from "node:fs/promises";
 import { createInterface } from "node:readline";
 
 import { PRODUCT } from "../core/brand.js";
@@ -7,10 +7,26 @@ import { RULE_BY_ID } from "../rule-engine/catalogue.js";
 import { runRemediation } from "../remediation/fix.js";
 import { renderHuman, renderRemediationHuman } from "../reporting/human.js";
 import { terminalSafe } from "../reporting/terminal.js";
+import {
+  createBoundary,
+  dangerousRepositoryPath,
+  isWithinRoot,
+  resolveInside,
+  type RepositoryBoundary,
+} from "../repository-discovery/boundary.js";
 
 type JsonRpcId = string | number | null;
 const MAX_REQUEST_CHARACTERS = 1_048_576;
-const MCP_PROJECT_ROOT = path.resolve(process.cwd());
+
+export interface McpServerOptions {
+  readonly projectRoot?: string;
+  readonly requiredVersion?: string;
+}
+
+export interface McpServerContext {
+  readonly projectBoundary: RepositoryBoundary;
+  readonly requiredVersion?: string;
+}
 
 interface JsonRpcRequest {
   readonly jsonrpc: "2.0";
@@ -63,7 +79,7 @@ export const CYDETIX_MCP_TOOLS: readonly ToolDefinition[] = [
       properties: {
         path: {
           type: "string",
-          description: "Project directory. Defaults to the MCP server working directory.",
+          description: "Project-relative directory. Defaults to the configured project root.",
         },
       },
     },
@@ -83,7 +99,7 @@ export const CYDETIX_MCP_TOOLS: readonly ToolDefinition[] = [
       properties: {
         path: {
           type: "string",
-          description: "Project directory. Defaults to the MCP server working directory.",
+          description: "Project-relative directory. Defaults to the configured project root.",
         },
         finding: {
           type: "string",
@@ -146,13 +162,23 @@ function optionalString(value: unknown, field: string): string | undefined {
   return value;
 }
 
-function targetFrom(arguments_: Record<string, unknown>): string {
-  const requested = optionalString(arguments_.path, "path") ?? MCP_PROJECT_ROOT;
-  const target = path.resolve(MCP_PROJECT_ROOT, requested);
-  const relative = path.relative(MCP_PROJECT_ROOT, target);
-  if (relative.startsWith(`..${path.sep}`) || relative === ".." || path.isAbsolute(relative))
-    throw new Error("MCP project path must stay within the server working directory.");
-  return target;
+async function targetFrom(
+  context: McpServerContext,
+  arguments_: Record<string, unknown>,
+): Promise<string> {
+  const requested = optionalString(arguments_.path, "path") ?? ".";
+  if (dangerousRepositoryPath(requested) !== undefined)
+    throw new Error("MCP project path must stay within the configured project root.");
+  const target = resolveInside(context.projectBoundary, requested);
+  const metadata = await lstat(target).catch(() => undefined);
+  if (metadata === undefined || !metadata.isDirectory() || metadata.isSymbolicLink())
+    throw new Error(
+      "MCP project path must be a real directory within the configured project root.",
+    );
+  const canonical = await realpath(target);
+  if (!isWithinRoot(context.projectBoundary.root, canonical))
+    throw new Error("MCP project path must stay within the configured project root.");
+  return canonical;
 }
 
 function toolResult(text: string, structuredContent: unknown): Record<string, unknown> {
@@ -162,10 +188,14 @@ function toolResult(text: string, structuredContent: unknown): Record<string, un
   };
 }
 
-async function callTool(name: string, rawArguments: unknown): Promise<Record<string, unknown>> {
+async function callTool(
+  context: McpServerContext,
+  name: string,
+  rawArguments: unknown,
+): Promise<Record<string, unknown>> {
   const arguments_ = parameters(rawArguments);
   if (name === "cydetix_scan") {
-    const report = await scanRepository({ path: targetFrom(arguments_) });
+    const report = await scanRepository({ path: await targetFrom(context, arguments_) });
     return toolResult(renderHuman(report), { report });
   }
   if (name === "cydetix_fix") {
@@ -177,7 +207,7 @@ async function callTool(name: string, rawArguments: unknown): Promise<Record<str
     }
     const finding = optionalString(arguments_.finding, "finding");
     const report = await runRemediation({
-      path: targetFrom(arguments_),
+      path: await targetFrom(context, arguments_),
       dryRun: !apply,
       applySafe: apply,
       nonInteractive: true,
@@ -194,7 +224,7 @@ async function callTool(name: string, rawArguments: unknown): Promise<Record<str
       return toolResult(`${rule.id}: ${rule.title}\n${rule.description}\n`, { rule });
     }
     if (fingerprint === undefined) throw new Error("ruleId or finding is required.");
-    const report = await scanRepository({ path: targetFrom(arguments_) });
+    const report = await scanRepository({ path: await targetFrom(context, arguments_) });
     const finding = [...report.findings, ...report.suppressedFindings].find(
       (candidate) => candidate.fingerprint === fingerprint,
     );
@@ -218,6 +248,7 @@ function failure(id: JsonRpcId, code: number, message: string): JsonRpcResponse 
 
 export async function handleMcpRequest(
   request: JsonRpcRequest,
+  context: McpServerContext,
 ): Promise<JsonRpcResponse | undefined> {
   if (request.id === undefined) return undefined;
   const id = request.id;
@@ -238,7 +269,7 @@ export async function handleMcpRequest(
       const params = parameters(request.params);
       const name = optionalString(params.name, "name");
       if (name === undefined) return failure(id, -32_602, "Tool name is required.");
-      return response(id, await callTool(name, params.arguments));
+      return response(id, await callTool(context, name, params.arguments));
     }
     return failure(id, -32_601, `Method not found: ${request.method}`);
   } catch (error) {
@@ -246,8 +277,28 @@ export async function handleMcpRequest(
   }
 }
 
-export async function runMcpServer(): Promise<void> {
+export function assertRequiredVersion(requiredVersion: string | undefined): void {
+  if (requiredVersion === undefined) return;
+  if (requiredVersion.trim() === "" || requiredVersion !== PRODUCT.version)
+    throw new Error(
+      `Cydetix MCP version mismatch: required ${requiredVersion || "<empty>"}, running ${PRODUCT.version}.`,
+    );
+}
+
+export async function createMcpServerContext(
+  options: McpServerOptions = {},
+): Promise<McpServerContext> {
+  assertRequiredVersion(options.requiredVersion);
+  return {
+    projectBoundary: await createBoundary(options.projectRoot ?? "."),
+    ...(options.requiredVersion === undefined ? {} : { requiredVersion: options.requiredVersion }),
+  };
+}
+
+export async function runMcpServer(options: McpServerOptions = {}): Promise<void> {
   process.env.CYDETIX_MCP = "1";
+  process.env.CYDETIX_AGENT_SUBPROCESS = "1";
+  const context = await createMcpServerContext(options);
   const input = createInterface({ input: process.stdin, crlfDelay: Infinity, terminal: false });
   for await (const line of input) {
     if (line.trim() === "") continue;
@@ -267,7 +318,7 @@ export async function runMcpServer(): Promise<void> {
       continue;
     }
     const request = parsed;
-    const result = await handleMcpRequest(request);
+    const result = await handleMcpRequest(request, context);
     if (result !== undefined) process.stdout.write(`${JSON.stringify(result)}\n`);
   }
 }

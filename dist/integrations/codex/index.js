@@ -20,7 +20,7 @@ async function integrationState(context) {
 async function change(context, remove, dryRun) {
     const before = await integrationState(context);
     const target = paths(context);
-    const changed = await installSkill(context.homeBoundary, target.skill, true, remove, dryRun);
+    const changed = await installSkill(context.homeBoundary, target.skill, true, remove, dryRun, context);
     if (await updateCodexToml(context.homeBoundary, target.config, pinnedMcpServer(context), remove, dryRun))
         changed.push(target.config);
     const after = dryRun

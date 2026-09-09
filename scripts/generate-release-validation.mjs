@@ -82,6 +82,14 @@ function parseJsonCommand(executable, arguments_) {
   return JSON.parse(run(executable, arguments_));
 }
 
+function tryParseJsonCommand(executable, arguments_) {
+  try {
+    return parseJsonCommand(executable, arguments_);
+  } catch {
+    return undefined;
+  }
+}
+
 const image = process.env.CYDETIX_SANDBOX_IMAGE ?? `sha256:${"0".repeat(64)}`;
 const sandbox = await createContainerSandboxRunner({ image }).capability();
 const sandboxRequested = process.env.CYDETIX_SANDBOX_IMAGE !== undefined;
@@ -381,15 +389,17 @@ const mandatoryPassed = checks
   .filter((check) => mandatoryChecks.has(check.id))
   .every((check) => check.state === "executed_pass");
 
-const dockerVersion = parseJsonCommand("docker", ["version", "--format", "{{json .}}"]);
-const dockerInfo = parseJsonCommand("docker", ["info", "--format", "{{json .}}"]);
-const imageRepoDigests = parseJsonCommand("docker", [
-  "image",
-  "inspect",
-  image,
-  "--format",
-  "{{json .RepoDigests}}",
-]);
+const dockerVersion = tryParseJsonCommand("docker", ["version", "--format", "{{json .}}"]);
+const dockerInfo = tryParseJsonCommand("docker", ["info", "--format", "{{json .}}"]);
+const imageRepoDigests = sandboxRequested
+  ? (tryParseJsonCommand("docker", [
+      "image",
+      "inspect",
+      image,
+      "--format",
+      "{{json .RepoDigests}}",
+    ]) ?? [])
+  : [];
 const wslVersion =
   process.platform === "win32"
     ? run("wsl", ["--version"], 64_000)
@@ -415,16 +425,18 @@ const validation = releaseValidationReportSchema.parse({
     npmVersion: releaseInputs.npmVersion,
     platform: `${process.platform}-${process.arch}`,
     docker: {
-      clientVersion: dockerVersion.Client.Version,
-      serverVersion: dockerVersion.Server.Version,
-      serverPlatform: dockerVersion.Server.Platform.Name,
-      osType: dockerInfo.OSType,
-      architecture: dockerInfo.Architecture,
-      kernelVersion: dockerInfo.KernelVersion,
-      cgroupVersion: String(dockerInfo.CgroupVersion),
-      defaultRuntime: dockerInfo.DefaultRuntime,
-      securityOptions: dockerInfo.SecurityOptions,
-      imageIdentity: image,
+      clientVersion: dockerVersion?.Client?.Version ?? "UNAVAILABLE",
+      serverVersion: dockerVersion?.Server?.Version ?? "UNAVAILABLE",
+      serverPlatform: dockerVersion?.Server?.Platform?.Name ?? "UNAVAILABLE",
+      // The verification runner targets Linux containers; availability is represented
+      // by the sandbox/check states and the remaining UNAVAILABLE metadata.
+      osType: dockerInfo?.OSType ?? "linux",
+      architecture: dockerInfo?.Architecture ?? "UNAVAILABLE",
+      kernelVersion: dockerInfo?.KernelVersion ?? "UNAVAILABLE",
+      cgroupVersion: String(dockerInfo?.CgroupVersion ?? "UNAVAILABLE"),
+      defaultRuntime: dockerInfo?.DefaultRuntime ?? "UNAVAILABLE",
+      securityOptions: dockerInfo?.SecurityOptions ?? [],
+      imageIdentity: sandboxRequested ? image : "UNAVAILABLE",
       imageRepoDigests,
     },
     ...(wslVersion === undefined ? {} : { wsl: { version: wslVersion, backend: "WSL2" } }),

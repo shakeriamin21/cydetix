@@ -2,9 +2,10 @@
 
 Checked: 2026-09-06
 
-The required coordinate is the exact unscoped package `cydetix`. The exact registry command returned
-the existing public package `cydetix@0.6.0-alpha.1` on the check date. This confirms registration,
-not authority to publish a new version, product-name exclusivity, or trademark clearance.
+The required coordinate is the exact unscoped package `cydetix`. A historical registry command
+returned `cydetix@0.6.0-alpha.1` on the check date. It is not current registry-state evidence and
+must be repeated before release. It confirms historical registration, not authority to publish a new
+version, product-name exclusivity, or trademark clearance.
 
 ## Stop condition
 
@@ -26,7 +27,7 @@ Require a clean public commit, hosted OS matrix, sandbox job, repository securit
 package/plugin/skill/MCP gates, SBOM, manifest, and checksums. Use the `alpha` dist-tag and do not
 add a long-lived npm token to the workflow.
 
-The alpha.5 publication metadata preserves the maintainer-provided state that Trusted Publishing is
+The alpha.6 publication metadata preserves the maintainer-provided state that Trusted Publishing is
 configured. Alpha.4 reached the npm command only after its verification and attestation gates, but
 npm parsed the ambiguous non-`./` relative tarball path as GitHub shorthand and failed before
 registry authentication. Therefore no release has yet empirically proved a successful OIDC

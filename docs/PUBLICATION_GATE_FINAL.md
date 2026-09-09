@@ -1,24 +1,24 @@
 # Cydetix publication gate
 
-Checked: 2026-09-06
+Historical registry evidence: 2026-09-06; current candidate: 2026-09-09
 
-`cydetix@0.6.0-alpha.1` exists on npm. The immutable alpha.2, alpha.3, and alpha.4 GitHub Actions
-attempts failed before npm publication. Alpha.4 completed verification and artifact attestations,
-then npm interpreted its non-`./` relative tarball package spec as GitHub shorthand before registry
-authentication; its draft GitHub prerelease remained non-public. This alpha.5 preparation does not
-publish, push, create or modify tags, or create a GitHub release.
+A historical check observed `cydetix@0.6.0-alpha.1`. The immutable alpha.2, alpha.3, and alpha.4
+GitHub Actions attempts failed before npm publication. Alpha.4 completed verification and artifact
+attestations, then npm interpreted its non-`./` relative tarball package spec as GitHub shorthand
+before registry authentication; its draft GitHub prerelease remained non-public. This alpha.6
+preparation does not publish, push, create or modify tags, or create a GitHub release.
 
 ## Identity state
 
 | Gate                              | State                       | Evidence                                        |
 | --------------------------------- | --------------------------- | ----------------------------------------------- |
 | Display/package/CLI alignment     | IMPLEMENTED                 | `Cydetix` / `cydetix` / `cydetix`               |
-| Exact npm registry lookup         | EXISTS                      | `cydetix@0.6.0-alpha.1`, checked 2026-09-06     |
+| Exact npm registry lookup         | RECHECK REQUIRED            | Historical evidence only, checked 2026-09-06    |
 | npm package registration          | ESTABLISHED                 | Exact unscoped package returned by npm          |
 | Obvious exact-name web collision  | NOT_FOUND_IN_LIMITED_SEARCH | Four exact-name queries returned no results     |
 | Trademark/exclusivity clearance   | NOT_CLAIMED                 | No legal conclusion was performed               |
 | Scoped fallback                   | FORBIDDEN                   | A different identity requires explicit approval |
-| Alpha.5 publication authorization | NOT_GRANTED                 | This preparation explicitly forbids publication |
+| Alpha.6 publication authorization | NOT_GRANTED                 | This preparation explicitly forbids publication |
 
 ## Local preparation gates
 

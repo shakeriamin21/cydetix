@@ -15,12 +15,22 @@ export interface TrustedIntegrationRoot {
   readonly root: string;
 }
 
+export interface PersistentRuntime {
+  readonly packageRoot: string;
+  readonly packageJsonPath: string;
+  readonly entrypoint: string;
+  readonly nodeExecutable: string;
+  readonly version: string;
+  readonly source: "project-local" | "current-installation";
+}
+
 export interface SetupContext {
   readonly projectRoot: string;
   readonly homeDirectory: string;
   readonly projectBoundary: TrustedIntegrationRoot;
   readonly homeBoundary: TrustedIntegrationRoot;
   readonly packageVersion: string;
+  readonly runtime: PersistentRuntime;
   readonly platform: NodeJS.Platform;
   readonly executablePath: string;
 }

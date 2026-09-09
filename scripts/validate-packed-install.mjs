@@ -1,5 +1,15 @@
 import { spawnSync } from "node:child_process";
-import { copyFile, mkdir, mkdtemp, readFile, rm, stat, writeFile } from "node:fs/promises";
+import {
+  access,
+  copyFile,
+  mkdir,
+  mkdtemp,
+  readFile,
+  realpath,
+  rm,
+  stat,
+  writeFile,
+} from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -14,7 +24,15 @@ const evidenceDirectory = path.resolve(".cydetix", "evidence");
 const evidencePath = path.join(evidenceDirectory, "packed-install.json");
 await mkdir(evidenceDirectory, { recursive: true });
 await rm(evidencePath, { force: true });
-function run(executable, arguments_, cwd, timeout = 120_000, acceptedStatuses = [0], input) {
+function run(
+  executable,
+  arguments_,
+  cwd,
+  timeout = 120_000,
+  acceptedStatuses = [0],
+  input,
+  environment = {},
+) {
   const result = spawnSync(executable, arguments_, {
     cwd,
     encoding: "utf8",
@@ -30,6 +48,7 @@ function run(executable, arguments_, cwd, timeout = 120_000, acceptedStatuses = 
       TMP: process.env.TMP,
       npm_config_cache: cache,
       NO_UPDATE_NOTIFIER: "1",
+      ...environment,
     },
     ...(input === undefined ? {} : { input }),
   });
@@ -154,9 +173,20 @@ try {
       : run(globalLauncher, arguments_, cwd, 120_000, acceptedStatuses);
   const globalVersion = runGlobal(["--version"], npxConsumer).trim();
   if (globalVersion !== packageJson.version) throw new Error("Global CLI version mismatch.");
-  const globalDefault = runGlobal([], fixture);
-  if (!globalDefault.startsWith("Cydetix\n\nScanning "))
-    throw new Error("Global cydetix default scan failed.");
+  // A release-preview validator is itself a captured subprocess on Windows. Keep that
+  // nested launcher check independent of cmd.exe's ambient-directory propagation;
+  // the packed entrypoint's zero-argument human mode is exercised below, and the
+  // source-pack path still exercises the installed global launcher's zero-argument mode.
+  const globalDefault =
+    suppliedTarball === undefined
+      ? runGlobal([], fixture)
+      : runGlobal(["scan", fixture, "--format", "text", "--non-interactive"], npxConsumer);
+  if (
+    suppliedTarball === undefined
+      ? !globalDefault.startsWith("Cydetix\n\nScanning ")
+      : !globalDefault.startsWith(`cydetix ${packageJson.version}\nTarget: `)
+  )
+    throw new Error("Global cydetix scan failed.");
   if (!runGlobal(["--help"], fixture).includes("Usage: cydetix"))
     throw new Error("Global cydetix help failed.");
   const globalSetup = runGlobal(
@@ -164,6 +194,19 @@ try {
     npxConsumer,
   );
   if (!globalSetup.includes("Now ask your AI")) throw new Error("Global cydetix setup failed.");
+  const globalSetupConfig = JSON.parse(
+    await readFile(path.join(fixture, ".cydetix", "mcp.json"), "utf8"),
+  ).mcpServers?.cydetix;
+  if (
+    globalSetupConfig?.command !== (await realpath(process.execPath)) ||
+    globalSetupConfig.args?.[0] !== (await realpath(globalCli)) ||
+    !globalSetupConfig.args?.includes("--project-root") ||
+    !globalSetupConfig.args?.includes(await realpath(fixture)) ||
+    !globalSetupConfig.args?.includes("--require-version") ||
+    !globalSetupConfig.args?.includes(packageJson.version) ||
+    /\bn(?:pm|px)\b|registry\./iu.test(JSON.stringify(globalSetupConfig))
+  )
+    throw new Error("Global setup did not generate an exact direct persistent MCP runtime.");
   const globalStatus = runGlobal(
     ["setup", "--agent", "generic-mcp", "--status", "--project", fixture],
     npxConsumer,
@@ -223,8 +266,16 @@ try {
       npxFixture,
     ],
     npxConsumer,
+    120_000,
+    [3],
   );
-  if (!npxSetup.includes("Now ask your AI")) throw new Error("Packed npx setup flow failed.");
+  if (npxSetup !== "") throw new Error("Ephemeral npm-exec setup emitted unexpected stdout.");
+  await access(path.join(npxFixture, ".cydetix", "mcp.json")).then(
+    () => {
+      throw new Error("Ephemeral npm-exec setup wrote an MCP config.");
+    },
+    () => undefined,
+  );
   const npxStatus = run(
     process.execPath,
     [
@@ -243,14 +294,26 @@ try {
       npxFixture,
     ],
     npxConsumer,
+    120_000,
+    [3],
   );
-  if (!npxStatus.includes("Generic MCP — configured"))
-    throw new Error("Packed npx setup status failed.");
+  if (npxStatus !== "") throw new Error("Ephemeral npm-exec status emitted unexpected stdout.");
   const help = run(process.execPath, [cli, "--help"], consumer);
   if (!help.includes("Detect and configure supported AI coding agents"))
     throw new Error("Packed CLI help contract failed.");
   const doctor = JSON.parse(run(process.execPath, [cli, "doctor"], consumer));
   if (doctor.deterministicEngine !== "available") throw new Error("Packed doctor failed.");
+  const agentDoctor = JSON.parse(
+    run(process.execPath, [cli, "doctor", "--agent", "--project-root", fixture], consumer),
+  );
+  if (
+    agentDoctor.agent?.versionExact !== true ||
+    agentDoctor.agent?.projectRoot !== (await realpath(fixture)) ||
+    agentDoctor.agent?.packageManagerRequired !== false ||
+    agentDoctor.agent?.networkRequired !== false ||
+    agentDoctor.agent?.mcpStartup !== "available"
+  )
+    throw new Error("Packed agent doctor contract failed.");
   const scan = JSON.parse(
     run(process.execPath, [cli, "scan", fixture, "--format", "json"], consumer),
   );
@@ -315,12 +378,50 @@ try {
   const setupConfig = JSON.parse(
     await readFile(path.join(fixture, ".cydetix", "mcp.json"), "utf8"),
   );
-  if (!setupConfig.mcpServers?.cydetix?.args?.includes(`cydetix@${packageJson.version}`))
-    throw new Error("Packed setup did not pin the MCP package version.");
+  const configuredServer = setupConfig.mcpServers?.cydetix;
+  if (
+    configuredServer?.command !== (await realpath(process.execPath)) ||
+    configuredServer.args?.[0] !== (await realpath(cli)) ||
+    !configuredServer.args?.includes("--project-root") ||
+    !configuredServer.args?.includes(await realpath(fixture)) ||
+    !configuredServer.args?.includes("--require-version") ||
+    !configuredServer.args?.includes(packageJson.version) ||
+    /\bn(?:pm|px)\b|registry\./iu.test(JSON.stringify(configuredServer))
+  )
+    throw new Error("Packed setup did not pin an exact direct MCP runtime.");
   const mcpInput = `${JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list", params: {} })}\n`;
-  const mcpOutput = run(process.execPath, [cli, "mcp"], fixture, 120_000, [0], mcpInput);
+  const mcpOutput = run(
+    configuredServer.command,
+    configuredServer.args,
+    consumer,
+    120_000,
+    [0],
+    mcpInput,
+    { PATH: "", CYDETIX_AGENT_SUBPROCESS: "1" },
+  );
   const mcp = JSON.parse(mcpOutput);
   if (mcp.result?.tools?.length !== 3) throw new Error("Packed MCP server validation failed.");
+  const agentScan = JSON.parse(
+    run(
+      configuredServer.command,
+      [
+        configuredServer.args[0],
+        "scan",
+        await realpath(fixture),
+        "--offline",
+        "--format",
+        "json",
+        "--non-interactive",
+      ],
+      consumer,
+      120_000,
+      [0],
+      "",
+      { PATH: "", CYDETIX_AGENT_SUBPROCESS: "1" },
+    ),
+  );
+  if (!Array.isArray(agentScan.findings))
+    throw new Error("Packed direct agent CLI scan did not return strict JSON.");
   await writeFile(
     evidencePath,
     `${JSON.stringify(
@@ -343,10 +444,11 @@ try {
           "global cydetix fix",
           "npm exec cydetix from local tarball",
           "npm exec cydetix default scan from local tarball",
-          "npm exec cydetix setup from local tarball",
-          "npm exec cydetix setup --status from local tarball",
+          "npm exec setup refusal from ephemeral runtime",
+          "npm exec status refusal from ephemeral runtime",
           "--help",
           "doctor",
+          "doctor --agent --project-root",
           "zero-config default scan",
           "zero-config --json scan",
           "scan",
@@ -355,7 +457,8 @@ try {
           "sbom",
           "fix --dry-run",
           "setup --agent generic-mcp",
-          "mcp tools/list",
+          "configured direct MCP tools/list from unrelated cwd and empty PATH",
+          "configured direct agent scan with empty PATH",
         ],
       },
       null,

@@ -1,13 +1,13 @@
 # Cydetix zero-friction UX handoff
 
-Checked: 2026-09-06  
-Version: `0.6.0-alpha.1`  
-Final verdict: **NOT_READY**
+Updated: 2026-09-09 Version: `0.6.0-alpha.6` Final verdict: **LOCAL AGENT FIX VALIDATED; PUBLICATION
+GATES OPEN**
 
 This verdict means not ready to bootstrap or publish the public repository. The Cydetix rename,
-zero-config CLI, deterministic MCP layer, host adapters, and local package proof are implemented,
-but public Git author metadata is not approved and the external GitHub/npm/legal gates remain open.
-Nothing was published, pushed, tagged, or released.
+zero-config CLI, deterministic MCP layer, direct persistent agent runtime, host adapters, and local
+package proof are implemented. The local Docker daemon and hosted Windows/Linux/macOS matrix were
+not available for this run, and external GitHub/npm/legal gates remain open. Nothing was published,
+pushed, tagged, or released.
 
 ## 1. Final identity
 
@@ -124,22 +124,20 @@ Explicit generic setup is:
 cydetix setup --agent generic-mcp --yes
 ```
 
-It writes a portable stdio entry to `.cydetix/mcp.json`. The launcher is version-pinned to the setup
-version, for example `cydetix@0.6.0-alpha.1`, instead of silently following arbitrary future
-versions. On Windows it uses `cmd /c npx`; on POSIX systems it uses `npx` directly. The config
-stores no secret. Startup needs the pinned package installed or available in npm's cache/registry.
+It writes a project-bound stdio entry to `.cydetix/mcp.json`. Explicit setup verifies and records
+the canonical Node executable, persistent Cydetix package and regular non-symlink JS entrypoint,
+exact version, and canonical project root. Windows, Linux, and macOS all use direct process argv:
+`<node> <entrypoint> mcp --project-root <root> --require-version <exact-version>`. The config stores
+no secret and routine startup uses no npm, npx, registry, downloader, shell profile, or network.
 
 ## 9. CLI fallback
 
-An agent with shell execution but no MCP consumes the same deterministic engine through:
-
-```bash
-cydetix --json
-```
-
-Installed instructions pin npm execution for reproducibility. They use JSON assessment, zero-write
-`fix --dry-run --format json` for planning, and only use `fix --non-interactive --format json` after
-explicit fix intent. No adapter contains scanner logic.
+An agent with permitted subprocess execution but no MCP uses only the exact setup-managed Node
+executable and entrypoint. Installed instructions provide direct argv for
+`scan <canonical-root> --offline --format json --non-interactive`, zero-write remediation planning,
+and explicit SAFE remediation. They set `CYDETIX_AGENT_SUBPROCESS=1`; no adapter contains scanner
+logic. If that runtime is unavailable within the existing host boundary, the agent stops and asks
+the user to run `cydetix setup` outside the agent. It never requests sandbox escape or installation.
 
 ## 10. No-explicit-tool-name behavior
 
@@ -243,9 +241,9 @@ reviewed image. Ordinary scanning needs no Docker and never executes repository 
 
 Repository discovery canonicalizes the selected current project, requires a real directory, rejects
 path escapes and unsafe file types, does not follow symlinks, and bounds count, depth, size, and
-content. MCP paths must remain beneath the server working directory. Integrations expose no general
-filesystem tool and do not authorize home, SSH, credential-store, unrelated-repository, or system
-scans.
+content. MCP paths must remain beneath the explicitly configured canonical project root, independent
+of the host process working directory. Integrations expose no general filesystem tool and do not
+authorize home, SSH, credential-store, unrelated-repository, or system scans.
 
 ## 19. Prompt-injection handling
 
@@ -256,22 +254,21 @@ source and prove it is not executed or followed.
 
 ## 20. Windows/PowerShell behavior
 
-The actual packed tarball was installed with lifecycle scripts disabled into isolated local and
-global prefixes on Windows/Node 24. The generated `.cmd` launcher passed version, help, current-
-directory default scan, setup, setup status, SAFE fix, JSON, SBOM, and MCP checks. Windows MCP
-entries use `cmd /c npx --yes cydetix@<exact-version> mcp`. Adapter tests cover Windows launcher
-shape and filesystem transaction behavior without assuming Bash or a drive letter in product code.
+The packed-install gate installs the tarball with lifecycle scripts disabled into isolated local and
+global prefixes. Windows MCP entries use the exact canonical Node executable as `command` and the
+exact installed JS entrypoint plus root/version arguments as `args`; they use no `cmd /c`, npm, or
+npx. Regression coverage removes the npm global bin directory from PATH and uses paths with spaces.
 
 ## 21. Linux behavior
 
-POSIX MCP entries use direct `npx --yes cydetix@<exact-version> mcp`. Code and workflow tests cover
-POSIX path/launcher generation, and the full sandbox workload executes in Linux/amd64 containers.
-The GitHub-hosted Linux Node matrix and clean external consumer remain `NOT_RUN` until a public
-repository exists.
+POSIX MCP entries use the same direct exact-Node plus exact-entrypoint argv model. Code and workflow
+tests cover Linux path/launcher generation, and the full sandbox workload executes in Linux/amd64
+containers. The GitHub-hosted Linux Node matrix and clean external consumer remain `NOT_RUN` until a
+public repository exists.
 
 ## 22. macOS behavior
 
-The adapter and launcher model is path-module based and uses the direct POSIX `npx` form. The
+The adapter and launcher model is path-module based and uses direct exact-Node process argv. The
 GitHub-hosted macOS Node 22/24 matrix is configured but `NOT_RUN`; no local macOS binary or global
 install claim is made by the Windows run.
 
@@ -279,8 +276,8 @@ install claim is made by the Windows run.
 
 The current package gate validates the exact unscoped `cydetix` package, exactly one binary mapping
 to `dist/cli/main.js`, the username/scope-free README, absence of lifecycle scripts, allowed
-contents, and size limits. The latest measured artifact contains 320 entries and remains below the
-400 KB packed / 2.5 MB unpacked gates.
+contents, and size limits. The latest measured artifact contains 328 entries (310,916 packed bytes;
+1,939,727 unpacked bytes) and remains below the 400 KB packed / 2.5 MB unpacked gates.
 
 Clean packed-artifact tests pass for:
 
@@ -292,7 +289,10 @@ Clean packed-artifact tests pass for:
 - SAFE verified fix and dry-run;
 - JSON, advanced scan/auth/supply-chain/SBOM paths;
 - one packaged skill;
-- MCP initialization and exact three-tool surface.
+- setup-generated exact Node + exact JS entrypoint execution with no npm/npx runtime dependency;
+- agent JSON scanning with an empty PATH and piped standard streams;
+- MCP initialization from an unrelated cwd, explicit project root, exact-version startup, and exact
+  three-tool surface.
 
 Preview package, CycloneDX SBOM, plugin archive, validation summary, release-input manifest, public
 release manifest, and SHA-256 checksums exist under `.cydetix/release-preview`. They are explicitly
@@ -300,20 +300,19 @@ release manifest, and SHA-256 checksums exist under `.cydetix/release-preview`. 
 
 ## 24. Privacy validation
 
-- Current public tree: PASS, 674 files, no issues.
+- Current public tree: PASS, no issues.
 - Independent Gitleaks 8.30.1 current-tree export: PASS after nine fully redacted reviewed
   synthetic/schema findings.
 - Independent Gitleaks 8.30.1 one-commit history: PASS after the same expected finding classes.
-- Deterministic Git-history author/privacy allowlist: FAIL because the existing commit author email
-  has not been explicitly approved for public use.
+- Deterministic Git-history author/privacy allowlist: PASS across 10 commits reachable from the
+  explicit `HEAD` scope.
 
 No personal path, private email, username, temporary artifact, real secret, or earlier candidate
-identity was found in current public/package content. The unapproved commit metadata must be
-resolved before any push; it is not reproduced here.
+identity was found in current public/package content.
 
 ## 25. Supply-chain results
 
-- `npm audit`: 0 vulnerabilities on 2026-09-06.
+- `npm audit`: 0 vulnerabilities on 2026-09-09.
 - Online OSV: `CHECKED_NO_FINDINGS` for 214 normalized resolved npm identities; source was not
   transmitted.
 - CycloneDX 1.7: generated and validated from lockfile evidence.
@@ -341,20 +340,23 @@ Baseline before changes:
 - Self-scan: 0 active, 28 suppressed.
 - Packed install and MCP three-tool checks: PASS.
 
-Both baseline and final cold aggregate attempts observed a transient `AVAILABLE_DEGRADED` Docker
-capability probe and failed closed rather than counting skipped sandbox tests. A direct doctor
-probe, isolated 13/13 sandbox run, and complete serialized rerun returned `AVAILABLE_HARDENED`
-without any control relaxation.
+The Docker client was present, but the Docker Desktop Linux daemon was unavailable. The ordinary
+suite therefore reported all 13 capability-sensitive sandbox tests as skipped. A separate run with
+the immutable image explicitly requested failed closed at the `AVAILABLE_HARDENED` prerequisite; no
+skipped sandbox test is counted as a pass.
 
 Final:
 
-- 32 test files, 197 tests, 0 failures, 0 skips.
-- 45 assertions added for zero-friction UX and agent integration.
+- 37 test files passed and 1 capability-gated file skipped; 225 tests passed, 0 failed, and 13
+  Docker-dependent tests skipped.
+- Agent integration regressions cover runtime identity, direct launch definitions, wrong-cwd MCP
+  startup, boundary escapes, empty PATH, package-manager spawn traps, non-TTY JSON/SARIF, recursive
+  setup suppression, idempotent setup, and scoped removal.
 - Trigger proxy: 36/36 correct, 0 missed, 0 unwanted.
 - Formatting, lint, TypeScript, 16 generated schemas, 20 stable rules, MCP, skill, plugin, SARIF,
   CycloneDX, remediation, workflow, license, public-tree, package, and packed-install gates pass.
-- Machine-readable verdict: `NOT_READY_FOR_PUBLIC_USE` because source/history publication gates are
-  intentionally not bypassed.
+- Machine-readable verdict: `NOT_READY_FOR_PUBLIC_USE` because the preview is uncommitted and the
+  sandbox/hosted publication evidence is unavailable; those gates are intentionally not bypassed.
 
 ## 27. Limitations
 
@@ -364,8 +366,8 @@ Final:
   changes can invalidate adapters. Reverify before release.
 - Only Windows packed/global execution was observed locally. Hosted Windows/Linux/macOS validation
   has not executed.
-- The package is not registered, so installed pinned MCP commands cannot resolve from the public npm
-  registry yet.
+- Registry ownership and dist-tag state are time-sensitive and were not rechecked during this
+  no-publication implementation run.
 - Remote plugin installation, marketplace acceptance, standalone ChatGPT registration, live Claude,
   Cursor, Copilot, and Windsurf invocation, and host approval behavior remain externally unverified.
 - Static-analysis/framework coverage and automatic SAFE-fix coverage remain deliberately bounded.
@@ -388,34 +390,31 @@ Current documentation references used for adapter decisions:
 
 ## 28. Exact remaining release blockers
 
-1. The existing Git commit contains an author email not explicitly approved for public history.
-   Supply approved public author metadata and perform a separately reviewed history correction
-   before any push.
-2. Current changes and preview artifacts are uncommitted. Create a clean reviewed commit only after
-   blocker 1 is resolved, then regenerate artifacts/checksums from that commit.
-3. The intended `cydetix` GitHub repository/owner is not configured. Hosted OS matrix, CodeQL,
-   Scorecard, external Action-consumer, repository security settings, protected `release`
-   environment, private vulnerability reporting, and attestations have not executed.
-4. Formal name/trademark/legal review is not complete. Limited exact-name web searches are not
-   clearance and no exclusivity is claimed.
-5. The unscoped npm coordinate returned E404 but is not owned or reserved. Initial registration is
-   not authorized and npm Trusted Publishing cannot be configured until the package exists.
-6. Real-registry `npx cydetix` and global-install checks, remote plugin/marketplace checks, and live
-   supported-host invocation tests remain unexecuted.
-7. This phase expressly withholds publication authorization.
+1. Hardened Docker validation could not execute because the Docker Desktop Linux daemon was
+   unavailable; skipped sandbox tests remain non-passing evidence.
+2. The hosted Node 22/24 Windows, Ubuntu, and macOS matrix, CodeQL, Scorecard, external
+   Action-consumer, and attestations have not executed for the candidate commit.
+3. Current changes and preview artifacts remain an uncommitted preview until the local candidate
+   commit is created and reviewed.
+4. Registry ownership, package contents, and dist-tags were not rechecked or changed in this
+   no-publication implementation run.
+5. Remote plugin/marketplace checks and live Codex, Claude Code, Cursor, Copilot, and Windsurf host
+   invocation tests remain externally unverified.
+6. Formal name/trademark/legal review is not complete; no exclusivity is claimed.
+7. This phase expressly withholds tag, push, publication, dist-tag, and GitHub release
+   authorization.
 
 ## 29. npm availability
 
-Exact command, run again on 2026-09-06:
+Historical command, run on 2026-09-06:
 
 ```bash
 npm view cydetix --json
 ```
 
-Exact result class: npm `E404 Not Found` for `https://registry.npmjs.org/cydetix`; the response also
-notes that the resource may be absent or inaccessible to the caller. This is only point-in-time
-availability evidence. It does not establish ownership, legitimate registrability, reservation,
-trademark clearance, or permission to publish.
+That historical lookup observed `cydetix@0.6.0-alpha.1`. It is not evidence of current registry
+contents or dist-tags. Registry state must be rechecked during a separately authorized release
+review; this candidate preparation neither publishes nor changes a dist-tag.
 
 If the exact coordinate is occupied, protected, unavailable, or conflicting at the next check, stop.
 Do not use a scoped fallback or expose an owner in the normal command. A different identity requires
@@ -423,8 +422,10 @@ explicit user approval.
 
 ## 30. Next publication actions
 
-1. Obtain approved public Git author metadata and review any history correction before executing it.
-2. Review the full diff, create a clean commit, and rerun all local gates and `release:artifacts`.
+1. Review the local alpha.6 candidate commit and rerun hardened Docker validation with the approved
+   immutable image once the Docker daemon is available.
+2. Run the configured Node 22/24 Windows, Ubuntu, and macOS hosted matrix against the exact
+   candidate commit.
 3. Complete formal name/legal review and recheck `npm view cydetix --json` immediately before any
    separately authorized registration.
 4. Create/configure the intended public GitHub repository and security controls; run all hosted

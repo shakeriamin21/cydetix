@@ -21,13 +21,13 @@ function targets(context: SetupContext) {
   };
 }
 
-function rule(version: string): string {
+function rule(context: SetupContext): string {
   return `---
 description: Use Cydetix for software security reviews, vulnerabilities, authentication, authorization, secrets, dependencies, supply chain, CI/CD, deployment readiness, hardening, and explicit security remediation.
 alwaysApply: false
 ---
 
-${agentInstructions(version)}`;
+${agentInstructions(context)}`;
 }
 
 async function integrationState(context: SetupContext) {
@@ -62,15 +62,7 @@ async function change(
     )
   )
     changed.push(target.config);
-  if (
-    await writeManagedFile(
-      context.projectBoundary,
-      target.rule,
-      rule(context.packageVersion),
-      remove,
-      dryRun,
-    )
-  )
+  if (await writeManagedFile(context.projectBoundary, target.rule, rule(context), remove, dryRun))
     changed.push(target.rule);
   const after = dryRun
     ? remove

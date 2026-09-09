@@ -12,14 +12,15 @@ requires CLI 11.5.1+ and Node 22.14+ for trusted publishing; the workflow uses s
 checks the npm CLI before publishing. The approved public `package.json` repository URL must exactly
 match the GitHub repository configured at npm.
 
-The exact unscoped package exists as `cydetix@0.6.0-alpha.1`. The immutable alpha.2 and alpha.3
-attempts failed at publication configuration and history scope respectively. Alpha.4 completed its
-verification, artifact, checksum, and attestation gates, then failed before registry authentication
-because its relative tarball package spec lacked `./`; its draft prerelease remained non-public.
-None published to npm. Before releasing alpha.5, an authorized maintainer must independently confirm
-that npm Trusted Publishing is bound to `shakeriamin21/cydetix`, `.github/workflows/release.yml`,
-and the protected `release` environment. Repository configuration alone does not prove the external
-npm setting or a successful OIDC publication.
+A historical 2026-09-06 check observed `cydetix@0.6.0-alpha.1`; current registry state must be
+rechecked before release. The immutable alpha.2 and alpha.3 attempts failed at publication
+configuration and history scope respectively. Alpha.4 completed its verification, artifact,
+checksum, and attestation gates, then failed before registry authentication because its relative
+tarball package spec lacked `./`; its draft prerelease remained non-public. Those attempts did not
+publish to npm. Before releasing alpha.6, an authorized maintainer must independently confirm that
+npm Trusted Publishing is bound to `shakeriamin21/cydetix`, `.github/workflows/release.yml`, and the
+protected `release` environment. Repository configuration alone does not prove the external npm
+setting or a successful OIDC publication.
 
 Do not add a temporary long-lived npm token to `release.yml`. See
 [the npm package and Trusted Publishing plan](../NPM_BOOTSTRAP.md).
@@ -82,9 +83,9 @@ git switch main
 git pull --ff-only
 git rev-parse HEAD
 git status --short
-git tag -a v0.6.0-alpha.5 -m "Cydetix v0.6.0-alpha.5"
-git show --no-patch --decorate v0.6.0-alpha.5
-git push origin v0.6.0-alpha.5
+git tag -a v0.6.0-alpha.6 -m "Cydetix v0.6.0-alpha.6"
+git show --no-patch --decorate v0.6.0-alpha.6
+git push origin v0.6.0-alpha.6
 ```
 
 The tag triggers `.github/workflows/release.yml`. It re-verifies the approved identity, annotated

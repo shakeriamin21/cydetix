@@ -4,10 +4,17 @@ export interface LocalIntegrationState {
     readonly schemaVersion: "1.0.0";
     readonly status: LocalIntegrationStatus;
     readonly packageVersion: string;
+    readonly runtime: {
+        readonly packageRoot: string;
+        readonly entrypoint: string;
+        readonly nodeExecutable: string;
+        readonly version: string;
+    };
     readonly updatedAt: string;
     readonly hosts: Partial<Record<AgentId, IntegrationState>>;
 }
 export declare function integrationStatePath(projectRoot: string): string;
 export declare function readIntegrationState(projectBoundary: TrustedIntegrationRoot): Promise<LocalIntegrationState | undefined>;
 export declare function writeIntegrationState(projectBoundary: TrustedIntegrationRoot, state: LocalIntegrationState): Promise<void>;
+export declare function removeIntegrationState(projectBoundary: TrustedIntegrationRoot): Promise<void>;
 //# sourceMappingURL=state.d.ts.map

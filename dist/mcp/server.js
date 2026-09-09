@@ -1,4 +1,4 @@
-import path from "node:path";
+import { lstat, realpath } from "node:fs/promises";
 import { createInterface } from "node:readline";
 import { PRODUCT } from "../core/brand.js";
 import { scanRepository } from "../core/engine.js";
@@ -6,8 +6,8 @@ import { RULE_BY_ID } from "../rule-engine/catalogue.js";
 import { runRemediation } from "../remediation/fix.js";
 import { renderHuman, renderRemediationHuman } from "../reporting/human.js";
 import { terminalSafe } from "../reporting/terminal.js";
+import { createBoundary, dangerousRepositoryPath, isWithinRoot, resolveInside, } from "../repository-discovery/boundary.js";
 const MAX_REQUEST_CHARACTERS = 1_048_576;
-const MCP_PROJECT_ROOT = path.resolve(process.cwd());
 function isJsonRpcRequest(value) {
     if (typeof value !== "object" || value === null || Array.isArray(value))
         return false;
@@ -27,7 +27,7 @@ export const CYDETIX_MCP_TOOLS = [
             properties: {
                 path: {
                     type: "string",
-                    description: "Project directory. Defaults to the MCP server working directory.",
+                    description: "Project-relative directory. Defaults to the configured project root.",
                 },
             },
         },
@@ -47,7 +47,7 @@ export const CYDETIX_MCP_TOOLS = [
             properties: {
                 path: {
                     type: "string",
-                    description: "Project directory. Defaults to the MCP server working directory.",
+                    description: "Project-relative directory. Defaults to the configured project root.",
                 },
                 finding: {
                     type: "string",
@@ -108,13 +108,18 @@ function optionalString(value, field) {
         throw new Error(`${field} must be a non-empty string.`);
     return value;
 }
-function targetFrom(arguments_) {
-    const requested = optionalString(arguments_.path, "path") ?? MCP_PROJECT_ROOT;
-    const target = path.resolve(MCP_PROJECT_ROOT, requested);
-    const relative = path.relative(MCP_PROJECT_ROOT, target);
-    if (relative.startsWith(`..${path.sep}`) || relative === ".." || path.isAbsolute(relative))
-        throw new Error("MCP project path must stay within the server working directory.");
-    return target;
+async function targetFrom(context, arguments_) {
+    const requested = optionalString(arguments_.path, "path") ?? ".";
+    if (dangerousRepositoryPath(requested) !== undefined)
+        throw new Error("MCP project path must stay within the configured project root.");
+    const target = resolveInside(context.projectBoundary, requested);
+    const metadata = await lstat(target).catch(() => undefined);
+    if (metadata === undefined || !metadata.isDirectory() || metadata.isSymbolicLink())
+        throw new Error("MCP project path must be a real directory within the configured project root.");
+    const canonical = await realpath(target);
+    if (!isWithinRoot(context.projectBoundary.root, canonical))
+        throw new Error("MCP project path must stay within the configured project root.");
+    return canonical;
 }
 function toolResult(text, structuredContent) {
     return {
@@ -122,10 +127,10 @@ function toolResult(text, structuredContent) {
         structuredContent,
     };
 }
-async function callTool(name, rawArguments) {
+async function callTool(context, name, rawArguments) {
     const arguments_ = parameters(rawArguments);
     if (name === "cydetix_scan") {
-        const report = await scanRepository({ path: targetFrom(arguments_) });
+        const report = await scanRepository({ path: await targetFrom(context, arguments_) });
         return toolResult(renderHuman(report), { report });
     }
     if (name === "cydetix_fix") {
@@ -135,7 +140,7 @@ async function callTool(name, rawArguments) {
         }
         const finding = optionalString(arguments_.finding, "finding");
         const report = await runRemediation({
-            path: targetFrom(arguments_),
+            path: await targetFrom(context, arguments_),
             dryRun: !apply,
             applySafe: apply,
             nonInteractive: true,
@@ -154,7 +159,7 @@ async function callTool(name, rawArguments) {
         }
         if (fingerprint === undefined)
             throw new Error("ruleId or finding is required.");
-        const report = await scanRepository({ path: targetFrom(arguments_) });
+        const report = await scanRepository({ path: await targetFrom(context, arguments_) });
         const finding = [...report.findings, ...report.suppressedFindings].find((candidate) => candidate.fingerprint === fingerprint);
         if (finding === undefined)
             throw new Error("Finding fingerprint was not produced by this scan.");
@@ -168,7 +173,7 @@ function response(id, result) {
 function failure(id, code, message) {
     return { jsonrpc: "2.0", id, error: { code, message: terminalSafe(message) } };
 }
-export async function handleMcpRequest(request) {
+export async function handleMcpRequest(request, context) {
     if (request.id === undefined)
         return undefined;
     const id = request.id;
@@ -191,7 +196,7 @@ export async function handleMcpRequest(request) {
             const name = optionalString(params.name, "name");
             if (name === undefined)
                 return failure(id, -32_602, "Tool name is required.");
-            return response(id, await callTool(name, params.arguments));
+            return response(id, await callTool(context, name, params.arguments));
         }
         return failure(id, -32_601, `Method not found: ${request.method}`);
     }
@@ -199,8 +204,23 @@ export async function handleMcpRequest(request) {
         return failure(id, -32_602, error instanceof Error ? error.message : String(error));
     }
 }
-export async function runMcpServer() {
+export function assertRequiredVersion(requiredVersion) {
+    if (requiredVersion === undefined)
+        return;
+    if (requiredVersion.trim() === "" || requiredVersion !== PRODUCT.version)
+        throw new Error(`Cydetix MCP version mismatch: required ${requiredVersion || "<empty>"}, running ${PRODUCT.version}.`);
+}
+export async function createMcpServerContext(options = {}) {
+    assertRequiredVersion(options.requiredVersion);
+    return {
+        projectBoundary: await createBoundary(options.projectRoot ?? "."),
+        ...(options.requiredVersion === undefined ? {} : { requiredVersion: options.requiredVersion }),
+    };
+}
+export async function runMcpServer(options = {}) {
     process.env.CYDETIX_MCP = "1";
+    process.env.CYDETIX_AGENT_SUBPROCESS = "1";
+    const context = await createMcpServerContext(options);
     const input = createInterface({ input: process.stdin, crlfDelay: Infinity, terminal: false });
     for await (const line of input) {
         if (line.trim() === "")
@@ -222,7 +242,7 @@ export async function runMcpServer() {
             continue;
         }
         const request = parsed;
-        const result = await handleMcpRequest(request);
+        const result = await handleMcpRequest(request, context);
         if (result !== undefined)
             process.stdout.write(`${JSON.stringify(result)}\n`);
     }

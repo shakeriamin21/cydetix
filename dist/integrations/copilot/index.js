@@ -19,7 +19,7 @@ async function integrationState(context) {
 async function change(context, remove, dryRun) {
     const before = await integrationState(context);
     const target = targets(context);
-    const changed = await installSkill(context.projectBoundary, target.skill, false, remove, dryRun);
+    const changed = await installSkill(context.projectBoundary, target.skill, false, remove, dryRun, context);
     if (await updateJsonServer(context.projectBoundary, target.config, "servers", pinnedMcpServer(context, true), remove, dryRun))
         changed.push(target.config);
     const after = dryRun

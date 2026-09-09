@@ -13,8 +13,15 @@ That's it.
 Cydetix immediately scans the current project. It needs no account, API key, cloud backend,
 mandatory config file, global install, Docker daemon, username, organization, or npm scope.
 
-If compatible AI coding agents are installed, the first interactive run can connect Cydetix after
-the scan and one concise permission question. After that, simply ask:
+One-shot `npx` use remains a human scanner path. AI integration requires a persistent installation
+so routine agent execution never resolves or installs packages at runtime:
+
+```bash
+npm install -g cydetix
+cydetix setup
+```
+
+After setup, simply ask:
 
 ```text
 Check this project for security issues.
@@ -24,19 +31,16 @@ You do not need to say “Use Cydetix.” Supported agents can select the Cydeti
 from the meaning of a security request. Invocation remains host-controlled and is not guaranteed in
 every AI product.
 
-For CLI-only use, install globally if you prefer:
+For CLI-only use, the same global installation remains optional:
 
 ```bash
 npm install -g cydetix
 cydetix
 ```
 
-The current source is the `0.6.0-alpha.5` replacement release candidate. The existing public npm
-package is `cydetix@0.6.0-alpha.1`; the immutable alpha.2, alpha.3, and alpha.4 GitHub Actions
-attempts all stopped before npm publication. Alpha.4 completed verification and artifact
-attestations but npm parsed its non-`./` relative tarball path as GitHub shorthand before registry
-authentication. Its draft GitHub prerelease remained non-public. This preparation does not publish
-alpha.5 or create a GitHub release.
+The current source is the `0.6.0-alpha.6` release candidate. This preparation does not create a tag,
+publish to npm, create a GitHub release, or move a dist-tag. Registry state must be checked again
+during separate release approval; this document does not claim an unpublished version is public.
 
 ## What the default command does
 
@@ -94,17 +98,21 @@ Setup parses and preserves unrelated host configuration, uses transient restrict
 atomic writes, validates after writing, rolls back on failure, and changes only Cydetix-owned
 entries. Repeated setup is idempotent.
 
-Configured MCP launchers pin the exact package version used during setup:
+Setup canonicalizes and verifies the persistent package, its regular non-symlink entrypoint, the
+Node executable, the exact package identity/version, and the project root. Configured MCP launchers
+then use process-style command and argument fields equivalent to:
 
 ```text
-cydetix@0.6.0-alpha.5
+<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 0.6.0-alpha.6
 ```
 
-This avoids silently executing an arbitrary future release. The tradeoff is that offline startup
-requires that pinned version to remain installed or cached. To review and install an update, run:
+They contain no npm/npx command, registry URL, downloader, secret, or shell indirection. Routine MCP
+startup is offline and does not depend on PATH or a shell profile. An exact version mismatch fails
+before the server accepts requests. To review and install an update, update the persistent install
+outside the agent and rerun:
 
 ```bash
-npx cydetix@latest setup
+cydetix setup
 ```
 
 No self-updater is installed.
@@ -115,7 +123,8 @@ No self-updater is installed.
   surfaces, Claude Code, current Copilot surfaces, Cursor, and current Windsurf/Devin surfaces where
   the host enables them.
 - Tier B — MCP: any compatible host that accepts the generated pinned stdio configuration.
-- Tier C — skill/rules plus shell: the host runs the pinned Cydetix CLI and consumes JSON.
+- Tier C — skill/rules plus subprocess: the host runs setup-managed exact Node + entrypoint argv and
+  consumes JSON.
 - Tier D — CLI only: the user runs `cydetix` directly.
 
 Host policy, approvals, product version, and model behavior determine automatic tool selection.
@@ -123,20 +132,22 @@ Cydetix does not claim that every AI can use it automatically.
 
 ## Generic MCP and shell fallback
 
-Generate a portable pinned MCP entry with:
+Generate a project-bound, exact-runtime MCP entry with:
 
 ```bash
 cydetix setup --agent generic-mcp --yes
 ```
 
-The resulting `.cydetix/mcp.json` contains no secret. Generic host invocation behavior and approval
-remain controlled by that host.
+The resulting `.cydetix/mcp.json` contains no secret and uses the exact verified Node executable and
+Cydetix JS entrypoint. Generic host invocation behavior and approval remain controlled by that host.
 
 For agents with shell execution but no MCP, use machine output from the same engine:
 
-```bash
-cydetix --json
-```
+Setup-generated host instructions contain an exact argv array equivalent to
+`<absolute-node> <absolute-entrypoint> scan <canonical-project-root> --offline --format json --non-interactive`,
+with `CYDETIX_AGENT_SUBPROCESS=1`. Do not substitute `cydetix` from PATH or invoke npm/npx. If the
+managed runtime is unavailable inside the host boundary, run `cydetix setup` outside the agent and
+retry; never weaken the agent sandbox.
 
 There is no adapter-specific scanner.
 
@@ -167,12 +178,13 @@ cydetix --details
 cydetix --json
 cydetix --sarif
 cydetix doctor
+cydetix doctor --agent --project-root .
 ```
 
 Specific execution can be requested when troubleshooting npm cache behavior:
 
 ```bash
-npx cydetix@0.6.0-alpha.5
+npx cydetix@0.6.0-alpha.6
 ```
 
 ## Security and limitations
@@ -185,9 +197,10 @@ Cydetix does not certify a project as secure or production-ready. Unsupported or
 behavior remains `UNKNOWN`, `NOT_APPLICABLE`, or uncovered as appropriate. Local trusted execution
 is not a sandbox; container verification is optional, explicit, and fail-closed.
 
-The exact unscoped package exists on npm; `npm view cydetix --json` returned `cydetix@0.6.0-alpha.1`
-on 2026-09-06. Package registration is not product-name exclusivity or trademark clearance. Legal
-clearance has not been performed and no exclusivity is claimed.
+A historical `npm view cydetix --json` check returned `cydetix@0.6.0-alpha.1` on 2026-09-06. That is
+not a current registry-state claim; the exact coordinate and dist-tags must be rechecked during
+separate release approval. Package registration is not product-name exclusivity or trademark
+clearance. Legal clearance has not been performed and no exclusivity is claimed.
 
 Read the [security model](docs/SECURITY_MODEL.md), [threat model](THREAT_MODEL.md),
 [autofix policy](AUTOFIX_POLICY.md), [validation record](docs/VALIDATION.md), and

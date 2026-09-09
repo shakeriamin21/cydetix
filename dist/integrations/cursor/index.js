@@ -7,13 +7,13 @@ function targets(context) {
         rule: path.join(context.projectRoot, ".cursor", "rules", "cydetix.mdc"),
     };
 }
-function rule(version) {
+function rule(context) {
     return `---
 description: Use Cydetix for software security reviews, vulnerabilities, authentication, authorization, secrets, dependencies, supply chain, CI/CD, deployment readiness, hardening, and explicit security remediation.
 alwaysApply: false
 ---
 
-${agentInstructions(version)}`;
+${agentInstructions(context)}`;
 }
 async function integrationState(context) {
     const target = targets(context);
@@ -28,7 +28,7 @@ async function change(context, remove, dryRun) {
     const changed = [];
     if (await updateJsonServer(context.projectBoundary, target.config, "mcpServers", pinnedMcpServer(context), remove, dryRun))
         changed.push(target.config);
-    if (await writeManagedFile(context.projectBoundary, target.rule, rule(context.packageVersion), remove, dryRun))
+    if (await writeManagedFile(context.projectBoundary, target.rule, rule(context), remove, dryRun))
         changed.push(target.rule);
     const after = dryRun
         ? remove

@@ -5,6 +5,19 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+## [0.6.0-alpha.6] - 2026-09-09
+
+### Fixed
+
+- Replaced runtime npm/npx MCP launchers with exact canonical Node and verified persistent Cydetix
+  entrypoint execution, including fail-closed exact-version startup.
+- Made the canonical MCP project root explicit and independent of the host process working directory
+  while preserving path, symlink, mutation-intent, and remediation verification guards.
+- Added strict non-interactive JSON/SARIF subprocess behavior that works without the npm global bin
+  on PATH and suppresses recursive AI integration setup.
+- Added persistent-runtime identity checks, agent doctor diagnostics, wrong-cwd/path-space/non-TTY
+  regressions, package-manager spawn traps, and packed-artifact agent integration validation.
+
 ## [0.6.0-alpha.5] - 2026-09-07
 
 ### Changed

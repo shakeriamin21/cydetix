@@ -8,6 +8,7 @@ import { renderSarif } from "../dist/reporting/sarif.js";
 import { resolveSarifMultitoolExecutable } from "../dist/validation/sarif-multitool.js";
 
 const multitoolPath = await resolveSarifMultitoolExecutable();
+const PROCESS_TIMEOUT_MILLISECONDS = 210_000;
 const temporary = await mkdtemp(path.join(os.tmpdir(), "cydetix-sarif-"));
 try {
   const fixtures = [
@@ -64,12 +65,12 @@ try {
     await writeFile(sarifPath, renderSarif(report), "utf8");
     const result = spawnSync(
       multitoolPath,
-      ["validate", "--threads", "1", sarifPath, "--quiet", "--level", "Error"],
+      ["validate", sarifPath, "--threads", "1", "--quiet", "--level", "Error"],
       {
         encoding: "utf8",
         shell: false,
         windowsHide: true,
-        timeout: 90_000,
+        timeout: PROCESS_TIMEOUT_MILLISECONDS,
         maxBuffer: 1_000_000,
         stdio: ["ignore", "pipe", "pipe"],
       },

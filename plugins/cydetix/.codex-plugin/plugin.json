@@ -1,6 +1,6 @@
 {
   "name": "cydetix",
-  "version": "0.6.0-alpha.5",
+  "version": "0.6.0-alpha.6",
   "description": "Deterministic project security analysis and policy-bounded remediation backed by the Cydetix CLI.",
   "author": {
     "name": "Cydetix contributors"
@@ -8,7 +8,6 @@
   "license": "Apache-2.0",
   "keywords": ["application-security", "authentication", "supply-chain", "sbom", "sarif"],
   "skills": "./skills/",
-  "mcpServers": "./.mcp.json",
   "interface": {
     "displayName": "Cydetix",
     "shortDescription": "Deterministic local security checks and safe fixes.",

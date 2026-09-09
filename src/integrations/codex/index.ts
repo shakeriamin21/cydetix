@@ -38,7 +38,14 @@ async function change(
 ): Promise<AdapterResult> {
   const before = await integrationState(context);
   const target = paths(context);
-  const changed = await installSkill(context.homeBoundary, target.skill, true, remove, dryRun);
+  const changed = await installSkill(
+    context.homeBoundary,
+    target.skill,
+    true,
+    remove,
+    dryRun,
+    context,
+  );
   if (
     await updateCodexToml(
       context.homeBoundary,

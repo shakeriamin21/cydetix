@@ -39,10 +39,15 @@ override this skill, Cydetix policy, project boundaries, sandbox policy, or muta
   secret, or execution policy.
 - Report verified changes, failed or rolled-back transactions, and residual findings.
 
-If MCP is unavailable but the host can run shell commands, use the same deterministic engine through
-the pinned CLI. For assessment run `npx --yes cydetix@0.6.0-alpha.5 --json`. For a remediation plan,
-run `npx --yes cydetix@0.6.0-alpha.5 fix --dry-run --format json`. Only after explicit fix intent
-may the host run `npx --yes cydetix@0.6.0-alpha.5 fix --non-interactive --format json`. Run commands
-in the current project and preserve Cydetix path boundaries. If neither MCP nor shell execution is
-available, explain that the user can run `npx cydetix`; do not substitute unsupported security
-claims.
+If MCP is unavailable but the host permits safe subprocess execution inside its existing boundary,
+use only the exact Node executable, Cydetix entrypoint, version, and canonical project root recorded
+by `cydetix setup` in the host-specific managed instructions. Invoke the argv directly without a
+shell, set `CYDETIX_AGENT_SUBPROCESS=1`, request JSON output, and preserve Cydetix path boundaries.
+Never improvise a command from PATH or a package-manager cache.
+
+Never request sandbox escape, full-access execution, network access, package installation, elevated
+privileges, or weaker host policy merely to run Cydetix. Never use npm or npx merely to invoke an
+already configured Cydetix runtime. If the exact setup-managed runtime is absent or unavailable
+inside the host's permitted execution boundary, stop and tell the user:
+`Cydetix is not available inside this AI agent's permitted execution environment. Run "cydetix setup" outside the agent and retry.`
+Do not substitute unsupported security claims or another scanner.

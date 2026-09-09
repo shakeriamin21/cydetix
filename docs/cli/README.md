@@ -50,8 +50,15 @@ cydetix explain AS-SESSION-001
 cydetix standards
 cydetix ci . --format sarif --fail-on high
 cydetix doctor
+cydetix doctor --agent --project-root .
 cydetix version
 ```
+
+`scan <path> --format json --non-interactive` is the strict agent subprocess contract: stdout is a
+single newline-terminated JSON payload, diagnostics use stderr, stdin/TTY is never required, and no
+automatic integration setup runs. Persistent setup-generated integrations invoke the canonical Node
+executable and installed JS entrypoint directly; they do not rely on PATH, npm, npx, a shell
+profile, or network access.
 
 Each `--verify-command` value is an explicitly authorized non-empty JSON string array. It is invoked
 directly with no shell, fixed repository cwd, stripped environment, no stdin, a timeout, and bounded

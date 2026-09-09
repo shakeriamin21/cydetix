@@ -9,6 +9,7 @@ import {
   readRegularFile,
   resolveTrustedIntegrationPath,
 } from "../../src/integrations/common.js";
+import { isEphemeralNpxPath, PERSISTENT_RUNTIME_REQUIRED } from "../../src/integrations/runtime.js";
 import {
   integrationContext,
   INTEGRATION_ADAPTERS,
@@ -76,21 +77,57 @@ describe("universal agent setup", () => {
   });
 
   it("generates shell-free pinned launchers for Windows, Linux, and macOS", () => {
-    const base = {
-      projectRoot: "project",
-      homeDirectory: "home",
-      packageVersion: "0.6.0-alpha.5",
-      executablePath: "",
-    };
-    expect(pinnedMcpServer({ ...base, platform: "win32" })).toEqual({
-      command: "cmd",
-      args: ["/c", "npx", "--yes", "cydetix@0.6.0-alpha.5", "mcp"],
-    });
-    for (const platform of ["linux", "darwin"] as const)
-      expect(pinnedMcpServer({ ...base, platform })).toEqual({
-        command: "npx",
-        args: ["--yes", "cydetix@0.6.0-alpha.5", "mcp"],
+    for (const fixture of [
+      {
+        platform: "Windows",
+        projectRoot: "C:\\Users\\Test User\\Projects\\Secure App",
+        packageRoot: "C:\\Program Files\\nodejs\\node_modules\\cydetix",
+        nodeExecutable: "C:\\Program Files\\nodejs\\node.exe",
+        entrypoint: "C:\\Program Files\\nodejs\\node_modules\\cydetix\\dist\\cli\\main.js",
+      },
+      {
+        platform: "Linux",
+        projectRoot: "/home/test-user/Projects/Secure App",
+        packageRoot: "/usr/local/lib/node_modules/cydetix",
+        nodeExecutable: "/usr/local/bin/node",
+        entrypoint: "/usr/local/lib/node_modules/cydetix/dist/cli/main.js",
+      },
+      {
+        platform: "macOS",
+        projectRoot: "/Users/Test User/Projects/Secure App",
+        packageRoot: "/opt/homebrew/lib/node_modules/cydetix",
+        nodeExecutable: "/opt/homebrew/bin/node",
+        entrypoint: "/opt/homebrew/lib/node_modules/cydetix/dist/cli/main.js",
+      },
+    ]) {
+      const context = {
+        projectRoot: fixture.projectRoot,
+        packageVersion: "0.6.0-alpha.6",
+        runtime: {
+          packageRoot: fixture.packageRoot,
+          packageJsonPath: `${fixture.packageRoot}/package.json`,
+          nodeExecutable: fixture.nodeExecutable,
+          entrypoint: fixture.entrypoint,
+          version: "0.6.0-alpha.6",
+          source: "current-installation" as const,
+        },
+      };
+      const server = pinnedMcpServer(context);
+      expect(server).toEqual({
+        command: fixture.nodeExecutable,
+        args: [
+          fixture.entrypoint,
+          "mcp",
+          "--project-root",
+          fixture.projectRoot,
+          "--require-version",
+          "0.6.0-alpha.6",
+        ],
       });
+      const generated = JSON.stringify(server).toLowerCase();
+      expect(generated).not.toMatch(/\bnpx\b|\bnpm\b|registry\./u);
+      expect(fixture.platform).toMatch(/Windows|Linux|macOS/u);
+    }
   });
 
   for (const id of ["codex", "claude", "cursor", "copilot", "windsurf"] as const) {
@@ -136,10 +173,19 @@ describe("universal agent setup", () => {
     const cursor = JSON.parse(
       await readFile(path.join(project, ".cursor", "mcp.json"), "utf8"),
     ) as { mcpServers: { cydetix: { args: string[] } } };
-    expect(cursor.mcpServers.cydetix.args).toContain("cydetix@0.6.0-alpha.5");
+    expect(cursor.mcpServers.cydetix.args).toEqual(
+      expect.arrayContaining([
+        "mcp",
+        "--project-root",
+        project,
+        "--require-version",
+        "0.6.0-alpha.6",
+      ]),
+    );
     const codex = await readFile(path.join(home, ".codex", "config.toml"), "utf8");
     expect(codex).toContain("[mcp_servers.cydetix]");
-    expect(codex).toContain('"cydetix@0.6.0-alpha.5"');
+    expect(codex).toContain('"--require-version"');
+    expect(codex).toContain('"0.6.0-alpha.6"');
     const copilot = JSON.parse(
       await readFile(path.join(project, ".vscode", "mcp.json"), "utf8"),
     ) as { servers: { cydetix: { type: string } } };
@@ -166,7 +212,7 @@ describe("universal agent setup", () => {
     await mkdir(path.dirname(config), { recursive: true });
     await writeFile(
       config,
-      `${JSON.stringify({ mcpServers: { cydetix: process.platform === "win32" ? { command: "cmd", args: ["/c", "npx", "--yes", "cydetix@0.6.0-alpha.5", "mcp"] } : { command: "npx", args: ["--yes", "cydetix@0.6.0-alpha.5", "mcp"] } } })}\n`,
+      `${JSON.stringify({ mcpServers: { cydetix: { command: "cydetix", args: ["mcp"] } } })}\n`,
     );
     expect((await detection("cursor", project, home)).integration).toBe("partially_configured");
   });
@@ -241,6 +287,25 @@ describe("universal agent setup", () => {
     expect(await readFile(config, "utf8")).toBe("original\n");
   });
 
+  it("does not require user-home access for an explicit project-only MCP setup", async () => {
+    const { project, root } = await environment("cydetix-project-only-");
+    const inaccessibleHome = path.join(root, "home-does-not-exist");
+    const report = await runSetup({
+      projectRoot: project,
+      homeDirectory: inaccessibleHome,
+      executablePath: "",
+      agents: ["generic-mcp"],
+      yes: true,
+      quiet: true,
+    });
+
+    expect(report.verified).toBe(true);
+    expect(await readFile(path.join(project, ".cydetix", "mcp.json"), "utf8")).toContain(
+      "--project-root",
+    );
+    await expect(access(inaccessibleHome)).rejects.toThrow();
+  });
+
   it("accepts a canonical system alias above the trusted integration root", async () => {
     const { root } = await environment("cydetix-macos-alias-");
     const canonicalParent = path.join(root, "private", "var");
@@ -267,7 +332,7 @@ describe("universal agent setup", () => {
       path.join(boundary.root, ".cydetix", "mcp.json"),
     );
     expect(await readFile(path.join(canonicalProject, ".cydetix", "mcp.json"), "utf8")).toContain(
-      "cydetix@0.6.0-alpha.5",
+      "--require-version",
     );
   });
 
@@ -415,6 +480,34 @@ describe("universal agent setup", () => {
     }
   });
 
+  it("never detects, prompts, or mutates integration state in an agent subprocess", async () => {
+    const { project, home } = await environment();
+    await markDetected("cursor", project, home);
+    const previous = process.env.CYDETIX_AGENT_SUBPROCESS;
+    process.env.CYDETIX_AGENT_SUBPROCESS = "1";
+    let prompted = false;
+    try {
+      const report = await runAutomaticIntegration({
+        projectRoot: project,
+        homeDirectory: home,
+        interactive: true,
+        confirm: () => {
+          prompted = true;
+          return true;
+        },
+      });
+      expect(report.results).toHaveLength(0);
+      expect(prompted).toBe(false);
+      await expect(access(path.join(project, ".cursor", "mcp.json"))).rejects.toThrow();
+      await expect(
+        access(path.join(project, ".cydetix", "integration-state.json")),
+      ).rejects.toThrow();
+    } finally {
+      if (previous === undefined) delete process.env.CYDETIX_AGENT_SUBPROCESS;
+      else process.env.CYDETIX_AGENT_SUBPROCESS = previous;
+    }
+  });
+
   it("reports inaccessible host configuration", async () => {
     const { project, home } = await environment();
     await mkdir(path.join(project, ".cursor", "mcp.json"), { recursive: true });
@@ -434,7 +527,7 @@ describe("universal agent setup", () => {
     expect((await detection("cursor", project, home)).integration).toBe("unsupported_version");
   });
 
-  it("generates a portable generic MCP config", async () => {
+  it("generates a project-bound generic MCP config", async () => {
     const { project, home } = await environment();
     const report = await runSetup({
       projectRoot: project,
@@ -446,10 +539,41 @@ describe("universal agent setup", () => {
     });
     expect(report.verified).toBe(true);
     const content = await readFile(path.join(project, ".cydetix", "mcp.json"), "utf8");
-    expect(content).toContain("cydetix@0.6.0-alpha.5");
+    expect(content).toContain('"--project-root"');
+    expect(content).toContain('"--require-version"');
+    expect(content).toContain("0.6.0-alpha.6");
   });
 
-  it("installs a pinned CLI fallback in host instructions", async () => {
+  it("removes a configured generic integration and state without requiring agent selection", async () => {
+    const { project, home } = await environment();
+    await runSetup({
+      projectRoot: project,
+      homeDirectory: home,
+      agents: ["generic-mcp"],
+      yes: true,
+      quiet: true,
+    });
+    const config = path.join(project, ".cydetix", "mcp.json");
+    const state = path.join(project, ".cydetix", "integration-state.json");
+    expect(await readFile(config, "utf8")).toContain("--require-version");
+    expect(await readFile(state, "utf8")).toContain("nodeExecutable");
+
+    const report = await runSetup({
+      projectRoot: project,
+      homeDirectory: home,
+      remove: true,
+      yes: true,
+      quiet: true,
+    });
+    expect(report.selected).toContain("generic-mcp");
+    const after = JSON.parse(await readFile(config, "utf8")) as {
+      mcpServers: Record<string, unknown>;
+    };
+    expect(after.mcpServers.cydetix).toBeUndefined();
+    await expect(access(state)).rejects.toThrow();
+  });
+
+  it("installs an exact direct CLI fallback in host instructions", async () => {
     const { project, home } = await environment();
     await runSetup({
       projectRoot: project,
@@ -460,7 +584,10 @@ describe("universal agent setup", () => {
       quiet: true,
     });
     const rule = await readFile(path.join(project, ".cursor", "rules", "cydetix.mdc"), "utf8");
-    expect(rule).toContain("npx --yes cydetix@0.6.0-alpha.5 --json");
+    expect(rule).toContain("Exact agent subprocess invocation (process API, no shell)");
+    expect(rule).toContain(JSON.stringify(process.execPath));
+    expect(rule).toContain("CYDETIX_AGENT_SUBPROCESS");
+    expect(rule).not.toContain("npx --yes");
   });
 
   it("removes only Cydetix-owned entries", async () => {
@@ -496,5 +623,15 @@ describe("universal agent setup", () => {
     expect(after.theme).toBe("dark");
     expect(after.mcpServers.existing).toEqual({ command: "safe-tool" });
     expect(after.mcpServers.cydetix).toBeUndefined();
+    await expect(
+      access(path.join(project, ".cydetix", "integration-state.json")),
+    ).rejects.toThrow();
+  });
+
+  it("recognizes and rejects ephemeral npx runtime locations", () => {
+    expect(isEphemeralNpxPath(path.join("cache", "_npx", "123", "node_modules", "cydetix"))).toBe(
+      true,
+    );
+    expect(PERSISTENT_RUNTIME_REQUIRED).toContain("persistent local Cydetix installation");
   });
 });

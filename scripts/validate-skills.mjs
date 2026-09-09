@@ -17,6 +17,18 @@ for (const entry of entries) {
   if (content !== pluginContent)
     throw new Error(`Plugin skill differs from portable skill: ${entry.name}`);
   if (content.includes("[TODO:")) throw new Error(`Unfinished placeholder in ${skillPath}`);
+  for (const forbidden of ["npx --yes cydetix", "npm exec cydetix", "npm install cydetix"]) {
+    if (content.includes(forbidden))
+      throw new Error(`Unsafe agent runtime fallback in ${skillPath}: ${forbidden}`);
+  }
+  for (const required of [
+    "CYDETIX_AGENT_SUBPROCESS=1",
+    "Never request sandbox escape",
+    'Run "cydetix setup" outside the agent and',
+  ]) {
+    if (!content.includes(required))
+      throw new Error(`Missing fail-closed agent instruction in ${skillPath}: ${required}`);
+  }
   const frontmatter = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n/);
   if (frontmatter === null) throw new Error(`Missing YAML frontmatter: ${skillPath}`);
   const name = frontmatter[1]?.match(/^name:\s*([^\r\n]+)$/m)?.[1]?.trim();
