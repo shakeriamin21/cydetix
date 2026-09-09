@@ -1,5 +1,5 @@
-import { mkdtempSync, rmSync } from "node:fs";
-import { mkdtemp, rm } from "node:fs/promises";
+import { mkdtempSync, realpathSync, rmSync } from "node:fs";
+import { mkdtemp, realpath, rm } from "node:fs/promises";
 import os from "node:os";
 import path from "node:path";
 
@@ -8,13 +8,13 @@ import { afterAll } from "vitest";
 const tracked = new Set<string>();
 
 export async function temporaryDirectory(prefix: string): Promise<string> {
-  const directory = await mkdtemp(path.join(os.tmpdir(), prefix));
+  const directory = await realpath(await mkdtemp(path.join(os.tmpdir(), prefix)));
   tracked.add(directory);
   return directory;
 }
 
 export function temporaryDirectorySync(prefix: string): string {
-  const directory = mkdtempSync(path.join(os.tmpdir(), prefix));
+  const directory = realpathSync(mkdtempSync(path.join(os.tmpdir(), prefix)));
   tracked.add(directory);
   return directory;
 }

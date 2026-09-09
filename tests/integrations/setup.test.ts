@@ -63,6 +63,17 @@ async function directorySymlink(target: string, link: string): Promise<boolean> 
   }
 }
 
+async function withoutCi<T>(callback: () => Promise<T>): Promise<T> {
+  const previous = process.env.CI;
+  delete process.env.CI;
+  try {
+    return await callback();
+  } finally {
+    if (previous === undefined) delete process.env.CI;
+    else process.env.CI = previous;
+  }
+}
+
 describe("universal agent setup", () => {
   it("reports no AI hosts installed", async () => {
     const { project, home } = await environment();
@@ -404,34 +415,38 @@ describe("universal agent setup", () => {
   });
 
   it("persists a decline and does not configure the host", async () => {
-    const { project, home } = await environment();
-    await markDetected("cursor", project, home);
-    const report = await runAutomaticIntegration({
-      projectRoot: project,
-      homeDirectory: home,
-      executablePath: "",
-      interactive: true,
-      confirm: () => false,
+    await withoutCi(async () => {
+      const { project, home } = await environment();
+      await markDetected("cursor", project, home);
+      const report = await runAutomaticIntegration({
+        projectRoot: project,
+        homeDirectory: home,
+        executablePath: "",
+        interactive: true,
+        confirm: () => false,
+      });
+      expect(report.cancelled).toBe(true);
+      expect(
+        (await readIntegrationState(await createTrustedIntegrationRoot(project)))?.status,
+      ).toBe("declined");
+      expect((await detection("cursor", project, home)).integration).toBe("not_configured");
     });
-    expect(report.cancelled).toBe(true);
-    expect((await readIntegrationState(await createTrustedIntegrationRoot(project)))?.status).toBe(
-      "declined",
-    );
-    expect((await detection("cursor", project, home)).integration).toBe("not_configured");
   });
 
   it("connects and verifies after one accepted prompt", async () => {
-    const { project, home } = await environment();
-    await markDetected("cursor", project, home);
-    const report = await runAutomaticIntegration({
-      projectRoot: project,
-      homeDirectory: home,
-      executablePath: "",
-      interactive: true,
-      confirm: () => true,
+    await withoutCi(async () => {
+      const { project, home } = await environment();
+      await markDetected("cursor", project, home);
+      const report = await runAutomaticIntegration({
+        projectRoot: project,
+        homeDirectory: home,
+        executablePath: "",
+        interactive: true,
+        confirm: () => true,
+      });
+      expect(report.verified).toBe(true);
+      expect(report.results).toHaveLength(1);
     });
-    expect(report.verified).toBe(true);
-    expect(report.results).toHaveLength(1);
   });
 
   it("never prompts or writes in non-interactive execution", async () => {
