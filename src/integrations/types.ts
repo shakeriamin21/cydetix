@@ -1,4 +1,55 @@
-export type AgentId = "codex" | "claude" | "cursor" | "copilot" | "windsurf" | "generic-mcp";
+export type AgentId =
+  | "codex"
+  | "claude"
+  | "cursor"
+  | "copilot"
+  | "windsurf"
+  | "gemini"
+  | "cline"
+  | "roo"
+  | "continue"
+  | "goose"
+  | "generic-mcp";
+
+export type CompatibilityTier =
+  "tier-1-native-mcp" | "tier-2-deterministic-cli" | "tier-3-ci-report";
+
+export interface AgentCapabilities {
+  readonly mcpStdio: boolean;
+  readonly mcpHttp: boolean;
+  readonly projectScopedConfig: boolean;
+  readonly userScopedConfig: boolean;
+  readonly skills: boolean;
+  readonly instructionFiles: boolean;
+}
+
+export interface CompatibilityTierDefinition {
+  readonly id: CompatibilityTier;
+  readonly level: 1 | 2 | 3;
+  readonly displayName: string;
+  readonly description: string;
+}
+
+export const COMPATIBILITY_TIERS: readonly CompatibilityTierDefinition[] = [
+  {
+    id: "tier-1-native-mcp",
+    level: 1,
+    displayName: "Tier 1 - Native MCP",
+    description: "Structured local MCP tools over stdio with full Cydetix integration.",
+  },
+  {
+    id: "tier-2-deterministic-cli",
+    level: 2,
+    displayName: "Tier 2 - Deterministic CLI",
+    description: "Exact persistent Node and Cydetix entrypoint invocation with strict JSON output.",
+  },
+  {
+    id: "tier-3-ci-report",
+    level: 3,
+    displayName: "Tier 3 - CI/report consumption",
+    description: "Consumes SARIF, JSON, or CI results without claiming interactive integration.",
+  },
+] as const;
 
 export type InstallationState = "installed" | "not_installed";
 export type IntegrationState =
@@ -55,7 +106,11 @@ export interface AdapterResult {
 export interface IntegrationAdapter {
   readonly id: AgentId;
   readonly displayName: string;
+  readonly compatibilityTier: CompatibilityTier;
+  readonly capabilities: AgentCapabilities;
+  configTargets(context: SetupContext): readonly string[];
   detect(context: SetupContext): AgentDetection | Promise<AgentDetection>;
   install(context: SetupContext, dryRun: boolean): Promise<AdapterResult>;
-  uninstall(context: SetupContext, dryRun: boolean): Promise<AdapterResult>;
+  verify(context: SetupContext): boolean | Promise<boolean>;
+  remove(context: SetupContext, dryRun: boolean): Promise<AdapterResult>;
 }

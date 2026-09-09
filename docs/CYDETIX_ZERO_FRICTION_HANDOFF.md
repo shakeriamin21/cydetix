@@ -1,7 +1,7 @@
 # Cydetix zero-friction UX handoff
 
-Updated: 2026-09-09 Version: `0.6.0-alpha.6` Final verdict: **LOCAL AGENT FIX VALIDATED; PUBLICATION
-GATES OPEN**
+Updated: 2026-09-09 Version: `0.6.0-alpha.7` Final verdict: **UNIVERSAL LOCAL AGENT CANDIDATE;
+PUBLICATION GATES OPEN**
 
 This verdict means not ready to bootstrap or publish the public repository. The Cydetix rename,
 zero-config CLI, deterministic MCP layer, direct persistent agent runtime, host adapters, and local
@@ -422,7 +422,7 @@ explicit user approval.
 
 ## 30. Next publication actions
 
-1. Review the local alpha.6 candidate commit and rerun hardened Docker validation with the approved
+1. Review the local alpha.7 candidate commit and rerun hardened Docker validation with the approved
    immutable image once the Docker daemon is available.
 2. Run the configured Node 22/24 Windows, Ubuntu, and macOS hosted matrix against the exact
    candidate commit.

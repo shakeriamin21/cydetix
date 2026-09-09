@@ -2,10 +2,10 @@
 
 Security for AI-built software.
 
-## Quick Start
+## One-off scanner
 
 ```bash
-npx cydetix
+npx cydetix@alpha
 ```
 
 That's it.
@@ -13,11 +13,13 @@ That's it.
 Cydetix immediately scans the current project. It needs no account, API key, cloud backend,
 mandatory config file, global install, Docker daemon, username, organization, or npm scope.
 
-One-shot `npx` use remains a human scanner path. AI integration requires a persistent installation
-so routine agent execution never resolves or installs packages at runtime:
+## Persistent AI-agent runtime
+
+AI integration requires a persistent installation so routine agent execution never resolves or
+installs packages at runtime:
 
 ```bash
-npm install -g cydetix
+npm install -g cydetix@0.6.0-alpha.7
 cydetix setup
 ```
 
@@ -34,13 +36,13 @@ every AI product.
 For CLI-only use, the same global installation remains optional:
 
 ```bash
-npm install -g cydetix
+npm install -g cydetix@0.6.0-alpha.7
 cydetix
 ```
 
-The current source is the `0.6.0-alpha.6` release candidate. This preparation does not create a tag,
-publish to npm, create a GitHub release, or move a dist-tag. Registry state must be checked again
-during separate release approval; this document does not claim an unpublished version is public.
+The current source is the unpublished `0.6.0-alpha.7` development candidate. The immutable
+`0.6.0-alpha.6` release remains historical. This preparation does not create or move a tag, publish
+to npm, create a GitHub release, or move a dist-tag.
 
 ## What the default command does
 
@@ -89,6 +91,8 @@ Explicit management is available through:
 
 ```bash
 cydetix setup
+cydetix setup --agent auto
+cydetix setup --agent all --yes
 cydetix setup --status
 cydetix setup --verify
 cydetix setup --remove
@@ -103,7 +107,7 @@ Node executable, the exact package identity/version, and the project root. Confi
 then use process-style command and argument fields equivalent to:
 
 ```text
-<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 0.6.0-alpha.6
+<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 0.6.0-alpha.7
 ```
 
 They contain no npm/npx command, registry URL, downloader, secret, or shell indirection. Routine MCP
@@ -117,29 +121,47 @@ cydetix setup
 
 No self-updater is installed.
 
-## Compatible AI tiers
+## Compatibility
 
-- Tier A — MCP plus a model-invoked skill/plugin: OpenAI Codex, applicable ChatGPT/Codex plugin
-  surfaces, Claude Code, current Copilot surfaces, Cursor, and current Windsurf/Devin surfaces where
-  the host enables them.
-- Tier B — MCP: any compatible host that accepts the generated pinned stdio configuration.
-- Tier C — skill/rules plus subprocess: the host runs setup-managed exact Node + entrypoint argv and
-  consumes JSON.
-- Tier D — CLI only: the user runs `cydetix` directly.
+Cydetix provides native integration with supported MCP coding agents, plus Generic MCP and
+deterministic CLI fallbacks for additional environments. It does not claim support for every AI
+agent.
+
+| Agent          | Tier   | Local MCP | Project config | User config | Skill enhancement |
+| -------------- | ------ | --------- | -------------- | ----------- | ----------------- |
+| OpenAI Codex   | Tier 1 | stdio     | No             | Yes         | Yes               |
+| Claude Code    | Tier 1 | stdio     | Yes            | No          | Yes               |
+| Cursor         | Tier 1 | stdio     | Yes            | No          | Rules             |
+| GitHub Copilot | Tier 1 | stdio     | Yes            | No          | Yes               |
+| Windsurf       | Tier 1 | stdio     | Yes            | Legacy user | Yes               |
+| Gemini CLI     | Tier 1 | stdio     | Yes            | Detect only | Yes               |
+| Cline          | Tier 1 | stdio     | No             | Yes         | No                |
+| Roo Code       | Tier 1 | stdio     | Yes            | Detect only | No                |
+| Continue       | Tier 1 | stdio     | Yes            | Detect only | No                |
+| Goose          | Tier 1 | stdio     | No             | Yes         | No                |
+| Generic MCP    | Tier 1 | stdio     | Yes            | No          | No                |
+
+- **Tier 1 - Native MCP:** structured local MCP tools over stdio with full Cydetix integration.
+- **Tier 2 - Deterministic CLI:** exact persistent Node plus Cydetix entrypoint execution with
+  strict JSON output.
+- **Tier 3 - CI/report consumption:** SARIF, JSON, and CI result consumption without claiming a full
+  interactive integration.
 
 Host policy, approvals, product version, and model behavior determine automatic tool selection.
-Cydetix does not claim that every AI can use it automatically.
+Skills improve selection behavior but are never required for MCP functionality.
 
 ## Generic MCP and shell fallback
 
 Generate a project-bound, exact-runtime MCP entry with:
 
 ```bash
-cydetix setup --agent generic-mcp --yes
+cydetix setup --agent generic-mcp --yes --project "<project>"
+cydetix mcp-config --format json --project "<project>"
 ```
 
 The resulting `.cydetix/mcp.json` contains no secret and uses the exact verified Node executable and
-Cydetix JS entrypoint. Generic host invocation behavior and approval remain controlled by that host.
+Cydetix JS entrypoint. `mcp-config` prints the same validated definition without changing files or
+emitting banners. Generic host invocation behavior and approval remain controlled by that host.
 
 For agents with shell execution but no MCP, use machine output from the same engine:
 
@@ -179,12 +201,14 @@ cydetix --json
 cydetix --sarif
 cydetix doctor
 cydetix doctor --agent --project-root .
+cydetix doctor --agents
+cydetix doctor --agents --format json
 ```
 
 Specific execution can be requested when troubleshooting npm cache behavior:
 
 ```bash
-npx cydetix@0.6.0-alpha.6
+npx cydetix@0.6.0-alpha.7
 ```
 
 ## Security and limitations
@@ -204,7 +228,8 @@ clearance. Legal clearance has not been performed and no exclusivity is claimed.
 
 Read the [security model](docs/SECURITY_MODEL.md), [threat model](THREAT_MODEL.md),
 [autofix policy](AUTOFIX_POLICY.md), [validation record](docs/VALIDATION.md), and
-[limitations](docs/LIMITATIONS.md) before relying on this alpha in a sensitive workflow.
+[limitations](docs/LIMITATIONS.md) before relying on this alpha in a sensitive workflow. See the
+[local coding-agent compatibility registry](docs/integrations/agents.md) for adapter contracts.
 
 ## Development
 

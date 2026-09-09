@@ -2,21 +2,31 @@ import os from "node:os";
 import { createInterface } from "node:readline/promises";
 import { PRODUCT } from "../core/brand.js";
 import { claudeAdapter } from "./claude/index.js";
+import { clineAdapter } from "./cline/index.js";
 import { codexAdapter } from "./codex/index.js";
+import { continueAdapter } from "./continue/index.js";
 import { copilotAdapter } from "./copilot/index.js";
 import { cursorAdapter } from "./cursor/index.js";
 import { discoverAgents, needsConfiguration } from "./discovery/index.js";
+import { geminiAdapter } from "./gemini/index.js";
 import { genericMcpAdapter } from "./generic-mcp/index.js";
+import { gooseAdapter } from "./goose/index.js";
 import { createTrustedIntegrationRoot } from "./common.js";
+import { rooAdapter } from "./roo/index.js";
 import { resolvePersistentRuntime } from "./runtime.js";
 import { readIntegrationState, removeIntegrationState, writeIntegrationState, } from "./state.js";
 import { windsurfAdapter } from "./windsurf/index.js";
 export const INTEGRATION_ADAPTERS = [
     codexAdapter,
-    cursorAdapter,
     claudeAdapter,
+    cursorAdapter,
     copilotAdapter,
     windsurfAdapter,
+    geminiAdapter,
+    clineAdapter,
+    rooAdapter,
+    continueAdapter,
+    gooseAdapter,
     genericMcpAdapter,
 ];
 export async function integrationContext(options = {}) {
@@ -54,13 +64,27 @@ export function parseAgentId(value) {
         copilot: "copilot",
         "github-copilot": "copilot",
         windsurf: "windsurf",
+        gemini: "gemini",
+        "gemini-cli": "gemini",
+        cline: "cline",
+        roo: "roo",
+        "roo-code": "roo",
+        continue: "continue",
+        "continue-dev": "continue",
+        goose: "goose",
         generic: "generic-mcp",
         "generic-mcp": "generic-mcp",
     };
     const id = aliases[normalized];
     if (id === undefined)
-        throw new Error("Unknown agent. Expected codex, cursor, claude, copilot, windsurf, or generic-mcp.");
+        throw new Error("Unknown agent. Expected codex, claude, cursor, copilot, windsurf, gemini, cline, roo, continue, goose, or generic-mcp.");
     return id;
+}
+export function parseAgentSelector(value) {
+    const normalized = value.trim().toLowerCase();
+    if (normalized === "auto" || normalized === "all")
+        return normalized;
+    return parseAgentId(normalized);
 }
 function interactive(options) {
     if (process.env.CI !== undefined ||
@@ -93,7 +117,14 @@ function emit(options, value) {
 function selectedAgents(options, detections) {
     const explicit = [...new Set(options.agents ?? [])];
     if (options.all === true)
-        return INTEGRATION_ADAPTERS.map((adapter) => adapter.id);
+        return detections
+            .filter((detection) => {
+            if (detection.id === "generic-mcp")
+                return false;
+            const adapter = INTEGRATION_ADAPTERS.find((candidate) => candidate.id === detection.id);
+            return detection.detected || adapter?.capabilities.projectScopedConfig === true;
+        })
+            .map((detection) => detection.id);
     if (explicit.length > 0)
         return explicit;
     if (options.remove === true)
@@ -182,7 +213,7 @@ export async function runSetup(options = {}) {
         if (adapter === undefined)
             continue;
         const result = options.remove
-            ? await adapter.uninstall(context, dryRun)
+            ? await adapter.remove(context, dryRun)
             : await adapter.install(context, dryRun);
         results.push(result);
         emit(options, `  [${result.action}${result.verified ? ", verified" : ", verification failed"}] ${result.displayName}\n`);

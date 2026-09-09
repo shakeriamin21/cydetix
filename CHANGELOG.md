@@ -5,6 +5,25 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+## [0.6.0-alpha.7] - 2026-09-09
+
+### Added
+
+- Added an explicit capability and compatibility-tier registry for eleven local integration targets,
+  including verified Gemini CLI, Cline, Roo Code, Continue, and Goose stdio MCP adapters.
+- Added automatic and all-host setup selectors, schema-backed `doctor --agents` diagnostics, and a
+  zero-write `mcp-config --format json` escape hatch for additional local MCP clients.
+- Expanded packed-artifact validation across discovery, setup, verification, MCP startup, strict CLI
+  fallback, exact version surfaces, and an older conflicting global Cydetix launcher on `PATH`.
+
+### Changed
+
+- Made the local integration architecture protocol-first: the deterministic security engine remains
+  host-independent while adapters contain configuration-only logic and optional skills remain
+  behavior enhancements.
+- Made MCP tool descriptions self-sufficient about offline read-only scans, trusted roots, explicit
+  mutation intent, plan-first behavior, and SAFE / REVIEW_REQUIRED / ARCHITECTURAL policy.
+
 ## [0.6.0-alpha.6] - 2026-09-09
 
 ### Fixed

@@ -19,6 +19,8 @@ const root = path.resolve(".");
 const releaseTemporaryRoot = path.resolve(".cydetix", "release-tests");
 await mkdir(releaseTemporaryRoot, { recursive: true });
 const temporary = await mkdtemp(path.join(releaseTemporaryRoot, "packed-install-"));
+const integrationHome = path.join(temporary, "home");
+await mkdir(integrationHome);
 const cache = path.resolve(".npm-cache");
 const evidenceDirectory = path.resolve(".cydetix", "evidence");
 const evidencePath = path.join(evidenceDirectory, "packed-install.json");
@@ -48,6 +50,7 @@ function run(
       TMP: process.env.TMP,
       npm_config_cache: cache,
       NO_UPDATE_NOTIFIER: "1",
+      CYDETIX_SETUP_HOME: integrationHome,
       ...environment,
     },
     ...(input === undefined ? {} : { input }),
@@ -75,15 +78,18 @@ try {
   const npxConsumer = path.join(temporary, "npx-consumer");
   const npxFixture = path.join(npxConsumer, "fixture");
   const globalPrefix = path.join(temporary, "global-prefix");
+  const olderGlobalBin = path.join(temporary, "older-global-bin");
   const globalFixFixture = path.join(temporary, "global-fix-fixture");
   const fixture = path.join(consumer, "fixture");
   await mkdir(packageDirectory);
   await mkdir(fixture, { recursive: true });
   await mkdir(npxFixture, { recursive: true });
   await mkdir(globalFixFixture, { recursive: true });
+  await mkdir(olderGlobalBin);
   const packageJson = JSON.parse(await readFile(path.join(root, "package.json"), "utf8"));
   const suppliedTarball = process.env.CYDETIX_PACKAGE_TARBALL;
   let tarball;
+  let packedVersion;
   if (suppliedTarball === undefined) {
     const packOutput = run(
       process.execPath,
@@ -92,6 +98,7 @@ try {
     );
     const packed = JSON.parse(packOutput)[0];
     if (packed?.filename === undefined) throw new Error("npm pack returned no artifact name.");
+    packedVersion = packed.version;
     tarball = path.join(packageDirectory, packed.filename);
   } else {
     tarball = path.join(packageDirectory, path.basename(suppliedTarball));
@@ -142,8 +149,20 @@ try {
   );
   const installedRoot = path.join(consumer, "node_modules", ...packageJson.name.split("/"));
   const cli = path.join(installedRoot, "dist", "cli", "main.js");
+  const installedPackageJson = JSON.parse(
+    await readFile(path.join(installedRoot, "package.json"), "utf8"),
+  );
+  const installedProduct = (
+    await import(pathToFileURL(path.join(installedRoot, "dist", "core", "brand.js")).href)
+  ).PRODUCT;
   const version = run(process.execPath, [cli, "--version"], consumer).trim();
-  if (version !== packageJson.version) throw new Error("Packed CLI version mismatch.");
+  if (
+    version !== packageJson.version ||
+    installedPackageJson.version !== packageJson.version ||
+    installedProduct.version !== packageJson.version ||
+    (packedVersion !== undefined && packedVersion !== packageJson.version)
+  )
+    throw new Error("Package, PRODUCT, tarball, and packed CLI versions must match exactly.");
   const binaryName = "cydetix";
   if (packageJson.bin?.[binaryName] !== "dist/cli/main.js")
     throw new Error("Packed package has no correctly mapped cydetix binary.");
@@ -213,6 +232,12 @@ try {
   );
   if (!globalStatus.includes("Generic MCP — configured"))
     throw new Error("Global cydetix setup status failed.");
+  const globalVerify = runGlobal(
+    ["setup", "--agent", "generic-mcp", "--verify", "--project", fixture],
+    npxConsumer,
+  );
+  if (!globalVerify.includes("Verification: PASS"))
+    throw new Error("Global cydetix setup verification failed.");
   const globalFix = JSON.parse(
     runGlobal(["fix", "--non-interactive", "--format", "json"], globalFixFixture, [5]),
   );
@@ -314,6 +339,21 @@ try {
     agentDoctor.agent?.mcpStartup !== "available"
   )
     throw new Error("Packed agent doctor contract failed.");
+  const agentCompatibility = JSON.parse(
+    run(
+      process.execPath,
+      [cli, "doctor", "--agents", "--format", "json", "--project-root", fixture],
+      consumer,
+    ),
+  );
+  if (
+    agentCompatibility.schemaVersion !== "1.0.0" ||
+    agentCompatibility.runtimeVersion !== packageJson.version ||
+    agentCompatibility.projectRoot !== (await realpath(fixture)) ||
+    agentCompatibility.projectRootCanonical !== true ||
+    agentCompatibility.agents?.length !== 11
+  )
+    throw new Error("Packed universal agent diagnostics contract failed.");
   const scan = JSON.parse(
     run(process.execPath, [cli, "scan", fixture, "--format", "json"], consumer),
   );
@@ -375,6 +415,13 @@ try {
     consumer,
   );
   if (!setupOutput.includes("Now ask your AI")) throw new Error("Packed setup UX failed.");
+  const autoStatus = run(
+    process.execPath,
+    [cli, "setup", "--agent", "auto", "--status", "--project", fixture],
+    consumer,
+  );
+  if (!autoStatus.includes("No configuration changes were made."))
+    throw new Error("Packed automatic agent discovery failed.");
   const setupConfig = JSON.parse(
     await readFile(path.join(fixture, ".cydetix", "mcp.json"), "utf8"),
   );
@@ -389,7 +436,33 @@ try {
     /\bn(?:pm|px)\b|registry\./iu.test(JSON.stringify(configuredServer))
   )
     throw new Error("Packed setup did not pin an exact direct MCP runtime.");
-  const mcpInput = `${JSON.stringify({ jsonrpc: "2.0", id: 1, method: "tools/list", params: {} })}\n`;
+  const printedMcp = JSON.parse(
+    run(process.execPath, [cli, "mcp-config", "--format", "json", "--project", fixture], consumer),
+  ).mcpServers?.cydetix;
+  if (JSON.stringify(printedMcp) !== JSON.stringify(configuredServer))
+    throw new Error("Packed printable MCP definition differs from installed Generic MCP config.");
+  const olderLauncher = path.join(
+    olderGlobalBin,
+    process.platform === "win32" ? "cydetix.cmd" : "cydetix",
+  );
+  await writeFile(
+    olderLauncher,
+    process.platform === "win32"
+      ? "@echo 0.6.0-alpha.6\r\n"
+      : "#!/bin/sh\nprintf '0.6.0-alpha.6\\n'\n",
+    { mode: 0o700 },
+  );
+  const mcpInput = `${[
+    {
+      jsonrpc: "2.0",
+      id: 1,
+      method: "initialize",
+      params: { protocolVersion: "2025-06-18", capabilities: {} },
+    },
+    { jsonrpc: "2.0", id: 2, method: "tools/list", params: {} },
+  ]
+    .map((request) => JSON.stringify(request))
+    .join("\n")}\n`;
   const mcpOutput = run(
     configuredServer.command,
     configuredServer.args,
@@ -397,10 +470,17 @@ try {
     120_000,
     [0],
     mcpInput,
-    { PATH: "", CYDETIX_AGENT_SUBPROCESS: "1" },
+    { PATH: olderGlobalBin, CYDETIX_AGENT_SUBPROCESS: "1" },
   );
-  const mcp = JSON.parse(mcpOutput);
-  if (mcp.result?.tools?.length !== 3) throw new Error("Packed MCP server validation failed.");
+  const [mcpInitialize, mcp] = mcpOutput
+    .trim()
+    .split(/\r?\n/u)
+    .map((line) => JSON.parse(line));
+  if (
+    mcp.result?.tools?.length !== 3 ||
+    mcpInitialize.result?.serverInfo?.version !== packageJson.version
+  )
+    throw new Error("Packed MCP server validation failed with an older global binary on PATH.");
   const agentScan = JSON.parse(
     run(
       configuredServer.command,
@@ -417,7 +497,7 @@ try {
       120_000,
       [0],
       "",
-      { PATH: "", CYDETIX_AGENT_SUBPROCESS: "1" },
+      { PATH: olderGlobalBin, CYDETIX_AGENT_SUBPROCESS: "1" },
     ),
   );
   if (!Array.isArray(agentScan.findings))
@@ -429,6 +509,8 @@ try {
         schemaVersion: "1.0.0",
         state: "PASSED",
         version,
+        packedVersion: packedVersion ?? installedPackageJson.version,
+        productVersion: installedProduct.version,
         platform: `${process.platform}-${process.arch}`,
         skillCount: skillNames.length,
         globalLauncherPresent: true,
@@ -441,6 +523,7 @@ try {
           "global cydetix --help",
           "global cydetix setup",
           "global cydetix setup --status",
+          "global cydetix setup --verify",
           "global cydetix fix",
           "npm exec cydetix from local tarball",
           "npm exec cydetix default scan from local tarball",
@@ -449,6 +532,7 @@ try {
           "--help",
           "doctor",
           "doctor --agent --project-root",
+          "doctor --agents --format json",
           "zero-config default scan",
           "zero-config --json scan",
           "scan",
@@ -457,8 +541,10 @@ try {
           "sbom",
           "fix --dry-run",
           "setup --agent generic-mcp",
-          "configured direct MCP tools/list from unrelated cwd and empty PATH",
-          "configured direct agent scan with empty PATH",
+          "setup --agent auto --status",
+          "mcp-config --format json",
+          "configured direct MCP tools/list with an older global Cydetix on PATH",
+          "configured direct agent scan with an older global Cydetix on PATH",
         ],
       },
       null,

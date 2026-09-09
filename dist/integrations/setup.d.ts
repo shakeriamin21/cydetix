@@ -1,5 +1,6 @@
 import type { AdapterResult, AgentDetection, AgentId, IntegrationAdapter, SetupContext } from "./types.js";
 export declare const INTEGRATION_ADAPTERS: readonly IntegrationAdapter[];
+export type AgentSelector = AgentId | "auto" | "all";
 export interface SetupOptions {
     readonly projectRoot?: string;
     readonly homeDirectory?: string;
@@ -26,6 +27,7 @@ export interface SetupReport {
 }
 export declare function integrationContext(options?: SetupOptions): Promise<SetupContext>;
 export declare function parseAgentId(value: string): AgentId;
+export declare function parseAgentSelector(value: string): AgentSelector;
 export declare function runSetup(options?: SetupOptions): Promise<SetupReport>;
 export declare function runAutomaticIntegration(options?: SetupOptions): Promise<SetupReport>;
 //# sourceMappingURL=setup.d.ts.map

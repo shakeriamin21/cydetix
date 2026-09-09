@@ -1,6 +1,6 @@
 {
   "name": "cydetix",
-  "version": "0.6.0-alpha.6",
+  "version": "0.6.0-alpha.7",
   "description": "Zero-config deterministic application security and policy-bounded remediation CLI",
   "type": "module",
   "bin": {
@@ -63,7 +63,7 @@
     "validate:mcp": "npm run build && node scripts/validate-mcp.mjs",
     "validate:sarif": "node scripts/validate-sarif.mjs",
     "validate:sbom": "node scripts/validate-sbom.mjs",
-    "verify": "npm run format && npm run lint && npm run check && npm run schemas:check && npm run validate:sarif && npm run validate:sbom && npm test && npm run validate:remediation && npm run validate:skills && npm run validate:plugin && npm run validate:triggers && npm run validate:mcp && npm run validate:version && npm run validate:package && npm run validate:release-report && npm run validate:workflow-security && npm run audit:public-repository && npm run audit:licenses"
+    "verify": "npm run format && npm run lint && npm run check && npm run schemas:check && npm run validate:sarif && npm run validate:sbom && npm test && npm run validate:remediation && npm run validate:skills && npm run validate:plugin && npm run validate:triggers && npm run validate:mcp && npm run validate:version && npm run validate:package && npm run validate:install && npm run validate:release-report && npm run validate:workflow-security && npm run audit:public-repository && npm run audit:licenses"
   },
   "engines": {
     "node": "^22.18.0 || ^24.11.0"

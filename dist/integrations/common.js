@@ -2,6 +2,7 @@ import { accessSync, constants, existsSync } from "node:fs";
 import { lstat, mkdir, readFile, realpath, rename, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { parse as parseYaml, stringify as stringifyYaml } from "yaml";
 import { dangerousRepositoryPath, isWithinRoot } from "../repository-discovery/boundary.js";
 export const MANAGED_MARKER = "Managed by cydetix setup";
 const MAX_CONFIG_BYTES = 1_048_576;
@@ -243,6 +244,16 @@ function parseJsonObject(content, filePath) {
         throw new Error(`Cannot safely merge invalid JSON integration config: ${filePath}`);
     }
 }
+function parseYamlObject(content, filePath) {
+    try {
+        if (content.trim() === "")
+            return {};
+        return objectRecord(parseYaml(content, { maxAliasCount: 100 }));
+    }
+    catch {
+        throw new Error(`Cannot safely merge invalid YAML integration config: ${filePath}`);
+    }
+}
 function sameServer(value, expected) {
     if (typeof value !== "object" || value === null || Array.isArray(value))
         return false;
@@ -298,6 +309,56 @@ export async function updateJsonServer(boundary, filePath, rootKey, server, remo
             const managed = objectRecord(written[rootKey]);
             if (remove ? managed.cydetix !== undefined : !sameServer(managed.cydetix, server))
                 throw new Error(`Cydetix integration validation failed: ${writtenPath}`);
+        });
+    }
+    return true;
+}
+function objectContains(value, expected) {
+    if (Array.isArray(expected))
+        return Array.isArray(value) && JSON.stringify(value) === JSON.stringify(expected);
+    if (typeof expected !== "object" || expected === null)
+        return value === expected;
+    if (typeof value !== "object" || value === null || Array.isArray(value))
+        return false;
+    const actual = value;
+    return Object.entries(expected).every(([key, expectedValue]) => objectContains(actual[key], expectedValue));
+}
+export async function inspectYamlEntry(boundary, filePath, rootKey, entryKey, expected) {
+    try {
+        const existing = await readRegularFile(boundary, filePath);
+        if (existing === undefined)
+            return "not_configured";
+        const root = parseYamlObject(existing, filePath);
+        const entries = root[rootKey];
+        if (entries === undefined)
+            return "not_configured";
+        const entry = objectRecord(entries)[entryKey];
+        if (entry === undefined)
+            return "not_configured";
+        if (objectContains(entry, expected))
+            return "configured";
+        return hasVersionedCydetixRuntime(entry) ? "unsupported_version" : "partially_configured";
+    }
+    catch {
+        return "configuration_inaccessible";
+    }
+}
+export async function updateYamlEntry(boundary, filePath, rootKey, entryKey, entry, remove, dryRun) {
+    const existing = await readRegularFile(boundary, filePath);
+    const root = existing === undefined ? {} : parseYamlObject(existing, filePath);
+    const entries = root[rootKey] === undefined ? {} : { ...objectRecord(root[rootKey]) };
+    const before = JSON.stringify(root);
+    root[rootKey] = remove
+        ? Object.fromEntries(Object.entries(entries).filter(([key]) => key !== entryKey))
+        : { ...entries, [entryKey]: entry };
+    if (JSON.stringify(root) === before)
+        return false;
+    if (!dryRun) {
+        const next = stringifyYaml(root, { indent: 2, lineWidth: 0 });
+        await atomicValidatedWrite(boundary, filePath, next, async (writtenPath) => {
+            const state = await inspectYamlEntry(boundary, writtenPath, rootKey, entryKey, entry);
+            if (remove ? state !== "not_configured" : state !== "configured")
+                throw new Error(`Cydetix YAML integration validation failed: ${writtenPath}`);
         });
     }
     return true;

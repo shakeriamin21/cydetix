@@ -25,6 +25,7 @@ import {
 } from "../dist/validation/model.js";
 import { releaseValidationReportSchema } from "../dist/validation/release.js";
 import { RULES } from "../dist/rule-engine/catalogue.js";
+import { agentCompatibilityReportSchema } from "../dist/integrations/compatibility.js";
 
 const schemas = new Map([
   ["rule.schema.json", toJSONSchema(ruleDefinitionSchema, { target: "draft-7" })],
@@ -63,6 +64,10 @@ const schemas = new Map([
   [
     "release-validation.schema.json",
     toJSONSchema(releaseValidationReportSchema, { target: "draft-7" }),
+  ],
+  [
+    "agent-compatibility.schema.json",
+    toJSONSchema(agentCompatibilityReportSchema, { target: "draft-7" }),
   ],
 ]);
 const check = process.argv.includes("--check");

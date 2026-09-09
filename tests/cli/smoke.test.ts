@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { cpSync, readFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 import { describe, expect, it } from "vitest";
@@ -10,6 +10,8 @@ interface CliResult {
   readonly stdout: string;
   readonly stderr: string;
 }
+
+const CLI_HOME = temporaryDirectorySync("cydetix-cli-home-");
 
 function runCli(...arguments_: string[]): CliResult {
   const result = spawnSync(
@@ -26,6 +28,7 @@ function runCli(...arguments_: string[]): CliResult {
       windowsHide: true,
       timeout: 120_000,
       maxBuffer: 25_000_000,
+      env: { ...process.env, CYDETIX_SETUP_HOME: CLI_HOME },
     },
   );
   if (result.error !== undefined) throw result.error;
@@ -36,7 +39,7 @@ describe("CLI smoke contract", () => {
   it("reports the version", () => {
     const result = runCli("version");
     expect(result.status).toBe(0);
-    expect(result.stdout).toBe("0.6.0-alpha.6\n");
+    expect(result.stdout).toBe("0.6.0-alpha.7\n");
     expect(result.stderr).toBe("");
   });
 
@@ -70,6 +73,44 @@ describe("CLI smoke contract", () => {
     expect(result.stdout).toContain("Cydetix Setup");
     expect(result.stdout).toContain("No configuration changes were made.");
     expect(result.stdout).not.toContain("[Y/n]");
+  });
+
+  it("accepts explicit automatic setup selection without prompting or mutation", () => {
+    const root = temporaryDirectorySync("cydetix-cli-auto-");
+    const project = path.join(root, "Project With Spaces");
+    mkdirSync(project);
+    const result = runCli("setup", "--agent", "auto", "--status", "--project", project);
+    expect(result.status).toBe(0);
+    expect(result.stdout).toContain("No configuration changes were made.");
+    expect(result.stdout).not.toContain("[Y/n]");
+    expect(existsSync(path.join(project, ".cydetix"))).toBe(false);
+  });
+
+  it("prints a strict project-bound MCP definition without modifying the project", () => {
+    const root = temporaryDirectorySync("cydetix-cli-mcp-config-");
+    const project = path.join(root, "Project With Spaces");
+    mkdirSync(project);
+    const result = runCli("mcp-config", "--format", "json", "--project", project);
+    expect(result.status).toBe(0);
+    expect(result.stderr).toBe("");
+    const server = (
+      JSON.parse(result.stdout) as {
+        mcpServers: { cydetix: { command: string; args: string[] } };
+      }
+    ).mcpServers.cydetix;
+    expect(server.command).toBe(path.resolve(process.execPath));
+    expect(server.args).toEqual([
+      expect.stringMatching(/[\\/]dist[\\/]cli[\\/]main\.js$/u),
+      "mcp",
+      "--project-root",
+      project,
+      "--require-version",
+      "0.6.0-alpha.7",
+    ]);
+    expect(JSON.stringify(server).toLowerCase()).not.toMatch(
+      /\b(?:npm|npx|pnpm|yarn|bunx|curl|wget)\b|invoke-webrequest/u,
+    );
+    expect(existsSync(path.join(project, ".cydetix"))).toBe(false);
   });
 
   it("uses exit code 1 when a CI finding meets policy", () => {

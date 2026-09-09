@@ -15,6 +15,8 @@ export declare function atomicValidatedWrite(boundary: TrustedIntegrationRoot, f
 export declare function removeValidatedFile(boundary: TrustedIntegrationRoot, filePath: string): Promise<void>;
 export declare function inspectJsonServer(boundary: TrustedIntegrationRoot, filePath: string, rootKey: "mcpServers" | "servers", expected: McpServerDefinition): Promise<IntegrationState>;
 export declare function updateJsonServer(boundary: TrustedIntegrationRoot, filePath: string, rootKey: "mcpServers" | "servers", server: McpServerDefinition, remove: boolean, dryRun: boolean): Promise<boolean>;
+export declare function inspectYamlEntry(boundary: TrustedIntegrationRoot, filePath: string, rootKey: string, entryKey: string, expected: Readonly<Record<string, unknown>>): Promise<IntegrationState>;
+export declare function updateYamlEntry(boundary: TrustedIntegrationRoot, filePath: string, rootKey: string, entryKey: string, entry: Readonly<Record<string, unknown>>, remove: boolean, dryRun: boolean): Promise<boolean>;
 export declare function inspectCodexToml(boundary: TrustedIntegrationRoot, filePath: string, server: McpServerDefinition): Promise<IntegrationState>;
 export declare function updateCodexToml(boundary: TrustedIntegrationRoot, filePath: string, server: McpServerDefinition, remove: boolean, dryRun: boolean): Promise<boolean>;
 export declare function inspectManagedFile(boundary: TrustedIntegrationRoot, filePath: string): Promise<IntegrationState>;

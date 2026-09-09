@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.2.0",
-  "generatedAt": "2026-09-09T10:47:35.572Z",
+  "generatedAt": "2026-09-09T18:33:11.084Z",
   "product": {
     "name": "cydetix",
-    "version": "0.6.0-alpha.6",
+    "version": "0.6.0-alpha.7",
     "evidenceOrigin": "PUBLIC_GIT_COMMIT",
-    "publicSourceCommit": "3574d740fb81bdd5e9e56f34c157ca63242653d1"
+    "publicSourceCommit": "7683c7643d0076ed9323c42393b80a95b264ca69"
   },
   "verdict": "NOT_READY_FOR_PUBLIC_USE",
   "checks": [
@@ -21,13 +21,13 @@
     },
     {
       "id": "complete-test-suite",
-      "state": "skipped_capability",
-      "evidence": "37 files and 225 tests passed; 0 files and 0 tests failed; 1 files and 13 tests skipped."
+      "state": "executed_pass",
+      "evidence": "40 files and 273 tests passed; 0 files and 0 tests failed; 0 files and 0 tests skipped."
     },
     {
       "id": "container-capability",
-      "state": "not_checked",
-      "evidence": "Cydetix did not obtain AVAILABLE_HARDENED; no sandbox property is counted as passing.",
+      "state": "executed_pass",
+      "evidence": "Cydetix executed its hardened Linux launch probe against the locally present immutable image.",
       "controls": [
         "daemon response",
         "Linux runtime",
@@ -37,7 +37,7 @@
     },
     {
       "id": "previously-gated-five",
-      "state": "skipped_capability",
+      "state": "executed_pass",
       "evidence": "The five Phase 6 capability-gated integration tests all executed with the pinned image; skipped tests are not accepted as passes.",
       "tests": [
         "sanitizes host environment, isolates real host canaries, and uses an ephemeral workspace",
@@ -49,7 +49,7 @@
     },
     {
       "id": "network-denial",
-      "state": "skipped_capability",
+      "state": "executed_pass",
       "evidence": "An in-container command attempted DNS, TEST-NET TCP, HTTP, and HTTPS communication; every attempt was denied or timed out without connecting.",
       "tests": ["denies DNS resolution, TCP connections, and HTTP/HTTPS requests"],
       "controls": [
@@ -61,7 +61,7 @@
     },
     {
       "id": "environment-and-host-filesystem-isolation",
-      "state": "skipped_capability",
+      "state": "executed_pass",
       "evidence": "Three synthetic host environment canaries plus synthetic host-temp and host-home file canaries were inaccessible in the workload.",
       "tests": [
         "sanitizes host environment, isolates real host canaries, and uses an ephemeral workspace"
@@ -75,7 +75,7 @@
     },
     {
       "id": "container-privilege-controls",
-      "state": "skipped_capability",
+      "state": "executed_pass",
       "evidence": "The workload observed UID/GID 65534, zero capability sets, NoNewPrivs=1, seccomp mode 2, read-only root, no Docker/SSH socket, and the configured cgroup limits.",
       "tests": ["receives non-root, privilege, socket, mount, rootfs, and cgroup controls"],
       "controls": [
@@ -89,7 +89,7 @@
     },
     {
       "id": "resource-and-timeout-enforcement",
-      "state": "skipped_capability",
+      "state": "executed_pass",
       "evidence": "Infinite/child-process, output, PID, page-touched memory, and tmpfs exhaustion fixtures reached the intended enforced bounds.",
       "tests": [
         "terminates a timed-out process tree and removes the container",
@@ -108,7 +108,7 @@
     },
     {
       "id": "ephemeral-workspace-cleanup",
-      "state": "skipped_capability",
+      "state": "executed_pass",
       "evidence": "Sandbox-created files did not reach the source repository, and temporary copies were removed after success, command failure, and timeout.",
       "tests": ["cleans isolated workspaces after success, failure, and timeout"]
     },
@@ -123,7 +123,7 @@
     },
     {
       "id": "no-silent-local-fallback",
-      "state": "skipped_capability",
+      "state": "executed_pass",
       "evidence": "After a successful container run, simulated Docker unavailability returned SANDBOX_UNAVAILABLE and left the local marker absent.",
       "tests": [
         "does not silently fall back after a successful sandbox run",
@@ -132,25 +132,25 @@
     },
     {
       "id": "authorized-command-entrypoint-integrity",
-      "state": "skipped_capability",
+      "state": "executed_pass",
       "evidence": "A synthetic image entrypoint that returned success was cleared; the authorized command executed and its exit code 83 was preserved.",
       "tests": ["clears an image entrypoint that would intercept the authorized command"]
     },
     {
       "id": "sandboxed-remediation-end-to-end",
-      "state": "skipped_capability",
+      "state": "executed_pass",
       "evidence": "The vulnerable session fixture moved PROVEN_INSECURE to PROVEN_SECURE, returned APPLIED_VERIFIED, and a second run made no changes.",
       "tests": ["completes a sandbox-verified SAFE remediation and remains idempotent"]
     },
     {
       "id": "sandboxed-verification-rollback",
-      "state": "skipped_capability",
+      "state": "executed_pass",
       "evidence": "A structurally valid SAFE edit followed by a failing sandbox command returned ROLLBACK_SUCCEEDED; source and unrelated-user-file hashes were unchanged.",
       "tests": ["rolls back a sandbox verification failure without touching user changes"]
     },
     {
       "id": "sandbox-output-redaction-and-terminal-safety",
-      "state": "skipped_capability",
+      "state": "executed_pass",
       "evidence": "Synthetic stdout, stderr, thrown-error, JSON, timeout, excessive-output, ANSI, OSC-title, carriage-return, and backspace payloads did not appear in retained sandbox results; text rendering escaped controls.",
       "tests": [
         "does not retain secret-shaped or terminal-control sandbox output",
@@ -191,12 +191,12 @@
     {
       "id": "release-artifacts",
       "state": "executed_pass",
-      "evidence": "4 release artifacts were regenerated after source commit 3574d740fb81bdd5e9e56f34c157ca63242653d1 and SHA-256 hashed."
+      "evidence": "4 release artifacts were regenerated after source commit 7683c7643d0076ed9323c42393b80a95b264ca69 and SHA-256 hashed."
     },
     {
       "id": "clean-public-lineage",
       "state": "executed_fail",
-      "evidence": "10 commit(s) are reachable in the clean public lineage; 4 tag(s) exist before publication approval."
+      "evidence": "12 commit(s) are reachable in the clean public lineage; 5 tag(s) exist before publication approval."
     },
     {
       "id": "cross-platform-ci-matrix",
@@ -475,8 +475,10 @@
   "sandbox": {
     "schemaVersion": "1.0.0",
     "runner": "CONTAINER_SANDBOX",
-    "state": "UNAVAILABLE",
+    "state": "AVAILABLE_HARDENED",
     "runtime": "docker",
+    "runtimeVersion": "29.0.1",
+    "imageIdentity": "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
     "controls": {
       "network": "DENIED",
       "environment": "SANITIZED",
@@ -495,24 +497,30 @@
       "outputBytes": 2000000,
       "timeoutMilliseconds": 120000
     },
-    "limitations": ["Docker engine is unavailable; local execution was not attempted."]
+    "limitations": [
+      "Container isolation reduces risk but is not claimed as a perfect security boundary.",
+      "A network-denied, non-root, read-only, resource-bounded launch probe executed successfully.",
+      "The runtime-default seccomp profile is used; host runtime enforcement remains trusted."
+    ]
   },
   "environment": {
     "nodeVersion": "v24.15.0",
     "npmVersion": "11.19.1",
     "platform": "win32-x64",
     "docker": {
-      "clientVersion": "UNAVAILABLE",
-      "serverVersion": "UNAVAILABLE",
-      "serverPlatform": "UNAVAILABLE",
+      "clientVersion": "29.0.1",
+      "serverVersion": "29.0.1",
+      "serverPlatform": "Docker Desktop 4.52.0 (210994)",
       "osType": "linux",
-      "architecture": "UNAVAILABLE",
-      "kernelVersion": "UNAVAILABLE",
-      "cgroupVersion": "UNAVAILABLE",
-      "defaultRuntime": "UNAVAILABLE",
-      "securityOptions": [],
-      "imageIdentity": "UNAVAILABLE",
-      "imageRepoDigests": []
+      "architecture": "x86_64",
+      "kernelVersion": "6.18.33.2-microsoft-standard-WSL2",
+      "cgroupVersion": "2",
+      "defaultRuntime": "runc",
+      "securityOptions": ["name=seccomp,profile=builtin", "name=cgroupns"],
+      "imageIdentity": "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
+      "imageRepoDigests": [
+        "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b"
+      ]
     },
     "wsl": {
       "version": "2.7.13.0",
@@ -527,12 +535,12 @@
     ]
   },
   "tests": {
-    "filesPassed": 37,
-    "testsPassed": 225,
+    "filesPassed": 40,
+    "testsPassed": 273,
     "filesFailed": 0,
     "testsFailed": 0,
-    "filesSkipped": 1,
-    "testsSkipped": 13
+    "filesSkipped": 0,
+    "testsSkipped": 0
   },
   "performance": [
     {
@@ -588,30 +596,30 @@
   ],
   "package": {
     "state": "CURRENT",
-    "entries": 328,
-    "packedBytes": 310916,
-    "unpackedBytes": 1939727,
+    "entries": 353,
+    "packedBytes": 320403,
+    "unpackedBytes": 2010279,
     "sizeGateBytes": 400000,
     "hashes": [
       {
-        "artifact": "cydetix-0.6.0-alpha.6.tgz",
-        "sha256": "06239564ddbc6ffff2927d51ef30cb3d79ef673ede4201e4eeda490a910e63f9",
-        "bytes": 310916
+        "artifact": "cydetix-0.6.0-alpha.7.tgz",
+        "sha256": "846b211c439e33f2f03d98dd9436fba014731b6a297207412dd5a7239d09e1fc",
+        "bytes": 320403
       },
       {
         "artifact": "cydetix.cdx.json",
-        "sha256": "b5bf3d155ecc42709d7ef076f1bbe3faf81a046d57dc98bbf8c36c184a1c013a",
+        "sha256": "5d3b177187d1b3ad6410832baba6564c2e364a8e9a79afe63cb57bdd49558bb6",
         "bytes": 151992
       },
       {
-        "artifact": "cydetix-codex-plugin-0.6.0-alpha.6.tar.gz",
-        "sha256": "6fa3519f05caf5227480951bdaf5d367db82037761fad9db3a79a826c0f00dcb",
-        "bytes": 6674
+        "artifact": "cydetix-codex-plugin-0.6.0-alpha.7.tar.gz",
+        "sha256": "752204b4d7c17824f0699af6dff4b7e92ea3fb97accbbefe66e675b477e017b6",
+        "bytes": 6675
       },
       {
-        "artifact": "cydetix-release-validation-0.6.0-alpha.6.json",
-        "sha256": "6aa2b4614e153419d5dc552de36e67aae4ce6a3c01c308da6b9f663361139819",
-        "bytes": 1933
+        "artifact": "cydetix-release-validation-0.6.0-alpha.7.json",
+        "sha256": "886afc227d574b8d22d909120a0cb7b09f188f0da419ff0cbed68f933bec97ae",
+        "bytes": 2188
       }
     ]
   },

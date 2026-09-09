@@ -27,6 +27,9 @@ describe("Cydetix MCP server", () => {
       await repositoryContext(),
     );
     expect((response?.result as { serverInfo: { name: string } }).serverInfo.name).toBe("Cydetix");
+    expect((response?.result as { capabilities: unknown }).capabilities).toEqual({
+      tools: { listChanged: false },
+    });
   });
 
   it("exposes only the three public tools", async () => {
@@ -117,7 +120,16 @@ describe("Cydetix MCP server", () => {
         response?.result as { structuredContent: { report: { findings: unknown[] } } }
       ).structuredContent.report;
       expect(report.findings.length).toBeGreaterThan(0);
-      for (const outside of ["..", "../launch directory B", "../repository C", launchDirectoryB]) {
+      for (const outside of [
+        "..",
+        "../launch directory B",
+        "../repository C",
+        launchDirectoryB,
+        "C:\\outside-drive\\repository",
+        "\\\\server\\share\\repository",
+        "\\\\?\\C:\\device\\repository",
+        "nul\0path",
+      ]) {
         expect((await call(outside))?.error?.message).toContain("configured project root");
       }
 

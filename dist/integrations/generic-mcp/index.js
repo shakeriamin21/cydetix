@@ -29,10 +29,21 @@ async function change(context, remove, dryRun) {
 export const genericMcpAdapter = {
     id: "generic-mcp",
     displayName: "Generic MCP",
+    compatibilityTier: "tier-1-native-mcp",
+    capabilities: {
+        mcpStdio: true,
+        mcpHttp: false,
+        projectScopedConfig: true,
+        userScopedConfig: false,
+        skills: false,
+        instructionFiles: false,
+    },
+    configTargets: (context) => [configPath(context)],
     async detect(context) {
         return agentDetection(this.id, this.displayName, [], await state(context));
     },
     install: (context, dryRun) => change(context, false, dryRun),
-    uninstall: (context, dryRun) => change(context, true, dryRun),
+    verify: async (context) => (await state(context)) === "configured",
+    remove: (context, dryRun) => change(context, true, dryRun),
 };
 //# sourceMappingURL=index.js.map

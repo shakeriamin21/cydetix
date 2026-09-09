@@ -10,9 +10,19 @@ import { scanRepository } from "../core/engine.js";
 import { CydetixError, EXIT } from "../core/errors.js";
 import { probeExternalTool } from "../external-tools/model.js";
 import type { Confidence, ScanReport, Severity } from "../core/schema.js";
-import { parseAgentId, runAutomaticIntegration, runSetup } from "../integrations/setup.js";
+import {
+  createAgentCompatibilityReport,
+  renderAgentCompatibilityReport,
+} from "../integrations/compatibility.js";
+import { pinnedMcpServer } from "../integrations/common.js";
+import {
+  integrationContext,
+  parseAgentSelector,
+  runAutomaticIntegration,
+  runSetup,
+  type AgentSelector,
+} from "../integrations/setup.js";
 import { resolvePersistentRuntime } from "../integrations/runtime.js";
-import type { AgentId } from "../integrations/types.js";
 import { createMcpServerContext, runMcpServer } from "../mcp/server.js";
 import { createBoundary } from "../repository-discovery/boundary.js";
 import { CONFIG_NAME } from "../repository-discovery/config.js";
@@ -79,9 +89,9 @@ function collectString(value: string, previous: readonly string[]): string[] {
   return [...previous, value];
 }
 
-function collectAgent(value: string, previous: readonly AgentId[]): AgentId[] {
+function collectAgent(value: string, previous: readonly AgentSelector[]): AgentSelector[] {
   try {
-    return [...previous, parseAgentId(value)];
+    return [...previous, parseAgentSelector(value)];
   } catch (error) {
     throw new InvalidArgumentError(error instanceof Error ? error.message : String(error));
   }
@@ -280,11 +290,11 @@ export function buildProgram(): Command {
     .description("Detect and configure supported AI coding agents")
     .option(
       "--agent <name>",
-      "configure one agent even when it was not detected (repeatable)",
+      "agent id, auto, or all (repeatable for explicit agent ids)",
       collectAgent,
       [],
     )
-    .option("--all", "configure every supported adapter", false)
+    .option("--all", "alias for --agent all", false)
     .option("--yes", "accept setup non-interactively", false)
     .option("--dry-run", "preview integration changes without writing files", false)
     .option("--status", "show host detection and integration status without changes", false)
@@ -293,7 +303,7 @@ export function buildProgram(): Command {
     .option("--project <path>", "project root for project-scoped integrations", ".")
     .action(
       async (options: {
-        agent: AgentId[];
+        agent: AgentSelector[];
         all: boolean;
         yes: boolean;
         dryRun: boolean;
@@ -304,10 +314,26 @@ export function buildProgram(): Command {
       }) => {
         if ([options.status, options.verify, options.remove].filter(Boolean).length > 1)
           throw new CydetixError("Choose only one of --status, --verify, or --remove.", EXIT.usage);
+        const special = options.agent.filter(
+          (candidate): candidate is "auto" | "all" => candidate === "auto" || candidate === "all",
+        );
+        if (
+          special.length > 1 ||
+          (special.length === 1 && options.agent.length > 1) ||
+          (options.all && options.agent.length > 0)
+        )
+          throw new CydetixError(
+            "Use auto or all by itself; explicit agent ids may be repeated.",
+            EXIT.usage,
+          );
+        const agents = options.agent.filter(
+          (candidate): candidate is Exclude<AgentSelector, "auto" | "all"> =>
+            candidate !== "auto" && candidate !== "all",
+        );
         const report = await runSetup({
           projectRoot: options.project,
-          agents: options.agent,
-          all: options.all,
+          agents,
+          all: options.all || special[0] === "all",
           yes: options.yes,
           dryRun: options.dryRun,
           status: options.status,
@@ -574,6 +600,23 @@ export function buildProgram(): Command {
     });
 
   program
+    .command("mcp-config")
+    .description("Print a validated project-bound local MCP definition without modifying files")
+    .option("--project <path>", "explicit project boundary", ".")
+    .option("--format <format>", "output format", graphFormat, "json")
+    .action(async (options: { project: string; format: GraphOutputFormat }) => {
+      if (options.format !== "json")
+        throw new CydetixError("MCP configuration supports --format json only.", EXIT.usage);
+      const context = await integrationContext({
+        projectRoot: options.project,
+        agents: ["generic-mcp"],
+      });
+      process.stdout.write(
+        `${JSON.stringify({ mcpServers: { cydetix: pinnedMcpServer(context) } }, null, 2)}\n`,
+      );
+    });
+
+  program
     .command("verify")
     .argument("[path]", "repository root", ".")
     .description("Rescan and fail when active high or critical findings remain")
@@ -666,78 +709,101 @@ export function buildProgram(): Command {
     .command("doctor")
     .description("Report local engine and optional adapter availability")
     .option("--agent", "verify the persistent agent runtime without changing integration state")
+    .option("--agents", "report universal coding-agent compatibility and integration state")
+    .option("--format <format>", "agent report format: text or json", graphFormat)
     .option("--project-root <path>", "explicit project boundary for agent checks", ".")
     .option(
       "--sandbox-image <digest>",
       "inspect a locally present immutable container verification image",
     )
-    .action(async (options: { agent?: boolean; projectRoot: string; sandboxImage?: string }) => {
-      const sandbox =
-        options.sandboxImage === undefined
-          ? {
-              state: "NOT_REQUESTED",
-              message: "Pass --sandbox-image to probe container isolation.",
-            }
-          : await createContainerSandboxRunner({ image: options.sandboxImage }).capability();
-      const agent =
-        options.agent === true
-          ? await (async () => {
-              const projectBoundary = await createBoundary(options.projectRoot);
-              const runtime = await resolvePersistentRuntime({
-                projectRoot: projectBoundary.root,
-                expectedVersion: PRODUCT.version,
-              });
-              await createMcpServerContext({
-                projectRoot: projectBoundary.root,
-                requiredVersion: PRODUCT.version,
-              });
-              const [major, minor] = process.versions.node
-                .split(".")
-                .slice(0, 2)
-                .map((value) => Number(value));
-              const nodeSupported =
-                (major === 22 && (minor ?? 0) >= 18) || (major === 24 && (minor ?? 0) >= 11);
-              return {
-                mode: "agent",
-                packageName: "cydetix",
-                version: runtime.version,
-                versionExact: runtime.version === PRODUCT.version,
-                nodeExecutable: runtime.nodeExecutable,
-                nodeSupported,
-                entrypoint: runtime.entrypoint,
-                runtimeSource: runtime.source,
-                projectRoot: projectBoundary.root,
-                projectRootCanonical: true,
-                jsonOutput: true,
-                mcpStartup: "available",
-                packageManagerRequired: false,
-                networkRequired: false,
-                agentSubprocessMode: true,
-              };
-            })()
-          : undefined;
-      const result = {
-        version: PRODUCT.version,
-        node: process.version,
-        platform: `${process.platform}-${process.arch}`,
-        deterministicEngine: "available",
-        networkRequired: false,
-        optionalAdapters: {
-          git: commandAvailable("git"),
-          gitleaks: commandAvailable("gitleaks"),
-          semgrep: commandAvailable("semgrep"),
-          codeql: commandAvailable("codeql"),
-        },
-        externalTools: {
-          gitleaks: probeExternalTool("gitleaks", "gitleaks"),
-          osvScanner: probeExternalTool("osv-scanner", "osv-scanner"),
-          cosign: probeExternalTool("cosign", "cosign"),
-        },
-        sandbox,
-        ...(agent === undefined ? {} : { agent }),
-      };
-      process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
-    });
+    .action(
+      async (options: {
+        agent?: boolean;
+        agents?: boolean;
+        format?: GraphOutputFormat;
+        projectRoot: string;
+        sandboxImage?: string;
+      }) => {
+        if (options.agent && options.agents)
+          throw new CydetixError("Choose only one of --agent or --agents.", EXIT.usage);
+        if (options.agents === true) {
+          const report = await createAgentCompatibilityReport({
+            projectRoot: options.projectRoot,
+          });
+          process.stdout.write(
+            options.format === "json"
+              ? `${JSON.stringify(report, null, 2)}\n`
+              : renderAgentCompatibilityReport(report),
+          );
+          return;
+        }
+        const sandbox =
+          options.sandboxImage === undefined
+            ? {
+                state: "NOT_REQUESTED",
+                message: "Pass --sandbox-image to probe container isolation.",
+              }
+            : await createContainerSandboxRunner({ image: options.sandboxImage }).capability();
+        const agent =
+          options.agent === true
+            ? await (async () => {
+                const projectBoundary = await createBoundary(options.projectRoot);
+                const runtime = await resolvePersistentRuntime({
+                  projectRoot: projectBoundary.root,
+                  expectedVersion: PRODUCT.version,
+                });
+                await createMcpServerContext({
+                  projectRoot: projectBoundary.root,
+                  requiredVersion: PRODUCT.version,
+                });
+                const [major, minor] = process.versions.node
+                  .split(".")
+                  .slice(0, 2)
+                  .map((value) => Number(value));
+                const nodeSupported =
+                  (major === 22 && (minor ?? 0) >= 18) || (major === 24 && (minor ?? 0) >= 11);
+                return {
+                  mode: "agent",
+                  packageName: "cydetix",
+                  version: runtime.version,
+                  versionExact: runtime.version === PRODUCT.version,
+                  nodeExecutable: runtime.nodeExecutable,
+                  nodeSupported,
+                  entrypoint: runtime.entrypoint,
+                  runtimeSource: runtime.source,
+                  projectRoot: projectBoundary.root,
+                  projectRootCanonical: true,
+                  jsonOutput: true,
+                  mcpStartup: "available",
+                  packageManagerRequired: false,
+                  networkRequired: false,
+                  agentSubprocessMode: true,
+                };
+              })()
+            : undefined;
+        const result = {
+          version: PRODUCT.version,
+          node: process.version,
+          platform: `${process.platform}-${process.arch}`,
+          deterministicEngine: "available",
+          networkRequired: false,
+          optionalAdapters: {
+            git: commandAvailable("git"),
+            gitleaks: commandAvailable("gitleaks"),
+            semgrep: commandAvailable("semgrep"),
+            codeql: commandAvailable("codeql"),
+          },
+          externalTools: {
+            gitleaks: probeExternalTool("gitleaks", "gitleaks"),
+            osvScanner: probeExternalTool("osv-scanner", "osv-scanner"),
+            cosign: probeExternalTool("cosign", "cosign"),
+          },
+          sandbox,
+          ...(agent === undefined ? {} : { agent }),
+        };
+        process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);
+      },
+    );
 
   program
     .command("version")

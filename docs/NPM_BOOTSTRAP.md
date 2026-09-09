@@ -27,7 +27,7 @@ Require a clean public commit, hosted OS matrix, sandbox job, repository securit
 package/plugin/skill/MCP gates, SBOM, manifest, and checksums. Use the `alpha` dist-tag and do not
 add a long-lived npm token to the workflow.
 
-The alpha.6 publication metadata preserves the maintainer-provided state that Trusted Publishing is
+The alpha.7 publication metadata preserves the maintainer-provided state that Trusted Publishing is
 configured. Alpha.4 reached the npm command only after its verification and attestation gates, but
 npm parsed the ambiguous non-`./` relative tarball path as GitHub shorthand and failed before
 registry authentication. Therefore no release has yet empirically proved a successful OIDC

@@ -17,7 +17,7 @@ rechecked before release. The immutable alpha.2 and alpha.3 attempts failed at p
 configuration and history scope respectively. Alpha.4 completed its verification, artifact,
 checksum, and attestation gates, then failed before registry authentication because its relative
 tarball package spec lacked `./`; its draft prerelease remained non-public. Those attempts did not
-publish to npm. Before releasing alpha.6, an authorized maintainer must independently confirm that
+publish to npm. Before releasing alpha.7, an authorized maintainer must independently confirm that
 npm Trusted Publishing is bound to `shakeriamin21/cydetix`, `.github/workflows/release.yml`, and the
 protected `release` environment. Repository configuration alone does not prove the external npm
 setting or a successful OIDC publication.
@@ -83,9 +83,9 @@ git switch main
 git pull --ff-only
 git rev-parse HEAD
 git status --short
-git tag -a v0.6.0-alpha.6 -m "Cydetix v0.6.0-alpha.6"
-git show --no-patch --decorate v0.6.0-alpha.6
-git push origin v0.6.0-alpha.6
+git tag -a v0.6.0-alpha.7 -m "Cydetix v0.6.0-alpha.7"
+git show --no-patch --decorate v0.6.0-alpha.7
+git push origin v0.6.0-alpha.7
 ```
 
 The tag triggers `.github/workflows/release.yml`. It re-verifies the approved identity, annotated

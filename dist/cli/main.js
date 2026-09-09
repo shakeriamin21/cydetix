@@ -7,7 +7,9 @@ import { PRODUCT } from "../core/brand.js";
 import { scanRepository } from "../core/engine.js";
 import { CydetixError, EXIT } from "../core/errors.js";
 import { probeExternalTool } from "../external-tools/model.js";
-import { parseAgentId, runAutomaticIntegration, runSetup } from "../integrations/setup.js";
+import { createAgentCompatibilityReport, renderAgentCompatibilityReport, } from "../integrations/compatibility.js";
+import { pinnedMcpServer } from "../integrations/common.js";
+import { integrationContext, parseAgentSelector, runAutomaticIntegration, runSetup, } from "../integrations/setup.js";
 import { resolvePersistentRuntime } from "../integrations/runtime.js";
 import { createMcpServerContext, runMcpServer } from "../mcp/server.js";
 import { createBoundary } from "../repository-discovery/boundary.js";
@@ -63,7 +65,7 @@ function collectString(value, previous) {
 }
 function collectAgent(value, previous) {
     try {
-        return [...previous, parseAgentId(value)];
+        return [...previous, parseAgentSelector(value)];
     }
     catch (error) {
         throw new InvalidArgumentError(error instanceof Error ? error.message : String(error));
@@ -233,8 +235,8 @@ export function buildProgram() {
     program
         .command("setup")
         .description("Detect and configure supported AI coding agents")
-        .option("--agent <name>", "configure one agent even when it was not detected (repeatable)", collectAgent, [])
-        .option("--all", "configure every supported adapter", false)
+        .option("--agent <name>", "agent id, auto, or all (repeatable for explicit agent ids)", collectAgent, [])
+        .option("--all", "alias for --agent all", false)
         .option("--yes", "accept setup non-interactively", false)
         .option("--dry-run", "preview integration changes without writing files", false)
         .option("--status", "show host detection and integration status without changes", false)
@@ -244,10 +246,16 @@ export function buildProgram() {
         .action(async (options) => {
         if ([options.status, options.verify, options.remove].filter(Boolean).length > 1)
             throw new CydetixError("Choose only one of --status, --verify, or --remove.", EXIT.usage);
+        const special = options.agent.filter((candidate) => candidate === "auto" || candidate === "all");
+        if (special.length > 1 ||
+            (special.length === 1 && options.agent.length > 1) ||
+            (options.all && options.agent.length > 0))
+            throw new CydetixError("Use auto or all by itself; explicit agent ids may be repeated.", EXIT.usage);
+        const agents = options.agent.filter((candidate) => candidate !== "auto" && candidate !== "all");
         const report = await runSetup({
             projectRoot: options.project,
-            agents: options.agent,
-            all: options.all,
+            agents,
+            all: options.all || special[0] === "all",
             yes: options.yes,
             dryRun: options.dryRun,
             status: options.status,
@@ -451,6 +459,20 @@ export function buildProgram() {
         });
     });
     program
+        .command("mcp-config")
+        .description("Print a validated project-bound local MCP definition without modifying files")
+        .option("--project <path>", "explicit project boundary", ".")
+        .option("--format <format>", "output format", graphFormat, "json")
+        .action(async (options) => {
+        if (options.format !== "json")
+            throw new CydetixError("MCP configuration supports --format json only.", EXIT.usage);
+        const context = await integrationContext({
+            projectRoot: options.project,
+            agents: ["generic-mcp"],
+        });
+        process.stdout.write(`${JSON.stringify({ mcpServers: { cydetix: pinnedMcpServer(context) } }, null, 2)}\n`);
+    });
+    program
         .command("verify")
         .argument("[path]", "repository root", ".")
         .description("Rescan and fail when active high or critical findings remain")
@@ -520,9 +542,22 @@ export function buildProgram() {
         .command("doctor")
         .description("Report local engine and optional adapter availability")
         .option("--agent", "verify the persistent agent runtime without changing integration state")
+        .option("--agents", "report universal coding-agent compatibility and integration state")
+        .option("--format <format>", "agent report format: text or json", graphFormat)
         .option("--project-root <path>", "explicit project boundary for agent checks", ".")
         .option("--sandbox-image <digest>", "inspect a locally present immutable container verification image")
         .action(async (options) => {
+        if (options.agent && options.agents)
+            throw new CydetixError("Choose only one of --agent or --agents.", EXIT.usage);
+        if (options.agents === true) {
+            const report = await createAgentCompatibilityReport({
+                projectRoot: options.projectRoot,
+            });
+            process.stdout.write(options.format === "json"
+                ? `${JSON.stringify(report, null, 2)}\n`
+                : renderAgentCompatibilityReport(report));
+            return;
+        }
         const sandbox = options.sandboxImage === undefined
             ? {
                 state: "NOT_REQUESTED",

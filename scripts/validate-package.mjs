@@ -76,8 +76,8 @@ if (packageJson.name !== "cydetix")
 if (JSON.stringify(packageJson.bin) !== JSON.stringify({ cydetix: "dist/cli/main.js" }))
   throw new Error("Package must expose exactly one cydetix binary at the compiled CLI path.");
 const readme = await readFile(path.resolve("README.md"), "utf8");
-if (!readme.startsWith("# Cydetix\n\nSecurity for AI-built software.\n\n## Quick Start\n"))
-  throw new Error("README must lead with the Cydetix tagline and zero-friction Quick Start.");
+if (!readme.startsWith("# Cydetix\n\nSecurity for AI-built software.\n\n## One-off scanner\n"))
+  throw new Error("README must lead with the Cydetix tagline and one-off scanner path.");
 if (!readme.includes("npx cydetix") || /(?:npx|npm install -g)\s+@/u.test(readme))
   throw new Error("README onboarding must use the unscoped Cydetix identity.");
 for (const name of ["preinstall", "install", "postinstall", "prepare"])

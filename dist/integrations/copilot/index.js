@@ -44,6 +44,19 @@ async function change(context, remove, dryRun) {
 export const copilotAdapter = {
     id: "copilot",
     displayName: "GitHub Copilot",
+    compatibilityTier: "tier-1-native-mcp",
+    capabilities: {
+        mcpStdio: true,
+        mcpHttp: false,
+        projectScopedConfig: true,
+        userScopedConfig: false,
+        skills: true,
+        instructionFiles: true,
+    },
+    configTargets(context) {
+        const target = targets(context);
+        return [target.config, target.skillFile];
+    },
     async detect(context) {
         const evidence = existingPaths([
             path.join(context.homeDirectory, ".copilot"),
@@ -56,6 +69,7 @@ export const copilotAdapter = {
         return agentDetection(this.id, this.displayName, evidence, await integrationState(context));
     },
     install: (context, dryRun) => change(context, false, dryRun),
-    uninstall: (context, dryRun) => change(context, true, dryRun),
+    verify: async (context) => (await integrationState(context)) === "configured",
+    remove: (context, dryRun) => change(context, true, dryRun),
 };
 //# sourceMappingURL=index.js.map

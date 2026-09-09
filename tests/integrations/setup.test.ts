@@ -13,6 +13,7 @@ import { isEphemeralNpxPath, PERSISTENT_RUNTIME_REQUIRED } from "../../src/integ
 import {
   integrationContext,
   INTEGRATION_ADAPTERS,
+  parseAgentSelector,
   runAutomaticIntegration,
   runSetup,
 } from "../../src/integrations/setup.js";
@@ -36,6 +37,11 @@ async function markDetected(id: Exclude<AgentId, "generic-mcp">, _project: strin
     cursor: path.join(home, ".cursor"),
     copilot: path.join(home, ".copilot"),
     windsurf: path.join(home, ".codeium", "windsurf"),
+    gemini: path.join(home, ".gemini"),
+    cline: path.join(home, ".cline"),
+    roo: path.join(home, ".roo"),
+    continue: path.join(home, ".continue"),
+    goose: path.join(home, ".config", "goose"),
   };
   await mkdir(targets[id], { recursive: true });
 }
@@ -75,6 +81,14 @@ async function withoutCi<T>(callback: () => Promise<T>): Promise<T> {
 }
 
 describe("universal agent setup", () => {
+  it("accepts auto, all, and documented host aliases", () => {
+    expect(parseAgentSelector("auto")).toBe("auto");
+    expect(parseAgentSelector("all")).toBe("all");
+    expect(parseAgentSelector("gemini-cli")).toBe("gemini");
+    expect(parseAgentSelector("roo-code")).toBe("roo");
+    expect(parseAgentSelector("continue-dev")).toBe("continue");
+  });
+
   it("reports no AI hosts installed", async () => {
     const { project, home } = await environment();
     const report = await runSetup({
@@ -113,13 +127,13 @@ describe("universal agent setup", () => {
     ]) {
       const context = {
         projectRoot: fixture.projectRoot,
-        packageVersion: "0.6.0-alpha.6",
+        packageVersion: "0.6.0-alpha.7",
         runtime: {
           packageRoot: fixture.packageRoot,
           packageJsonPath: `${fixture.packageRoot}/package.json`,
           nodeExecutable: fixture.nodeExecutable,
           entrypoint: fixture.entrypoint,
-          version: "0.6.0-alpha.6",
+          version: "0.6.0-alpha.7",
           source: "current-installation" as const,
         },
       };
@@ -132,7 +146,7 @@ describe("universal agent setup", () => {
           "--project-root",
           fixture.projectRoot,
           "--require-version",
-          "0.6.0-alpha.6",
+          "0.6.0-alpha.7",
         ],
       });
       const generated = JSON.stringify(server).toLowerCase();
@@ -141,7 +155,18 @@ describe("universal agent setup", () => {
     }
   });
 
-  for (const id of ["codex", "claude", "cursor", "copilot", "windsurf"] as const) {
+  for (const id of [
+    "codex",
+    "claude",
+    "cursor",
+    "copilot",
+    "windsurf",
+    "gemini",
+    "cline",
+    "roo",
+    "continue",
+    "goose",
+  ] as const) {
     it(`detects ${id} without executing its binary`, async () => {
       const { project, home } = await environment();
       await markDetected(id, project, home);
@@ -163,13 +188,18 @@ describe("universal agent setup", () => {
     });
     expect(report.detections.filter((item) => item.detected).map((item) => item.id)).toEqual([
       "codex",
-      "cursor",
       "claude",
+      "cursor",
     ]);
   });
 
-  it("installs version-pinned MCP and one skill through every adapter", async () => {
+  it("installs version-pinned MCP through every safely configurable adapter", async () => {
     const { project, home } = await environment();
+    await Promise.all([
+      markDetected("codex", project, home),
+      markDetected("cline", project, home),
+      markDetected("goose", project, home),
+    ]);
     const report = await runSetup({
       projectRoot: project,
       homeDirectory: home,
@@ -180,7 +210,8 @@ describe("universal agent setup", () => {
       quiet: true,
     });
     expect(report.verified).toBe(true);
-    expect(report.results).toHaveLength(6);
+    expect(report.results).toHaveLength(10);
+    expect(report.selected).not.toContain("generic-mcp");
     const cursor = JSON.parse(
       await readFile(path.join(project, ".cursor", "mcp.json"), "utf8"),
     ) as { mcpServers: { cydetix: { args: string[] } } };
@@ -190,13 +221,13 @@ describe("universal agent setup", () => {
         "--project-root",
         project,
         "--require-version",
-        "0.6.0-alpha.6",
+        "0.6.0-alpha.7",
       ]),
     );
     const codex = await readFile(path.join(home, ".codex", "config.toml"), "utf8");
     expect(codex).toContain("[mcp_servers.cydetix]");
     expect(codex).toContain('"--require-version"');
-    expect(codex).toContain('"0.6.0-alpha.6"');
+    expect(codex).toContain('"0.6.0-alpha.7"');
     const copilot = JSON.parse(
       await readFile(path.join(project, ".vscode", "mcp.json"), "utf8"),
     ) as { servers: { cydetix: { type: string } } };
@@ -556,7 +587,7 @@ describe("universal agent setup", () => {
     const content = await readFile(path.join(project, ".cydetix", "mcp.json"), "utf8");
     expect(content).toContain('"--project-root"');
     expect(content).toContain('"--require-version"');
-    expect(content).toContain("0.6.0-alpha.6");
+    expect(content).toContain("0.6.0-alpha.7");
   });
 
   it("removes a configured generic integration and state without requiring agent selection", async () => {

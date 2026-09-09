@@ -61,13 +61,13 @@ interface ToolDefinition {
 }
 
 const SCAN_DESCRIPTION =
-  "Use when the user asks to check security, review or audit a project, find vulnerabilities, assess whether software is safe to deploy, harden software, or review authentication, authorization, login, sessions, JWT, OAuth, secrets, dependencies, supply chain, or CI/CD. The user does not need to mention Cydetix. Read-only and deterministic.";
+  "Use when the user asks to check, audit, review, or harden project security, vulnerabilities, authentication, authorization, sessions, JWT, OAuth, secrets, dependencies, supply chain, or CI/CD. This deterministic scan is read-only, offline by default, returns a structured report, leaves the repository unmodified, and stays inside the configured trusted project root.";
 
 const FIX_DESCRIPTION =
-  "Use only when the user explicitly asks to fix, remediate, repair, or resolve security findings. Applies only policy-approved SAFE remediation; REVIEW_REQUIRED and ARCHITECTURAL work is never applied. Omit apply or set it false for a dry run.";
+  "Use only when the user explicitly asks to fix, remediate, repair, or resolve security findings. Plan remediation first. Mutation requires explicit user intent plus apply=true and confirmedUserIntent. Only SAFE changes may autoapply; REVIEW_REQUIRED needs human review and ARCHITECTURAL never autoapplies. Omit apply or set it false for a zero-write plan.";
 
 const EXPLAIN_DESCRIPTION =
-  "Use when the user asks to explain a Cydetix finding, security rule, evidence, remediation class, or why a result is UNKNOWN. Read-only and deterministic.";
+  "Explain a Cydetix finding, rule, evidence requirement, remediation class, or UNKNOWN result. Explanation is read-only and never modifies the repository.";
 
 export const CYDETIX_MCP_TOOLS: readonly ToolDefinition[] = [
   {

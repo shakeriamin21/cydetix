@@ -110,6 +110,23 @@ async function change(
 export const windsurfAdapter: IntegrationAdapter = {
   id: "windsurf",
   displayName: "Windsurf",
+  compatibilityTier: "tier-1-native-mcp",
+  capabilities: {
+    mcpStdio: true,
+    mcpHttp: false,
+    projectScopedConfig: true,
+    userScopedConfig: true,
+    skills: true,
+    instructionFiles: true,
+  },
+  configTargets(context) {
+    const target = targets(context);
+    return [
+      target.currentConfig,
+      target.skillFile,
+      ...(target.legacyPresent ? [target.legacyConfig] : []),
+    ];
+  },
   async detect(context) {
     const evidence = existingPaths([
       path.join(context.homeDirectory, ".codeium", "windsurf"),
@@ -125,5 +142,6 @@ export const windsurfAdapter: IntegrationAdapter = {
     return agentDetection(this.id, this.displayName, evidence, await integrationState(context));
   },
   install: (context, dryRun) => change(context, false, dryRun),
-  uninstall: (context, dryRun) => change(context, true, dryRun),
+  verify: async (context) => (await integrationState(context)) === "configured",
+  remove: (context, dryRun) => change(context, true, dryRun),
 };

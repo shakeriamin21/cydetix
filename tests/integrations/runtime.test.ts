@@ -9,7 +9,7 @@ import {
 } from "../../src/integrations/runtime.js";
 import { temporaryDirectory } from "../helpers/temporary.js";
 
-async function fakeRuntime(name = "cydetix", version = "0.6.0-alpha.6") {
+async function fakeRuntime(name = "cydetix", version = "0.6.0-alpha.7") {
   const root = await temporaryDirectory("cydetix-persistent-runtime-");
   const projectRoot = path.join(root, "Project With Spaces");
   const packageRoot = path.join(root, "persistent-prefix", "node_modules", "cydetix");
@@ -32,9 +32,9 @@ describe("persistent Cydetix runtime verification", () => {
     const runtime = await verifyPersistentRuntime({
       packageRoot: fixture.packageRoot,
       projectRoot: fixture.projectRoot,
-      expectedVersion: "0.6.0-alpha.6",
+      expectedVersion: "0.6.0-alpha.7",
     });
-    expect(runtime.version).toBe("0.6.0-alpha.6");
+    expect(runtime.version).toBe("0.6.0-alpha.7");
     expect(runtime.entrypoint).toBe(fixture.entrypoint);
     expect(runtime.nodeExecutable).toBe(path.resolve(process.execPath));
     expect(runtime.source).toBe("current-installation");
@@ -46,7 +46,7 @@ describe("persistent Cydetix runtime verification", () => {
       verifyPersistentRuntime({
         packageRoot: fixture.packageRoot,
         projectRoot: fixture.projectRoot,
-        expectedVersion: "0.6.0-alpha.6",
+        expectedVersion: "0.6.0-alpha.7",
       }),
     ).rejects.toThrow("exactly cydetix");
   });
@@ -57,9 +57,9 @@ describe("persistent Cydetix runtime verification", () => {
       verifyPersistentRuntime({
         packageRoot: fixture.packageRoot,
         projectRoot: fixture.projectRoot,
-        expectedVersion: "0.6.0-alpha.6",
+        expectedVersion: "0.6.0-alpha.7",
       }),
-    ).rejects.toThrow("required 0.6.0-alpha.6, found 0.6.0-alpha.5");
+    ).rejects.toThrow("required 0.6.0-alpha.7, found 0.6.0-alpha.5");
   });
 
   it("rejects ephemeral npx cache roots before reading package content", async () => {
@@ -68,7 +68,7 @@ describe("persistent Cydetix runtime verification", () => {
       verifyPersistentRuntime({
         packageRoot: path.join(root, "_npx", "123", "node_modules", "cydetix"),
         projectRoot: root,
-        expectedVersion: "0.6.0-alpha.6",
+        expectedVersion: "0.6.0-alpha.7",
       }),
     ).rejects.toThrow(PERSISTENT_RUNTIME_REQUIRED);
   });
@@ -88,7 +88,7 @@ describe("persistent Cydetix runtime verification", () => {
       path.join(fixture.packageRoot, "package.json"),
       `${JSON.stringify({
         name: "cydetix",
-        version: "0.6.0-alpha.6",
+        version: "0.6.0-alpha.7",
         bin: { cydetix: "dist/cli/main.js.link" },
       })}\n`,
     );
@@ -96,7 +96,7 @@ describe("persistent Cydetix runtime verification", () => {
       verifyPersistentRuntime({
         packageRoot: fixture.packageRoot,
         projectRoot: fixture.projectRoot,
-        expectedVersion: "0.6.0-alpha.6",
+        expectedVersion: "0.6.0-alpha.7",
       }),
     ).rejects.toThrow(/symbolic links|non-symlink/u);
   });
