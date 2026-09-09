@@ -1,8 +1,10 @@
 import { spawnSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, readFileSync, realpathSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync } from "node:fs";
 import path from "node:path";
 
 import { describe, expect, it } from "vitest";
+
+import { createTrustedIntegrationRoot } from "../../src/integrations/common.js";
 import { temporaryDirectorySync } from "../helpers/temporary.js";
 
 interface CliResult {
@@ -86,11 +88,11 @@ describe("CLI smoke contract", () => {
     expect(existsSync(path.join(project, ".cydetix"))).toBe(false);
   });
 
-  it("prints a strict project-bound MCP definition without modifying the project", () => {
+  it("prints a strict project-bound MCP definition without modifying the project", async () => {
     const root = temporaryDirectorySync("cydetix-cli-mcp-config-");
     const project = path.join(root, "Project With Spaces");
     mkdirSync(project);
-    const canonicalProject = realpathSync(project);
+    const canonicalProject = (await createTrustedIntegrationRoot(project)).root;
     const result = runCli("mcp-config", "--format", "json", "--project", project);
     expect(result.status).toBe(0);
     expect(result.stderr).toBe("");
