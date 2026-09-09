@@ -15,9 +15,8 @@ async function fixture() {
   const root = await temporaryDirectory("cydetix-agent-doctor-");
   const project = path.join(root, "Project With Spaces");
   const home = path.join(root, "Home With Spaces");
+  await Promise.all([mkdir(project, { recursive: true }), mkdir(home, { recursive: true })]);
   await Promise.all([
-    mkdir(project),
-    mkdir(home),
     mkdir(path.join(home, ".gemini"), { recursive: true }),
     mkdir(path.join(project, ".roo"), { recursive: true }),
   ]);

@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { cpSync, existsSync, mkdirSync, readFileSync } from "node:fs";
+import { cpSync, existsSync, mkdirSync, readFileSync, realpathSync } from "node:fs";
 import path from "node:path";
 
 import { describe, expect, it } from "vitest";
@@ -90,6 +90,7 @@ describe("CLI smoke contract", () => {
     const root = temporaryDirectorySync("cydetix-cli-mcp-config-");
     const project = path.join(root, "Project With Spaces");
     mkdirSync(project);
+    const canonicalProject = realpathSync(project);
     const result = runCli("mcp-config", "--format", "json", "--project", project);
     expect(result.status).toBe(0);
     expect(result.stderr).toBe("");
@@ -103,7 +104,7 @@ describe("CLI smoke contract", () => {
       expect.stringMatching(/[\\/]dist[\\/]cli[\\/]main\.js$/u),
       "mcp",
       "--project-root",
-      project,
+      canonicalProject,
       "--require-version",
       "0.6.0-alpha.7",
     ]);
