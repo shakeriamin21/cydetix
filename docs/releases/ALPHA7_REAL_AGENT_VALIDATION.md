@@ -1,6 +1,7 @@
 # Alpha.7 real installed-agent validation
 
-Date: 2026-09-10  
+Date: 2026-09-10
+
 Gate candidate: `0.6.0-alpha.7` at `e89635e0537bde3b30490ac3b6c876b8f149956a`
 
 ## Final gate
