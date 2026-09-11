@@ -11,7 +11,7 @@ Security-control registry fingerprint:
 ## Corpus results
 
 The admission suite produced all 26 expected high-confidence positives. It produced no finding for
-any of the 12 negative/near-miss fixtures or six non-vulnerable adversarial fixtures. The SSRF
+any of the 12 negative/near-miss fixtures or eight non-vulnerable adversarial fixtures. The SSRF
 substring-check adversarial fixture correctly remained one positive because substring matching is
 not host confinement. All four custom sanitizer cases produced no insecure proof and surfaced
 `SANITIZER_UNKNOWN` with `PARTIAL` analysis. The malformed parser fixture surfaced `PARTIAL`; the
