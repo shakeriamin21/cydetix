@@ -14,11 +14,17 @@ export function renderFinding(finding: Finding): string {
     `${finding.severity.toUpperCase()}  ${terminalSafe(finding.ruleId)}  ${terminalSafe(finding.title)}`,
     `  Location: ${terminalSafe(finding.location.path)}:${finding.location.start.line}:${finding.location.start.column + 1}`,
     `  Confidence: ${finding.confidence}  Reachability: ${finding.reachability}`,
+    `  Proof: ${finding.proofState ?? "UNAVAILABLE"}  Analysis: ${finding.analysisCompleteness ?? "UNAVAILABLE"}  Maturity: ${finding.ruleMaturity ?? "PRODUCTION"}`,
     `  Evidence: ${terminalSafe(finding.evidence[0]?.message ?? "(none)")}`,
     `  Invariant: ${terminalSafe(finding.securityInvariant)}`,
     `  Impact: ${terminalSafe(finding.impact)}`,
     `  Remediation: ${terminalSafe(finding.remediation)}`,
     `  Autofix: ${finding.autofix}`,
+    ...(finding.remediationAssessment === undefined
+      ? []
+      : [
+          `  Remediation assessment: ceiling ${finding.remediationAssessment.ceiling}; final ${finding.remediationAssessment.finalClass}; ${finding.remediationAssessment.reasonCodes.join(", ")}`,
+        ]),
     `  Standards: ${mapping || "none"}`,
     `  Fingerprint: ${finding.fingerprint}`,
   ].join("\n");
@@ -41,6 +47,12 @@ export function renderText(report: ScanReport): string {
     `  Engines run: ${report.coverage.enginesRun.map(terminalSafe).join("; ")}`,
     `  Engines unavailable: ${report.coverage.enginesUnavailable.map(terminalSafe).join("; ")}`,
     `  Rules enabled: ${report.coverage.enabledRuleIds.map(terminalSafe).join(", ")}`,
+    ...(report.reproducibility === undefined
+      ? []
+      : [
+          `  Analysis completeness: ${report.reproducibility.analysisCompleteness}`,
+          `  Rule catalogue fingerprint: ${report.reproducibility.ruleCatalogueFingerprint}`,
+        ]),
     "  Limitations:",
     ...report.coverage.limitations.map((limitation) => `    - ${terminalSafe(limitation)}`),
     "",

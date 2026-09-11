@@ -1,4 +1,5 @@
 import { PRODUCT } from "../core/brand.js";
+import { stableObjectFingerprint } from "../core/hash.js";
 import { ruleDefinitionSchema } from "../core/schema.js";
 import catalogue from "../../rules/catalogue.json" with { type: "json" };
 const definitions = [
@@ -636,12 +637,275 @@ const definitions = [
         negativeTests: ["fixtures/phase3/oauth-secure/src/routes.ts"],
     },
 ];
+const batchOneDefinitions = [
+    {
+        schemaVersion: PRODUCT.ruleSchemaVersion,
+        id: "AS-INJECTION-SQL-001",
+        version: "1.0.0",
+        title: "Untrusted input controls SQL statement structure",
+        category: "injection",
+        description: "Detects complete bounded source-to-sink paths where request input controls SQL structure at a recognized database API without separate parameterization.",
+        severity: "high",
+        confidence: "high",
+        maturity: "PRODUCTION",
+        standards: {
+            cwe: ["CWE-89"],
+            owaspTop10: ["A05:2025"],
+            asvs: ["v5.0.0-1.2.4"],
+            nist: [],
+        },
+        supportedLanguages: ["javascript", "typescript", "python"],
+        supportedFrameworks: [
+            "Express",
+            "Fastify",
+            "Next.js server routes",
+            "Flask",
+            "FastAPI",
+            "pg",
+            "mysql/mysql2",
+            "SQLite",
+            "Sequelize",
+            "Prisma unsafe raw APIs",
+            "Python DB-API",
+            "SQLAlchemy",
+        ],
+        detectionStrategy: "bounded-dataflow",
+        evidenceRequirements: [
+            "A recognized request source is proven to reach the SQL text argument of a recognized database sink.",
+            "The SQL structure is dynamic and no separate parameterization control protects the untrusted data.",
+            "The route and sink are reachable within the bounded supported call model and analysis is complete.",
+        ],
+        reachabilityAssessment: "Likely only for parsed route handlers and same-file repository-local calls resolved by the bounded engine.",
+        securityInvariant: "UNTRUSTED_SQL_DATA_MUST_NOT_CONTROL_SQL_STRUCTURE",
+        attackPrerequisite: "An attacker can control the proven request value reaching the database call.",
+        impact: "Injected SQL structure can disclose, modify, or delete data and may bypass application authorization.",
+        remediation: "Use the database library's parameterized query interface and separately constrain any dynamic identifiers to an explicit application-defined allowlist.",
+        maxRemediationClass: "REVIEW_REQUIRED",
+        autofix: "REVIEW_REQUIRED",
+        references: [
+            "https://cwe.mitre.org/data/definitions/89.html",
+            "https://owasp.org/Top10/2025/A05_2025-Injection/",
+            "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x10-V1-Encoding-and-Sanitization.md",
+        ],
+        positiveTests: ["fixtures/batch1/sql/positive"],
+        negativeTests: ["fixtures/batch1/sql/negative"],
+        adversarialTests: ["fixtures/batch1/sql/adversarial", "fixtures/batch1/sql/unknown"],
+        falsePositiveAnalysis: "Import provenance, route-bound sources, structural AST nodes, parameterized-query negatives, dead-code exclusion, and same-name custom-function negatives are required gates.",
+        limitations: [
+            "Cross-file propagation, dynamically selected database clients, reflection, eval, complex destructuring, and custom query builders are unsupported or UNKNOWN.",
+            "Parameterized identifiers are not assumed safe because ordinary bind parameters do not protect SQL structure.",
+        ],
+        verificationStrategy: "Re-run the source-to-sink invariant and require PROVEN_SECURE; disappearance of the original syntax alone is insufficient.",
+        userDocumentation: "docs/security/RULE_COVERAGE.md#sql-injection",
+    },
+    {
+        schemaVersion: PRODUCT.ruleSchemaVersion,
+        id: "AS-INJECTION-CMD-001",
+        version: "1.0.0",
+        title: "Untrusted input controls shell syntax",
+        category: "injection",
+        description: "Detects complete bounded source-to-sink paths into shell command strings or shell-enabled process APIs while excluding direct executable argument-array execution.",
+        severity: "critical",
+        confidence: "high",
+        maturity: "PRODUCTION",
+        standards: {
+            cwe: ["CWE-78", "CWE-77", "CWE-88"],
+            owaspTop10: ["A05:2025"],
+            asvs: ["v5.0.0-1.2.5"],
+            nist: [],
+        },
+        supportedLanguages: ["javascript", "typescript", "python"],
+        supportedFrameworks: [
+            "Express",
+            "Fastify",
+            "Next.js server routes",
+            "Flask",
+            "FastAPI",
+            "Node child_process",
+            "Python subprocess",
+            "Python os.system",
+        ],
+        detectionStrategy: "bounded-dataflow",
+        evidenceRequirements: [
+            "A recognized request source is proven to reach a child_process or Python shell execution sink.",
+            "The sink executes command text or explicitly enables shell interpretation.",
+            "The route and sink are reachable within the bounded supported call model and analysis is complete.",
+        ],
+        reachabilityAssessment: "Likely only for parsed route handlers and same-file repository-local calls resolved by the bounded engine.",
+        securityInvariant: "UNTRUSTED_INPUT_MUST_NOT_CONTROL_SHELL_SYNTAX",
+        attackPrerequisite: "An attacker can control the proven request value supplied to shell parsing.",
+        impact: "Injected shell syntax can execute commands with the application's operating-system privileges.",
+        remediation: "Remove shell interpretation and invoke an explicitly chosen executable with a validated argument array; review argument-level injection semantics separately.",
+        maxRemediationClass: "REVIEW_REQUIRED",
+        autofix: "REVIEW_REQUIRED",
+        references: [
+            "https://cwe.mitre.org/data/definitions/78.html",
+            "https://cwe.mitre.org/data/definitions/88.html",
+            "https://owasp.org/Top10/2025/A05_2025-Injection/",
+            "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x10-V1-Encoding-and-Sanitization.md",
+        ],
+        positiveTests: ["fixtures/batch1/command/positive"],
+        negativeTests: ["fixtures/batch1/command/negative"],
+        adversarialTests: ["fixtures/batch1/command/adversarial", "fixtures/batch1/command/unknown"],
+        falsePositiveAnalysis: "The rule requires imported child_process/os/subprocess provenance, a route-bound source, shell semantics, and excludes fixed commands and shell-free argument arrays.",
+        limitations: [
+            "Argument injection into a shell-free executable is not classified as command injection by this rule.",
+            "Custom process wrappers and cross-file propagation remain unsupported or UNKNOWN.",
+        ],
+        verificationStrategy: "Re-run the shell-syntax invariant and require the destination to be a shell-free executable/argument contract or otherwise PROVEN_SECURE.",
+        userDocumentation: "docs/security/RULE_COVERAGE.md#os-command-injection",
+    },
+    {
+        schemaVersion: PRODUCT.ruleSchemaVersion,
+        id: "AS-PATH-001",
+        version: "1.0.0",
+        title: "Untrusted path reaches a filesystem operation without confinement",
+        category: "path-traversal",
+        description: "Detects complete bounded request-to-filesystem paths lacking a recognized canonical authorized-root confinement check.",
+        severity: "high",
+        confidence: "high",
+        maturity: "PRODUCTION",
+        standards: {
+            cwe: ["CWE-22"],
+            owaspTop10: ["A01:2025"],
+            asvs: ["v5.0.0-5.3.2"],
+            nist: [],
+        },
+        supportedLanguages: ["javascript", "typescript", "python"],
+        supportedFrameworks: [
+            "Express",
+            "Fastify",
+            "Next.js server routes",
+            "Flask",
+            "FastAPI",
+            "Node fs",
+            "Express sendFile/download",
+            "Python built-in filesystem APIs",
+            "pathlib",
+        ],
+        detectionStrategy: "bounded-dataflow",
+        evidenceRequirements: [
+            "A recognized request path source is proven to reach a supported filesystem or file-serving sink.",
+            "No supported canonical resolution and authorized-root containment control dominates the sink.",
+            "The route and sink are reachable within the bounded supported call model and analysis is complete.",
+        ],
+        reachabilityAssessment: "Likely only for parsed route handlers and same-file repository-local calls resolved by the bounded engine.",
+        securityInvariant: "UNTRUSTED_PATHS_MUST_REMAIN_WITHIN_AUTHORIZED_FILESYSTEM_ROOT",
+        attackPrerequisite: "An attacker can control the proven path value reaching the filesystem operation.",
+        impact: "Traversal can disclose, overwrite, delete, rename, or expose files outside the intended root.",
+        remediation: "Resolve against the application-defined authorized root, verify platform-correct containment, and account for symlink/junction policy before the filesystem operation.",
+        maxRemediationClass: "REVIEW_REQUIRED",
+        autofix: "REVIEW_REQUIRED",
+        references: [
+            "https://cwe.mitre.org/data/definitions/22.html",
+            "https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/",
+            "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x14-V5-File-Handling.md",
+        ],
+        positiveTests: ["fixtures/batch1/path/positive"],
+        negativeTests: ["fixtures/batch1/path/negative"],
+        adversarialTests: ["fixtures/batch1/path/adversarial", "fixtures/batch1/path/unknown"],
+        falsePositiveAnalysis: "The rule requires a route-bound source and imported filesystem or response sink, excludes constants/internal names, and recognizes documented canonical confinement patterns.",
+        limitations: [
+            "The engine does not infer the intended authorized root and does not claim symlink-safe confinement from lexical prefix checks alone.",
+            "Archive extraction, cross-file wrappers, Windows device paths, UNC policy, and custom virtual filesystems remain unsupported or UNKNOWN.",
+        ],
+        verificationStrategy: "Re-evaluate the authorized-root invariant; a renamed sink or disappearance of the original call is not sufficient verification.",
+        userDocumentation: "docs/security/RULE_COVERAGE.md#path-traversal",
+    },
+    {
+        schemaVersion: PRODUCT.ruleSchemaVersion,
+        id: "AS-SSRF-001",
+        version: "1.0.0",
+        title: "Untrusted input controls a server-side request destination",
+        category: "ssrf",
+        description: "Detects complete bounded request-to-HTTP-client destination paths without a recognized hostname and scheme policy.",
+        severity: "high",
+        confidence: "high",
+        maturity: "PRODUCTION",
+        standards: {
+            cwe: ["CWE-918"],
+            owaspTop10: ["A01:2025"],
+            asvs: ["v5.0.0-1.3.6", "v5.0.0-15.3.2"],
+            nist: [],
+        },
+        supportedLanguages: ["javascript", "typescript", "python"],
+        supportedFrameworks: [
+            "Express",
+            "Fastify",
+            "Next.js server routes",
+            "Flask",
+            "FastAPI",
+            "Node fetch",
+            "axios",
+            "got",
+            "node-fetch",
+            "undici",
+            "requests",
+            "httpx",
+            "urllib",
+        ],
+        detectionStrategy: "bounded-dataflow",
+        evidenceRequirements: [
+            "A recognized request source is proven to control the scheme, host, port, or full URL of a supported server-side HTTP client.",
+            "The value controls where the server connects, not merely request data sent to a fixed host.",
+            "No supported explicit hostname allowlist and scheme restriction dominates the sink.",
+        ],
+        reachabilityAssessment: "Likely only for parsed route handlers and same-file repository-local calls resolved by the bounded engine.",
+        securityInvariant: "UNTRUSTED_NETWORK_DESTINATION_MUST_NOT_CONTROL_SERVER_SIDE_REQUEST_TARGET_WITHOUT_ENFORCED_POLICY",
+        attackPrerequisite: "An attacker can control the proven destination component of a server-side request.",
+        impact: "The server may access internal services, cloud metadata, loopback listeners, or attacker-selected destinations using its network position.",
+        remediation: "Enforce an organization-defined normalized destination policy covering scheme and hostname, and review port, DNS resolution, redirect, and proxy behavior.",
+        maxRemediationClass: "REVIEW_REQUIRED",
+        autofix: "REVIEW_REQUIRED",
+        references: [
+            "https://cwe.mitre.org/data/definitions/918.html",
+            "https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/",
+            "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x10-V1-Encoding-and-Sanitization.md",
+            "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x24-V15-Secure-Coding-and-Architecture.md",
+        ],
+        positiveTests: ["fixtures/batch1/ssrf/positive"],
+        negativeTests: ["fixtures/batch1/ssrf/negative"],
+        adversarialTests: ["fixtures/batch1/ssrf/adversarial", "fixtures/batch1/ssrf/unknown"],
+        falsePositiveAnalysis: "The rule requires a route-bound source in the destination argument of a supported HTTP client and excludes untrusted bodies/query values sent to a fixed host.",
+        limitations: [
+            "DNS rebinding, resolved IP ranges, redirects, proxies, and custom HTTP wrappers are unsupported or UNKNOWN.",
+            "Substring hostname checks are not recognized as effective controls.",
+        ],
+        verificationStrategy: "Re-evaluate the destination-policy invariant and require a supported enforced policy; changing the client call alone is insufficient.",
+        userDocumentation: "docs/security/RULE_COVERAGE.md#ssrf",
+    },
+];
 const legacyIds = new Set(definitions.map((definition) => definition.id));
-export const RULES = catalogue.rules.map((definition) => ruleDefinitionSchema.parse(definition));
+const definitionsById = new Map([...catalogue.rules, ...batchOneDefinitions].map((definition) => [definition.id, definition]));
+function completeAdmissionMetadata(definition) {
+    const rule = ruleDefinitionSchema.parse(definition);
+    return ruleDefinitionSchema.parse({
+        ...rule,
+        maturity: rule.maturity ?? "PRODUCTION",
+        maxRemediationClass: rule.maxRemediationClass ?? rule.autofix,
+        adversarialTests: rule.adversarialTests ?? rule.negativeTests,
+        falsePositiveAnalysis: rule.falsePositiveAnalysis ??
+            "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+        limitations: rule.limitations ?? [
+            "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security.",
+        ],
+        verificationStrategy: rule.verificationStrategy ??
+            (rule.autofix === "SAFE"
+                ? "Verify the exact source hash, apply only the admitted local transform, parse, rescan, and require the violated invariant to become proven secure."
+                : "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared."),
+        userDocumentation: rule.userDocumentation ?? "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage",
+    });
+}
+export const RULES = [...definitionsById.values()].map(completeAdmissionMetadata);
 if ([...legacyIds].some((id) => !RULES.some((rule) => rule.id === id))) {
     throw new Error("rules/catalogue.json is missing a built-in rule definition");
 }
 export const RULE_BY_ID = new Map(RULES.map((rule) => [rule.id, rule]));
+export function ruleCatalogueFingerprint() {
+    return stableObjectFingerprint([...RULES]
+        .sort((left, right) => left.id.localeCompare(right.id))
+        .map((rule) => ({ ...rule, maxRemediationClass: rule.maxRemediationClass ?? rule.autofix })));
+}
 export function requireRule(id) {
     const rule = RULE_BY_ID.get(id);
     if (rule === undefined)

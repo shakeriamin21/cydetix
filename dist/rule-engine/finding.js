@@ -1,4 +1,5 @@
 import { sha256, stableFingerprint } from "../core/hash.js";
+import { assessRemediation } from "../remediation/assessment.js";
 export function pointAt(text, offset) {
     const safeOffset = Math.max(0, Math.min(offset, text.length));
     const prefix = text.slice(0, safeOffset);
@@ -35,6 +36,14 @@ export function makeFix(file, startOffset, endOffset, replacement, description) 
 export function makeFinding(input) {
     const excerpt = input.excerpt ?? lineExcerpt(input.file.text, input.startOffset);
     const fingerprintAnchor = input.fingerprintAnchor ?? excerpt.replaceAll(/\s+/g, " ").trim();
+    const assessment = assessRemediation({
+        rule: input.rule,
+        requestedClass: input.autofix ?? input.rule.autofix,
+        ...(input.fix === undefined ? {} : { fix: input.fix }),
+        ...(input.remediationReasons === undefined ? {} : { reasonCodes: input.remediationReasons }),
+        ...(input.safeConditions === undefined ? {} : { safeConditions: input.safeConditions }),
+        verificationStrength: input.fix === undefined ? "NONE" : "INVARIANT",
+    });
     return {
         fingerprint: stableFingerprint([input.rule.id, input.file.relativePath, fingerprintAnchor]),
         ruleId: input.rule.id,
@@ -63,7 +72,12 @@ export function makeFinding(input) {
         impact: input.rule.impact,
         standards: input.rule.standards,
         remediation: input.rule.remediation,
-        autofix: input.autofix ?? input.rule.autofix,
+        autofix: assessment.finalClass,
+        ruleMaturity: input.rule.maturity ?? "PRODUCTION",
+        proofState: input.proof?.proofState ?? "PROVEN_INSECURE",
+        analysisCompleteness: input.analysisCompleteness ?? "COMPLETE",
+        ...(input.proof === undefined ? {} : { proof: input.proof }),
+        remediationAssessment: assessment,
         ...(input.fix === undefined ? {} : { fix: input.fix }),
         verificationStatus: "not_attempted",
     };

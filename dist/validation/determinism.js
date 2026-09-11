@@ -14,6 +14,11 @@ export function normalizeScanForDeterminism(report) {
         reportGeneration: 0,
     };
     normalized.manifest.root = ".";
+    if (normalized.reproducibility !== undefined) {
+        normalized.reproducibility.scanId = "00000000-0000-0000-0000-000000000000";
+        normalized.reproducibility.analysisTimestamp = "1970-01-01T00:00:00.000Z";
+        normalized.reproducibility.canonicalRepositoryRoot = ".";
+    }
     const supplyChain = normalized.securityAnalysis.supplyChainAnalysis;
     if (supplyChain !== undefined) {
         supplyChain.performanceMilliseconds = {

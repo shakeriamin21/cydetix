@@ -24,6 +24,17 @@ export declare const remediationClassSchema: z.ZodEnum<{
     REVIEW_REQUIRED: "REVIEW_REQUIRED";
     ARCHITECTURAL: "ARCHITECTURAL";
 }>;
+export declare const ruleMaturitySchema: z.ZodEnum<{
+    EXPERIMENTAL: "EXPERIMENTAL";
+    VALIDATED: "VALIDATED";
+    PRODUCTION: "PRODUCTION";
+}>;
+export declare const proofStateSchema: z.ZodEnum<{
+    UNKNOWN: "UNKNOWN";
+    NOT_APPLICABLE: "NOT_APPLICABLE";
+    PROVEN_SECURE: "PROVEN_SECURE";
+    PROVEN_INSECURE: "PROVEN_INSECURE";
+}>;
 export declare const standardsMappingSchema: z.ZodObject<{
     cwe: z.ZodArray<z.ZodString>;
     owaspTop10: z.ZodArray<z.ZodString>;
@@ -54,6 +65,9 @@ export declare const ruleDefinitionSchema: z.ZodObject<{
         "token-validation": "token-validation";
         configuration: "configuration";
         authorization: "authorization";
+        injection: "injection";
+        "path-traversal": "path-traversal";
+        ssrf: "ssrf";
         "dependency-security": "dependency-security";
         "ci-cd": "ci-cd";
         "supply-chain": "supply-chain";
@@ -114,6 +128,7 @@ export declare const ruleDefinitionSchema: z.ZodObject<{
         "advisory-correlation": "advisory-correlation";
         "secret-correlation": "secret-correlation";
         "workflow-correlation": "workflow-correlation";
+        "bounded-dataflow": "bounded-dataflow";
     }>;
     evidenceRequirements: z.ZodArray<z.ZodString>;
     reachabilityAssessment: z.ZodString;
@@ -121,6 +136,16 @@ export declare const ruleDefinitionSchema: z.ZodObject<{
     attackPrerequisite: z.ZodString;
     impact: z.ZodString;
     remediation: z.ZodString;
+    maturity: z.ZodOptional<z.ZodEnum<{
+        EXPERIMENTAL: "EXPERIMENTAL";
+        VALIDATED: "VALIDATED";
+        PRODUCTION: "PRODUCTION";
+    }>>;
+    maxRemediationClass: z.ZodOptional<z.ZodEnum<{
+        SAFE: "SAFE";
+        REVIEW_REQUIRED: "REVIEW_REQUIRED";
+        ARCHITECTURAL: "ARCHITECTURAL";
+    }>>;
     autofix: z.ZodEnum<{
         SAFE: "SAFE";
         REVIEW_REQUIRED: "REVIEW_REQUIRED";
@@ -129,6 +154,11 @@ export declare const ruleDefinitionSchema: z.ZodObject<{
     references: z.ZodArray<z.ZodURL>;
     positiveTests: z.ZodArray<z.ZodString>;
     negativeTests: z.ZodArray<z.ZodString>;
+    adversarialTests: z.ZodOptional<z.ZodArray<z.ZodString>>;
+    falsePositiveAnalysis: z.ZodOptional<z.ZodString>;
+    limitations: z.ZodOptional<z.ZodArray<z.ZodString>>;
+    verificationStrategy: z.ZodOptional<z.ZodString>;
+    userDocumentation: z.ZodOptional<z.ZodString>;
 }, z.core.$strict>;
 export declare const sourcePointSchema: z.ZodObject<{
     line: z.ZodNumber;
@@ -160,6 +190,136 @@ export declare const fixEditSchema: z.ZodObject<{
     expectedTextSha256: z.ZodString;
     replacement: z.ZodString;
     description: z.ZodString;
+}, z.core.$strict>;
+export declare const remediationAssessmentSchema: z.ZodObject<{
+    schemaVersion: z.ZodLiteral<"1.0.0">;
+    ceiling: z.ZodEnum<{
+        SAFE: "SAFE";
+        REVIEW_REQUIRED: "REVIEW_REQUIRED";
+        ARCHITECTURAL: "ARCHITECTURAL";
+    }>;
+    requestedClass: z.ZodEnum<{
+        SAFE: "SAFE";
+        REVIEW_REQUIRED: "REVIEW_REQUIRED";
+        ARCHITECTURAL: "ARCHITECTURAL";
+    }>;
+    finalClass: z.ZodEnum<{
+        SAFE: "SAFE";
+        REVIEW_REQUIRED: "REVIEW_REQUIRED";
+        ARCHITECTURAL: "ARCHITECTURAL";
+    }>;
+    reasonCodes: z.ZodArray<z.ZodEnum<{
+        EXACT_LOCAL_TRANSFORM: "EXACT_LOCAL_TRANSFORM";
+        DYNAMIC_EXPRESSION: "DYNAMIC_EXPRESSION";
+        AMBIGUOUS_SEMANTICS: "AMBIGUOUS_SEMANTICS";
+        BUSINESS_POLICY_REQUIRED: "BUSINESS_POLICY_REQUIRED";
+        AUTHORIZATION_POLICY_REQUIRED: "AUTHORIZATION_POLICY_REQUIRED";
+        SCHEMA_CHANGE_REQUIRED: "SCHEMA_CHANGE_REQUIRED";
+        CROSS_MODULE_UNCERTAINTY: "CROSS_MODULE_UNCERTAINTY";
+        UNSUPPORTED_FRAMEWORK_PATTERN: "UNSUPPORTED_FRAMEWORK_PATTERN";
+        INSUFFICIENT_DATAFLOW_PROOF: "INSUFFICIENT_DATAFLOW_PROOF";
+        SANITIZER_UNKNOWN: "SANITIZER_UNKNOWN";
+        VERIFICATION_INSUFFICIENT: "VERIFICATION_INSUFFICIENT";
+        MULTI_FILE_SEMANTIC_CHANGE: "MULTI_FILE_SEMANTIC_CHANGE";
+        ARCHITECTURE_CHANGE_REQUIRED: "ARCHITECTURE_CHANGE_REQUIRED";
+    }>>;
+    safeConditions: z.ZodObject<{
+        deterministicTransformation: z.ZodBoolean;
+        boundedLocalBlastRadius: z.ZodBoolean;
+        sourceHashVerified: z.ZodBoolean;
+        noBusinessPolicyDecision: z.ZodBoolean;
+        noAuthorizationPolicyInvention: z.ZodBoolean;
+        noArchitectureChange: z.ZodBoolean;
+        noSemanticAmbiguity: z.ZodBoolean;
+        noUnknownSecurityDependency: z.ZodBoolean;
+        independentInvariantVerification: z.ZodBoolean;
+    }, z.core.$strict>;
+    verificationStrength: z.ZodEnum<{
+        NONE: "NONE";
+        PATTERN: "PATTERN";
+        INVARIANT: "INVARIANT";
+    }>;
+}, z.core.$strict>;
+export declare const findingProofSchema: z.ZodObject<{
+    schemaVersion: z.ZodLiteral<"1.0.0">;
+    source: z.ZodObject<{
+        kind: z.ZodEnum<{
+            SOURCE: "SOURCE";
+            PROPAGATION: "PROPAGATION";
+            TRANSFORMATION: "TRANSFORMATION";
+            CONTROL: "CONTROL";
+            SINK: "SINK";
+        }>;
+        label: z.ZodString;
+        location: z.ZodObject<{
+            path: z.ZodString;
+            line: z.ZodNumber;
+            column: z.ZodNumber;
+        }, z.core.$strict>;
+    }, z.core.$strict>;
+    propagationPath: z.ZodArray<z.ZodObject<{
+        kind: z.ZodEnum<{
+            SOURCE: "SOURCE";
+            PROPAGATION: "PROPAGATION";
+            TRANSFORMATION: "TRANSFORMATION";
+            CONTROL: "CONTROL";
+            SINK: "SINK";
+        }>;
+        label: z.ZodString;
+        location: z.ZodObject<{
+            path: z.ZodString;
+            line: z.ZodNumber;
+            column: z.ZodNumber;
+        }, z.core.$strict>;
+    }, z.core.$strict>>;
+    sink: z.ZodObject<{
+        kind: z.ZodEnum<{
+            SOURCE: "SOURCE";
+            PROPAGATION: "PROPAGATION";
+            TRANSFORMATION: "TRANSFORMATION";
+            CONTROL: "CONTROL";
+            SINK: "SINK";
+        }>;
+        label: z.ZodString;
+        location: z.ZodObject<{
+            path: z.ZodString;
+            line: z.ZodNumber;
+            column: z.ZodNumber;
+        }, z.core.$strict>;
+    }, z.core.$strict>;
+    securityControlEncountered: z.ZodBoolean;
+    securityControlEvaluation: z.ZodEnum<{
+        UNKNOWN: "UNKNOWN";
+        ABSENT: "ABSENT";
+        RECOGNIZED_EFFECTIVE: "RECOGNIZED_EFFECTIVE";
+        RECOGNIZED_INEFFECTIVE: "RECOGNIZED_INEFFECTIVE";
+    }>;
+    reachability: z.ZodEnum<{
+        unknown: "unknown";
+        unlikely: "unlikely";
+        possible: "possible";
+        likely: "likely";
+        confirmed: "confirmed";
+    }>;
+    invariant: z.ZodString;
+    conclusion: z.ZodString;
+    proofState: z.ZodEnum<{
+        UNKNOWN: "UNKNOWN";
+        NOT_APPLICABLE: "NOT_APPLICABLE";
+        PROVEN_SECURE: "PROVEN_SECURE";
+        PROVEN_INSECURE: "PROVEN_INSECURE";
+    }>;
+    ruleId: z.ZodString;
+    ruleVersion: z.ZodString;
+    ruleMaturity: z.ZodEnum<{
+        EXPERIMENTAL: "EXPERIMENTAL";
+        VALIDATED: "VALIDATED";
+        PRODUCTION: "PRODUCTION";
+    }>;
+    cwe: z.ZodArray<z.ZodString>;
+    asvs: z.ZodArray<z.ZodString>;
+    owaspTop10: z.ZodArray<z.ZodString>;
+    analysisLimitations: z.ZodArray<z.ZodString>;
 }, z.core.$strict>;
 export declare const findingSchema: z.ZodObject<{
     fingerprint: z.ZodString;
@@ -257,6 +417,153 @@ export declare const findingSchema: z.ZodObject<{
         REVIEW_REQUIRED: "REVIEW_REQUIRED";
         ARCHITECTURAL: "ARCHITECTURAL";
     }>;
+    ruleMaturity: z.ZodOptional<z.ZodEnum<{
+        EXPERIMENTAL: "EXPERIMENTAL";
+        VALIDATED: "VALIDATED";
+        PRODUCTION: "PRODUCTION";
+    }>>;
+    proofState: z.ZodOptional<z.ZodEnum<{
+        UNKNOWN: "UNKNOWN";
+        NOT_APPLICABLE: "NOT_APPLICABLE";
+        PROVEN_SECURE: "PROVEN_SECURE";
+        PROVEN_INSECURE: "PROVEN_INSECURE";
+    }>>;
+    analysisCompleteness: z.ZodOptional<z.ZodEnum<{
+        COMPLETE: "COMPLETE";
+        PARTIAL: "PARTIAL";
+        UNSUPPORTED: "UNSUPPORTED";
+        TRUNCATED: "TRUNCATED";
+    }>>;
+    proof: z.ZodOptional<z.ZodObject<{
+        schemaVersion: z.ZodLiteral<"1.0.0">;
+        source: z.ZodObject<{
+            kind: z.ZodEnum<{
+                SOURCE: "SOURCE";
+                PROPAGATION: "PROPAGATION";
+                TRANSFORMATION: "TRANSFORMATION";
+                CONTROL: "CONTROL";
+                SINK: "SINK";
+            }>;
+            label: z.ZodString;
+            location: z.ZodObject<{
+                path: z.ZodString;
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+            }, z.core.$strict>;
+        }, z.core.$strict>;
+        propagationPath: z.ZodArray<z.ZodObject<{
+            kind: z.ZodEnum<{
+                SOURCE: "SOURCE";
+                PROPAGATION: "PROPAGATION";
+                TRANSFORMATION: "TRANSFORMATION";
+                CONTROL: "CONTROL";
+                SINK: "SINK";
+            }>;
+            label: z.ZodString;
+            location: z.ZodObject<{
+                path: z.ZodString;
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+            }, z.core.$strict>;
+        }, z.core.$strict>>;
+        sink: z.ZodObject<{
+            kind: z.ZodEnum<{
+                SOURCE: "SOURCE";
+                PROPAGATION: "PROPAGATION";
+                TRANSFORMATION: "TRANSFORMATION";
+                CONTROL: "CONTROL";
+                SINK: "SINK";
+            }>;
+            label: z.ZodString;
+            location: z.ZodObject<{
+                path: z.ZodString;
+                line: z.ZodNumber;
+                column: z.ZodNumber;
+            }, z.core.$strict>;
+        }, z.core.$strict>;
+        securityControlEncountered: z.ZodBoolean;
+        securityControlEvaluation: z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            ABSENT: "ABSENT";
+            RECOGNIZED_EFFECTIVE: "RECOGNIZED_EFFECTIVE";
+            RECOGNIZED_INEFFECTIVE: "RECOGNIZED_INEFFECTIVE";
+        }>;
+        reachability: z.ZodEnum<{
+            unknown: "unknown";
+            unlikely: "unlikely";
+            possible: "possible";
+            likely: "likely";
+            confirmed: "confirmed";
+        }>;
+        invariant: z.ZodString;
+        conclusion: z.ZodString;
+        proofState: z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            NOT_APPLICABLE: "NOT_APPLICABLE";
+            PROVEN_SECURE: "PROVEN_SECURE";
+            PROVEN_INSECURE: "PROVEN_INSECURE";
+        }>;
+        ruleId: z.ZodString;
+        ruleVersion: z.ZodString;
+        ruleMaturity: z.ZodEnum<{
+            EXPERIMENTAL: "EXPERIMENTAL";
+            VALIDATED: "VALIDATED";
+            PRODUCTION: "PRODUCTION";
+        }>;
+        cwe: z.ZodArray<z.ZodString>;
+        asvs: z.ZodArray<z.ZodString>;
+        owaspTop10: z.ZodArray<z.ZodString>;
+        analysisLimitations: z.ZodArray<z.ZodString>;
+    }, z.core.$strict>>;
+    remediationAssessment: z.ZodOptional<z.ZodObject<{
+        schemaVersion: z.ZodLiteral<"1.0.0">;
+        ceiling: z.ZodEnum<{
+            SAFE: "SAFE";
+            REVIEW_REQUIRED: "REVIEW_REQUIRED";
+            ARCHITECTURAL: "ARCHITECTURAL";
+        }>;
+        requestedClass: z.ZodEnum<{
+            SAFE: "SAFE";
+            REVIEW_REQUIRED: "REVIEW_REQUIRED";
+            ARCHITECTURAL: "ARCHITECTURAL";
+        }>;
+        finalClass: z.ZodEnum<{
+            SAFE: "SAFE";
+            REVIEW_REQUIRED: "REVIEW_REQUIRED";
+            ARCHITECTURAL: "ARCHITECTURAL";
+        }>;
+        reasonCodes: z.ZodArray<z.ZodEnum<{
+            EXACT_LOCAL_TRANSFORM: "EXACT_LOCAL_TRANSFORM";
+            DYNAMIC_EXPRESSION: "DYNAMIC_EXPRESSION";
+            AMBIGUOUS_SEMANTICS: "AMBIGUOUS_SEMANTICS";
+            BUSINESS_POLICY_REQUIRED: "BUSINESS_POLICY_REQUIRED";
+            AUTHORIZATION_POLICY_REQUIRED: "AUTHORIZATION_POLICY_REQUIRED";
+            SCHEMA_CHANGE_REQUIRED: "SCHEMA_CHANGE_REQUIRED";
+            CROSS_MODULE_UNCERTAINTY: "CROSS_MODULE_UNCERTAINTY";
+            UNSUPPORTED_FRAMEWORK_PATTERN: "UNSUPPORTED_FRAMEWORK_PATTERN";
+            INSUFFICIENT_DATAFLOW_PROOF: "INSUFFICIENT_DATAFLOW_PROOF";
+            SANITIZER_UNKNOWN: "SANITIZER_UNKNOWN";
+            VERIFICATION_INSUFFICIENT: "VERIFICATION_INSUFFICIENT";
+            MULTI_FILE_SEMANTIC_CHANGE: "MULTI_FILE_SEMANTIC_CHANGE";
+            ARCHITECTURE_CHANGE_REQUIRED: "ARCHITECTURE_CHANGE_REQUIRED";
+        }>>;
+        safeConditions: z.ZodObject<{
+            deterministicTransformation: z.ZodBoolean;
+            boundedLocalBlastRadius: z.ZodBoolean;
+            sourceHashVerified: z.ZodBoolean;
+            noBusinessPolicyDecision: z.ZodBoolean;
+            noAuthorizationPolicyInvention: z.ZodBoolean;
+            noArchitectureChange: z.ZodBoolean;
+            noSemanticAmbiguity: z.ZodBoolean;
+            noUnknownSecurityDependency: z.ZodBoolean;
+            independentInvariantVerification: z.ZodBoolean;
+        }, z.core.$strict>;
+        verificationStrength: z.ZodEnum<{
+            NONE: "NONE";
+            PATTERN: "PATTERN";
+            INVARIANT: "INVARIANT";
+        }>;
+    }, z.core.$strict>>;
     fix: z.ZodOptional<z.ZodObject<{
         path: z.ZodString;
         startOffset: z.ZodNumber;
@@ -271,8 +578,12 @@ export declare const findingSchema: z.ZodObject<{
         failed: "failed";
     }>;
     suppression: z.ZodOptional<z.ZodObject<{
+        rule: z.ZodOptional<z.ZodString>;
+        findingFingerprint: z.ZodOptional<z.ZodString>;
+        scope: z.ZodOptional<z.ZodString>;
         reason: z.ZodString;
         owner: z.ZodString;
+        created: z.ZodOptional<z.ZodISODate>;
         expires: z.ZodOptional<z.ZodISODate>;
     }, z.core.$strict>>;
 }, z.core.$strict>;
@@ -322,6 +633,50 @@ export declare const coverageSchema: z.ZodObject<{
     enginesUnavailable: z.ZodArray<z.ZodString>;
     enabledRuleIds: z.ZodArray<z.ZodString>;
     limitations: z.ZodArray<z.ZodString>;
+    analysisCompleteness: z.ZodOptional<z.ZodArray<z.ZodObject<{
+        engine: z.ZodString;
+        status: z.ZodEnum<{
+            COMPLETE: "COMPLETE";
+            PARTIAL: "PARTIAL";
+            UNSUPPORTED: "UNSUPPORTED";
+            TRUNCATED: "TRUNCATED";
+        }>;
+        details: z.ZodString;
+    }, z.core.$strict>>>;
+}, z.core.$strict>;
+export declare const reproducibleScanManifestSchema: z.ZodObject<{
+    schemaVersion: z.ZodLiteral<"1.0.0">;
+    cydetixVersion: z.ZodString;
+    ruleCatalogueFingerprint: z.ZodString;
+    enabledRules: z.ZodArray<z.ZodObject<{
+        id: z.ZodString;
+        version: z.ZodString;
+    }, z.core.$strict>>;
+    configurationFingerprint: z.ZodString;
+    suppressionFingerprint: z.ZodString;
+    canonicalRepositoryRoot: z.ZodString;
+    gitCommit: z.ZodNullable<z.ZodString>;
+    workingTreeState: z.ZodEnum<{
+        UNKNOWN: "UNKNOWN";
+        NOT_A_GIT_REPOSITORY: "NOT_A_GIT_REPOSITORY";
+        CLEAN: "CLEAN";
+        DIRTY: "DIRTY";
+    }>;
+    detectedLanguages: z.ZodArray<z.ZodString>;
+    detectedFrameworks: z.ZodArray<z.ZodString>;
+    dependencyContext: z.ZodArray<z.ZodString>;
+    advisoryMode: z.ZodEnum<{
+        OFFLINE: "OFFLINE";
+        ONLINE: "ONLINE";
+    }>;
+    scanId: z.ZodString;
+    analysisTimestamp: z.ZodISODateTime;
+    analysisCompleteness: z.ZodEnum<{
+        COMPLETE: "COMPLETE";
+        PARTIAL: "PARTIAL";
+        UNSUPPORTED: "UNSUPPORTED";
+        TRUNCATED: "TRUNCATED";
+    }>;
 }, z.core.$strict>;
 export declare const authGraphSchema: z.ZodObject<{
     nodes: z.ZodArray<z.ZodObject<{
@@ -474,6 +829,7 @@ export declare const scanReportSchema: z.ZodObject<{
             securityGraph: z.ZodNumber;
             authenticationGraph: z.ZodNumber;
             invariantEvaluation: z.ZodNumber;
+            applicationDataflow: z.ZodOptional<z.ZodNumber>;
             reportGeneration: z.ZodNumber;
         }, z.core.$strict>>;
     }, z.core.$strict>;
@@ -1388,10 +1744,10 @@ export declare const scanReportSchema: z.ZodObject<{
             schemaVersion: z.ZodLiteral<"1.0.0">;
             inventory: z.ZodObject<{
                 status: z.ZodEnum<{
-                    PARTIAL: "PARTIAL";
-                    NOT_PRESENT: "NOT_PRESENT";
                     COMPLETE: "COMPLETE";
+                    PARTIAL: "PARTIAL";
                     UNSUPPORTED: "UNSUPPORTED";
+                    NOT_PRESENT: "NOT_PRESENT";
                 }>;
                 ecosystems: z.ZodArray<z.ZodLiteral<"npm">>;
                 manifests: z.ZodArray<z.ZodString>;
@@ -1488,11 +1844,11 @@ export declare const scanReportSchema: z.ZodObject<{
                     CHECKED_FINDINGS: "CHECKED_FINDINGS";
                 }>;
                 history: z.ZodEnum<{
+                    TRUNCATED: "TRUNCATED";
                     CHECKED: "CHECKED";
                     NOT_CHECKED: "NOT_CHECKED";
                     GIT_UNAVAILABLE: "GIT_UNAVAILABLE";
                     NOT_A_GIT_REPOSITORY: "NOT_A_GIT_REPOSITORY";
-                    TRUNCATED: "TRUNCATED";
                     FAILED: "FAILED";
                 }>;
                 exposures: z.ZodArray<z.ZodObject<{
@@ -1610,39 +1966,39 @@ export declare const scanReportSchema: z.ZodObject<{
             }, z.core.$strict>;
             controls: z.ZodObject<{
                 sourceIntegrity: z.ZodEnum<{
+                    PARTIAL: "PARTIAL";
                     UNKNOWN: "UNKNOWN";
                     PROVEN: "PROVEN";
-                    PARTIAL: "PARTIAL";
                     NOT_PRESENT: "NOT_PRESENT";
                 }>;
                 buildProvenance: z.ZodEnum<{
+                    PARTIAL: "PARTIAL";
                     UNKNOWN: "UNKNOWN";
                     PROVEN: "PROVEN";
-                    PARTIAL: "PARTIAL";
                     NOT_PRESENT: "NOT_PRESENT";
                 }>;
                 artifactIdentity: z.ZodEnum<{
+                    PARTIAL: "PARTIAL";
                     UNKNOWN: "UNKNOWN";
                     PROVEN: "PROVEN";
-                    PARTIAL: "PARTIAL";
                     NOT_PRESENT: "NOT_PRESENT";
                 }>;
                 signing: z.ZodEnum<{
+                    PARTIAL: "PARTIAL";
                     UNKNOWN: "UNKNOWN";
                     PROVEN: "PROVEN";
-                    PARTIAL: "PARTIAL";
                     NOT_PRESENT: "NOT_PRESENT";
                 }>;
                 dependencyInventory: z.ZodEnum<{
+                    PARTIAL: "PARTIAL";
                     UNKNOWN: "UNKNOWN";
                     PROVEN: "PROVEN";
-                    PARTIAL: "PARTIAL";
                     NOT_PRESENT: "NOT_PRESENT";
                 }>;
                 ciPermissions: z.ZodEnum<{
+                    PARTIAL: "PARTIAL";
                     UNKNOWN: "UNKNOWN";
                     PROVEN: "PROVEN";
-                    PARTIAL: "PARTIAL";
                     NOT_PRESENT: "NOT_PRESENT";
                 }>;
             }, z.core.$strict>;
@@ -1800,6 +2156,46 @@ export declare const scanReportSchema: z.ZodObject<{
                 sbomGeneration: z.ZodNumber;
             }, z.core.$strict>;
         }, z.core.$strict>>;
+        applicationDataflow: z.ZodOptional<z.ZodObject<{
+            schemaVersion: z.ZodLiteral<"1.0.0">;
+            engineVersion: z.ZodLiteral<"1.0.0">;
+            completeness: z.ZodEnum<{
+                COMPLETE: "COMPLETE";
+                PARTIAL: "PARTIAL";
+                UNSUPPORTED: "UNSUPPORTED";
+                TRUNCATED: "TRUNCATED";
+            }>;
+            metrics: z.ZodObject<{
+                filesAnalyzed: z.ZodNumber;
+                astNodesVisited: z.ZodNumber;
+                factsCreated: z.ZodNumber;
+                pathsConsidered: z.ZodNumber;
+                iterations: z.ZodNumber;
+                truncationEvents: z.ZodNumber;
+            }, z.core.$strict>;
+            unknowns: z.ZodArray<z.ZodObject<{
+                ruleId: z.ZodString;
+                path: z.ZodString;
+                line: z.ZodNumber;
+                reasonCodes: z.ZodArray<z.ZodEnum<{
+                    EXACT_LOCAL_TRANSFORM: "EXACT_LOCAL_TRANSFORM";
+                    DYNAMIC_EXPRESSION: "DYNAMIC_EXPRESSION";
+                    AMBIGUOUS_SEMANTICS: "AMBIGUOUS_SEMANTICS";
+                    BUSINESS_POLICY_REQUIRED: "BUSINESS_POLICY_REQUIRED";
+                    AUTHORIZATION_POLICY_REQUIRED: "AUTHORIZATION_POLICY_REQUIRED";
+                    SCHEMA_CHANGE_REQUIRED: "SCHEMA_CHANGE_REQUIRED";
+                    CROSS_MODULE_UNCERTAINTY: "CROSS_MODULE_UNCERTAINTY";
+                    UNSUPPORTED_FRAMEWORK_PATTERN: "UNSUPPORTED_FRAMEWORK_PATTERN";
+                    INSUFFICIENT_DATAFLOW_PROOF: "INSUFFICIENT_DATAFLOW_PROOF";
+                    SANITIZER_UNKNOWN: "SANITIZER_UNKNOWN";
+                    VERIFICATION_INSUFFICIENT: "VERIFICATION_INSUFFICIENT";
+                    MULTI_FILE_SEMANTIC_CHANGE: "MULTI_FILE_SEMANTIC_CHANGE";
+                    ARCHITECTURE_CHANGE_REQUIRED: "ARCHITECTURE_CHANGE_REQUIRED";
+                }>>;
+                explanation: z.ZodString;
+            }, z.core.$strict>>;
+            limitations: z.ZodArray<z.ZodString>;
+        }, z.core.$strict>>;
     }, z.core.$strict>;
     coverage: z.ZodObject<{
         tier: z.ZodEnum<{
@@ -1814,7 +2210,51 @@ export declare const scanReportSchema: z.ZodObject<{
         enginesUnavailable: z.ZodArray<z.ZodString>;
         enabledRuleIds: z.ZodArray<z.ZodString>;
         limitations: z.ZodArray<z.ZodString>;
+        analysisCompleteness: z.ZodOptional<z.ZodArray<z.ZodObject<{
+            engine: z.ZodString;
+            status: z.ZodEnum<{
+                COMPLETE: "COMPLETE";
+                PARTIAL: "PARTIAL";
+                UNSUPPORTED: "UNSUPPORTED";
+                TRUNCATED: "TRUNCATED";
+            }>;
+            details: z.ZodString;
+        }, z.core.$strict>>>;
     }, z.core.$strict>;
+    reproducibility: z.ZodOptional<z.ZodObject<{
+        schemaVersion: z.ZodLiteral<"1.0.0">;
+        cydetixVersion: z.ZodString;
+        ruleCatalogueFingerprint: z.ZodString;
+        enabledRules: z.ZodArray<z.ZodObject<{
+            id: z.ZodString;
+            version: z.ZodString;
+        }, z.core.$strict>>;
+        configurationFingerprint: z.ZodString;
+        suppressionFingerprint: z.ZodString;
+        canonicalRepositoryRoot: z.ZodString;
+        gitCommit: z.ZodNullable<z.ZodString>;
+        workingTreeState: z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            NOT_A_GIT_REPOSITORY: "NOT_A_GIT_REPOSITORY";
+            CLEAN: "CLEAN";
+            DIRTY: "DIRTY";
+        }>;
+        detectedLanguages: z.ZodArray<z.ZodString>;
+        detectedFrameworks: z.ZodArray<z.ZodString>;
+        dependencyContext: z.ZodArray<z.ZodString>;
+        advisoryMode: z.ZodEnum<{
+            OFFLINE: "OFFLINE";
+            ONLINE: "ONLINE";
+        }>;
+        scanId: z.ZodString;
+        analysisTimestamp: z.ZodISODateTime;
+        analysisCompleteness: z.ZodEnum<{
+            COMPLETE: "COMPLETE";
+            PARTIAL: "PARTIAL";
+            UNSUPPORTED: "UNSUPPORTED";
+            TRUNCATED: "TRUNCATED";
+        }>;
+    }, z.core.$strict>>;
     findings: z.ZodArray<z.ZodObject<{
         fingerprint: z.ZodString;
         ruleId: z.ZodString;
@@ -1911,6 +2351,153 @@ export declare const scanReportSchema: z.ZodObject<{
             REVIEW_REQUIRED: "REVIEW_REQUIRED";
             ARCHITECTURAL: "ARCHITECTURAL";
         }>;
+        ruleMaturity: z.ZodOptional<z.ZodEnum<{
+            EXPERIMENTAL: "EXPERIMENTAL";
+            VALIDATED: "VALIDATED";
+            PRODUCTION: "PRODUCTION";
+        }>>;
+        proofState: z.ZodOptional<z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            NOT_APPLICABLE: "NOT_APPLICABLE";
+            PROVEN_SECURE: "PROVEN_SECURE";
+            PROVEN_INSECURE: "PROVEN_INSECURE";
+        }>>;
+        analysisCompleteness: z.ZodOptional<z.ZodEnum<{
+            COMPLETE: "COMPLETE";
+            PARTIAL: "PARTIAL";
+            UNSUPPORTED: "UNSUPPORTED";
+            TRUNCATED: "TRUNCATED";
+        }>>;
+        proof: z.ZodOptional<z.ZodObject<{
+            schemaVersion: z.ZodLiteral<"1.0.0">;
+            source: z.ZodObject<{
+                kind: z.ZodEnum<{
+                    SOURCE: "SOURCE";
+                    PROPAGATION: "PROPAGATION";
+                    TRANSFORMATION: "TRANSFORMATION";
+                    CONTROL: "CONTROL";
+                    SINK: "SINK";
+                }>;
+                label: z.ZodString;
+                location: z.ZodObject<{
+                    path: z.ZodString;
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                }, z.core.$strict>;
+            }, z.core.$strict>;
+            propagationPath: z.ZodArray<z.ZodObject<{
+                kind: z.ZodEnum<{
+                    SOURCE: "SOURCE";
+                    PROPAGATION: "PROPAGATION";
+                    TRANSFORMATION: "TRANSFORMATION";
+                    CONTROL: "CONTROL";
+                    SINK: "SINK";
+                }>;
+                label: z.ZodString;
+                location: z.ZodObject<{
+                    path: z.ZodString;
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                }, z.core.$strict>;
+            }, z.core.$strict>>;
+            sink: z.ZodObject<{
+                kind: z.ZodEnum<{
+                    SOURCE: "SOURCE";
+                    PROPAGATION: "PROPAGATION";
+                    TRANSFORMATION: "TRANSFORMATION";
+                    CONTROL: "CONTROL";
+                    SINK: "SINK";
+                }>;
+                label: z.ZodString;
+                location: z.ZodObject<{
+                    path: z.ZodString;
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                }, z.core.$strict>;
+            }, z.core.$strict>;
+            securityControlEncountered: z.ZodBoolean;
+            securityControlEvaluation: z.ZodEnum<{
+                UNKNOWN: "UNKNOWN";
+                ABSENT: "ABSENT";
+                RECOGNIZED_EFFECTIVE: "RECOGNIZED_EFFECTIVE";
+                RECOGNIZED_INEFFECTIVE: "RECOGNIZED_INEFFECTIVE";
+            }>;
+            reachability: z.ZodEnum<{
+                unknown: "unknown";
+                unlikely: "unlikely";
+                possible: "possible";
+                likely: "likely";
+                confirmed: "confirmed";
+            }>;
+            invariant: z.ZodString;
+            conclusion: z.ZodString;
+            proofState: z.ZodEnum<{
+                UNKNOWN: "UNKNOWN";
+                NOT_APPLICABLE: "NOT_APPLICABLE";
+                PROVEN_SECURE: "PROVEN_SECURE";
+                PROVEN_INSECURE: "PROVEN_INSECURE";
+            }>;
+            ruleId: z.ZodString;
+            ruleVersion: z.ZodString;
+            ruleMaturity: z.ZodEnum<{
+                EXPERIMENTAL: "EXPERIMENTAL";
+                VALIDATED: "VALIDATED";
+                PRODUCTION: "PRODUCTION";
+            }>;
+            cwe: z.ZodArray<z.ZodString>;
+            asvs: z.ZodArray<z.ZodString>;
+            owaspTop10: z.ZodArray<z.ZodString>;
+            analysisLimitations: z.ZodArray<z.ZodString>;
+        }, z.core.$strict>>;
+        remediationAssessment: z.ZodOptional<z.ZodObject<{
+            schemaVersion: z.ZodLiteral<"1.0.0">;
+            ceiling: z.ZodEnum<{
+                SAFE: "SAFE";
+                REVIEW_REQUIRED: "REVIEW_REQUIRED";
+                ARCHITECTURAL: "ARCHITECTURAL";
+            }>;
+            requestedClass: z.ZodEnum<{
+                SAFE: "SAFE";
+                REVIEW_REQUIRED: "REVIEW_REQUIRED";
+                ARCHITECTURAL: "ARCHITECTURAL";
+            }>;
+            finalClass: z.ZodEnum<{
+                SAFE: "SAFE";
+                REVIEW_REQUIRED: "REVIEW_REQUIRED";
+                ARCHITECTURAL: "ARCHITECTURAL";
+            }>;
+            reasonCodes: z.ZodArray<z.ZodEnum<{
+                EXACT_LOCAL_TRANSFORM: "EXACT_LOCAL_TRANSFORM";
+                DYNAMIC_EXPRESSION: "DYNAMIC_EXPRESSION";
+                AMBIGUOUS_SEMANTICS: "AMBIGUOUS_SEMANTICS";
+                BUSINESS_POLICY_REQUIRED: "BUSINESS_POLICY_REQUIRED";
+                AUTHORIZATION_POLICY_REQUIRED: "AUTHORIZATION_POLICY_REQUIRED";
+                SCHEMA_CHANGE_REQUIRED: "SCHEMA_CHANGE_REQUIRED";
+                CROSS_MODULE_UNCERTAINTY: "CROSS_MODULE_UNCERTAINTY";
+                UNSUPPORTED_FRAMEWORK_PATTERN: "UNSUPPORTED_FRAMEWORK_PATTERN";
+                INSUFFICIENT_DATAFLOW_PROOF: "INSUFFICIENT_DATAFLOW_PROOF";
+                SANITIZER_UNKNOWN: "SANITIZER_UNKNOWN";
+                VERIFICATION_INSUFFICIENT: "VERIFICATION_INSUFFICIENT";
+                MULTI_FILE_SEMANTIC_CHANGE: "MULTI_FILE_SEMANTIC_CHANGE";
+                ARCHITECTURE_CHANGE_REQUIRED: "ARCHITECTURE_CHANGE_REQUIRED";
+            }>>;
+            safeConditions: z.ZodObject<{
+                deterministicTransformation: z.ZodBoolean;
+                boundedLocalBlastRadius: z.ZodBoolean;
+                sourceHashVerified: z.ZodBoolean;
+                noBusinessPolicyDecision: z.ZodBoolean;
+                noAuthorizationPolicyInvention: z.ZodBoolean;
+                noArchitectureChange: z.ZodBoolean;
+                noSemanticAmbiguity: z.ZodBoolean;
+                noUnknownSecurityDependency: z.ZodBoolean;
+                independentInvariantVerification: z.ZodBoolean;
+            }, z.core.$strict>;
+            verificationStrength: z.ZodEnum<{
+                NONE: "NONE";
+                PATTERN: "PATTERN";
+                INVARIANT: "INVARIANT";
+            }>;
+        }, z.core.$strict>>;
         fix: z.ZodOptional<z.ZodObject<{
             path: z.ZodString;
             startOffset: z.ZodNumber;
@@ -1925,8 +2512,12 @@ export declare const scanReportSchema: z.ZodObject<{
             failed: "failed";
         }>;
         suppression: z.ZodOptional<z.ZodObject<{
+            rule: z.ZodOptional<z.ZodString>;
+            findingFingerprint: z.ZodOptional<z.ZodString>;
+            scope: z.ZodOptional<z.ZodString>;
             reason: z.ZodString;
             owner: z.ZodString;
+            created: z.ZodOptional<z.ZodISODate>;
             expires: z.ZodOptional<z.ZodISODate>;
         }, z.core.$strict>>;
     }, z.core.$strict>>;
@@ -2026,6 +2617,153 @@ export declare const scanReportSchema: z.ZodObject<{
             REVIEW_REQUIRED: "REVIEW_REQUIRED";
             ARCHITECTURAL: "ARCHITECTURAL";
         }>;
+        ruleMaturity: z.ZodOptional<z.ZodEnum<{
+            EXPERIMENTAL: "EXPERIMENTAL";
+            VALIDATED: "VALIDATED";
+            PRODUCTION: "PRODUCTION";
+        }>>;
+        proofState: z.ZodOptional<z.ZodEnum<{
+            UNKNOWN: "UNKNOWN";
+            NOT_APPLICABLE: "NOT_APPLICABLE";
+            PROVEN_SECURE: "PROVEN_SECURE";
+            PROVEN_INSECURE: "PROVEN_INSECURE";
+        }>>;
+        analysisCompleteness: z.ZodOptional<z.ZodEnum<{
+            COMPLETE: "COMPLETE";
+            PARTIAL: "PARTIAL";
+            UNSUPPORTED: "UNSUPPORTED";
+            TRUNCATED: "TRUNCATED";
+        }>>;
+        proof: z.ZodOptional<z.ZodObject<{
+            schemaVersion: z.ZodLiteral<"1.0.0">;
+            source: z.ZodObject<{
+                kind: z.ZodEnum<{
+                    SOURCE: "SOURCE";
+                    PROPAGATION: "PROPAGATION";
+                    TRANSFORMATION: "TRANSFORMATION";
+                    CONTROL: "CONTROL";
+                    SINK: "SINK";
+                }>;
+                label: z.ZodString;
+                location: z.ZodObject<{
+                    path: z.ZodString;
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                }, z.core.$strict>;
+            }, z.core.$strict>;
+            propagationPath: z.ZodArray<z.ZodObject<{
+                kind: z.ZodEnum<{
+                    SOURCE: "SOURCE";
+                    PROPAGATION: "PROPAGATION";
+                    TRANSFORMATION: "TRANSFORMATION";
+                    CONTROL: "CONTROL";
+                    SINK: "SINK";
+                }>;
+                label: z.ZodString;
+                location: z.ZodObject<{
+                    path: z.ZodString;
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                }, z.core.$strict>;
+            }, z.core.$strict>>;
+            sink: z.ZodObject<{
+                kind: z.ZodEnum<{
+                    SOURCE: "SOURCE";
+                    PROPAGATION: "PROPAGATION";
+                    TRANSFORMATION: "TRANSFORMATION";
+                    CONTROL: "CONTROL";
+                    SINK: "SINK";
+                }>;
+                label: z.ZodString;
+                location: z.ZodObject<{
+                    path: z.ZodString;
+                    line: z.ZodNumber;
+                    column: z.ZodNumber;
+                }, z.core.$strict>;
+            }, z.core.$strict>;
+            securityControlEncountered: z.ZodBoolean;
+            securityControlEvaluation: z.ZodEnum<{
+                UNKNOWN: "UNKNOWN";
+                ABSENT: "ABSENT";
+                RECOGNIZED_EFFECTIVE: "RECOGNIZED_EFFECTIVE";
+                RECOGNIZED_INEFFECTIVE: "RECOGNIZED_INEFFECTIVE";
+            }>;
+            reachability: z.ZodEnum<{
+                unknown: "unknown";
+                unlikely: "unlikely";
+                possible: "possible";
+                likely: "likely";
+                confirmed: "confirmed";
+            }>;
+            invariant: z.ZodString;
+            conclusion: z.ZodString;
+            proofState: z.ZodEnum<{
+                UNKNOWN: "UNKNOWN";
+                NOT_APPLICABLE: "NOT_APPLICABLE";
+                PROVEN_SECURE: "PROVEN_SECURE";
+                PROVEN_INSECURE: "PROVEN_INSECURE";
+            }>;
+            ruleId: z.ZodString;
+            ruleVersion: z.ZodString;
+            ruleMaturity: z.ZodEnum<{
+                EXPERIMENTAL: "EXPERIMENTAL";
+                VALIDATED: "VALIDATED";
+                PRODUCTION: "PRODUCTION";
+            }>;
+            cwe: z.ZodArray<z.ZodString>;
+            asvs: z.ZodArray<z.ZodString>;
+            owaspTop10: z.ZodArray<z.ZodString>;
+            analysisLimitations: z.ZodArray<z.ZodString>;
+        }, z.core.$strict>>;
+        remediationAssessment: z.ZodOptional<z.ZodObject<{
+            schemaVersion: z.ZodLiteral<"1.0.0">;
+            ceiling: z.ZodEnum<{
+                SAFE: "SAFE";
+                REVIEW_REQUIRED: "REVIEW_REQUIRED";
+                ARCHITECTURAL: "ARCHITECTURAL";
+            }>;
+            requestedClass: z.ZodEnum<{
+                SAFE: "SAFE";
+                REVIEW_REQUIRED: "REVIEW_REQUIRED";
+                ARCHITECTURAL: "ARCHITECTURAL";
+            }>;
+            finalClass: z.ZodEnum<{
+                SAFE: "SAFE";
+                REVIEW_REQUIRED: "REVIEW_REQUIRED";
+                ARCHITECTURAL: "ARCHITECTURAL";
+            }>;
+            reasonCodes: z.ZodArray<z.ZodEnum<{
+                EXACT_LOCAL_TRANSFORM: "EXACT_LOCAL_TRANSFORM";
+                DYNAMIC_EXPRESSION: "DYNAMIC_EXPRESSION";
+                AMBIGUOUS_SEMANTICS: "AMBIGUOUS_SEMANTICS";
+                BUSINESS_POLICY_REQUIRED: "BUSINESS_POLICY_REQUIRED";
+                AUTHORIZATION_POLICY_REQUIRED: "AUTHORIZATION_POLICY_REQUIRED";
+                SCHEMA_CHANGE_REQUIRED: "SCHEMA_CHANGE_REQUIRED";
+                CROSS_MODULE_UNCERTAINTY: "CROSS_MODULE_UNCERTAINTY";
+                UNSUPPORTED_FRAMEWORK_PATTERN: "UNSUPPORTED_FRAMEWORK_PATTERN";
+                INSUFFICIENT_DATAFLOW_PROOF: "INSUFFICIENT_DATAFLOW_PROOF";
+                SANITIZER_UNKNOWN: "SANITIZER_UNKNOWN";
+                VERIFICATION_INSUFFICIENT: "VERIFICATION_INSUFFICIENT";
+                MULTI_FILE_SEMANTIC_CHANGE: "MULTI_FILE_SEMANTIC_CHANGE";
+                ARCHITECTURE_CHANGE_REQUIRED: "ARCHITECTURE_CHANGE_REQUIRED";
+            }>>;
+            safeConditions: z.ZodObject<{
+                deterministicTransformation: z.ZodBoolean;
+                boundedLocalBlastRadius: z.ZodBoolean;
+                sourceHashVerified: z.ZodBoolean;
+                noBusinessPolicyDecision: z.ZodBoolean;
+                noAuthorizationPolicyInvention: z.ZodBoolean;
+                noArchitectureChange: z.ZodBoolean;
+                noSemanticAmbiguity: z.ZodBoolean;
+                noUnknownSecurityDependency: z.ZodBoolean;
+                independentInvariantVerification: z.ZodBoolean;
+            }, z.core.$strict>;
+            verificationStrength: z.ZodEnum<{
+                NONE: "NONE";
+                PATTERN: "PATTERN";
+                INVARIANT: "INVARIANT";
+            }>;
+        }, z.core.$strict>>;
         fix: z.ZodOptional<z.ZodObject<{
             path: z.ZodString;
             startOffset: z.ZodNumber;
@@ -2040,8 +2778,12 @@ export declare const scanReportSchema: z.ZodObject<{
             failed: "failed";
         }>;
         suppression: z.ZodOptional<z.ZodObject<{
+            rule: z.ZodOptional<z.ZodString>;
+            findingFingerprint: z.ZodOptional<z.ZodString>;
+            scope: z.ZodOptional<z.ZodString>;
             reason: z.ZodString;
             owner: z.ZodString;
+            created: z.ZodOptional<z.ZodISODate>;
             expires: z.ZodOptional<z.ZodISODate>;
         }, z.core.$strict>>;
     }, z.core.$strict>>;
@@ -2084,6 +2826,12 @@ export type Severity = z.infer<typeof severitySchema>;
 export type Confidence = z.infer<typeof confidenceSchema>;
 export type Reachability = z.infer<typeof reachabilitySchema>;
 export type RemediationClass = z.infer<typeof remediationClassSchema>;
+export type RuleMaturity = z.infer<typeof ruleMaturitySchema>;
+export type ProofState = z.infer<typeof proofStateSchema>;
+export type { AnalysisCompleteness } from "./analysis.js";
+export type { RemediationReasonCode } from "./analysis.js";
+export type RemediationAssessment = z.infer<typeof remediationAssessmentSchema>;
+export type FindingProof = z.infer<typeof findingProofSchema>;
 export type RuleDefinition = z.infer<typeof ruleDefinitionSchema>;
 export type Finding = z.infer<typeof findingSchema>;
 export type EvidencePathStep = z.infer<typeof evidencePathStepSchema>;

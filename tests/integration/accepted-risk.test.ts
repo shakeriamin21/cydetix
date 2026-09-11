@@ -39,16 +39,19 @@ describe("accepted risk", () => {
     await writeFile(path.join(target, ".cydetix.json"), config("2027-08-30"), "utf8");
     const report = await scanRepository({ path: target, now: new Date("2026-08-30T00:00:00Z") });
     expect(report.findings.some((finding) => finding.ruleId === "AS-TOKEN-001")).toBe(false);
-    expect(report.suppressedFindings).toContainEqual(
-      expect.objectContaining({
-        ruleId: "AS-TOKEN-001",
-        suppression: {
-          reason: "Synthetic accepted-risk test",
-          owner: "test-owner",
-          expires: "2027-08-30",
-        },
-      }),
+    const suppressed = report.suppressedFindings.find(
+      (finding) => finding.ruleId === "AS-TOKEN-001",
     );
+    expect(suppressed?.proofState).toBe("PROVEN_INSECURE");
+    expect(suppressed?.suppression).toEqual({
+      rule: "AS-TOKEN-001",
+      scope: ".",
+      findingFingerprint: suppressed?.fingerprint,
+      reason: "Synthetic accepted-risk test",
+      owner: "test-owner",
+      created: "2026-08-30",
+      expires: "2027-08-30",
+    });
   });
 
   it("surfaces an expired exception again", async () => {

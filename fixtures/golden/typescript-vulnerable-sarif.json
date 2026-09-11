@@ -1,6 +1,6 @@
 {
   "version": "2.1.0",
-  "ruleCount": 20,
+  "ruleCount": 24,
   "resultRuleIds": [
     "AS-SECRET-001",
     "AS-CORS-001",

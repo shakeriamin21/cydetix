@@ -32,6 +32,7 @@ export declare const securityProofConclusionSchema: z.ZodEnum<{
     PROVEN_INSECURE: "PROVEN_INSECURE";
 }>;
 export declare const remediationStepSchema: z.ZodEnum<{
+    ARCHITECTURE_CHANGE_REQUIRED: "ARCHITECTURE_CHANGE_REQUIRED";
     SOURCE_REMOVAL: "SOURCE_REMOVAL";
     ROTATION_REQUIRED: "ROTATION_REQUIRED";
     REVOCATION_REQUIRED: "REVOCATION_REQUIRED";
@@ -42,7 +43,6 @@ export declare const remediationStepSchema: z.ZodEnum<{
     LOCKFILE_RESOLUTION_REQUIRED: "LOCKFILE_RESOLUTION_REQUIRED";
     ACTION_SHA_RESOLUTION_REQUIRED: "ACTION_SHA_RESOLUTION_REQUIRED";
     BUSINESS_POLICY_REVIEW: "BUSINESS_POLICY_REVIEW";
-    ARCHITECTURE_CHANGE_REQUIRED: "ARCHITECTURE_CHANGE_REQUIRED";
 }>;
 export declare const fileBaselineSchema: z.ZodObject<{
     path: z.ZodString;
@@ -156,6 +156,7 @@ export declare const remediationCandidateSchema: z.ZodObject<{
     }, z.core.$strict>;
     rollbackStrategy: z.ZodString;
     remediationSteps: z.ZodArray<z.ZodEnum<{
+        ARCHITECTURE_CHANGE_REQUIRED: "ARCHITECTURE_CHANGE_REQUIRED";
         SOURCE_REMOVAL: "SOURCE_REMOVAL";
         ROTATION_REQUIRED: "ROTATION_REQUIRED";
         REVOCATION_REQUIRED: "REVOCATION_REQUIRED";
@@ -166,7 +167,6 @@ export declare const remediationCandidateSchema: z.ZodObject<{
         LOCKFILE_RESOLUTION_REQUIRED: "LOCKFILE_RESOLUTION_REQUIRED";
         ACTION_SHA_RESOLUTION_REQUIRED: "ACTION_SHA_RESOLUTION_REQUIRED";
         BUSINESS_POLICY_REVIEW: "BUSINESS_POLICY_REVIEW";
-        ARCHITECTURE_CHANGE_REQUIRED: "ARCHITECTURE_CHANGE_REQUIRED";
     }>>;
     residualRisk: z.ZodArray<z.ZodString>;
 }, z.core.$strict>;
@@ -594,6 +594,7 @@ export declare const remediationReportSchema: z.ZodObject<{
         }, z.core.$strict>;
         rollbackStrategy: z.ZodString;
         remediationSteps: z.ZodArray<z.ZodEnum<{
+            ARCHITECTURE_CHANGE_REQUIRED: "ARCHITECTURE_CHANGE_REQUIRED";
             SOURCE_REMOVAL: "SOURCE_REMOVAL";
             ROTATION_REQUIRED: "ROTATION_REQUIRED";
             REVOCATION_REQUIRED: "REVOCATION_REQUIRED";
@@ -604,7 +605,6 @@ export declare const remediationReportSchema: z.ZodObject<{
             LOCKFILE_RESOLUTION_REQUIRED: "LOCKFILE_RESOLUTION_REQUIRED";
             ACTION_SHA_RESOLUTION_REQUIRED: "ACTION_SHA_RESOLUTION_REQUIRED";
             BUSINESS_POLICY_REVIEW: "BUSINESS_POLICY_REVIEW";
-            ARCHITECTURE_CHANGE_REQUIRED: "ARCHITECTURE_CHANGE_REQUIRED";
         }>>;
         residualRisk: z.ZodArray<z.ZodString>;
     }, z.core.$strict>>;

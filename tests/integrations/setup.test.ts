@@ -221,13 +221,13 @@ describe("universal agent setup", () => {
         "--project-root",
         project,
         "--require-version",
-        "0.6.0-alpha.7",
+        "0.6.0-alpha.8",
       ]),
     );
     const codex = await readFile(path.join(home, ".codex", "config.toml"), "utf8");
     expect(codex).toContain("[mcp_servers.cydetix]");
     expect(codex).toContain('"--require-version"');
-    expect(codex).toContain('"0.6.0-alpha.7"');
+    expect(codex).toContain('"0.6.0-alpha.8"');
     const copilot = JSON.parse(
       await readFile(path.join(project, ".vscode", "mcp.json"), "utf8"),
     ) as { servers: { cydetix: { type: string } } };
@@ -587,7 +587,7 @@ describe("universal agent setup", () => {
     const content = await readFile(path.join(project, ".cydetix", "mcp.json"), "utf8");
     expect(content).toContain('"--project-root"');
     expect(content).toContain('"--require-version"');
-    expect(content).toContain("0.6.0-alpha.7");
+    expect(content).toContain("0.6.0-alpha.8");
   });
 
   it("removes a configured generic integration and state without requiring agent selection", async () => {

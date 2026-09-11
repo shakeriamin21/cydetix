@@ -1,0 +1,1 @@
+{"version":3,"file":"application-dataflow.d.ts","sourceRoot":"","sources":["../../src/rules/application-dataflow.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,OAAO,EAAuC,MAAM,mBAAmB,CAAC;AACtF,OAAO,KAAK,EACV,mBAAmB,EAEpB,MAAM,wCAAwC,CAAC;AA+BhD,wBAAgB,gCAAgC,CAAC,MAAM,EAAE,mBAAmB,GAAG,OAAO,EAAE,CA6BvF"}

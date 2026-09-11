@@ -31,6 +31,9 @@
         "authentication",
         "password-reset",
         "oauth",
+        "injection",
+        "path-traversal",
+        "ssrf",
         "dependency-security",
         "ci-cd",
         "supply-chain"
@@ -192,7 +195,8 @@
         "dependency-inventory",
         "advisory-correlation",
         "secret-correlation",
-        "workflow-correlation"
+        "workflow-correlation",
+        "bounded-dataflow"
       ]
     },
     "evidenceRequirements": {
@@ -222,6 +226,22 @@
     "remediation": {
       "type": "string",
       "minLength": 1
+    },
+    "maturity": {
+      "type": "string",
+      "enum": [
+        "EXPERIMENTAL",
+        "VALIDATED",
+        "PRODUCTION"
+      ]
+    },
+    "maxRemediationClass": {
+      "type": "string",
+      "enum": [
+        "SAFE",
+        "REVIEW_REQUIRED",
+        "ARCHITECTURAL"
+      ]
     },
     "autofix": {
       "type": "string",
@@ -253,6 +273,32 @@
         "type": "string",
         "minLength": 1
       }
+    },
+    "adversarialTests": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "falsePositiveAnalysis": {
+      "type": "string",
+      "minLength": 1
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "verificationStrategy": {
+      "type": "string",
+      "minLength": 1
+    },
+    "userDocumentation": {
+      "type": "string",
+      "minLength": 1
     }
   },
   "required": [

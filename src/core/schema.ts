@@ -1,5 +1,7 @@
 import { z } from "zod";
 
+import { analysisCompletenessSchema, remediationReasonCodeSchema } from "./analysis.js";
+
 import {
   authorizationProofSchema,
   evidencePathStepSchema,
@@ -10,6 +12,7 @@ import {
 } from "../authentication-analysis/model.js";
 import { securityIrSchema } from "../security-ir/model.js";
 import { supplyChainAnalysisSchema } from "../supply-chain/model.js";
+import { applicationDataflowAnalysisSchema } from "../dataflow-analysis/model.js";
 
 export const severitySchema = z.enum(["info", "low", "medium", "high", "critical"]);
 export const confidenceSchema = z.enum(["low", "medium", "high"]);
@@ -21,6 +24,13 @@ export const reachabilitySchema = z.enum([
   "confirmed",
 ]);
 export const remediationClassSchema = z.enum(["SAFE", "REVIEW_REQUIRED", "ARCHITECTURAL"]);
+export const ruleMaturitySchema = z.enum(["EXPERIMENTAL", "VALIDATED", "PRODUCTION"]);
+export const proofStateSchema = z.enum([
+  "PROVEN_SECURE",
+  "PROVEN_INSECURE",
+  "UNKNOWN",
+  "NOT_APPLICABLE",
+]);
 
 export const standardsMappingSchema = z
   .object({
@@ -55,6 +65,9 @@ export const ruleDefinitionSchema = z
       "authentication",
       "password-reset",
       "oauth",
+      "injection",
+      "path-traversal",
+      "ssrf",
       "dependency-security",
       "ci-cd",
       "supply-chain",
@@ -78,6 +91,7 @@ export const ruleDefinitionSchema = z
       "advisory-correlation",
       "secret-correlation",
       "workflow-correlation",
+      "bounded-dataflow",
     ]),
     evidenceRequirements: z.array(z.string().min(1)).min(1),
     reachabilityAssessment: z.string().min(1),
@@ -85,10 +99,17 @@ export const ruleDefinitionSchema = z
     attackPrerequisite: z.string().min(1),
     impact: z.string().min(1),
     remediation: z.string().min(1),
+    maturity: ruleMaturitySchema.optional(),
+    maxRemediationClass: remediationClassSchema.optional(),
     autofix: remediationClassSchema,
     references: z.array(z.url()),
     positiveTests: z.array(z.string().min(1)).min(1),
     negativeTests: z.array(z.string().min(1)).min(1),
+    adversarialTests: z.array(z.string().min(1)).optional(),
+    falsePositiveAnalysis: z.string().min(1).optional(),
+    limitations: z.array(z.string().min(1)).optional(),
+    verificationStrategy: z.string().min(1).optional(),
+    userDocumentation: z.string().min(1).optional(),
   })
   .strict();
 
@@ -127,6 +148,73 @@ export const fixEditSchema = z
   })
   .strict();
 
+export const remediationAssessmentSchema = z
+  .object({
+    schemaVersion: z.literal("1.0.0"),
+    ceiling: remediationClassSchema,
+    requestedClass: remediationClassSchema,
+    finalClass: remediationClassSchema,
+    reasonCodes: z.array(remediationReasonCodeSchema).min(1),
+    safeConditions: z
+      .object({
+        deterministicTransformation: z.boolean(),
+        boundedLocalBlastRadius: z.boolean(),
+        sourceHashVerified: z.boolean(),
+        noBusinessPolicyDecision: z.boolean(),
+        noAuthorizationPolicyInvention: z.boolean(),
+        noArchitectureChange: z.boolean(),
+        noSemanticAmbiguity: z.boolean(),
+        noUnknownSecurityDependency: z.boolean(),
+        independentInvariantVerification: z.boolean(),
+      })
+      .strict(),
+    verificationStrength: z.enum(["NONE", "PATTERN", "INVARIANT"]),
+  })
+  .strict();
+
+const proofLocationSchema = z
+  .object({
+    path: z.string().min(1),
+    line: z.number().int().positive(),
+    column: z.number().int().nonnegative(),
+  })
+  .strict();
+
+const proofStepSchema = z
+  .object({
+    kind: z.enum(["SOURCE", "PROPAGATION", "TRANSFORMATION", "CONTROL", "SINK"]),
+    label: z.string().min(1),
+    location: proofLocationSchema,
+  })
+  .strict();
+
+export const findingProofSchema = z
+  .object({
+    schemaVersion: z.literal("1.0.0"),
+    source: proofStepSchema,
+    propagationPath: z.array(proofStepSchema),
+    sink: proofStepSchema,
+    securityControlEncountered: z.boolean(),
+    securityControlEvaluation: z.enum([
+      "ABSENT",
+      "RECOGNIZED_EFFECTIVE",
+      "RECOGNIZED_INEFFECTIVE",
+      "UNKNOWN",
+    ]),
+    reachability: reachabilitySchema,
+    invariant: z.string().min(1),
+    conclusion: z.string().min(1),
+    proofState: proofStateSchema,
+    ruleId: z.string().min(1),
+    ruleVersion: z.string().min(1),
+    ruleMaturity: ruleMaturitySchema,
+    cwe: z.array(z.string().regex(/^CWE-\d+$/)).min(1),
+    asvs: z.array(z.string().regex(/^v5\.0\.0-\d+\.\d+\.\d+$/)),
+    owaspTop10: z.array(z.string().regex(/^A\d{2}:2025$/)),
+    analysisLimitations: z.array(z.string().min(1)),
+  })
+  .strict();
+
 export const findingSchema = z
   .object({
     fingerprint: z.string().regex(/^[a-f0-9]{64}$/),
@@ -147,12 +235,24 @@ export const findingSchema = z
     standards: standardsMappingSchema,
     remediation: z.string(),
     autofix: remediationClassSchema,
+    ruleMaturity: ruleMaturitySchema.optional(),
+    proofState: proofStateSchema.optional(),
+    analysisCompleteness: analysisCompletenessSchema.optional(),
+    proof: findingProofSchema.optional(),
+    remediationAssessment: remediationAssessmentSchema.optional(),
     fix: fixEditSchema.optional(),
     verificationStatus: z.enum(["not_attempted", "verified", "failed"]),
     suppression: z
       .object({
+        rule: z.string().min(1).optional(),
+        findingFingerprint: z
+          .string()
+          .regex(/^[a-f0-9]{64}$/)
+          .optional(),
+        scope: z.string().min(1).optional(),
         reason: z.string(),
         owner: z.string(),
+        created: z.iso.date().optional(),
         expires: z.iso.date().optional(),
       })
       .strict()
@@ -209,6 +309,41 @@ export const coverageSchema = z
     enginesUnavailable: z.array(z.string()),
     enabledRuleIds: z.array(z.string()),
     limitations: z.array(z.string()),
+    analysisCompleteness: z
+      .array(
+        z
+          .object({
+            engine: z.string().min(1),
+            status: analysisCompletenessSchema,
+            details: z.string().min(1),
+          })
+          .strict(),
+      )
+      .optional(),
+  })
+  .strict();
+
+export const reproducibleScanManifestSchema = z
+  .object({
+    schemaVersion: z.literal("1.0.0"),
+    cydetixVersion: z.string().min(1),
+    ruleCatalogueFingerprint: z.string().regex(/^[a-f0-9]{64}$/),
+    enabledRules: z.array(z.object({ id: z.string().min(1), version: z.string().min(1) }).strict()),
+    configurationFingerprint: z.string().regex(/^[a-f0-9]{64}$/),
+    suppressionFingerprint: z.string().regex(/^[a-f0-9]{64}$/),
+    canonicalRepositoryRoot: z.string().min(1),
+    gitCommit: z
+      .string()
+      .regex(/^[a-f0-9]{40}$/)
+      .nullable(),
+    workingTreeState: z.enum(["CLEAN", "DIRTY", "UNKNOWN", "NOT_A_GIT_REPOSITORY"]),
+    detectedLanguages: z.array(z.string()),
+    detectedFrameworks: z.array(z.string()),
+    dependencyContext: z.array(z.string()),
+    advisoryMode: z.enum(["OFFLINE", "ONLINE"]),
+    scanId: z.string().min(1),
+    analysisTimestamp: z.iso.datetime(),
+    analysisCompleteness: analysisCompletenessSchema,
   })
   .strict();
 
@@ -364,6 +499,7 @@ export const scanReportSchema = z
             securityGraph: z.number().nonnegative(),
             authenticationGraph: z.number().nonnegative(),
             invariantEvaluation: z.number().nonnegative(),
+            applicationDataflow: z.number().nonnegative().optional(),
             reportGeneration: z.number().nonnegative(),
           })
           .strict()
@@ -379,9 +515,11 @@ export const scanReportSchema = z
         authorizationProofs: z.array(authorizationProofSchema),
         authenticationAnalysis: authenticationAnalysisSchema.optional(),
         supplyChainAnalysis: supplyChainAnalysisSchema.optional(),
+        applicationDataflow: applicationDataflowAnalysisSchema.optional(),
       })
       .strict(),
     coverage: coverageSchema,
+    reproducibility: reproducibleScanManifestSchema.optional(),
     findings: z.array(findingSchema),
     suppressedFindings: z.array(findingSchema),
     summary: z
@@ -428,6 +566,12 @@ export type Severity = z.infer<typeof severitySchema>;
 export type Confidence = z.infer<typeof confidenceSchema>;
 export type Reachability = z.infer<typeof reachabilitySchema>;
 export type RemediationClass = z.infer<typeof remediationClassSchema>;
+export type RuleMaturity = z.infer<typeof ruleMaturitySchema>;
+export type ProofState = z.infer<typeof proofStateSchema>;
+export type { AnalysisCompleteness } from "./analysis.js";
+export type { RemediationReasonCode } from "./analysis.js";
+export type RemediationAssessment = z.infer<typeof remediationAssessmentSchema>;
+export type FindingProof = z.infer<typeof findingProofSchema>;
 export type RuleDefinition = z.infer<typeof ruleDefinitionSchema>;
 export type Finding = z.infer<typeof findingSchema>;
 export type EvidencePathStep = z.infer<typeof evidencePathStepSchema>;

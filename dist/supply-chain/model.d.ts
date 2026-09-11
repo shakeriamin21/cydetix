@@ -8,17 +8,17 @@ export declare const advisoryProviderStateSchema: z.ZodEnum<{
     UNKNOWN: "UNKNOWN";
 }>;
 export declare const historyAnalysisStateSchema: z.ZodEnum<{
+    TRUNCATED: "TRUNCATED";
     CHECKED: "CHECKED";
     NOT_CHECKED: "NOT_CHECKED";
     GIT_UNAVAILABLE: "GIT_UNAVAILABLE";
     NOT_A_GIT_REPOSITORY: "NOT_A_GIT_REPOSITORY";
-    TRUNCATED: "TRUNCATED";
     FAILED: "FAILED";
 }>;
 export declare const supplyChainControlStateSchema: z.ZodEnum<{
+    PARTIAL: "PARTIAL";
     UNKNOWN: "UNKNOWN";
     PROVEN: "PROVEN";
-    PARTIAL: "PARTIAL";
     NOT_PRESENT: "NOT_PRESENT";
 }>;
 export declare const supplyChainEvidenceSchema: z.ZodObject<{
@@ -96,10 +96,10 @@ export declare const dependencyPathSchema: z.ZodObject<{
 }, z.core.$strict>;
 export declare const dependencyInventorySchema: z.ZodObject<{
     status: z.ZodEnum<{
-        PARTIAL: "PARTIAL";
-        NOT_PRESENT: "NOT_PRESENT";
         COMPLETE: "COMPLETE";
+        PARTIAL: "PARTIAL";
         UNSUPPORTED: "UNSUPPORTED";
+        NOT_PRESENT: "NOT_PRESENT";
     }>;
     ecosystems: z.ZodArray<z.ZodLiteral<"npm">>;
     manifests: z.ZodArray<z.ZodString>;
@@ -248,11 +248,11 @@ export declare const secretAnalysisSchema: z.ZodObject<{
         CHECKED_FINDINGS: "CHECKED_FINDINGS";
     }>;
     history: z.ZodEnum<{
+        TRUNCATED: "TRUNCATED";
         CHECKED: "CHECKED";
         NOT_CHECKED: "NOT_CHECKED";
         GIT_UNAVAILABLE: "GIT_UNAVAILABLE";
         NOT_A_GIT_REPOSITORY: "NOT_A_GIT_REPOSITORY";
-        TRUNCATED: "TRUNCATED";
         FAILED: "FAILED";
     }>;
     exposures: z.ZodArray<z.ZodObject<{
@@ -577,10 +577,10 @@ export declare const supplyChainAnalysisSchema: z.ZodObject<{
     schemaVersion: z.ZodLiteral<"1.0.0">;
     inventory: z.ZodObject<{
         status: z.ZodEnum<{
-            PARTIAL: "PARTIAL";
-            NOT_PRESENT: "NOT_PRESENT";
             COMPLETE: "COMPLETE";
+            PARTIAL: "PARTIAL";
             UNSUPPORTED: "UNSUPPORTED";
+            NOT_PRESENT: "NOT_PRESENT";
         }>;
         ecosystems: z.ZodArray<z.ZodLiteral<"npm">>;
         manifests: z.ZodArray<z.ZodString>;
@@ -677,11 +677,11 @@ export declare const supplyChainAnalysisSchema: z.ZodObject<{
             CHECKED_FINDINGS: "CHECKED_FINDINGS";
         }>;
         history: z.ZodEnum<{
+            TRUNCATED: "TRUNCATED";
             CHECKED: "CHECKED";
             NOT_CHECKED: "NOT_CHECKED";
             GIT_UNAVAILABLE: "GIT_UNAVAILABLE";
             NOT_A_GIT_REPOSITORY: "NOT_A_GIT_REPOSITORY";
-            TRUNCATED: "TRUNCATED";
             FAILED: "FAILED";
         }>;
         exposures: z.ZodArray<z.ZodObject<{
@@ -799,39 +799,39 @@ export declare const supplyChainAnalysisSchema: z.ZodObject<{
     }, z.core.$strict>;
     controls: z.ZodObject<{
         sourceIntegrity: z.ZodEnum<{
+            PARTIAL: "PARTIAL";
             UNKNOWN: "UNKNOWN";
             PROVEN: "PROVEN";
-            PARTIAL: "PARTIAL";
             NOT_PRESENT: "NOT_PRESENT";
         }>;
         buildProvenance: z.ZodEnum<{
+            PARTIAL: "PARTIAL";
             UNKNOWN: "UNKNOWN";
             PROVEN: "PROVEN";
-            PARTIAL: "PARTIAL";
             NOT_PRESENT: "NOT_PRESENT";
         }>;
         artifactIdentity: z.ZodEnum<{
+            PARTIAL: "PARTIAL";
             UNKNOWN: "UNKNOWN";
             PROVEN: "PROVEN";
-            PARTIAL: "PARTIAL";
             NOT_PRESENT: "NOT_PRESENT";
         }>;
         signing: z.ZodEnum<{
+            PARTIAL: "PARTIAL";
             UNKNOWN: "UNKNOWN";
             PROVEN: "PROVEN";
-            PARTIAL: "PARTIAL";
             NOT_PRESENT: "NOT_PRESENT";
         }>;
         dependencyInventory: z.ZodEnum<{
+            PARTIAL: "PARTIAL";
             UNKNOWN: "UNKNOWN";
             PROVEN: "PROVEN";
-            PARTIAL: "PARTIAL";
             NOT_PRESENT: "NOT_PRESENT";
         }>;
         ciPermissions: z.ZodEnum<{
+            PARTIAL: "PARTIAL";
             UNKNOWN: "UNKNOWN";
             PROVEN: "PROVEN";
-            PARTIAL: "PARTIAL";
             NOT_PRESENT: "NOT_PRESENT";
         }>;
     }, z.core.$strict>;

@@ -32,6 +32,8 @@ function sarifRule(rule) {
             asvs: rule.standards.asvs,
             nist: rule.standards.nist,
             supplyChainStandards: rule.supplyChainStandards ?? [],
+            maturity: rule.maturity ?? "PRODUCTION",
+            maxRemediationClass: rule.maxRemediationClass ?? rule.autofix,
         },
     };
 }
@@ -117,6 +119,10 @@ function sarifResult(finding) {
             verificationStatus: finding.verificationStatus,
             securityInvariant: finding.securityInvariant,
             evidencePathLength: finding.evidencePath?.length ?? 0,
+            ruleMaturity: finding.ruleMaturity,
+            proofState: finding.proofState,
+            analysisCompleteness: finding.analysisCompleteness,
+            remediationAssessment: finding.remediationAssessment,
         },
     };
 }
@@ -151,6 +157,10 @@ export function toSarif(report) {
                             advisoryProviderState: report.securityAnalysis.supplyChainAnalysis?.advisories.state ?? "UNKNOWN",
                             dependencyInventoryStatus: report.securityAnalysis.supplyChainAnalysis?.inventory.status ?? "NOT_PRESENT",
                             gitHistorySecretAnalysis: report.securityAnalysis.supplyChainAnalysis?.secrets.history ?? "NOT_CHECKED",
+                            ruleCatalogueFingerprint: report.reproducibility?.ruleCatalogueFingerprint,
+                            configurationFingerprint: report.reproducibility?.configurationFingerprint,
+                            suppressionFingerprint: report.reproducibility?.suppressionFingerprint,
+                            analysisCompleteness: report.reproducibility?.analysisCompleteness,
                         },
                     },
                 ],

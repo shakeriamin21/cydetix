@@ -39,6 +39,38 @@
       "expires": "2027-08-30"
     },
     {
+      "rule": "AS-INJECTION-SQL-001",
+      "scope": "fixtures/batch1",
+      "reason": "Deliberately vulnerable Batch 1 SQL injection admission corpus with negative and adversarial counterparts",
+      "owner": "security-maintainers",
+      "created": "2026-09-11",
+      "expires": "2027-09-11"
+    },
+    {
+      "rule": "AS-INJECTION-CMD-001",
+      "scope": "fixtures/batch1",
+      "reason": "Deliberately vulnerable Batch 1 command injection admission corpus with negative and adversarial counterparts",
+      "owner": "security-maintainers",
+      "created": "2026-09-11",
+      "expires": "2027-09-11"
+    },
+    {
+      "rule": "AS-PATH-001",
+      "scope": "fixtures/batch1",
+      "reason": "Deliberately vulnerable Batch 1 path traversal admission corpus with negative and adversarial counterparts",
+      "owner": "security-maintainers",
+      "created": "2026-09-11",
+      "expires": "2027-09-11"
+    },
+    {
+      "rule": "AS-SSRF-001",
+      "scope": "fixtures/batch1",
+      "reason": "Deliberately vulnerable Batch 1 SSRF admission corpus with negative and adversarial counterparts",
+      "owner": "security-maintainers",
+      "created": "2026-09-11",
+      "expires": "2027-09-11"
+    },
+    {
       "rule": "AS-CORS-001",
       "scope": "fixtures",
       "reason": "Deliberately vulnerable regression corpus with secure counterparts",

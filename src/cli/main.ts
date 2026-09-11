@@ -42,6 +42,12 @@ import { renderSupplyChainText } from "../reporting/supply-chain.js";
 import { renderRemediationText } from "../reporting/remediation.js";
 import { generateCycloneDxSbom } from "../supply-chain/sbom.js";
 import {
+  createRulesReport,
+  createTrustReport,
+  renderRulesText,
+  renderTrustText,
+} from "../trust/model.js";
+import {
   createContainerSandboxRunner,
   createLocalExplicitRunner,
   createNoExecutionRunner,
@@ -663,6 +669,32 @@ export function buildProgram(): Command {
       const rule = RULE_BY_ID.get(ruleId);
       if (rule === undefined) throw new CydetixError(`Unknown rule: ${ruleId}`, EXIT.usage);
       process.stdout.write(`${JSON.stringify(rule, null, 2)}\n`);
+    });
+
+  program
+    .command("rules")
+    .description("List the exact runtime rule catalogue and remediation ceilings")
+    .option("--format <format>", "output format", graphFormat, "text")
+    .action((options: { format: GraphOutputFormat }) => {
+      const report = createRulesReport();
+      process.stdout.write(
+        options.format === "json"
+          ? `${JSON.stringify(report, null, 2)}\n`
+          : renderRulesText(report),
+      );
+    });
+
+  program
+    .command("trust")
+    .description("Report deterministic runtime trust capabilities and explicit limitations")
+    .option("--format <format>", "output format", graphFormat, "text")
+    .action((options: { format: GraphOutputFormat }) => {
+      const report = createTrustReport();
+      process.stdout.write(
+        options.format === "json"
+          ? `${JSON.stringify(report, null, 2)}\n`
+          : renderTrustText(report),
+      );
     });
 
   program

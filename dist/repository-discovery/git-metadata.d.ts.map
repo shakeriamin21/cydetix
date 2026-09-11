@@ -1,0 +1,1 @@
+{"version":3,"file":"git-metadata.d.ts","sourceRoot":"","sources":["../../src/repository-discovery/git-metadata.ts"],"names":[],"mappings":"AAGA,MAAM,WAAW,kBAAkB;IACjC,QAAQ,CAAC,MAAM,EAAE,MAAM,GAAG,IAAI,CAAC;IAC/B,QAAQ,CAAC,gBAAgB,EAAE,SAAS,GAAG,sBAAsB,CAAC;IAC9D,QAAQ,CAAC,UAAU,EAAE,MAAM,CAAC;CAC7B;AAUD,wBAAsB,yBAAyB,CAAC,IAAI,EAAE,MAAM,GAAG,OAAO,CAAC,kBAAkB,CAAC,CAyCzF"}

@@ -40,9 +40,9 @@ npm install -g cydetix@0.6.0-alpha.7
 cydetix
 ```
 
-The current source is the unpublished `0.6.0-alpha.7` development candidate. The immutable
-`0.6.0-alpha.6` release remains historical. This preparation does not create or move a tag, publish
-to npm, create a GitHub release, or move a dist-tag.
+The current source is unpublished `0.6.0-alpha.8` development. The immutable `v0.6.0-alpha.7`
+release remains the public baseline. This development work does not create or move a tag, publish to
+npm, create a GitHub release, or move a dist-tag.
 
 ## What the default command does
 
@@ -107,7 +107,7 @@ Node executable, the exact package identity/version, and the project root. Confi
 then use process-style command and argument fields equivalent to:
 
 ```text
-<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 0.6.0-alpha.7
+<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 0.6.0-alpha.8
 ```
 
 They contain no npm/npx command, registry URL, downloader, secret, or shell indirection. Routine MCP
@@ -194,6 +194,8 @@ cydetix dependencies . --advisories offline --format json
 cydetix secrets . --history --format json
 cydetix supply-chain . --advisories offline --format text
 cydetix sbom . --format json
+cydetix rules --format json
+cydetix trust --format json
 cydetix fix . --dry-run --format json
 cydetix ci . --format sarif --fail-on high
 cydetix --details
@@ -220,6 +222,14 @@ binary files, and canonicalizes paths. Secret evidence is redacted.
 Cydetix does not certify a project as secure or production-ready. Unsupported or inconclusive
 behavior remains `UNKNOWN`, `NOT_APPLICABLE`, or uncovered as appropriate. Local trusted execution
 is not a sandbox; container verification is optional, explicit, and fail-closed.
+
+The alpha.8 development engine detects documented high-confidence SQL injection, OS command
+injection, path traversal, and SSRF dataflow patterns in bounded JavaScript/TypeScript and Python
+server contexts. It requires recognized sources, import/framework-proven sinks, propagation,
+reachability, complete analysis, and absence of a relevant recognized control. It does not claim
+universal language or framework coverage; all four rules are `REVIEW_REQUIRED` and have no automatic
+fix. See [rule coverage](docs/security/RULE_COVERAGE.md) and the
+[trust model](docs/security/TRUST_MODEL.md).
 
 A historical `npm view cydetix --json` check returned `cydetix@0.6.0-alpha.1` on 2026-09-06. That is
 not a current registry-state claim; the exact coordinate and dist-tags must be rechecked during

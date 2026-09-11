@@ -1,0 +1,110 @@
+{
+  "$id": "https://cydetix.dev/schemas/v1/rules-report.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "cydetixVersion": {
+      "type": "string",
+      "minLength": 1
+    },
+    "catalogueFingerprint": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "rules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "maturity": {
+            "type": "string",
+            "enum": [
+              "EXPERIMENTAL",
+              "VALIDATED",
+              "PRODUCTION"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "minLength": 1
+          },
+          "category": {
+            "type": "string",
+            "minLength": 1
+          },
+          "cwe": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "owaspTop10": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "asvs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "supportedLanguages": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "supportedFrameworks": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "maxRemediationClass": {
+            "type": "string",
+            "enum": [
+              "SAFE",
+              "REVIEW_REQUIRED",
+              "ARCHITECTURAL"
+            ]
+          }
+        },
+        "required": [
+          "id",
+          "version",
+          "maturity",
+          "title",
+          "category",
+          "cwe",
+          "owaspTop10",
+          "asvs",
+          "supportedLanguages",
+          "supportedFrameworks",
+          "maxRemediationClass"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "cydetixVersion",
+    "catalogueFingerprint",
+    "rules"
+  ],
+  "additionalProperties": false
+}

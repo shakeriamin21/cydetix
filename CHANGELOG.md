@@ -5,6 +5,24 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+### Added
+
+- Added proof-carrying findings, explicit analysis completeness, reproducible scan manifests,
+  deterministic catalogue/configuration/suppression fingerprints, and auditable suppression output.
+- Added `cydetix rules` and `cydetix trust` machine-readable runtime truth commands.
+- Added a bounded source-propagation-control-sink engine and high-confidence production rules for
+  supported SQL injection, OS command injection, path traversal, and SSRF patterns in
+  JavaScript/TypeScript and Python server contexts.
+- Added positive, negative, adversarial, incomplete, determinism, and resource-exhaustion admission
+  corpora for all four Batch 1 rules.
+
+### Changed
+
+- Advanced development identity to `0.6.0-alpha.8` without tagging or publication.
+- Replaced static remediation authority with a monotonic `maxRemediationClass` ceiling and
+  reason-coded runtime assessment. Batch 1 remains `REVIEW_REQUIRED`; the existing exact
+  session-cookie adapter remains the only SAFE transformation.
+
 ## [0.6.0-alpha.7] - 2026-09-09
 
 ### Added

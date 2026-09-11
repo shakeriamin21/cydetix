@@ -149,8 +149,8 @@ export declare const releaseValidationReportSchema: z.ZodObject<{
             languageCompatible: z.ZodBoolean;
             ruleCompatible: z.ZodBoolean;
             disposition: z.ZodEnum<{
-                UNKNOWN: "UNKNOWN";
                 UNSUPPORTED: "UNSUPPORTED";
+                UNKNOWN: "UNKNOWN";
                 NOT_APPLICABLE: "NOT_APPLICABLE";
                 TRUE_POSITIVE: "TRUE_POSITIVE";
                 FALSE_POSITIVE: "FALSE_POSITIVE";

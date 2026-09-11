@@ -3,12 +3,16 @@ import type { Node } from "@babel/types";
 import { sha256, stableFingerprint } from "../core/hash.js";
 import type {
   Finding,
+  FindingProof,
   EvidencePathStep,
   FixEdit,
+  AnalysisCompleteness,
   Reachability,
   RemediationClass,
+  RemediationReasonCode,
   RuleDefinition,
 } from "../core/schema.js";
+import { assessRemediation, type SafeConditionInput } from "../remediation/assessment.js";
 import type { SourceFile } from "../repository-discovery/traverse.js";
 
 interface FindingInput {
@@ -24,6 +28,10 @@ interface FindingInput {
   readonly reachability?: Reachability;
   readonly autofix?: RemediationClass;
   readonly fix?: FixEdit;
+  readonly proof?: FindingProof;
+  readonly analysisCompleteness?: AnalysisCompleteness;
+  readonly remediationReasons?: readonly RemediationReasonCode[];
+  readonly safeConditions?: SafeConditionInput;
   readonly fingerprintAnchor?: string;
 }
 
@@ -77,6 +85,14 @@ export function makeFix(
 export function makeFinding(input: FindingInput): Finding {
   const excerpt = input.excerpt ?? lineExcerpt(input.file.text, input.startOffset);
   const fingerprintAnchor = input.fingerprintAnchor ?? excerpt.replaceAll(/\s+/g, " ").trim();
+  const assessment = assessRemediation({
+    rule: input.rule,
+    requestedClass: input.autofix ?? input.rule.autofix,
+    ...(input.fix === undefined ? {} : { fix: input.fix }),
+    ...(input.remediationReasons === undefined ? {} : { reasonCodes: input.remediationReasons }),
+    ...(input.safeConditions === undefined ? {} : { safeConditions: input.safeConditions }),
+    verificationStrength: input.fix === undefined ? "NONE" : "INVARIANT",
+  });
   return {
     fingerprint: stableFingerprint([input.rule.id, input.file.relativePath, fingerprintAnchor]),
     ruleId: input.rule.id,
@@ -105,7 +121,12 @@ export function makeFinding(input: FindingInput): Finding {
     impact: input.rule.impact,
     standards: input.rule.standards,
     remediation: input.rule.remediation,
-    autofix: input.autofix ?? input.rule.autofix,
+    autofix: assessment.finalClass,
+    ruleMaturity: input.rule.maturity ?? "PRODUCTION",
+    proofState: input.proof?.proofState ?? "PROVEN_INSECURE",
+    analysisCompleteness: input.analysisCompleteness ?? "COMPLETE",
+    ...(input.proof === undefined ? {} : { proof: input.proof }),
+    remediationAssessment: assessment,
     ...(input.fix === undefined ? {} : { fix: input.fix }),
     verificationStatus: "not_attempted",
   };

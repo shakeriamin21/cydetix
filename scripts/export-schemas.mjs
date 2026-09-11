@@ -26,6 +26,8 @@ import {
 import { releaseValidationReportSchema } from "../dist/validation/release.js";
 import { RULES } from "../dist/rule-engine/catalogue.js";
 import { agentCompatibilityReportSchema } from "../dist/integrations/compatibility.js";
+import { applicationDataflowAnalysisSchema } from "../dist/dataflow-analysis/model.js";
+import { rulesReportSchema, trustReportSchema } from "../dist/trust/model.js";
 
 const schemas = new Map([
   ["rule.schema.json", toJSONSchema(ruleDefinitionSchema, { target: "draft-7" })],
@@ -69,6 +71,12 @@ const schemas = new Map([
     "agent-compatibility.schema.json",
     toJSONSchema(agentCompatibilityReportSchema, { target: "draft-7" }),
   ],
+  [
+    "application-dataflow.schema.json",
+    toJSONSchema(applicationDataflowAnalysisSchema, { target: "draft-7" }),
+  ],
+  ["rules-report.schema.json", toJSONSchema(rulesReportSchema, { target: "draft-7" })],
+  ["trust-report.schema.json", toJSONSchema(trustReportSchema, { target: "draft-7" })],
 ]);
 const check = process.argv.includes("--check");
 const outputDirectory = path.resolve("schemas");

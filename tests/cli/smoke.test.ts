@@ -41,8 +41,39 @@ describe("CLI smoke contract", () => {
   it("reports the version", () => {
     const result = runCli("version");
     expect(result.status).toBe(0);
-    expect(result.stdout).toBe("0.6.0-alpha.7\n");
+    expect(result.stdout).toBe("0.6.0-alpha.8\n");
     expect(result.stderr).toBe("");
+  });
+
+  it("reports the normalized rule catalogue as JSON", () => {
+    const result = runCli("rules", "--format", "json");
+    expect(result.status).toBe(0);
+    expect(result.stderr).toBe("");
+    const report = JSON.parse(result.stdout) as {
+      cydetixVersion: string;
+      catalogueFingerprint: string;
+      rules: Array<{ id: string; maturity: string; maxRemediationClass: string }>;
+    };
+    expect(report.cydetixVersion).toBe("0.6.0-alpha.8");
+    expect(report.catalogueFingerprint).toMatch(/^[a-f0-9]{64}$/u);
+    expect(report.rules.find((rule) => rule.id === "AS-INJECTION-SQL-001")).toMatchObject({
+      maturity: "PRODUCTION",
+      maxRemediationClass: "REVIEW_REQUIRED",
+    });
+  });
+
+  it("reports runtime trust truth as JSON", () => {
+    const result = runCli("trust", "--format", "json");
+    expect(result.status).toBe(0);
+    expect(result.stderr).toBe("");
+    const report = JSON.parse(result.stdout) as {
+      version: string;
+      safeRemediationAdapters: string[];
+      unsupportedOrIncomplete: string[];
+    };
+    expect(report.version).toBe("0.6.0-alpha.8");
+    expect(report.safeRemediationAdapters).toHaveLength(1);
+    expect(report.unsupportedOrIncomplete.length).toBeGreaterThan(0);
   });
 
   it("scans the current project by default with concise human output", () => {
@@ -108,7 +139,7 @@ describe("CLI smoke contract", () => {
       "--project-root",
       canonicalProject,
       "--require-version",
-      "0.6.0-alpha.7",
+      "0.6.0-alpha.8",
     ]);
     expect(JSON.stringify(server).toLowerCase()).not.toMatch(
       /\b(?:npm|npx|pnpm|yarn|bunx|curl|wget)\b|invoke-webrequest/u,

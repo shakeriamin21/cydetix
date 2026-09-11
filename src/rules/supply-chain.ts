@@ -4,6 +4,7 @@ import { requireRule } from "../rule-engine/catalogue.js";
 import { makeFinding, pointAt } from "../rule-engine/finding.js";
 import type { SourceFile } from "../repository-discovery/traverse.js";
 import type { SupplyChainBuildResult } from "../supply-chain/engine.js";
+import { assessRemediation } from "../remediation/assessment.js";
 
 const vulnerableDependency = requireRule("AS-SCA-001");
 const actionPinning = requireRule("AS-CI-001");
@@ -19,6 +20,11 @@ function fileByPath(files: readonly SourceFile[], filePath: string): SourceFile 
 function historicalSecretFinding(
   exposure: SupplyChainBuildResult["analysis"]["secrets"]["exposures"][number],
 ): Finding {
+  const remediationAssessment = assessRemediation({
+    rule: committedSecret,
+    requestedClass: "ARCHITECTURAL",
+    reasonCodes: ["ARCHITECTURE_CHANGE_REQUIRED"],
+  });
   return {
     fingerprint: stableFingerprint([
       committedSecret.id,
@@ -49,6 +55,10 @@ function historicalSecretFinding(
     remediation:
       "Treat the credential as potentially compromised: revoke or rotate it at the provider, remove current copies, evaluate repository-history removal, review provider logs, move delivery to a secret manager, and verify equivalent copies are absent.",
     autofix: "ARCHITECTURAL",
+    ruleMaturity: committedSecret.maturity ?? "PRODUCTION",
+    proofState: "PROVEN_INSECURE",
+    analysisCompleteness: "COMPLETE",
+    remediationAssessment,
     verificationStatus: "not_attempted",
   };
 }

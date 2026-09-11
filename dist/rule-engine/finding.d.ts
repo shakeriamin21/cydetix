@@ -1,5 +1,6 @@
 import type { Node } from "@babel/types";
-import type { Finding, EvidencePathStep, FixEdit, Reachability, RemediationClass, RuleDefinition } from "../core/schema.js";
+import type { Finding, FindingProof, EvidencePathStep, FixEdit, AnalysisCompleteness, Reachability, RemediationClass, RemediationReasonCode, RuleDefinition } from "../core/schema.js";
+import { type SafeConditionInput } from "../remediation/assessment.js";
 import type { SourceFile } from "../repository-discovery/traverse.js";
 interface FindingInput {
     readonly rule: RuleDefinition;
@@ -14,6 +15,10 @@ interface FindingInput {
     readonly reachability?: Reachability;
     readonly autofix?: RemediationClass;
     readonly fix?: FixEdit;
+    readonly proof?: FindingProof;
+    readonly analysisCompleteness?: AnalysisCompleteness;
+    readonly remediationReasons?: readonly RemediationReasonCode[];
+    readonly safeConditions?: SafeConditionInput;
     readonly fingerprintAnchor?: string;
 }
 export declare function pointAt(text: string, offset: number): {

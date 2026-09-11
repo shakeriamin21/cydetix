@@ -10,7 +10,7 @@ export interface SecretTextOptions {
 export declare function detectSecretsInText(text: string, options: SecretTextOptions): SecretExposure[];
 export declare function analyzeWorkingTreeSecrets(files: readonly SourceFile[]): {
     workingTree: "CHECKED_NO_FINDINGS" | "CHECKED_FINDINGS";
-    history: "CHECKED" | "NOT_CHECKED" | "GIT_UNAVAILABLE" | "NOT_A_GIT_REPOSITORY" | "TRUNCATED" | "FAILED";
+    history: "TRUNCATED" | "CHECKED" | "NOT_CHECKED" | "GIT_UNAVAILABLE" | "NOT_A_GIT_REPOSITORY" | "FAILED";
     exposures: {
         id: string;
         provider: string;

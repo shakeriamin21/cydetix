@@ -5,7 +5,7 @@ import { RULES } from "../../src/rule-engine/catalogue.js";
 
 describe("rule catalogue", () => {
   it("contains unique, schema-valid rules with standards and references", () => {
-    expect(RULES).toHaveLength(20);
+    expect(RULES).toHaveLength(24);
     expect(new Set(RULES.map((rule) => rule.id)).size).toBe(RULES.length);
     for (const rule of RULES) {
       expect(() => ruleDefinitionSchema.parse(rule)).not.toThrow();

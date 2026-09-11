@@ -5,7 +5,7 @@ export declare const RULE_BY_ID: Map<string, {
     id: string;
     version: string;
     title: string;
-    category: "secrets" | "authentication" | "session" | "oauth" | "password-reset" | "password-storage" | "token-validation" | "configuration" | "authorization" | "dependency-security" | "ci-cd" | "supply-chain";
+    category: "secrets" | "authentication" | "session" | "oauth" | "password-reset" | "password-storage" | "token-validation" | "configuration" | "authorization" | "injection" | "path-traversal" | "ssrf" | "dependency-security" | "ci-cd" | "supply-chain";
     description: string;
     severity: "low" | "medium" | "high" | "info" | "critical";
     confidence: "low" | "medium" | "high";
@@ -17,7 +17,7 @@ export declare const RULE_BY_ID: Map<string, {
     };
     supportedLanguages: ("javascript" | "typescript" | "configuration" | "python")[];
     supportedFrameworks: string[];
-    detectionStrategy: "configuration" | "ast" | "ast-plus-context" | "lexical-secret" | "security-ir" | "authentication-invariant" | "dependency-inventory" | "advisory-correlation" | "secret-correlation" | "workflow-correlation";
+    detectionStrategy: "configuration" | "ast" | "ast-plus-context" | "lexical-secret" | "security-ir" | "authentication-invariant" | "dependency-inventory" | "advisory-correlation" | "secret-correlation" | "workflow-correlation" | "bounded-dataflow";
     evidenceRequirements: string[];
     reachabilityAssessment: string;
     securityInvariant: string;
@@ -39,6 +39,14 @@ export declare const RULE_BY_ID: Map<string, {
         relationship: "REQUIRED" | "RECOMMENDED" | "CONTEXT_DEPENDENT";
         url: string;
     }[] | undefined;
+    maturity?: "EXPERIMENTAL" | "VALIDATED" | "PRODUCTION" | undefined;
+    maxRemediationClass?: "SAFE" | "REVIEW_REQUIRED" | "ARCHITECTURAL" | undefined;
+    adversarialTests?: string[] | undefined;
+    falsePositiveAnalysis?: string | undefined;
+    limitations?: string[] | undefined;
+    verificationStrategy?: string | undefined;
+    userDocumentation?: string | undefined;
 }>;
+export declare function ruleCatalogueFingerprint(): string;
 export declare function requireRule(id: string): RuleDefinition;
 //# sourceMappingURL=catalogue.d.ts.map

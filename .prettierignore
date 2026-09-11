@@ -5,3 +5,4 @@ fixtures/**/expected/*.json
 package-lock.json
 rules/*.json
 schemas/*.json
+fixtures/batch1/incomplete/broken.ts

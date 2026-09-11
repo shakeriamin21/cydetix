@@ -45,6 +45,8 @@
       "attackPrerequisite": "An attacker can observe an insecure transport path or execute script in the cookie's origin.",
       "impact": "A stolen session token can allow account impersonation until the session is revoked or expires.",
       "remediation": "Set Secure and HttpOnly for authentication cookies, verify SameSite and scope, and test the deployed HTTPS path.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "SAFE",
       "autofix": "SAFE",
       "references": [
         "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
@@ -57,7 +59,17 @@
       "negativeTests": [
         "fixtures/typescript/secure/src/app.ts",
         "fixtures/python/secure/app.py"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/typescript/secure/src/app.ts",
+        "fixtures/python/secure/app.py"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "Verify the exact source hash, apply only the admitted local transform, parse, rescan, and require the violated invariant to become proven secure.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -98,6 +110,8 @@
       "attackPrerequisite": "An attacker obtains the credential verifier database or stored hash values.",
       "impact": "Fast offline guessing can recover user passwords and enable credential reuse attacks.",
       "remediation": "Use Argon2id where available, or an appropriately configured scrypt, bcrypt, or PBKDF2 implementation, and plan migration of existing hashes.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "ARCHITECTURAL",
       "autofix": "ARCHITECTURAL",
       "references": [
         "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",
@@ -110,7 +124,17 @@
       "negativeTests": [
         "fixtures/typescript/secure/src/app.ts",
         "fixtures/python/secure/app.py"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/typescript/secure/src/app.ts",
+        "fixtures/python/secure/app.py"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -154,6 +178,8 @@
       "attackPrerequisite": "An attacker can submit a crafted bearer token to the affected validation path.",
       "impact": "A forged token can result in authentication bypass or unauthorized privilege claims.",
       "remediation": "Use the library's verification API, pin allowed algorithms, and validate issuer, audience, expiry, and other required claims.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "ARCHITECTURAL",
       "autofix": "ARCHITECTURAL",
       "references": [
         "https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html",
@@ -166,7 +192,17 @@
       "negativeTests": [
         "fixtures/typescript/secure/src/app.ts",
         "fixtures/python/secure/app.py"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/typescript/secure/src/app.ts",
+        "fixtures/python/secure/app.py"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -213,6 +249,8 @@
       "attackPrerequisite": "An attacker gains read access to the working tree, repository, artifact, log, or history.",
       "impact": "The exposed credential may permit unauthorized access to data or infrastructure.",
       "remediation": "Revoke or rotate any real credential, move secret delivery to an approved secret store, and assess Git history under organizational policy.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "ARCHITECTURAL",
       "autofix": "ARCHITECTURAL",
       "references": [
         "https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html",
@@ -225,7 +263,17 @@
       "negativeTests": [
         "fixtures/typescript/secure/src/app.ts",
         "fixtures/python/secure/app.py"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/typescript/secure/src/app.ts",
+        "fixtures/python/secure/app.py"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -266,6 +314,8 @@
       "attackPrerequisite": "A victim with an authenticated browser session visits an attacker-controlled origin.",
       "impact": "An attacker-controlled origin may be able to issue authenticated cross-origin requests or read sensitive responses.",
       "remediation": "Replace the wildcard with a strict, normalized allowlist and reject unrecognized origins.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "REVIEW_REQUIRED",
       "autofix": "REVIEW_REQUIRED",
       "references": [
         "https://cheatsheetseries.owasp.org/cheatsheets/REST_Security_Cheat_Sheet.html",
@@ -279,7 +329,18 @@
         "fixtures/typescript/secure/src/app.ts",
         "fixtures/typescript/secure/src/wildcard-with-credentials.ts",
         "fixtures/python/secure/app.py"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/typescript/secure/src/app.ts",
+        "fixtures/typescript/secure/src/wildcard-with-credentials.ts",
+        "fixtures/python/secure/app.py"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -320,6 +381,8 @@
       "attackPrerequisite": "An authenticated attacker can alter the object identifier supplied to the affected route.",
       "impact": "An authenticated user may read, update, or delete another user's object by changing its identifier.",
       "remediation": "Constrain the resource operation with trusted authenticated subject identity or enforce an equivalent explicit server-side policy before returning or mutating the object.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "ARCHITECTURAL",
       "autofix": "ARCHITECTURAL",
       "references": [
         "https://cheatsheetseries.owasp.org/cheatsheets/Insecure_Direct_Object_Reference_Prevention_Cheat_Sheet.html",
@@ -331,7 +394,16 @@
       ],
       "negativeTests": [
         "fixtures/phase2/express-prisma/idor-secure/src/routes.ts"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase2/express-prisma/idor-secure/src/routes.ts"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -372,6 +444,8 @@
       "attackPrerequisite": "An authenticated attacker can influence an object or tenant identifier used by the affected route.",
       "impact": "A user may read, modify, or delete resources belonging to another tenant.",
       "remediation": "Derive tenant scope from verified authenticated identity and enforce it in the trusted service or repository query for every tenant-owned operation.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "ARCHITECTURAL",
       "autofix": "ARCHITECTURAL",
       "references": [
         "https://cheatsheetseries.owasp.org/cheatsheets/Authorization_Cheat_Sheet.html",
@@ -383,7 +457,16 @@
       ],
       "negativeTests": [
         "fixtures/phase2/express-prisma/tenant-secure/src/routes.ts"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase2/express-prisma/tenant-secure/src/routes.ts"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -433,6 +516,8 @@
       "attackPrerequisite": "An attacker can establish or know the victim's pre-authentication session identifier.",
       "impact": "The attacker may reuse a fixed session identifier after the victim authenticates.",
       "remediation": "Regenerate the authoritative session after credential verification and before binding authenticated identity.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "ARCHITECTURAL",
       "autofix": "ARCHITECTURAL",
       "references": [
         "https://cheatsheetseries.owasp.org/cheatsheets/Session_Management_Cheat_Sheet.html",
@@ -443,7 +528,16 @@
       ],
       "negativeTests": [
         "fixtures/phase3/session-secure/src/routes.ts"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase3/session-secure/src/routes.ts"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -493,6 +587,8 @@
       "attackPrerequisite": "An attacker retains a previously obtained server-side session identifier.",
       "impact": "The supposedly logged-out session can remain usable until independent expiry or revocation.",
       "remediation": "Destroy the authoritative server-side session, then clear the corresponding browser cookie.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "ARCHITECTURAL",
       "autofix": "ARCHITECTURAL",
       "references": [
         "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x16-V7-Session-Management.md",
@@ -503,7 +599,16 @@
       ],
       "negativeTests": [
         "fixtures/phase3/session-secure/src/routes.ts"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase3/session-secure/src/routes.ts"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -558,6 +663,8 @@
       "attackPrerequisite": "An attacker retains an authenticated session created before the password reset.",
       "impact": "A compromised pre-reset session can survive account recovery and continue accessing the account.",
       "remediation": "Revoke relevant account sessions after password replacement or enforce a per-account session generation at every lookup.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "ARCHITECTURAL",
       "autofix": "ARCHITECTURAL",
       "references": [
         "https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html",
@@ -568,7 +675,16 @@
       ],
       "negativeTests": [
         "fixtures/phase3/reset-secure/src/routes.ts"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase3/reset-secure/src/routes.ts"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -616,6 +732,8 @@
       "attackPrerequisite": "An attacker can obtain or replay a previously valid reset credential.",
       "impact": "The reset credential can be replayed to replace the password again.",
       "remediation": "Atomically require unused, unexpired reset state and consume or delete the credential during password replacement.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "ARCHITECTURAL",
       "autofix": "ARCHITECTURAL",
       "references": [
         "https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html"
@@ -625,7 +743,16 @@
       ],
       "negativeTests": [
         "fixtures/phase3/reset-secure/src/routes.ts"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase3/reset-secure/src/routes.ts"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -680,6 +807,8 @@
       "attackPrerequisite": "An attacker can predict, obtain, or replay the affected reset credential.",
       "impact": "An attacker may recover an account using a predictable, exposed, or stale reset credential.",
       "remediation": "Generate reset credentials with a CSPRNG, persist only a digest, set a short expiry, and enforce expiry during atomic consumption.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "ARCHITECTURAL",
       "autofix": "ARCHITECTURAL",
       "references": [
         "https://cheatsheetseries.owasp.org/cheatsheets/Forgot_Password_Cheat_Sheet.html",
@@ -690,7 +819,16 @@
       ],
       "negativeTests": [
         "fixtures/phase3/reset-secure/src/routes.ts"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase3/reset-secure/src/routes.ts"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -744,6 +882,8 @@
       "attackPrerequisite": "An attacker can submit a crafted bearer token to the affected route.",
       "impact": "Forged claims can establish an attacker-chosen authenticated identity or privileges.",
       "remediation": "Use a supported cryptographic verification API and validate required algorithms and claims before establishing identity.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "ARCHITECTURAL",
       "autofix": "ARCHITECTURAL",
       "references": [
         "https://www.rfc-editor.org/rfc/rfc8725.html",
@@ -754,7 +894,16 @@
       ],
       "negativeTests": [
         "fixtures/phase3/jwt-verified/src/routes.ts"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase3/jwt-verified/src/routes.ts"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -808,6 +957,8 @@
       "attackPrerequisite": "An attacker can initiate or inject an authorization response at the client callback.",
       "impact": "The client can bind an attacker-controlled authorization result to the victim's session.",
       "remediation": "Use transaction-specific, user-agent-bound state or a standards-compliant proven alternative and validate it at callback.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "ARCHITECTURAL",
       "autofix": "ARCHITECTURAL",
       "references": [
         "https://www.rfc-editor.org/rfc/rfc9700.html",
@@ -818,7 +969,16 @@
       ],
       "negativeTests": [
         "fixtures/phase3/oauth-secure/src/routes.ts"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase3/oauth-secure/src/routes.ts"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -872,6 +1032,8 @@
       "attackPrerequisite": "An attacker can intercept or inject an authorization code.",
       "impact": "An intercepted or injected authorization code may be redeemed outside the initiating client transaction.",
       "remediation": "Generate a transaction-specific verifier, send its S256 challenge, bind the verifier to the user-agent transaction, and use it at token exchange.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "ARCHITECTURAL",
       "autofix": "ARCHITECTURAL",
       "references": [
         "https://www.rfc-editor.org/rfc/rfc9700.html",
@@ -882,7 +1044,16 @@
       ],
       "negativeTests": [
         "fixtures/phase3/oauth-secure/src/routes.ts"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase3/oauth-secure/src/routes.ts"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -926,6 +1097,8 @@
       "attackPrerequisite": "The affected component behavior is reachable under advisory-specific conditions.",
       "impact": "Impact is advisory-specific and may affect confidentiality, integrity, or availability.",
       "remediation": "Review the advisory and dependency path, select a compatible fixed version, test the upgrade, and verify the lockfile-resolved result.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "REVIEW_REQUIRED",
       "autofix": "REVIEW_REQUIRED",
       "references": [
         "https://google.github.io/osv.dev/api/",
@@ -936,7 +1109,16 @@
       ],
       "negativeTests": [
         "fixtures/phase4/dependencies-secure/package-lock.json"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase4/dependencies-secure/package-lock.json"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -980,6 +1162,8 @@
       "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
       "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
       "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "REVIEW_REQUIRED",
       "autofix": "REVIEW_REQUIRED",
       "references": [
         "https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions"
@@ -990,7 +1174,17 @@
       "negativeTests": [
         "fixtures/phase4/actions-secure/.github/workflows/ci.yml",
         "fixtures/phase4/actions-local/.github/workflows/ci.yml"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase4/actions-secure/.github/workflows/ci.yml",
+        "fixtures/phase4/actions-local/.github/workflows/ci.yml"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -1033,6 +1227,8 @@
       "attackPrerequisite": "An attacker obtains code execution in the broadly privileged workflow job.",
       "impact": "The compromised job can modify multiple repository resources using GITHUB_TOKEN.",
       "remediation": "Replace write-all with explicit minimum read/write permissions and narrow elevated permissions to the job that needs them.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "REVIEW_REQUIRED",
       "autofix": "REVIEW_REQUIRED",
       "references": [
         "https://docs.github.com/en/actions/security-for-github-actions/security-guides/automatic-token-authentication"
@@ -1042,7 +1238,16 @@
       ],
       "negativeTests": [
         "fixtures/phase4/actions-required-write/.github/workflows/release.yml"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase4/actions-required-write/.github/workflows/release.yml"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -1088,6 +1293,8 @@
       "attackPrerequisite": "An untrusted contributor can open or update a pull request that reaches the workflow.",
       "impact": "Attacker-controlled code can steal secrets, modify repository state, or compromise artifacts.",
       "remediation": "Keep pull_request_target jobs on trusted base content, avoid executing PR code, and split privileged follow-up work into a separately validated workflow.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "ARCHITECTURAL",
       "autofix": "ARCHITECTURAL",
       "references": [
         "https://securitylab.github.com/resources/github-actions-preventing-pwn-requests/",
@@ -1098,7 +1305,16 @@
       ],
       "negativeTests": [
         "fixtures/phase4/actions-pr-target-benign/.github/workflows/review.yml"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase4/actions-pr-target-benign/.github/workflows/review.yml"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
     },
     {
       "schemaVersion": "1.0.0",
@@ -1141,6 +1357,8 @@
       "attackPrerequisite": "An attacker can supply the referenced pull request, issue, branch, or commit field.",
       "impact": "Injected shell syntax can execute with runner credentials and repository access.",
       "remediation": "Assign the expression to an environment variable and consume it as quoted data, or pass it to a non-shell action input.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "REVIEW_REQUIRED",
       "autofix": "REVIEW_REQUIRED",
       "references": [
         "https://docs.github.com/en/actions/security-for-github-actions/security-guides/security-hardening-for-github-actions"
@@ -1150,7 +1368,323 @@
       ],
       "negativeTests": [
         "fixtures/phase4/actions-expression-safe/.github/workflows/issue.yml"
-      ]
+      ],
+      "adversarialTests": [
+        "fixtures/phase4/actions-expression-safe/.github/workflows/issue.yml"
+      ],
+      "falsePositiveAnalysis": "This alpha.7 rule is retained with its deterministic evidence requirements and secure negative corpus; findings remain bounded to its declared syntax, context, and supported ecosystems.",
+      "limitations": [
+        "Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security."
+      ],
+      "verificationStrategy": "No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#carried-forward-alpha7-coverage"
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "AS-INJECTION-SQL-001",
+      "version": "1.0.0",
+      "title": "Untrusted input controls SQL statement structure",
+      "category": "injection",
+      "description": "Detects complete bounded source-to-sink paths where request input controls SQL structure at a recognized database API without separate parameterization.",
+      "severity": "high",
+      "confidence": "high",
+      "standards": {
+        "cwe": [
+          "CWE-89"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.4"
+        ],
+        "nist": []
+      },
+      "supportedLanguages": [
+        "javascript",
+        "typescript",
+        "python"
+      ],
+      "supportedFrameworks": [
+        "Express",
+        "Fastify",
+        "Next.js server routes",
+        "Flask",
+        "FastAPI",
+        "pg",
+        "mysql/mysql2",
+        "SQLite",
+        "Sequelize",
+        "Prisma unsafe raw APIs",
+        "Python DB-API",
+        "SQLAlchemy"
+      ],
+      "detectionStrategy": "bounded-dataflow",
+      "evidenceRequirements": [
+        "A recognized request source is proven to reach the SQL text argument of a recognized database sink.",
+        "The SQL structure is dynamic and no separate parameterization control protects the untrusted data.",
+        "The route and sink are reachable within the bounded supported call model and analysis is complete."
+      ],
+      "reachabilityAssessment": "Likely only for parsed route handlers and same-file repository-local calls resolved by the bounded engine.",
+      "securityInvariant": "UNTRUSTED_SQL_DATA_MUST_NOT_CONTROL_SQL_STRUCTURE",
+      "attackPrerequisite": "An attacker can control the proven request value reaching the database call.",
+      "impact": "Injected SQL structure can disclose, modify, or delete data and may bypass application authorization.",
+      "remediation": "Use the database library's parameterized query interface and separately constrain any dynamic identifiers to an explicit application-defined allowlist.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "REVIEW_REQUIRED",
+      "autofix": "REVIEW_REQUIRED",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/89.html",
+        "https://owasp.org/Top10/2025/A05_2025-Injection/",
+        "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x10-V1-Encoding-and-Sanitization.md"
+      ],
+      "positiveTests": [
+        "fixtures/batch1/sql/positive"
+      ],
+      "negativeTests": [
+        "fixtures/batch1/sql/negative"
+      ],
+      "adversarialTests": [
+        "fixtures/batch1/sql/adversarial",
+        "fixtures/batch1/sql/unknown"
+      ],
+      "falsePositiveAnalysis": "Import provenance, route-bound sources, structural AST nodes, parameterized-query negatives, dead-code exclusion, and same-name custom-function negatives are required gates.",
+      "limitations": [
+        "Cross-file propagation, dynamically selected database clients, reflection, eval, complex destructuring, and custom query builders are unsupported or UNKNOWN.",
+        "Parameterized identifiers are not assumed safe because ordinary bind parameters do not protect SQL structure."
+      ],
+      "verificationStrategy": "Re-run the source-to-sink invariant and require PROVEN_SECURE; disappearance of the original syntax alone is insufficient.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#sql-injection"
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "AS-INJECTION-CMD-001",
+      "version": "1.0.0",
+      "title": "Untrusted input controls shell syntax",
+      "category": "injection",
+      "description": "Detects complete bounded source-to-sink paths into shell command strings or shell-enabled process APIs while excluding direct executable argument-array execution.",
+      "severity": "critical",
+      "confidence": "high",
+      "standards": {
+        "cwe": [
+          "CWE-78",
+          "CWE-77",
+          "CWE-88"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.5"
+        ],
+        "nist": []
+      },
+      "supportedLanguages": [
+        "javascript",
+        "typescript",
+        "python"
+      ],
+      "supportedFrameworks": [
+        "Express",
+        "Fastify",
+        "Next.js server routes",
+        "Flask",
+        "FastAPI",
+        "Node child_process",
+        "Python subprocess",
+        "Python os.system"
+      ],
+      "detectionStrategy": "bounded-dataflow",
+      "evidenceRequirements": [
+        "A recognized request source is proven to reach a child_process or Python shell execution sink.",
+        "The sink executes command text or explicitly enables shell interpretation.",
+        "The route and sink are reachable within the bounded supported call model and analysis is complete."
+      ],
+      "reachabilityAssessment": "Likely only for parsed route handlers and same-file repository-local calls resolved by the bounded engine.",
+      "securityInvariant": "UNTRUSTED_INPUT_MUST_NOT_CONTROL_SHELL_SYNTAX",
+      "attackPrerequisite": "An attacker can control the proven request value supplied to shell parsing.",
+      "impact": "Injected shell syntax can execute commands with the application's operating-system privileges.",
+      "remediation": "Remove shell interpretation and invoke an explicitly chosen executable with a validated argument array; review argument-level injection semantics separately.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "REVIEW_REQUIRED",
+      "autofix": "REVIEW_REQUIRED",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/78.html",
+        "https://cwe.mitre.org/data/definitions/88.html",
+        "https://owasp.org/Top10/2025/A05_2025-Injection/",
+        "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x10-V1-Encoding-and-Sanitization.md"
+      ],
+      "positiveTests": [
+        "fixtures/batch1/command/positive"
+      ],
+      "negativeTests": [
+        "fixtures/batch1/command/negative"
+      ],
+      "adversarialTests": [
+        "fixtures/batch1/command/adversarial",
+        "fixtures/batch1/command/unknown"
+      ],
+      "falsePositiveAnalysis": "The rule requires imported child_process/os/subprocess provenance, a route-bound source, shell semantics, and excludes fixed commands and shell-free argument arrays.",
+      "limitations": [
+        "Argument injection into a shell-free executable is not classified as command injection by this rule.",
+        "Custom process wrappers and cross-file propagation remain unsupported or UNKNOWN."
+      ],
+      "verificationStrategy": "Re-run the shell-syntax invariant and require the destination to be a shell-free executable/argument contract or otherwise PROVEN_SECURE.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#os-command-injection"
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "AS-PATH-001",
+      "version": "1.0.0",
+      "title": "Untrusted path reaches a filesystem operation without confinement",
+      "category": "path-traversal",
+      "description": "Detects complete bounded request-to-filesystem paths lacking a recognized canonical authorized-root confinement check.",
+      "severity": "high",
+      "confidence": "high",
+      "standards": {
+        "cwe": [
+          "CWE-22"
+        ],
+        "owaspTop10": [
+          "A01:2025"
+        ],
+        "asvs": [
+          "v5.0.0-5.3.2"
+        ],
+        "nist": []
+      },
+      "supportedLanguages": [
+        "javascript",
+        "typescript",
+        "python"
+      ],
+      "supportedFrameworks": [
+        "Express",
+        "Fastify",
+        "Next.js server routes",
+        "Flask",
+        "FastAPI",
+        "Node fs",
+        "Express sendFile/download",
+        "Python built-in filesystem APIs",
+        "pathlib"
+      ],
+      "detectionStrategy": "bounded-dataflow",
+      "evidenceRequirements": [
+        "A recognized request path source is proven to reach a supported filesystem or file-serving sink.",
+        "No supported canonical resolution and authorized-root containment control dominates the sink.",
+        "The route and sink are reachable within the bounded supported call model and analysis is complete."
+      ],
+      "reachabilityAssessment": "Likely only for parsed route handlers and same-file repository-local calls resolved by the bounded engine.",
+      "securityInvariant": "UNTRUSTED_PATHS_MUST_REMAIN_WITHIN_AUTHORIZED_FILESYSTEM_ROOT",
+      "attackPrerequisite": "An attacker can control the proven path value reaching the filesystem operation.",
+      "impact": "Traversal can disclose, overwrite, delete, rename, or expose files outside the intended root.",
+      "remediation": "Resolve against the application-defined authorized root, verify platform-correct containment, and account for symlink/junction policy before the filesystem operation.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "REVIEW_REQUIRED",
+      "autofix": "REVIEW_REQUIRED",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/22.html",
+        "https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/",
+        "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x14-V5-File-Handling.md"
+      ],
+      "positiveTests": [
+        "fixtures/batch1/path/positive"
+      ],
+      "negativeTests": [
+        "fixtures/batch1/path/negative"
+      ],
+      "adversarialTests": [
+        "fixtures/batch1/path/adversarial",
+        "fixtures/batch1/path/unknown"
+      ],
+      "falsePositiveAnalysis": "The rule requires a route-bound source and imported filesystem or response sink, excludes constants/internal names, and recognizes documented canonical confinement patterns.",
+      "limitations": [
+        "The engine does not infer the intended authorized root and does not claim symlink-safe confinement from lexical prefix checks alone.",
+        "Archive extraction, cross-file wrappers, Windows device paths, UNC policy, and custom virtual filesystems remain unsupported or UNKNOWN."
+      ],
+      "verificationStrategy": "Re-evaluate the authorized-root invariant; a renamed sink or disappearance of the original call is not sufficient verification.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#path-traversal"
+    },
+    {
+      "schemaVersion": "1.0.0",
+      "id": "AS-SSRF-001",
+      "version": "1.0.0",
+      "title": "Untrusted input controls a server-side request destination",
+      "category": "ssrf",
+      "description": "Detects complete bounded request-to-HTTP-client destination paths without a recognized hostname and scheme policy.",
+      "severity": "high",
+      "confidence": "high",
+      "standards": {
+        "cwe": [
+          "CWE-918"
+        ],
+        "owaspTop10": [
+          "A01:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.3.6",
+          "v5.0.0-15.3.2"
+        ],
+        "nist": []
+      },
+      "supportedLanguages": [
+        "javascript",
+        "typescript",
+        "python"
+      ],
+      "supportedFrameworks": [
+        "Express",
+        "Fastify",
+        "Next.js server routes",
+        "Flask",
+        "FastAPI",
+        "Node fetch",
+        "axios",
+        "got",
+        "node-fetch",
+        "undici",
+        "requests",
+        "httpx",
+        "urllib"
+      ],
+      "detectionStrategy": "bounded-dataflow",
+      "evidenceRequirements": [
+        "A recognized request source is proven to control the scheme, host, port, or full URL of a supported server-side HTTP client.",
+        "The value controls where the server connects, not merely request data sent to a fixed host.",
+        "No supported explicit hostname allowlist and scheme restriction dominates the sink."
+      ],
+      "reachabilityAssessment": "Likely only for parsed route handlers and same-file repository-local calls resolved by the bounded engine.",
+      "securityInvariant": "UNTRUSTED_NETWORK_DESTINATION_MUST_NOT_CONTROL_SERVER_SIDE_REQUEST_TARGET_WITHOUT_ENFORCED_POLICY",
+      "attackPrerequisite": "An attacker can control the proven destination component of a server-side request.",
+      "impact": "The server may access internal services, cloud metadata, loopback listeners, or attacker-selected destinations using its network position.",
+      "remediation": "Enforce an organization-defined normalized destination policy covering scheme and hostname, and review port, DNS resolution, redirect, and proxy behavior.",
+      "maturity": "PRODUCTION",
+      "maxRemediationClass": "REVIEW_REQUIRED",
+      "autofix": "REVIEW_REQUIRED",
+      "references": [
+        "https://cwe.mitre.org/data/definitions/918.html",
+        "https://owasp.org/Top10/2025/A01_2025-Broken_Access_Control/",
+        "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x10-V1-Encoding-and-Sanitization.md",
+        "https://github.com/OWASP/ASVS/blob/v5.0.0/5.0/en/0x24-V15-Secure-Coding-and-Architecture.md"
+      ],
+      "positiveTests": [
+        "fixtures/batch1/ssrf/positive"
+      ],
+      "negativeTests": [
+        "fixtures/batch1/ssrf/negative"
+      ],
+      "adversarialTests": [
+        "fixtures/batch1/ssrf/adversarial",
+        "fixtures/batch1/ssrf/unknown"
+      ],
+      "falsePositiveAnalysis": "The rule requires a route-bound source in the destination argument of a supported HTTP client and excludes untrusted bodies/query values sent to a fixed host.",
+      "limitations": [
+        "DNS rebinding, resolved IP ranges, redirects, proxies, and custom HTTP wrappers are unsupported or UNKNOWN.",
+        "Substring hostname checks are not recognized as effective controls."
+      ],
+      "verificationStrategy": "Re-evaluate the destination-policy invariant and require a supported enforced policy; changing the client call alone is insufficient.",
+      "userDocumentation": "docs/security/RULE_COVERAGE.md#ssrf"
     }
   ]
 }

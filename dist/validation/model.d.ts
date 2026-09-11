@@ -9,8 +9,8 @@ export declare const corpusKindSchema: z.ZodEnum<{
     PERFORMANCE: "PERFORMANCE";
 }>;
 export declare const validationDispositionSchema: z.ZodEnum<{
-    UNKNOWN: "UNKNOWN";
     UNSUPPORTED: "UNSUPPORTED";
+    UNKNOWN: "UNKNOWN";
     NOT_APPLICABLE: "NOT_APPLICABLE";
     TRUE_POSITIVE: "TRUE_POSITIVE";
     FALSE_POSITIVE: "FALSE_POSITIVE";
@@ -71,8 +71,8 @@ export declare const manualAdjudicationSchema: z.ZodObject<{
     path: z.ZodString;
     line: z.ZodOptional<z.ZodNumber>;
     disposition: z.ZodEnum<{
-        UNKNOWN: "UNKNOWN";
         UNSUPPORTED: "UNSUPPORTED";
+        UNKNOWN: "UNKNOWN";
         NOT_APPLICABLE: "NOT_APPLICABLE";
         TRUE_POSITIVE: "TRUE_POSITIVE";
         FALSE_POSITIVE: "FALSE_POSITIVE";
@@ -109,8 +109,8 @@ export declare const corpusLabelsSchema: z.ZodObject<{
         path: z.ZodString;
         line: z.ZodOptional<z.ZodNumber>;
         disposition: z.ZodEnum<{
-            UNKNOWN: "UNKNOWN";
             UNSUPPORTED: "UNSUPPORTED";
+            UNKNOWN: "UNKNOWN";
             NOT_APPLICABLE: "NOT_APPLICABLE";
             TRUE_POSITIVE: "TRUE_POSITIVE";
             FALSE_POSITIVE: "FALSE_POSITIVE";
@@ -190,8 +190,8 @@ export declare const validationCaseResultSchema: z.ZodObject<{
     languageCompatible: z.ZodBoolean;
     ruleCompatible: z.ZodBoolean;
     disposition: z.ZodEnum<{
-        UNKNOWN: "UNKNOWN";
         UNSUPPORTED: "UNSUPPORTED";
+        UNKNOWN: "UNKNOWN";
         NOT_APPLICABLE: "NOT_APPLICABLE";
         TRUE_POSITIVE: "TRUE_POSITIVE";
         FALSE_POSITIVE: "FALSE_POSITIVE";
@@ -313,8 +313,8 @@ export declare const corpusValidationResultSchema: z.ZodObject<{
         languageCompatible: z.ZodBoolean;
         ruleCompatible: z.ZodBoolean;
         disposition: z.ZodEnum<{
-            UNKNOWN: "UNKNOWN";
             UNSUPPORTED: "UNSUPPORTED";
+            UNKNOWN: "UNKNOWN";
             NOT_APPLICABLE: "NOT_APPLICABLE";
             TRUE_POSITIVE: "TRUE_POSITIVE";
             FALSE_POSITIVE: "FALSE_POSITIVE";
