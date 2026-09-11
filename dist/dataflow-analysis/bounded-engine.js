@@ -20,6 +20,145 @@ const SQL_MODULES = new Set([
 const COMMAND_MODULES = new Set(["child_process", "node:child_process"]);
 const FILESYSTEM_MODULES = new Set(["fs", "node:fs", "fs/promises", "node:fs/promises"]);
 const HTTP_MODULES = new Set(["axios", "got", "node-fetch", "undici"]);
+function splitPythonTopLevelArguments(text) {
+    const parts = [];
+    let start = 0;
+    let round = 0;
+    let square = 0;
+    let curly = 0;
+    let quote;
+    let triple = false;
+    let escaped = false;
+    for (let index = 0; index < text.length; index += 1) {
+        const character = text[index];
+        if (quote !== undefined) {
+            if (escaped) {
+                escaped = false;
+                continue;
+            }
+            if (character === "\\") {
+                escaped = true;
+                continue;
+            }
+            if (triple && text.slice(index, index + 3) === quote.repeat(3)) {
+                index += 2;
+                quote = undefined;
+                triple = false;
+            }
+            else if (!triple && character === quote) {
+                quote = undefined;
+            }
+            continue;
+        }
+        if (character === "'" || character === '"') {
+            quote = character;
+            triple = text.slice(index, index + 3) === character.repeat(3);
+            if (triple)
+                index += 2;
+            continue;
+        }
+        if (character === "(")
+            round += 1;
+        else if (character === ")")
+            round = Math.max(0, round - 1);
+        else if (character === "[")
+            square += 1;
+        else if (character === "]")
+            square = Math.max(0, square - 1);
+        else if (character === "{")
+            curly += 1;
+        else if (character === "}")
+            curly = Math.max(0, curly - 1);
+        else if (character === "," && round === 0 && square === 0 && curly === 0) {
+            parts.push(text.slice(start, index).trim());
+            start = index + 1;
+        }
+    }
+    parts.push(text.slice(start).trim());
+    return parts;
+}
+function extractPythonCallArguments(text, pattern) {
+    const match = pattern.exec(text);
+    if (match?.index === undefined)
+        return undefined;
+    const relativeOpen = match[0].lastIndexOf("(");
+    if (relativeOpen < 0)
+        return undefined;
+    const start = match.index + relativeOpen + 1;
+    let depth = 1;
+    let quote;
+    let triple = false;
+    let escaped = false;
+    for (let index = start; index < text.length; index += 1) {
+        const character = text[index];
+        if (quote !== undefined) {
+            if (escaped) {
+                escaped = false;
+                continue;
+            }
+            if (character === "\\") {
+                escaped = true;
+                continue;
+            }
+            if (triple && text.slice(index, index + 3) === quote.repeat(3)) {
+                index += 2;
+                quote = undefined;
+                triple = false;
+            }
+            else if (!triple && character === quote) {
+                quote = undefined;
+            }
+            continue;
+        }
+        if (character === "'" || character === '"') {
+            quote = character;
+            triple = text.slice(index, index + 3) === character.repeat(3);
+            if (triple)
+                index += 2;
+            continue;
+        }
+        if (character === "(")
+            depth += 1;
+        else if (character === ")") {
+            depth -= 1;
+            if (depth === 0)
+                return text.slice(start, index);
+        }
+    }
+    return undefined;
+}
+function isPythonStaticStringLiteral(text) {
+    return /^(?:[rRuUbB]{0,2})?(?:"""[\s\S]*"""|'''[\s\S]*'''|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*')$/.test(text.trim());
+}
+function pythonUnknownControlBeforeSink(source, identifier) {
+    const escapedIdentifier = identifier.replaceAll(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const calls = /\b([A-Za-z_]\w*(?:\.[A-Za-z_]\w*)?)\s*\(([^()\n]*)\)/g;
+    const knownNonControls = new Set([
+        "dict",
+        "float",
+        "int",
+        "len",
+        "list",
+        "print",
+        "quote",
+        "repr",
+        "set",
+        "str",
+        "tuple",
+        "urlencode",
+        "urlparse",
+    ]);
+    for (const match of source.matchAll(calls)) {
+        const callee = match[1] ?? "";
+        const argumentsText = match[2] ?? "";
+        if (knownNonControls.has(callee) ||
+            /^(?:logger|logging)\.(?:debug|info|warning|error|exception|critical)$/.test(callee))
+            continue;
+        if (new RegExp(`\\b${escapedIdentifier}\\b`).test(argumentsText))
+            return true;
+    }
+    return false;
+}
 function memberPropertyName(node) {
     if (node?.type === "Identifier" || node?.type === "PrivateName") {
         return node.type === "Identifier" ? node.name : undefined;
@@ -874,7 +1013,7 @@ function analyzePythonFile(file, parsed, metrics, unknowns) {
             .map((item) => item.trim().split(/[=:]/)[0]?.trim() ?? "")
             .filter((item) => /^[A-Za-z_]\w*$/.test(item)) ?? [];
         const prefix = file.text.slice(Math.max(0, range.from - 240), range.from);
-        if (/@(?:app|router)\.(?:get|post|put|patch|delete)\s*\([^\n]*\)\s*$/.test(prefix)) {
+        if (/@(?:app|router)\.(?:get|post|put|patch|delete|route)\s*\([^\n]*\)\s*$/.test(prefix)) {
             routeFunctions.push({ from: range.from, to: range.to, parameters });
         }
     }
@@ -882,6 +1021,8 @@ function analyzePythonFile(file, parsed, metrics, unknowns) {
     const facts = new Map();
     const candidates = [];
     const expressionFact = (text, offset, route) => {
+        if (isPythonStaticStringLiteral(text))
+            return undefined;
         const flaskSource = /\brequest\.(?:args|form|json|values|headers|cookies)(?:\b|\[)/.exec(text);
         if (flaskSource !== null && imports.has("flask")) {
             return {
@@ -997,11 +1138,37 @@ function analyzePythonFile(file, parsed, metrics, unknowns) {
             continue;
         metrics.pathsConsidered += 1;
         const callText = file.text.slice(range.from, range.to);
-        const argumentText = /^.*?\((.*)\)$/s.exec(callText)?.[1] ?? "";
-        const firstArgument = argumentText.split(",")[0] ?? "";
+        const database = /\.(?:execute|executemany|executescript)\s*\(/.test(callText) &&
+            [...imports].some((module) => ["sqlite3", "psycopg", "sqlalchemy"].includes(module));
+        const osSystem = imports.has("os") && /\bos\.system\s*\(/.test(callText);
+        const subprocessApi = imports.has("subprocess") &&
+            /\bsubprocess\.(?:run|call|Popen|check_output|check_call)\s*\(/.test(callText);
+        const commandApi = osSystem || subprocessApi;
+        const filesystem = /\bopen\s*\(/.test(callText) ||
+            (/\b(?:os|pathlib)\./.test(callText) &&
+                /(?:remove|unlink|rename|stat|open|read_text|write_text)\s*\(/.test(callText));
+        const http = [...imports].some((module) => ["requests", "httpx", "urllib"].includes(module)) &&
+            /\.(?:get|post|put|patch|delete|request|urlopen)\s*\(/.test(callText);
+        const argumentText = (database
+            ? extractPythonCallArguments(callText, /\.(?:execute|executemany|executescript)\s*\(/)
+            : commandApi
+                ? extractPythonCallArguments(callText, /\b(?:os\.system|subprocess\.(?:run|call|Popen|check_output|check_call))\s*\(/)
+                : filesystem
+                    ? extractPythonCallArguments(callText, /(?:\bopen|\b(?:os|pathlib)\.(?:remove|unlink|rename|stat|open|read_text|write_text))\s*\(/)
+                    : http
+                        ? extractPythonCallArguments(callText, /\.(?:get|post|put|patch|delete|request|urlopen)\s*\(/)
+                        : undefined) ?? "";
+        const command = osSystem || (subprocessApi && /\bshell\s*=\s*True\b/.test(argumentText));
+        if (!database && !command && !filesystem && !http)
+            continue;
+        const firstArgument = splitPythonTopLevelArguments(argumentText)[0] ?? "";
         const fact = expressionFact(firstArgument, range.from + callText.indexOf(firstArgument), route);
         if (fact === undefined)
             continue;
+        const firstIdentifier = /^\s*([A-Za-z_]\w*)\s*$/.exec(firstArgument)?.[1];
+        const routeBodyStart = file.text.indexOf("\n", route.from);
+        const unknownControlBeforeSink = firstIdentifier !== undefined &&
+            pythonUnknownControlBeforeSink(file.text.slice(routeBodyStart < 0 ? route.from : routeBodyStart + 1, range.from), firstIdentifier);
         const unknown = (ruleId, explanation) => {
             unknowns.push({
                 ruleId,
@@ -1011,26 +1178,18 @@ function analyzePythonFile(file, parsed, metrics, unknowns) {
                 explanation,
             });
         };
-        if (/\.(?:execute|executemany|executescript)\s*\(/.test(callText) &&
-            [...imports].some((module) => ["sqlite3", "psycopg", "sqlalchemy"].includes(module))) {
-            if (fact.unknownControl)
+        if (database) {
+            if (fact.unknownControl || unknownControlBeforeSink)
                 unknown("AS-INJECTION-SQL-001", "SQL control semantics are UNKNOWN.");
             else
                 addPythonCandidate("SQL_INJECTION", range, fact, "Python database execute API", "Proven untrusted request data controls SQL structure at an imported database API.", "UNTRUSTED_SQL_DATA_MUST_NOT_CONTROL_SQL_STRUCTURE");
         }
-        const command = (imports.has("os") && /\bos\.system\s*\(/.test(callText)) ||
-            (imports.has("subprocess") &&
-                /\bsubprocess\.(?:run|call|Popen|check_output|check_call)\s*\(/.test(callText) &&
-                /\bshell\s*=\s*True\b/.test(argumentText));
         if (command) {
-            if (fact.unknownControl)
+            if (fact.unknownControl || unknownControlBeforeSink)
                 unknown("AS-INJECTION-CMD-001", "Shell control semantics are UNKNOWN.");
             else
                 addPythonCandidate("COMMAND_INJECTION", range, fact, "Python shell execution API", "Proven untrusted request data controls shell syntax.", "UNTRUSTED_INPUT_MUST_NOT_CONTROL_SHELL_SYNTAX");
         }
-        const filesystem = /\bopen\s*\(/.test(callText) ||
-            (/\b(?:os|pathlib)\./.test(callText) &&
-                /(?:remove|unlink|rename|stat|open|read_text|write_text)\s*\(/.test(callText));
         if (filesystem) {
             const before = file.text.slice(route.from, range.from);
             const name = /^\s*([A-Za-z_]\w*)\s*$/.exec(firstArgument)?.[1];
@@ -1038,14 +1197,12 @@ function analyzePythonFile(file, parsed, metrics, unknowns) {
                 new RegExp(`\\b${name}\\s*=.*\\.resolve\\s*\\(`, "s").test(before) &&
                 new RegExp(`\\b${name}\\.relative_to\\s*\\(`).test(before);
             if (!confined) {
-                if (fact.unknownControl)
+                if (fact.unknownControl || unknownControlBeforeSink)
                     unknown("AS-PATH-001", "Path confinement is UNKNOWN.");
                 else
                     addPythonCandidate("PATH_TRAVERSAL", range, fact, "Python filesystem API", "Proven untrusted request data reaches a filesystem sink without canonical confinement.", "UNTRUSTED_PATHS_MUST_REMAIN_WITHIN_AUTHORIZED_FILESYSTEM_ROOT");
             }
         }
-        const http = [...imports].some((module) => ["requests", "httpx", "urllib"].includes(module)) &&
-            /\.(?:get|post|put|patch|delete|request|urlopen)\s*\(/.test(callText);
         if (http) {
             const before = file.text.slice(route.from, range.from);
             const name = /^\s*([A-Za-z_]\w*)\s*$/.exec(firstArgument)?.[1];
@@ -1054,7 +1211,7 @@ function analyzePythonFile(file, parsed, metrics, unknowns) {
                 /(?:ALLOWED_HOSTS|allowed_hosts)/.test(before) &&
                 /\.scheme\s*(?:==|!=)\s*["']https["']/.test(before);
             if (!policy) {
-                if (fact.unknownControl)
+                if (fact.unknownControl || unknownControlBeforeSink)
                     unknown("AS-SSRF-001", "Network destination policy is UNKNOWN.");
                 else
                     addPythonCandidate("SSRF", range, fact, "Python server-side HTTP client", "Proven untrusted request data controls a server-side request destination.", "UNTRUSTED_NETWORK_DESTINATION_MUST_NOT_CONTROL_SERVER_SIDE_REQUEST_TARGET_WITHOUT_ENFORCED_POLICY");

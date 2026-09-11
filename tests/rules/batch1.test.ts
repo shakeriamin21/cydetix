@@ -181,4 +181,89 @@ describe("Batch 1 shared assurance", () => {
       report.findings.filter((finding) => CASES.some((item) => item.ruleId === finding.ruleId)),
     ).toHaveLength(0);
   });
+
+  it("recognizes multiline Python parameterization and does not match names inside SQL text", async () => {
+    const target = await temporaryDirectory("cydetix-batch1-python-parameterized-");
+    await writeFile(
+      path.join(target, "app.py"),
+      [
+        "import sqlite3",
+        "from fastapi import FastAPI",
+        "",
+        "app = FastAPI()",
+        "",
+        '@app.post("/comments")',
+        "def comments(content: str):",
+        "    conn = sqlite3.connect('app.db')",
+        "    conn.execute(",
+        '        "INSERT INTO comments (content, rendered_html) VALUES (?, ?)",',
+        "        (content, content),",
+        "    )",
+        "",
+      ].join("\n"),
+      "utf8",
+    );
+
+    const report = await scanRepository({ path: target });
+    expect(
+      report.findings.filter((finding) => finding.ruleId === "AS-INJECTION-SQL-001"),
+    ).toHaveLength(0);
+  });
+
+  it("reports UNKNOWN when an unrecognized Python destination control precedes an HTTP sink", async () => {
+    const target = await temporaryDirectory("cydetix-batch1-python-custom-control-");
+    await writeFile(
+      path.join(target, "app.py"),
+      [
+        "import httpx",
+        "from fastapi import FastAPI",
+        "",
+        "app = FastAPI()",
+        "",
+        '@app.get("/fetch")',
+        "def fetch_url(url: str):",
+        "    safe, reason = is_safe_url(url)",
+        "    if not safe:",
+        "        raise ValueError(reason)",
+        "    return httpx.get(url)",
+        "",
+      ].join("\n"),
+      "utf8",
+    );
+
+    const report = await scanRepository({ path: target });
+    expect(report.findings.filter((finding) => finding.ruleId === "AS-SSRF-001")).toHaveLength(0);
+    expect(
+      report.securityAnalysis.applicationDataflow?.unknowns.some(
+        (unknown) =>
+          unknown.ruleId === "AS-SSRF-001" && unknown.reasonCodes.includes("SANITIZER_UNKNOWN"),
+      ),
+    ).toBe(true);
+    expect(report.securityAnalysis.applicationDataflow?.completeness).toBe("PARTIAL");
+  });
+
+  it("treats Flask's canonical app.route decorator as a reachable route root", async () => {
+    const target = await temporaryDirectory("cydetix-batch1-flask-route-");
+    await writeFile(
+      path.join(target, "app.py"),
+      [
+        "import sqlite3",
+        "from flask import Flask, request",
+        "",
+        "app = Flask(__name__)",
+        "",
+        '@app.route("/search")',
+        "def search():",
+        '    q = request.args.get("q")',
+        "    print(q)",
+        "    query = f\"SELECT * FROM notes WHERE title = '{q}'\"",
+        "    return sqlite3.connect('app.db').execute(query).fetchall()",
+        "",
+      ].join("\n"),
+      "utf8",
+    );
+
+    const report = await scanRepository({ path: target });
+    expect(report.findings.filter((finding) => finding.ruleId === "AS-INJECTION-SQL-001")).toHaveLength(1);
+  });
 });
