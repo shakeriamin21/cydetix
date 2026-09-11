@@ -156,4 +156,29 @@ describe("Batch 1 shared assurance", () => {
     );
     expect(report.findings).toHaveLength(0);
   });
+
+  it("ignores nested FastAPI annotation fragments that are not parameter identifiers", async () => {
+    const target = await temporaryDirectory("cydetix-batch1-fastapi-annotation-");
+    await writeFile(
+      path.join(target, "app.py"),
+      [
+        "from typing import Annotated",
+        "from fastapi import FastAPI, Header",
+        "",
+        "app = FastAPI()",
+        "",
+        '@app.get("/items")',
+        "def items(user_agent: Annotated[str | None, Header()] = None):",
+        "    return {\"user_agent\": user_agent}",
+        "",
+      ].join("\n"),
+      "utf8",
+    );
+
+    const report = await scanRepository({ path: target });
+    expect(report.securityAnalysis.applicationDataflow?.completeness).toBe("COMPLETE");
+    expect(
+      report.findings.filter((finding) => CASES.some((item) => item.ruleId === finding.ruleId)),
+    ).toHaveLength(0);
+  });
 });

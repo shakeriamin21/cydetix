@@ -1129,7 +1129,7 @@ function analyzePythonFile(
         .exec(header)?.[1]
         ?.split(",")
         .map((item) => item.trim().split(/[=:]/)[0]?.trim() ?? "")
-        .filter(Boolean) ?? [];
+        .filter((item) => /^[A-Za-z_]\w*$/.test(item)) ?? [];
     const prefix = file.text.slice(Math.max(0, range.from - 240), range.from);
     if (/@(?:app|router)\.(?:get|post|put|patch|delete)\s*\([^\n]*\)\s*$/.test(prefix)) {
       routeFunctions.push({ from: range.from, to: range.to, parameters });
