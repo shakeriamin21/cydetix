@@ -50,14 +50,14 @@ not meaningful; the existing phase benchmarks remain separate regression gates.
 
 ## Self-scan
 
-The alpha.8 source self-scan examined 468 files (2,219,217 bytes) statically and returned 0 active
+The alpha.8 source self-scan examined 469 files (2,223,829 bytes) statically and returned 0 active
 findings and 55 suppressed findings. The suppressions are explicit, owned, expiring, fixture-scoped
 records for deliberately vulnerable regression corpora; no new product-source finding was suppressed
 to obtain the pass.
 
 ## Regression and sandbox
 
-The complete local suite passed 43 test files and 305 tests with no failures or skips while the
+The complete local suite passed 44 test files and 306 tests with no failures or skips while the
 pinned Docker image was required. All 13 hardened container tests executed and passed. Formatting,
 lint, TypeScript checks, generated-schema freshness, SARIF Multitool validation, CycloneDX SBOM
 validation, remediation transactions, skills/plugin checks, the 36-case trigger corpus, exact-root

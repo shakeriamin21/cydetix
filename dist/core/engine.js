@@ -11,7 +11,7 @@ import { analyzeApplicationDataflow } from "../dataflow-analysis/bounded-engine.
 import { scanReportSchema, } from "./schema.js";
 import { createBoundary } from "../repository-discovery/boundary.js";
 import { loadConfig } from "../repository-discovery/config.js";
-import { inspectPassiveGitMetadata } from "../repository-discovery/git-metadata.js";
+import { inspectGitMetadata } from "../repository-discovery/git-metadata.js";
 import { buildRepositoryManifest } from "../repository-discovery/discover.js";
 import { traverseRepository } from "../repository-discovery/traverse.js";
 import { REPOSITORY_SECURITY_RULES, SECURITY_RULES } from "../rules/index.js";
@@ -81,7 +81,7 @@ export async function scanRepository(options) {
     const config = await loadConfig(boundary);
     const traversal = await traverseRepository(boundary, config);
     const manifest = buildRepositoryManifest(traversal);
-    const gitMetadata = await inspectPassiveGitMetadata(boundary.root);
+    const gitMetadata = await inspectGitMetadata(boundary.root);
     const repositoryDiscoveryMilliseconds = performance.now() - repositoryDiscoveryStart;
     const parsingStart = performance.now();
     const parseFailures = [];

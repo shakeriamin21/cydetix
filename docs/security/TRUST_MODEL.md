@@ -23,8 +23,10 @@ capabilities, SAFE adapters, verification strategies, resource bounds, and expli
 
 Each structured scan includes a reproducibility manifest with the Cydetix version, stable catalogue,
 configuration and suppression fingerprints, enabled rules, canonical root, passive Git identity,
-language/framework and dependency context, advisory mode, scan identity, timestamp, schema version,
-and overall completeness. Arrays used by fingerprints are stably ordered.
+bounded hook-disabled Git working-tree state, language/framework and dependency context, advisory
+mode, scan identity, timestamp, schema version, and overall completeness. Arrays used by
+fingerprints are stably ordered. If the no-lock status probe fails, exceeds five seconds or one MiB,
+or Git is not available, state is explicitly `UNKNOWN`.
 
 ## Hostile repositories
 
