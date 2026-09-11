@@ -169,7 +169,7 @@ describe("Batch 1 shared assurance", () => {
         "",
         '@app.get("/items")',
         "def items(user_agent: Annotated[str | None, Header()] = None):",
-        "    return {\"user_agent\": user_agent}",
+        '    return {"user_agent": user_agent}',
         "",
       ].join("\n"),
       "utf8",
@@ -264,6 +264,8 @@ describe("Batch 1 shared assurance", () => {
     );
 
     const report = await scanRepository({ path: target });
-    expect(report.findings.filter((finding) => finding.ruleId === "AS-INJECTION-SQL-001")).toHaveLength(1);
+    expect(
+      report.findings.filter((finding) => finding.ruleId === "AS-INJECTION-SQL-001"),
+    ).toHaveLength(1);
   });
 });

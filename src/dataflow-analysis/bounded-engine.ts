@@ -1418,10 +1418,7 @@ function analyzePythonFile(
       /\.(?:get|post|put|patch|delete|request|urlopen)\s*\(/.test(callText);
     const argumentText =
       (database
-        ? extractPythonCallArguments(
-            callText,
-            /\.(?:execute|executemany|executescript)\s*\(/,
-          )
+        ? extractPythonCallArguments(callText, /\.(?:execute|executemany|executescript)\s*\(/)
         : commandApi
           ? extractPythonCallArguments(
               callText,
