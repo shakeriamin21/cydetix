@@ -1,18 +1,18 @@
 {
   "schemaVersion": "1.2.0",
-  "generatedAt": "2026-09-12T09:43:50.766Z",
+  "generatedAt": "2026-09-12T19:07:03.835Z",
   "product": {
     "name": "cydetix",
-    "version": "0.6.0-alpha.10",
+    "version": "0.6.0-alpha.11",
     "evidenceOrigin": "PUBLIC_GIT_COMMIT",
-    "publicSourceCommit": "fa048d2f66d337198df9085bfcf1f491eda9dcfd"
+    "publicSourceCommit": "8c1a1b8e572ef96fcd0c4a25ca877fa96c0ce5e3"
   },
   "verdict": "NOT_READY_FOR_PUBLIC_USE",
   "checks": [
     {
       "id": "source-state",
-      "state": "executed_fail",
-      "evidence": "Artifacts are explicitly labeled as an uncommitted preview and cannot be published."
+      "state": "executed_pass",
+      "evidence": "Release artifacts came from a clean committed source tree."
     },
     {
       "id": "git-history-privacy",
@@ -22,7 +22,7 @@
     {
       "id": "complete-test-suite",
       "state": "executed_pass",
-      "evidence": "45 files and 353 tests passed; 0 files and 0 tests failed; 0 files and 0 tests skipped."
+      "evidence": "46 files and 374 tests passed; 0 files and 0 tests failed; 0 files and 0 tests skipped."
     },
     {
       "id": "container-capability",
@@ -176,7 +176,7 @@
     {
       "id": "self-scan",
       "state": "executed_pass",
-      "evidence": "478 files and 2319701 bytes scanned; 0 active and 55 suppressed findings."
+      "evidence": "545 files and 2470826 bytes scanned; 0 active and 82 suppressed findings."
     },
     {
       "id": "packed-install-current-host",
@@ -191,12 +191,12 @@
     {
       "id": "release-artifacts",
       "state": "executed_pass",
-      "evidence": "4 release artifacts were regenerated after source commit fa048d2f66d337198df9085bfcf1f491eda9dcfd and SHA-256 hashed."
+      "evidence": "4 release artifacts were regenerated after source commit 8c1a1b8e572ef96fcd0c4a25ca877fa96c0ce5e3 and SHA-256 hashed."
     },
     {
       "id": "clean-public-lineage",
       "state": "executed_fail",
-      "evidence": "35 commit(s) are reachable in the clean public lineage; 8 tag(s) exist before publication approval."
+      "evidence": "37 commit(s) are reachable in the clean public lineage; 9 tag(s) exist before publication approval."
     },
     {
       "id": "cross-platform-ci-matrix",
@@ -535,8 +535,8 @@
     ]
   },
   "tests": {
-    "filesPassed": 45,
-    "testsPassed": 353,
+    "filesPassed": 46,
+    "testsPassed": 374,
     "filesFailed": 0,
     "testsFailed": 0,
     "filesSkipped": 0,
@@ -596,30 +596,30 @@
   ],
   "package": {
     "state": "CURRENT",
-    "entries": 388,
-    "packedBytes": 375270,
-    "unpackedBytes": 2352845,
+    "entries": 208,
+    "packedBytes": 277712,
+    "unpackedBytes": 1760537,
     "sizeGateBytes": 400000,
     "hashes": [
       {
-        "artifact": "cydetix-0.6.0-alpha.10.tgz",
-        "sha256": "e4a1712563f0a65a27c908630c314a1d7661f310759fa89e6b411d51d8fd0646",
-        "bytes": 375270
+        "artifact": "cydetix-0.6.0-alpha.11.tgz",
+        "sha256": "d790c42b71459ee4a8b49cede9eb1d6c6bd270f0b1ce55dc9c4e86feba251f13",
+        "bytes": 277712
       },
       {
         "artifact": "cydetix.cdx.json",
-        "sha256": "bae94feb405547f2811ee28a898bef6646dc59a662061c4b038ca94a1e9ed6c3",
+        "sha256": "b35a0e76d6a8065eeacb745579ce08fb451aa1a86f32b9ed281cfbd9c4e9a728",
         "bytes": 152000
       },
       {
-        "artifact": "cydetix-codex-plugin-0.6.0-alpha.10.tar.gz",
-        "sha256": "3713dc32e5aa04e425fc724d003083a749b47ba01cd65c7558ad95280314104e",
-        "bytes": 6679
+        "artifact": "cydetix-codex-plugin-0.6.0-alpha.11.tar.gz",
+        "sha256": "ce18c2626a14369f2efa6dbf3b00238fc012740cd8fb6c6b125dd77aaee0ff7c",
+        "bytes": 6680
       },
       {
-        "artifact": "cydetix-release-validation-0.6.0-alpha.10.json",
-        "sha256": "18d3a1c610fb0a723e2678183757978c218fa13ad8002d31c283339a5e03aaba",
-        "bytes": 2189
+        "artifact": "cydetix-release-validation-0.6.0-alpha.11.json",
+        "sha256": "38471eafbfccc29acd8258b03be9b8813f17fe40a7856ba403d0c90620c4b425",
+        "bytes": 2185
       }
     ]
   },
