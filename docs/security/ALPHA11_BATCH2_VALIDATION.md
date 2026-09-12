@@ -149,8 +149,9 @@ an accuracy percentage.
 - Self-scan: 0 active findings and 82 audited suppressions. New intentional fixture suppressions are
   bound to exact rule, file, and finding fingerprint with rationale, owner, and expiry.
 - Complete-history Gitleaks: pinned 8.30.1 image/digest, network denied, read-only repository,
-  non-root process, 36 commits scanned; 14/14 exact reviewed non-secret findings and 0 unreviewed.
-  Report SHA-256 is `48231c063c22999b5539641d39b83afb0aed6d40a41d3d47b31b06d7cc7d1941`.
+  non-root process, complete reachable history scanned; 14/14 exact reviewed non-secret findings and
+  0 unreviewed. Report SHA-256 is
+  `48231c063c22999b5539641d39b83afb0aed6d40a41d3d47b31b06d7cc7d1941`.
 - Historical alpha.2 through alpha.10 tag objects and peeled commits matched origin. Alpha.10
   remains object `45ceb19feba03825f4d456100326f0f5a4d88387` at commit
   `32e0e0e583bb26103d011563cfcfcd2ce0bc3c82`.
