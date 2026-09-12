@@ -45,7 +45,11 @@ do not apply. The complete configured suppression set contributes to a stable fi
 
 ## Limits of trust
 
-The Batch 1 engine is deliberately bounded and local. It does not claim whole-program proof,
-cross-file application dataflow, Python interprocedural propagation, arbitrary custom sanitizer
-semantics, or complete DNS/redirect/symlink-race reasoning. These limits are emitted by `trust` and
-scan coverage rather than hidden behind a clean result.
+The Batch 1 and Batch 2 engine is deliberately bounded. It does not claim whole-program proof,
+general cross-file application dataflow, Python interprocedural propagation, arbitrary custom
+sanitizer or middleware semantics, or complete browser/URL/DNS/redirect/symlink-race reasoning.
+Batch 2 controls are typed and context-bound: HTML encoding does not prove JavaScript or URL safety,
+SameSite alone does not prove CSRF safety, and destination checks do not prove redirect confinement
+unless they meet a supported exact policy shape. Relevant opaque or incomplete evidence is
+`UNKNOWN`. These limits are emitted by `trust` and scan coverage rather than hidden behind a clean
+result.

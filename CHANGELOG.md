@@ -5,6 +5,24 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+Development target: `0.6.0-alpha.11`. This line is not a release heading and does not authorize a
+tag or publication.
+
+### Added
+
+- Added production-admitted, bounded, proof-carrying rules for context-aware cross-site scripting
+  (`AS-XSS-001`), open redirect (`AS-REDIRECT-001`), and architecture-aware CSRF (`AS-CSRF-001`)
+  within explicitly documented JavaScript/TypeScript and Python framework envelopes.
+- Added typed, provenance-bound HTML, redirect-policy, CSRF, origin, and non-ambient-auth controls,
+  plus positive, negative, adversarial, UNKNOWN, determinism, malformed-input, and resource-bound
+  admission fixtures.
+
+### Changed
+
+- Advanced the unpublished development identity to `0.6.0-alpha.11` while retaining
+  `v0.6.0-alpha.10` as the immutable successful public baseline. Batch 2 remediation ceilings are
+  `REVIEW_REQUIRED`; no new SAFE adapter is introduced.
+
 ## [0.6.0-alpha.10] - 2026-09-12
 
 ### Added

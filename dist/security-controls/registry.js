@@ -1,5 +1,5 @@
 import { stableObjectFingerprint } from "../core/hash.js";
-export const SECURITY_CONTROL_REGISTRY_VERSION = "1.0.0";
+export const SECURITY_CONTROL_REGISTRY_VERSION = "1.1.0";
 export const SECURITY_CONTROLS = [
     {
         id: "SQL-SEPARATE-BIND-PARAMETERS",
@@ -55,6 +55,100 @@ export const SECURITY_CONTROLS = [
         patterns: ["String conversion or URL component encoding"],
         limitations: ["Encoding does not establish destination authorization."],
         proofEffect: "PRESERVES_UNTRUSTEDNESS",
+    },
+    {
+        id: "HTML_ESCAPE",
+        version: "1.0.0",
+        context: "HTML_BODY",
+        libraries: ["escape-html", "he", "MarkupSafe"],
+        patterns: ["contextual HTML text escaping at the output boundary"],
+        limitations: [
+            "HTML escaping is not proof for JavaScript, CSS, URL scheme, or unquoted attribute contexts.",
+        ],
+        proofEffect: "PROVES_CONTROL",
+    },
+    {
+        id: "HTML_SANITIZE",
+        version: "1.0.0",
+        context: "HTML_BODY",
+        libraries: ["DOMPurify", "sanitize-html", "Bleach"],
+        patterns: ["recognized HTML sanitizer applied directly before raw HTML rendering"],
+        limitations: [
+            "Sanitizer configuration, version-specific behavior, URL policy, and JavaScript contexts remain outside this control.",
+        ],
+        proofEffect: "PROVES_CONTROL",
+    },
+    {
+        id: "TRUSTED_HTML_CONSTRUCTION",
+        version: "1.0.0",
+        context: "HTML_BODY",
+        libraries: ["React", "Jinja2"],
+        patterns: [
+            "React JSX interpolation or Jinja template value binding with framework autoescaping",
+        ],
+        limitations: [
+            "Raw HTML escape hatches, unsafe markup wrappers, and disabled autoescaping are excluded.",
+        ],
+        proofEffect: "PROVES_CONTROL",
+    },
+    {
+        id: "REDIRECT_DESTINATION_ALLOWLIST",
+        version: "1.0.0",
+        context: "REDIRECT_DESTINATION",
+        libraries: ["URL", "urllib.parse"],
+        patterns: ["canonical URL parsing followed by exact hostname membership in a fixed allowlist"],
+        limitations: [
+            "Encoded destinations, framework normalization, user-info, alternate schemes, and parser differentials require the exact supported pattern.",
+        ],
+        proofEffect: "PROVES_CONTROL",
+    },
+    {
+        id: "SAME_ORIGIN_REDIRECT_POLICY",
+        version: "1.0.0",
+        context: "REDIRECT_DESTINATION",
+        libraries: ["URL", "urllib.parse"],
+        patterns: ["canonical origin equality or an exact enum mapping to fixed destinations"],
+        limitations: [
+            "A string prefix check, including startsWith('/'), does not prove same-origin behavior for protocol-relative inputs.",
+        ],
+        proofEffect: "PROVES_CONTROL",
+    },
+    {
+        id: "CSRF_TOKEN_VERIFICATION",
+        version: "1.0.0",
+        context: "REQUEST_ORIGIN",
+        libraries: ["csurf", "csrf-csrf", "Flask-WTF"],
+        patterns: [
+            "supported middleware or explicit token verification bound to a state-changing route",
+        ],
+        limitations: [
+            "Arbitrary custom middleware names and token-presence checks do not prove verification.",
+        ],
+        proofEffect: "PROVES_CONTROL",
+    },
+    {
+        id: "ORIGIN_VALIDATION",
+        version: "1.0.0",
+        context: "REQUEST_ORIGIN",
+        libraries: ["URL", "web framework request headers"],
+        patterns: [
+            "parsed Origin value compared for exact equality or membership in a fixed trusted-origin set",
+        ],
+        limitations: [
+            "Substring, suffix, and prefix comparisons are not accepted as origin validation.",
+        ],
+        proofEffect: "PROVES_CONTROL",
+    },
+    {
+        id: "NON_AMBIENT_AUTH",
+        version: "1.0.0",
+        context: "AUTHENTICATION",
+        libraries: ["Authorization Bearer", "jsonwebtoken", "jose"],
+        patterns: ["explicit Authorization header credential verified on the supported route path"],
+        limitations: [
+            "A header read alone, an auth-looking name, or a custom verifier does not prove non-ambient authentication.",
+        ],
+        proofEffect: "PROVES_CONTROL",
     },
 ];
 export function securityControlRegistryFingerprint() {

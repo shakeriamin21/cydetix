@@ -19,7 +19,7 @@ AI integration requires a persistent installation so routine agent execution nev
 installs packages at runtime:
 
 ```bash
-npm install -g cydetix@0.6.0-alpha.7
+npm install -g cydetix@0.6.0-alpha.10
 cydetix setup
 ```
 
@@ -36,14 +36,13 @@ every AI product.
 For CLI-only use, the same global installation remains optional:
 
 ```bash
-npm install -g cydetix@0.6.0-alpha.7
+npm install -g cydetix@0.6.0-alpha.10
 cydetix
 ```
 
-The current source is the unpublished `0.6.0-alpha.10` release candidate. The immutable
-`v0.6.0-alpha.8` tag records a failed publication attempt that stopped during release-context
-validation before npm or public GitHub publication. The `v0.6.0-alpha.7` release remains the public
-baseline until alpha.9 completes the trusted release workflow.
+The current source is the unpublished `0.6.0-alpha.11` Batch 2 development line. The immutable
+`v0.6.0-alpha.10` tag is the frozen successful public baseline. Alpha.11 is not tagged or authorized
+for publication in this development mission.
 
 ## What the default command does
 
@@ -108,7 +107,7 @@ Node executable, the exact package identity/version, and the project root. Confi
 then use process-style command and argument fields equivalent to:
 
 ```text
-<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 0.6.0-alpha.10
+<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 0.6.0-alpha.11
 ```
 
 They contain no npm/npx command, registry URL, downloader, secret, or shell indirection. Routine MCP

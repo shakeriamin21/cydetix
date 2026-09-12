@@ -48,6 +48,6 @@ The runtime currently defines:
 
 The existing session-cookie literal transform remains the sole SAFE adapter. It uses an exact local
 edit, source-hash precondition, parser validation, targeted rescan, invariant reevaluation, and
-transaction rollback. Every Batch 1 rule has a `REVIEW_REQUIRED` ceiling: Cydetix does not invent
-SQL parameter contracts, command argument semantics, authorized filesystem roots, or network
-allowlists.
+transaction rollback. Every Batch 1 and Batch 2 rule has a `REVIEW_REQUIRED` ceiling: Cydetix does
+not invent SQL parameter contracts, command argument semantics, authorized filesystem roots, network
+or redirect allowlists, output-context transformations, or application CSRF architecture.

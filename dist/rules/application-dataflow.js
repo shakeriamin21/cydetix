@@ -5,6 +5,9 @@ const RULE_ID = {
     COMMAND_INJECTION: "AS-INJECTION-CMD-001",
     PATH_TRAVERSAL: "AS-PATH-001",
     SSRF: "AS-SSRF-001",
+    XSS: "AS-XSS-001",
+    OPEN_REDIRECT: "AS-REDIRECT-001",
+    CSRF: "AS-CSRF-001",
 };
 function completeProof(candidate) {
     const rule = requireRule(RULE_ID[candidate.kind]);
@@ -19,7 +22,10 @@ function completeProof(candidate) {
     };
 }
 function policyReasons(candidate) {
-    if (candidate.kind === "PATH_TRAVERSAL" || candidate.kind === "SSRF") {
+    if (candidate.kind === "PATH_TRAVERSAL" ||
+        candidate.kind === "SSRF" ||
+        candidate.kind === "OPEN_REDIRECT" ||
+        candidate.kind === "CSRF") {
         return [...candidate.remediationReasons, "BUSINESS_POLICY_REQUIRED"];
     }
     return [...candidate.remediationReasons];
@@ -44,7 +50,10 @@ export function buildApplicationDataflowFindings(result) {
                 deterministicTransformation: false,
                 boundedLocalBlastRadius: false,
                 sourceHashVerified: false,
-                noBusinessPolicyDecision: candidate.kind !== "PATH_TRAVERSAL" && candidate.kind !== "SSRF",
+                noBusinessPolicyDecision: candidate.kind !== "PATH_TRAVERSAL" &&
+                    candidate.kind !== "SSRF" &&
+                    candidate.kind !== "OPEN_REDIRECT" &&
+                    candidate.kind !== "CSRF",
                 noAuthorizationPolicyInvention: true,
                 noArchitectureChange: true,
                 noSemanticAmbiguity: false,

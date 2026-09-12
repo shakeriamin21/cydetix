@@ -105,7 +105,7 @@ export async function scanRepository(options) {
     const authorizationProofs = buildAuthorizationProofs(applicationSecurityIr);
     const securityGraphMilliseconds = performance.now() - securityGraphStart;
     const applicationDataflowStart = performance.now();
-    const applicationDataflowResult = analyzeApplicationDataflow(traversal.files, parsedByPath);
+    const applicationDataflowResult = analyzeApplicationDataflow(traversal.files, parsedByPath, applicationSecurityIr);
     const applicationDataflowMilliseconds = performance.now() - applicationDataflowStart;
     const supplyChainResult = await buildSupplyChainAnalysis(traversal.files, {
         root: boundary.root,

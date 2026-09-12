@@ -7,7 +7,7 @@ describe("trust inspection reports", () => {
     const first = createRulesReport();
     const second = createRulesReport();
     expect(first).toEqual(second);
-    expect(first.rules).toHaveLength(24);
+    expect(first.rules).toHaveLength(27);
     expect(first.rules.map((rule) => rule.id)).toEqual(
       [...first.rules.map((rule) => rule.id)].sort(),
     );
@@ -20,11 +20,13 @@ describe("trust inspection reports", () => {
 
   it("reports actual engines, bounds, controls, SAFE adapters, and limitations", () => {
     const report = createTrustReport();
-    expect(report.version).toBe("0.6.0-alpha.10");
-    expect(report.maturityCounts.production).toBe(24);
+    expect(report.version).toBe("0.6.0-alpha.11");
+    expect(report.maturityCounts.production).toBe(27);
     expect(report.safeRemediationAdapters).toHaveLength(1);
     expect(report.resourceBounds.maxIterations).toBe(8);
     expect(report.securityControls.some((control) => control.context === "SQL")).toBe(true);
-    expect(report.unsupportedOrIncomplete).toContain("cross-file Batch 1 dataflow");
+    expect(report.unsupportedOrIncomplete).toContain(
+      "general cross-file Batch 1 and Batch 2 dataflow outside explicit Security IR route and middleware edges",
+    );
   });
 });

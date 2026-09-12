@@ -66,6 +66,9 @@ export declare const ruleDefinitionSchema: z.ZodObject<{
         configuration: "configuration";
         authorization: "authorization";
         injection: "injection";
+        xss: "xss";
+        "open-redirect": "open-redirect";
+        csrf: "csrf";
         "path-traversal": "path-traversal";
         ssrf: "ssrf";
         "dependency-security": "dependency-security";
@@ -117,6 +120,12 @@ export declare const ruleDefinitionSchema: z.ZodObject<{
         python: "python";
     }>>;
     supportedFrameworks: z.ZodArray<z.ZodString>;
+    supportedSourcePatterns: z.ZodOptional<z.ZodArray<z.ZodString>>;
+    supportedSinkPatterns: z.ZodOptional<z.ZodArray<z.ZodString>>;
+    controlSemantics: z.ZodOptional<z.ZodArray<z.ZodString>>;
+    boundedPropagationModel: z.ZodOptional<z.ZodString>;
+    confidenceModel: z.ZodOptional<z.ZodString>;
+    proofRequirements: z.ZodOptional<z.ZodArray<z.ZodString>>;
     detectionStrategy: z.ZodEnum<{
         configuration: "configuration";
         ast: "ast";

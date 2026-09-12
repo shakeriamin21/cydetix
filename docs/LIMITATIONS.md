@@ -8,9 +8,11 @@ compliant.
 - Cross-file application reasoning is limited to statically named relative ESM imports, literal
   Express routes, direct/namespace calls, narrow supported authentication APIs, and flat Prisma
   selectors.
-- CommonJS, path aliases, barrels, dependency injection, decorators, callbacks, computed dispatch,
-  raw SQL, nested/compound queries, post-fetch policies, and most Python cross-file semantics are
-  unsupported or unknown.
+- CommonJS, path aliases, barrels, dependency injection, callbacks, computed dispatch, arbitrary
+  template engines, runtime sanitizer configuration, complex router composition, encoded redirect
+  destinations, deployment topology, and most Python cross-file semantics are unsupported or
+  unknown. Supported Flask route decorators are modeled only inside their documented local Batch 2
+  envelope.
 - OIDC, MFA, reauthentication, session lifetime, external-provider internals, account-enumeration
   timing, and refresh-token sender constraint have graph infrastructure or limited proof only.
 - npm package-lock v2/v3 is the only resolved dependency ecosystem. Dependency presence does not

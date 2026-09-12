@@ -1,6 +1,6 @@
 {
   "name": "cydetix",
-  "version": "0.6.0-alpha.10",
+  "version": "0.6.0-alpha.11",
   "description": "Zero-config deterministic application security and policy-bounded remediation CLI",
   "type": "module",
   "bin": {
@@ -8,6 +8,7 @@
   },
   "files": [
     "dist",
+    "!dist/**/*.map",
     "rules",
     "schemas",
     "agent-skills",
@@ -37,6 +38,7 @@
     "benchmark:phase5": "npm run build && node scripts/measure-phase5.mjs",
     "benchmark:phase6": "npm run build && node scripts/measure-phase6-scale.mjs",
     "benchmark:batch1": "npm run build && node scripts/measure-batch1.mjs",
+    "benchmark:batch2": "npm run build && node scripts/measure-batch2.mjs",
     "release:artifacts": "npm run build && node scripts/build-release-artifacts.mjs",
     "release:preview": "npm run build && node scripts/build-release-artifacts.mjs --preview",
     "release:evidence": "npm run build && node scripts/generate-release-validation.mjs",

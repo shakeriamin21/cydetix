@@ -5,7 +5,7 @@ export declare const RULE_BY_ID: Map<string, {
     id: string;
     version: string;
     title: string;
-    category: "secrets" | "authentication" | "session" | "oauth" | "password-reset" | "password-storage" | "token-validation" | "configuration" | "authorization" | "injection" | "path-traversal" | "ssrf" | "dependency-security" | "ci-cd" | "supply-chain";
+    category: "secrets" | "authentication" | "session" | "oauth" | "password-reset" | "password-storage" | "token-validation" | "configuration" | "authorization" | "injection" | "xss" | "open-redirect" | "csrf" | "path-traversal" | "ssrf" | "dependency-security" | "ci-cd" | "supply-chain";
     description: string;
     severity: "low" | "medium" | "high" | "info" | "critical";
     confidence: "low" | "medium" | "high";
@@ -39,6 +39,12 @@ export declare const RULE_BY_ID: Map<string, {
         relationship: "REQUIRED" | "RECOMMENDED" | "CONTEXT_DEPENDENT";
         url: string;
     }[] | undefined;
+    supportedSourcePatterns?: string[] | undefined;
+    supportedSinkPatterns?: string[] | undefined;
+    controlSemantics?: string[] | undefined;
+    boundedPropagationModel?: string | undefined;
+    confidenceModel?: string | undefined;
+    proofRequirements?: string[] | undefined;
     maturity?: "EXPERIMENTAL" | "VALIDATED" | "PRODUCTION" | undefined;
     maxRemediationClass?: "SAFE" | "REVIEW_REQUIRED" | "ARCHITECTURAL" | undefined;
     adversarialTests?: string[] | undefined;

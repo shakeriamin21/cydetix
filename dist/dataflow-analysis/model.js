@@ -5,6 +5,9 @@ export const applicationDataflowKindSchema = z.enum([
     "COMMAND_INJECTION",
     "PATH_TRAVERSAL",
     "SSRF",
+    "XSS",
+    "OPEN_REDIRECT",
+    "CSRF",
 ]);
 export const applicationDataflowMetricSchema = z
     .object({

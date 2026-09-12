@@ -35,30 +35,37 @@ become an unconditional vulnerability.
 
 ## Implemented mapping matrix
 
-| Rule                | ASVS 5.0.0   | OWASP Top 10:2025 | CWE       | NIST                 |
-| ------------------- | ------------ | ----------------- | --------- | -------------------- |
-| AS-SESSION-001      | 3.3.1, 3.3.4 | A07               | 614, 1004 | SP 800-63B-4 5.1.1   |
-| AS-PASSWORD-001     | 11.4.2       | A04, A07          | 916       | SP 800-63B-4 3.1.1.2 |
-| AS-TOKEN-001        | 7.2.1        | A07               | 347       | -                    |
-| AS-SECRET-001       | 13.3.1       | A02               | 798       | -                    |
-| AS-CORS-001         | 3.4.2        | A02               | 942       | -                    |
-| AS-AUTHZ-001        | 8.2.2, 8.3.1 | A01               | 639       | -                    |
-| AS-TENANT-001       | 8.3.1, 8.4.1 | A01               | 862       | -                    |
-| AS-AUTH-SESSION-001 | 7.2.4        | A07               | 384       | -                    |
-| AS-AUTH-SESSION-002 | 7.4.1        | A07               | 613       | SP 800-63B-4 5       |
-| AS-AUTH-RESET-001   | 7.4.3        | A07               | 613       | -                    |
-| AS-AUTH-RESET-002   | 6.4.3        | A07               | 640       | -                    |
-| AS-AUTH-RESET-003   | 6.4.3        | A07               | 640, 330  | -                    |
-| AS-AUTH-JWT-001     | 9.1.1        | A07               | 347       | -                    |
-| AS-AUTH-OAUTH-001   | 10.2.1       | A07               | 352       | -                    |
-| AS-AUTH-OAUTH-002   | 10.4.6       | A07               | 345       | -                    |
-| AS-SCA-001          | -            | A03               | 1395      | -                    |
-| AS-CI-001           | -            | A03               | 829       | -                    |
-| AS-CI-002           | -            | A03               | 250       | -                    |
-| AS-CI-003           | -            | A03               | 829, 250  | -                    |
-| AS-CI-004           | -            | A05               | 78        | -                    |
+| Rule                 | ASVS 5.0.0    | OWASP Top 10:2025 | CWE        | NIST                 |
+| -------------------- | ------------- | ----------------- | ---------- | -------------------- |
+| AS-SESSION-001       | 3.3.1, 3.3.4  | A07               | 614, 1004  | SP 800-63B-4 5.1.1   |
+| AS-PASSWORD-001      | 11.4.2        | A04, A07          | 916        | SP 800-63B-4 3.1.1.2 |
+| AS-TOKEN-001         | 7.2.1         | A07               | 347        | -                    |
+| AS-SECRET-001        | 13.3.1        | A02               | 798        | -                    |
+| AS-CORS-001          | 3.4.2         | A02               | 942        | -                    |
+| AS-AUTHZ-001         | 8.2.2, 8.3.1  | A01               | 639        | -                    |
+| AS-TENANT-001        | 8.3.1, 8.4.1  | A01               | 862        | -                    |
+| AS-AUTH-SESSION-001  | 7.2.4         | A07               | 384        | -                    |
+| AS-AUTH-SESSION-002  | 7.4.1         | A07               | 613        | SP 800-63B-4 5       |
+| AS-AUTH-RESET-001    | 7.4.3         | A07               | 613        | -                    |
+| AS-AUTH-RESET-002    | 6.4.3         | A07               | 640        | -                    |
+| AS-AUTH-RESET-003    | 6.4.3         | A07               | 640, 330   | -                    |
+| AS-AUTH-JWT-001      | 9.1.1         | A07               | 347        | -                    |
+| AS-AUTH-OAUTH-001    | 10.2.1        | A07               | 352        | -                    |
+| AS-AUTH-OAUTH-002    | 10.4.6        | A07               | 345        | -                    |
+| AS-SCA-001           | -             | A03               | 1395       | -                    |
+| AS-CI-001            | -             | A03               | 829        | -                    |
+| AS-CI-002            | -             | A03               | 250        | -                    |
+| AS-CI-003            | -             | A03               | 829, 250   | -                    |
+| AS-CI-004            | -             | A05               | 78         | -                    |
+| AS-INJECTION-SQL-001 | 1.2.4         | A05               | 89         | -                    |
+| AS-INJECTION-CMD-001 | 1.2.5         | A05               | 78, 77, 88 | -                    |
+| AS-PATH-001          | 5.3.2         | A01               | 22         | -                    |
+| AS-SSRF-001          | 1.3.6, 15.3.2 | A01               | 918        | -                    |
+| AS-XSS-001           | 1.2.1, 1.2.3  | A05               | 79         | -                    |
+| AS-REDIRECT-001      | 3.7.2         | A01               | 601        | -                    |
+| AS-CSRF-001          | 3.5.1         | A01               | 352        | -                    |
 
-The complete machine-readable metadata is in `rules/catalogue.json`. This matrix means twenty
+The complete machine-readable metadata is in `rules/catalogue.json`. This matrix means twenty-seven
 narrowly defined checks exist; it does not mean all related ASVS, Top 10, CWE, or NIST requirements
 were evaluated. Phase 2 authorization mappings follow ASVS V8. Phase 3 authentication mappings use
 version-pinned ASVS V6, V7, V9, and V10 plus protocol standards where applicable. Neither layer is a

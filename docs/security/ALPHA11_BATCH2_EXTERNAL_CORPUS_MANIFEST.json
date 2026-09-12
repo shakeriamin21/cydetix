@@ -1,0 +1,104 @@
+{
+  "schemaVersion": "1.0.0",
+  "candidate": {
+    "baseCommit": "32e0e0e583bb26103d011563cfcfcd2ce0bc3c82",
+    "version": "0.6.0-alpha.11",
+    "ruleCatalogueFingerprint": "33af95ab490dce9be35d0c5926e66be2b9e49496a8fa1404af0f70fd495a4bec"
+  },
+  "reviewDate": "2026-09-12",
+  "policy": {
+    "pinnedCommits": true,
+    "targetCodeExecuted": false,
+    "targetLifecycleScriptsExecuted": false,
+    "targetDependenciesInstalled": false,
+    "targetEnvironmentFilesLoaded": false,
+    "scanMode": "offline static source inspection",
+    "scanRepetitions": 2
+  },
+  "counts": {
+    "repositories": 11,
+    "deliberatelyVulnerable": 7,
+    "ordinaryOrSecure": 4,
+    "primaryJavaScriptOrTypeScript": 7,
+    "primaryPython": 4
+  },
+  "targets": [
+    {
+      "repository": "OWASP/NodeGoat",
+      "commit": "c5cb68a7084e4ae7dcc60e6a98768720a81841e8",
+      "classification": "DELIBERATELY_VULNERABLE",
+      "framework": "Express; session/cookie authentication",
+      "batch2Purpose": "CommonJS route composition, redirects, and unresolved middleware edges."
+    },
+    {
+      "repository": "appsecco/dvna",
+      "commit": "9ba473add536f66ac9007966acb2a775dd31277a",
+      "classification": "DELIBERATELY_VULNERABLE",
+      "framework": "Express",
+      "batch2Purpose": "Controller-separated rendering and redirect handlers."
+    },
+    {
+      "repository": "expressjs/express",
+      "commit": "53d4a0d606c0388f764f192b306ce0e90200e7e8",
+      "classification": "ORDINARY",
+      "framework": "Express",
+      "batch2Purpose": "Framework examples and tests with dense response, redirect, cookie, and route syntax."
+    },
+    {
+      "repository": "fastify/fastify",
+      "commit": "d266f833f2bff34c6115c026e461b682e94d0b9c",
+      "classification": "ORDINARY",
+      "framework": "Fastify",
+      "batch2Purpose": "Framework response and redirect APIs plus large-repository resource behavior."
+    },
+    {
+      "repository": "Vikas2171/vulnerable-website",
+      "commit": "1258fa3efac1547da5bb3c7e6ab8279f00e47206",
+      "classification": "DELIBERATELY_VULNERABLE",
+      "framework": "Express; express-session",
+      "batch2Purpose": "Direct raw HTML construction and ambient-session state-changing routes."
+    },
+    {
+      "repository": "juice-shop/juice-shop",
+      "commit": "1618a611b173b4bf114028e6e02549950606e29d",
+      "classification": "DELIBERATELY_VULNERABLE",
+      "framework": "Express; Angular",
+      "batch2Purpose": "Large application with custom redirect policy and complex route composition."
+    },
+    {
+      "repository": "we45/Vulnerable-Flask-App",
+      "commit": "b6a4f97afd466e83e1f60781494252dec1c37039",
+      "classification": "DELIBERATELY_VULNERABLE",
+      "framework": "Flask; Jinja",
+      "batch2Purpose": "Flask request, rendering, and state-changing route patterns."
+    },
+    {
+      "repository": "stephenbradshaw/breakableflask",
+      "commit": "553e8b2f51c14f259f565d5df478339c366a9172",
+      "classification": "DELIBERATELY_VULNERABLE",
+      "framework": "Flask; Jinja",
+      "batch2Purpose": "Direct dynamic render_template_string and opaque transformations."
+    },
+    {
+      "repository": "pallets/flask",
+      "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "classification": "ORDINARY",
+      "framework": "Flask; Jinja",
+      "batch2Purpose": "Secure framework tutorial patterns and adversarial framework test syntax."
+    },
+    {
+      "repository": "LevaAverGit/appsec-review-lab-v2",
+      "commit": "372ed54ad40059f4228f9e08dc375c51fe60b625",
+      "classification": "DELIBERATELY_VULNERABLE",
+      "framework": "FastAPI; Starlette",
+      "batch2Purpose": "FastAPI HTML responses, bearer authentication, and state-changing routes."
+    },
+    {
+      "repository": "vercel/nextjs-postgres-auth-starter",
+      "commit": "fde8ecf1da9337223081f70cf88b420060039d6e",
+      "classification": "ORDINARY",
+      "framework": "Next.js; React",
+      "batch2Purpose": "React interpolation, server actions, fixed redirects, and authenticated Next middleware."
+    }
+  ]
+}

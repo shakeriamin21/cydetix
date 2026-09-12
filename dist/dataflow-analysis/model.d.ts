@@ -4,6 +4,9 @@ export declare const applicationDataflowKindSchema: z.ZodEnum<{
     COMMAND_INJECTION: "COMMAND_INJECTION";
     PATH_TRAVERSAL: "PATH_TRAVERSAL";
     SSRF: "SSRF";
+    XSS: "XSS";
+    OPEN_REDIRECT: "OPEN_REDIRECT";
+    CSRF: "CSRF";
 }>;
 export declare const applicationDataflowMetricSchema: z.ZodObject<{
     filesAnalyzed: z.ZodNumber;

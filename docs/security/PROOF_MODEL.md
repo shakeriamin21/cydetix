@@ -28,7 +28,17 @@ established, Cydetix records `UNKNOWN` or unsupported analysis rather than `PROV
 
 Unknown custom sanitizer-looking functions specifically produce `SANITIZER_UNKNOWN`; their names do
 not establish a guarantee. Controls are contextual: SQL parameterization does not prove shell,
-filesystem, or URL safety.
+filesystem, or URL safety. Batch 2 preserves the same separation: HTML encoding does not prove
+JavaScript or redirect-URL safety, a slash prefix does not prove same-origin redirect confinement,
+and SameSite alone does not prove a CSRF invariant. A recognized but wrong-context control is
+retained in the evidence path as `RECOGNIZED_INEFFECTIVE`.
+
+CSRF proof also carries architecture evidence. An actionable conclusion requires a structurally
+resolved state/action mutation, a literal supported route, proven ambient session/cookie
+authentication, and absence of a supported route-bound token or origin control. A session identity
+assignment establishes a login session; it is not evidence that the login request relied on an
+ambient credential. Unresolved handlers, opaque middleware, or uncertain mutation semantics remain
+UNKNOWN or outside the declared proof envelope.
 
 ## Determinism
 

@@ -127,13 +127,16 @@ export function createTrustReport() {
         })),
         resourceBounds: DATAFLOW_RESOURCE_BOUNDS,
         unsupportedOrIncomplete: [
-            "cross-file Batch 1 dataflow",
-            "Python cross-function Batch 1 dataflow",
+            "general cross-file Batch 1 and Batch 2 dataflow outside explicit Security IR route and middleware edges",
+            "Python cross-function Batch 1 and Batch 2 dataflow",
             "dynamic dispatch, reflection, eval, and generated code",
             "unknown custom sanitizer semantics",
             "whole-program reachability and dependency implementation reachability",
             "SSRF DNS resolution, redirect, proxy, and IP-range policy",
             "path traversal symlink/junction race proof",
+            "XSS CSS contexts, arbitrary template engines, stored-data provenance, and runtime sanitizer configuration",
+            "open-redirect encoded destinations, alternate schemes, framework normalization, and custom URL wrappers",
+            "CSRF custom middleware, deployment topology, method override, and SameSite-only proof",
         ],
     });
 }

@@ -33,8 +33,8 @@ describe("agent compatibility diagnostics", () => {
     });
     expect(() => agentCompatibilityReportSchema.parse(report)).not.toThrow();
     expect(report.schemaVersion).toBe("1.0.0");
-    expect(report.cydetixVersion).toBe("0.6.0-alpha.10");
-    expect(report.runtimeVersion).toBe("0.6.0-alpha.10");
+    expect(report.cydetixVersion).toBe("0.6.0-alpha.11");
+    expect(report.runtimeVersion).toBe("0.6.0-alpha.11");
     expect(report.projectRoot).toBe(project);
     expect(report.projectRootCanonical).toBe(true);
     expect(report.compatibilityTiers.map((tier) => tier.level)).toEqual([1, 2, 3]);

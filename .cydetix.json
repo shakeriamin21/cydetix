@@ -205,6 +205,249 @@
       "owner": "security-maintainers",
       "created": "2026-08-30",
       "expires": "2027-08-30"
+    },
+    {
+      "rule": "AS-XSS-001",
+      "fingerprint": "68426b6c8016b3d22dd1efa90c3a2d709a60c43893c19a1983f715ddedbb8f3a",
+      "scope": "fixtures/batch1/path/adversarial/noise.ts",
+      "reason": "Exact incidental XSS path in an intentionally adversarial Batch 1 parser fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-XSS-001",
+      "fingerprint": "c22c69ed9f9444dc7accd890d3585809f2c044dc01009a07e7496cd4178f9c0d",
+      "scope": "fixtures/batch1/ssrf/adversarial/noise.ts",
+      "reason": "Exact incidental XSS path in an intentionally adversarial Batch 1 parser fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-CSRF-001",
+      "fingerprint": "fa9d8632f47f0b6387785140a11a2fbebc874da7b28f1a6b7724c343e7016ac4",
+      "scope": "fixtures/batch2/csrf/positive/flask-login.py",
+      "reason": "Exact deliberately vulnerable CSRF admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-CSRF-001",
+      "fingerprint": "53ee5115ccf3e034fbefec85667d57949f6ec3a3e3ab653bd1f8403a99dea6d5",
+      "scope": "fixtures/batch2/csrf/positive/flask-session.py",
+      "reason": "Exact deliberately vulnerable CSRF admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-CSRF-001",
+      "fingerprint": "086732714e0468d83f0cc2b4b7742d2cc4de749584b7faab9ebd66ee9cb877a1",
+      "scope": "fixtures/batch2/csrf/positive/global-session.ts",
+      "reason": "Exact deliberately vulnerable CSRF admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-CSRF-001",
+      "fingerprint": "15c72bff23099b94030feca53468aaefc63741a2893287d3b803e9338a1b74af",
+      "scope": "fixtures/batch2/csrf/positive/routes.ts",
+      "reason": "Exact deliberately vulnerable CSRF admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-REDIRECT-001",
+      "fingerprint": "0fec62c7dda09b800e3ad590e74bf1c83df4d61f03ee97bf084c53c536fe8988",
+      "scope": "fixtures/batch2/redirect/adversarial/non-dominating-check.ts",
+      "reason": "Exact deliberately vulnerable Open Redirect adversarial fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-REDIRECT-001",
+      "fingerprint": "e85856d910b21065cc644c7657d390899b4238883152cf4b34ae3654587fc311",
+      "scope": "fixtures/batch2/redirect/adversarial/protocol-relative.ts",
+      "reason": "Exact deliberately vulnerable Open Redirect adversarial fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-REDIRECT-001",
+      "fingerprint": "31fa8fda6a6eaef394da7a2e028f7a4028eb2d1085c367d00cc50aff8f17f766",
+      "scope": "fixtures/batch2/redirect/positive/express-status.ts",
+      "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-REDIRECT-001",
+      "fingerprint": "3c958bdef0d933132a090a385ae070ccb5e9c08019d45822f55c05d1089e9d46",
+      "scope": "fixtures/batch2/redirect/positive/express.ts",
+      "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-REDIRECT-001",
+      "fingerprint": "282ea39b6fc3252ff93d8b064d7a49d771a5ddeb21eba1efde61ab52b507ec08",
+      "scope": "fixtures/batch2/redirect/positive/fastify.ts",
+      "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-REDIRECT-001",
+      "fingerprint": "fd8ae40d52bce5f5b9d80cb37d2d51312c16df0eed11e670104392b6ef584110",
+      "scope": "fixtures/batch2/redirect/positive/flask.py",
+      "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-REDIRECT-001",
+      "fingerprint": "542e4182c34d0e72978bfb9dba3238f1b0e3340a83107f8b6a9310c202c6a963",
+      "scope": "fixtures/batch2/redirect/positive/naive-prefix.ts",
+      "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-REDIRECT-001",
+      "fingerprint": "8e94107e85712349ae6ab0a1d72fc89dafd24a71344873a80a04ab84b894c217",
+      "scope": "fixtures/batch2/redirect/positive/next-navigation.ts",
+      "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-REDIRECT-001",
+      "fingerprint": "cc4d4d8cd38861e8a34f9b9304439f9b7913bc61f8704a89eb5714468b31cd57",
+      "scope": "fixtures/batch2/redirect/positive/next.ts",
+      "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-REDIRECT-001",
+      "fingerprint": "a3ae2be60b15069a495ed67983294b799f1433e95c615f6dc48b83304656ed9f",
+      "scope": "fixtures/batch2/redirect/positive/starlette.py",
+      "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-XSS-001",
+      "fingerprint": "f091341028f161103321154658d0e8f2d2fd8fdbb8af8bc72a4526295db104f4",
+      "scope": "fixtures/batch2/xss/adversarial/wrong-context.ts",
+      "reason": "Exact deliberately vulnerable wrong-context XSS adversarial fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-XSS-001",
+      "fingerprint": "85708fda081131189a3790fece154bd6e7fdb2cb7a60fc661818a96019725a97",
+      "scope": "fixtures/batch2/xss/positive/dom.ts",
+      "reason": "Exact deliberately vulnerable XSS admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-XSS-001",
+      "fingerprint": "f8d49a57787dd5d9e4f2328a348a5bd8e5479cc41a4d59f6a9b6d5bace45a581",
+      "scope": "fixtures/batch2/xss/positive/express-script.ts",
+      "reason": "Exact deliberately vulnerable XSS admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-XSS-001",
+      "fingerprint": "2f9a21940820a3b85785b458f06c3f9440bde38517559214f0eff205d8df159b",
+      "scope": "fixtures/batch2/xss/positive/express.ts",
+      "reason": "Exact deliberately vulnerable XSS admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-XSS-001",
+      "fingerprint": "3581fb9f5b540213f16cd58ef72d24864c57562ea192ff5ff8f50be27de6519a",
+      "scope": "fixtures/batch2/xss/positive/fastapi.py",
+      "reason": "Exact deliberately vulnerable XSS admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-XSS-001",
+      "fingerprint": "c00ce76bb97e0a0f8a71c19e2bac5c834f731758f706684208abdaf327121dc1",
+      "scope": "fixtures/batch2/xss/positive/fastify.ts",
+      "reason": "Exact deliberately vulnerable XSS admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-XSS-001",
+      "fingerprint": "9027fd0bf1c90437fba63dd316ca334b1bd5677a7ae4c0d3f60ae31e7b0c732e",
+      "scope": "fixtures/batch2/xss/positive/flask-response.py",
+      "reason": "Exact deliberately vulnerable XSS admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-XSS-001",
+      "fingerprint": "79e12a543facad823b1546b0cdb046a841efc26c5b4c43c9cd5d6f8bb0244d6d",
+      "scope": "fixtures/batch2/xss/positive/flask.py",
+      "reason": "Exact deliberately vulnerable XSS admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-XSS-001",
+      "fingerprint": "51282dc677cc3f46546db42cd8fce6682f5c1a9ad2bc88ce532cb1aa7374ae2f",
+      "scope": "fixtures/batch2/xss/positive/nested-call.ts",
+      "reason": "Exact deliberately vulnerable XSS admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-XSS-001",
+      "fingerprint": "88a656e91d922a77e1c363f7359ac9c0157dfbb6e625a119485203bc392f1262",
+      "scope": "fixtures/batch2/xss/positive/react.tsx",
+      "reason": "Exact deliberately vulnerable XSS admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
+    },
+    {
+      "rule": "AS-XSS-001",
+      "fingerprint": "947d8af4f5190c44161192213a2fba3825fc397c2313057b3ebe99df6848553c",
+      "scope": "fixtures/batch2/xss/positive/url-context.ts",
+      "reason": "Exact deliberately vulnerable XSS admission fixture",
+      "owner": "security-maintainers",
+      "created": "2026-09-12",
+      "expires": "2027-09-12"
     }
   ]
 }

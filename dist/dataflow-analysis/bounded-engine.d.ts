@@ -1,6 +1,7 @@
 import type { ParsedSource } from "../ast-analysis/parser.js";
 import type { FindingProof, RemediationReasonCode } from "../core/schema.js";
 import type { SourceFile } from "../repository-discovery/traverse.js";
+import type { SecurityIr } from "../security-ir/model.js";
 import { type ApplicationDataflowAnalysis, type ApplicationDataflowKind } from "./model.js";
 export interface DataflowCandidate {
     readonly kind: ApplicationDataflowKind;
@@ -17,7 +18,7 @@ export interface DataflowBuildResult {
     readonly analysis: ApplicationDataflowAnalysis;
     readonly candidates: readonly DataflowCandidate[];
 }
-export declare function analyzeApplicationDataflow(files: readonly SourceFile[], parsedByPath: ReadonlyMap<string, ParsedSource>): DataflowBuildResult;
+export declare function analyzeApplicationDataflow(files: readonly SourceFile[], parsedByPath: ReadonlyMap<string, ParsedSource>, securityIr?: SecurityIr): DataflowBuildResult;
 export declare const DATAFLOW_RESOURCE_BOUNDS: {
     readonly maxAstNodesPerFile: 50000;
     readonly maxRepositoryAstNodes: 200000;

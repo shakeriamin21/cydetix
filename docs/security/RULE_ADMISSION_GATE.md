@@ -20,22 +20,27 @@ Every production-capable rule must declare and substantiate:
 10. security impact;
 11. supported languages;
 12. supported frameworks or libraries;
-13. detection strategy;
-14. required evidence;
-15. reachability requirements;
-16. confidence model;
-17. remediation guidance;
-18. maximum permitted remediation class;
-19. positive fixtures;
-20. negative fixtures;
-21. adversarial fixtures;
-22. false-positive analysis;
-23. false-negative and unsupported-pattern limitations;
-24. verification strategy; and
-25. user-facing rule documentation.
+13. supported source patterns;
+14. supported sink patterns;
+15. control or sanitizer semantics;
+16. bounded propagation model;
+17. reachability model;
+18. confidence model;
+19. proof requirements;
+20. remediation guidance;
+21. maximum permitted remediation class;
+22. positive fixtures;
+23. negative fixtures;
+24. adversarial fixtures;
+25. false-positive analysis;
+26. false-negative and unsupported-pattern limitations;
+27. independent verification strategy; and
+28. user-facing rule documentation.
 
 The executable catalogue schema carries these fields. Tests enforce the complete record for every
-Batch 1 rule and keep its fixture paths reviewable.
+Batch 1 and Batch 2 rule and keep their fixture paths reviewable. `detectionStrategy` and
+`evidenceRequirements` remain additional executable metadata rather than substitutes for these
+fields.
 
 ## Maturity
 
@@ -61,10 +66,18 @@ The mappings were checked against OWASP ASVS 5.0.0's authoritative requirement t
 
 Standards are provenance and classification aids. They do not prove that a finding exists.
 
+## Batch 2 reviewed mappings
+
+| Rule                       | CWE     | OWASP Top 10:2025              | ASVS 5.0.0   |
+| -------------------------- | ------- | ------------------------------ | ------------ |
+| Cross-site scripting       | CWE-79  | A05:2025 Injection             | 1.2.1, 1.2.3 |
+| Open redirect              | CWE-601 | A01:2025 Broken Access Control | 3.7.2        |
+| Cross-site request forgery | CWE-352 | A01:2025 Broken Access Control | 3.5.1        |
+
 ## Production decision
 
-A Batch 1 rule becomes `PRODUCTION` only after positive, negative, adversarial, incomplete,
-determinism, and resource-bound tests pass; its source, sink, control, and reachability models are
-reviewed; false-positive risk and unsupported cases are recorded; and its remediation and
+A Batch 1 or Batch 2 rule becomes `PRODUCTION` only after positive, negative, adversarial,
+incomplete, determinism, and resource-bound tests pass; its source, sink, control, and reachability
+models are reviewed; false-positive risk and unsupported cases are recorded; and its remediation and
 verification policies are conservative. Failing any condition lowers maturity; the gate is never
 lowered to make the catalogue appear broader.

@@ -32,6 +32,9 @@
         "password-reset",
         "oauth",
         "injection",
+        "xss",
+        "open-redirect",
+        "csrf",
         "path-traversal",
         "ssrf",
         "dependency-security",
@@ -181,6 +184,46 @@
       "type": "array",
       "items": {
         "type": "string"
+      }
+    },
+    "supportedSourcePatterns": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "supportedSinkPatterns": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "controlSemantics": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "boundedPropagationModel": {
+      "type": "string",
+      "minLength": 1
+    },
+    "confidenceModel": {
+      "type": "string",
+      "minLength": 1
+    },
+    "proofRequirements": {
+      "minItems": 1,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
       }
     },
     "detectionStrategy": {

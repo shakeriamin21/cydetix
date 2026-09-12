@@ -31,7 +31,7 @@ describe("SARIF reporting", () => {
     };
     expect(sarif.version).toBe("2.1.0");
     expect(sarif.runs).toHaveLength(1);
-    expect(sarif.runs[0]?.tool.driver.rules).toHaveLength(24);
+    expect(sarif.runs[0]?.tool.driver.rules).toHaveLength(27);
     expect(sarif.runs[0]?.results.length).toBeGreaterThan(0);
     for (const result of sarif.runs[0]?.results ?? []) {
       expect(result.partialFingerprints["cydetix/v1"]).toMatch(/^[a-f0-9]{64}$/);
