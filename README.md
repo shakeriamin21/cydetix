@@ -40,9 +40,10 @@ npm install -g cydetix@0.6.0-alpha.7
 cydetix
 ```
 
-The current source is unpublished `0.6.0-alpha.8` development. The immutable `v0.6.0-alpha.7`
-release remains the public baseline. This development work does not create or move a tag, publish to
-npm, create a GitHub release, or move a dist-tag.
+The current source is the unpublished `0.6.0-alpha.9` release candidate. The immutable
+`v0.6.0-alpha.8` tag records a failed publication attempt that stopped during release-context
+validation before npm or public GitHub publication. The `v0.6.0-alpha.7` release remains the public
+baseline until alpha.9 completes the trusted release workflow.
 
 ## What the default command does
 
@@ -107,7 +108,7 @@ Node executable, the exact package identity/version, and the project root. Confi
 then use process-style command and argument fields equivalent to:
 
 ```text
-<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 0.6.0-alpha.8
+<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 0.6.0-alpha.9
 ```
 
 They contain no npm/npx command, registry URL, downloader, secret, or shell indirection. Routine MCP

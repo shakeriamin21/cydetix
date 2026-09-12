@@ -5,6 +5,8 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+## [0.6.0-alpha.9] - 2026-09-12
+
 ### Added
 
 - Added proof-carrying findings, explicit analysis completeness, reproducible scan manifests,
@@ -18,10 +20,16 @@ package; report and rule schemas are versioned independently.
 
 ### Changed
 
-- Advanced development identity to `0.6.0-alpha.8` without tagging or publication.
+- Prepared the validated Trust Assurance and Batch 1 functionality for publication as
+  `0.6.0-alpha.9`, with no new security behavior beyond the alpha.8 candidate.
 - Replaced static remediation authority with a monotonic `maxRemediationClass` ceiling and
   reason-coded runtime assessment. Batch 1 remains `REVIEW_REQUIRED`; the existing exact
   session-cookie adapter remains the only SAFE transformation.
+
+The `v0.6.0-alpha.8` tag is an immutable failed release attempt. Its validation and external-corpus
+gates succeeded, but the trusted release workflow stopped during release-context validation because
+the changelog lacked an exact alpha.8 release heading. No alpha.8 npm package or public GitHub
+prerelease was created, and the tag remains unchanged.
 
 ## [0.6.0-alpha.7] - 2026-09-09
 

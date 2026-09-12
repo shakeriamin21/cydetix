@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.2.0",
-  "generatedAt": "2026-09-11T16:31:51.014Z",
+  "generatedAt": "2026-09-12T07:13:43.977Z",
   "product": {
     "name": "cydetix",
-    "version": "0.6.0-alpha.8",
+    "version": "0.6.0-alpha.9",
     "evidenceOrigin": "PUBLIC_GIT_COMMIT",
-    "publicSourceCommit": "5a0454d72e6149842d63475b621e2881f187f31c"
+    "publicSourceCommit": "2bc4f9c2b1e22753499e8ff4578809d3b0c39d31"
   },
   "verdict": "NOT_READY_FOR_PUBLIC_USE",
   "checks": [
@@ -22,7 +22,7 @@
     {
       "id": "complete-test-suite",
       "state": "executed_pass",
-      "evidence": "44 files and 306 tests passed; 0 files and 0 tests failed; 0 files and 0 tests skipped."
+      "evidence": "44 files and 310 tests passed; 0 files and 0 tests failed; 0 files and 0 tests skipped."
     },
     {
       "id": "container-capability",
@@ -176,7 +176,7 @@
     {
       "id": "self-scan",
       "state": "executed_pass",
-      "evidence": "469 files and 2223829 bytes scanned; 0 active and 55 suppressed findings."
+      "evidence": "473 files and 2270152 bytes scanned; 0 active and 55 suppressed findings."
     },
     {
       "id": "packed-install-current-host",
@@ -191,12 +191,12 @@
     {
       "id": "release-artifacts",
       "state": "executed_pass",
-      "evidence": "4 release artifacts were regenerated after source commit 5a0454d72e6149842d63475b621e2881f187f31c and SHA-256 hashed."
+      "evidence": "4 release artifacts were regenerated after source commit 2bc4f9c2b1e22753499e8ff4578809d3b0c39d31 and SHA-256 hashed."
     },
     {
       "id": "clean-public-lineage",
       "state": "executed_fail",
-      "evidence": "28 commit(s) are reachable in the clean public lineage; 6 tag(s) exist before publication approval."
+      "evidence": "34 commit(s) are reachable in the clean public lineage; 7 tag(s) exist before publication approval."
     },
     {
       "id": "cross-platform-ci-matrix",
@@ -536,7 +536,7 @@
   },
   "tests": {
     "filesPassed": 44,
-    "testsPassed": 306,
+    "testsPassed": 310,
     "filesFailed": 0,
     "testsFailed": 0,
     "filesSkipped": 0,
@@ -597,29 +597,29 @@
   "package": {
     "state": "CURRENT",
     "entries": 388,
-    "packedBytes": 372735,
-    "unpackedBytes": 2339484,
+    "packedBytes": 374838,
+    "unpackedBytes": 2351206,
     "sizeGateBytes": 400000,
     "hashes": [
       {
-        "artifact": "cydetix-0.6.0-alpha.8.tgz",
-        "sha256": "6d7ac0a819efd7e8628d9710d4653a0cb30b62045160d0db165b0153f50116c7",
-        "bytes": 372735
+        "artifact": "cydetix-0.6.0-alpha.9.tgz",
+        "sha256": "8cfe6efa7b21a8fb63a71ad6140f6e7bff4e5e79a39e024abd8777b8c637baa6",
+        "bytes": 374838
       },
       {
         "artifact": "cydetix.cdx.json",
-        "sha256": "5c1f8172ddd178b53e6184c3ec3d83b114b6af2e45bd719c38e13e0b3d171b09",
+        "sha256": "a8ad1cdf6ea91d8ee0d7e95e109f22b673e784dde1dc72078e5253ad52a07740",
         "bytes": 151992
       },
       {
-        "artifact": "cydetix-codex-plugin-0.6.0-alpha.8.tar.gz",
-        "sha256": "4d7eead1daca9ab1096ba41b06f651fcd1ef63030521a009ec2004930ba29fa6",
+        "artifact": "cydetix-codex-plugin-0.6.0-alpha.9.tar.gz",
+        "sha256": "47109ff98c101da0fe399091bee7627fb56ecc37314111a42dbb12882ee58f82",
         "bytes": 6680
       },
       {
-        "artifact": "cydetix-release-validation-0.6.0-alpha.8.json",
-        "sha256": "10687feef1c1cfe452f7619390a4645f452c3d607ac22a47874715ff4367ec93",
-        "bytes": 2188
+        "artifact": "cydetix-release-validation-0.6.0-alpha.9.json",
+        "sha256": "4500290c6746e7f2702a3bf9824eb14cfbb4c2231772d4e14d94a205249ab785",
+        "bytes": 2020
       }
     ]
   },
