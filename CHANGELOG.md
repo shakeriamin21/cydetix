@@ -5,8 +5,7 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
-Development target: `0.6.0-alpha.11`. This line is not a release heading and does not authorize a
-tag or publication.
+## [0.6.0-alpha.11] - 2026-09-12
 
 ### Added
 
@@ -19,9 +18,9 @@ tag or publication.
 
 ### Changed
 
-- Advanced the unpublished development identity to `0.6.0-alpha.11` while retaining
-  `v0.6.0-alpha.10` as the immutable successful public baseline. Batch 2 remediation ceilings are
-  `REVIEW_REQUIRED`; no new SAFE adapter is introduced.
+- Prepared the validated Batch 2 application-security coverage for publication as
+  `0.6.0-alpha.11`. Batch 2 remediation ceilings remain `REVIEW_REQUIRED`; no new SAFE adapter
+  or remediation authority is introduced.
 
 ## [0.6.0-alpha.10] - 2026-09-12
 
