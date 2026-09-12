@@ -52,12 +52,19 @@ jobs:
         shell: bash
         run: |
           mkdir -p .cydetix/evidence
+          if [ -e .gitleaksignore ] || [ -L .gitleaksignore ]; then
+            echo "Repository-controlled .gitleaksignore is forbidden in the release scan" >&2
+            exit 1
+          fi
           docker run --rm --network none --read-only --cap-drop ALL \
             --security-opt no-new-privileges --pids-limit 128 --memory 512m --cpus 1 \
             --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/repo,readonly" \
             --mount "type=bind,source=$PWD/.cydetix/evidence,target=/evidence" \
             ghcr.io/gitleaks/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f \
             git /repo --redact=100 --report-format json --report-path /evidence/gitleaks.json \
+            --config /repo/validation/gitleaks.toml \
+            --gitleaks-ignore-path /dev/null --ignore-gitleaks-allow \
+            --log-opts="--full-history --all --text --no-textconv --no-ext-diff" \
             --no-banner --no-color --exit-code 0 --timeout 180
           node scripts/validate-gitleaks-report.mjs .cydetix/evidence/gitleaks.json
       - name: Run npm advisory gate

@@ -5,6 +5,33 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+## [0.6.0-alpha.10] - 2026-09-12
+
+### Added
+
+- Added exact, rationale-bearing review records for the 14 non-secret findings emitted by the
+  independent Gitleaks complete-history scan, bound to detector, file, commit, location,
+  fingerprint, and a SHA-256 digest of the redacted match evidence.
+- Added fail-closed regression coverage proving that new findings, altered evidence, path-only
+  matches, duplicate fingerprints, credential material, unsafe paths, and malformed reports remain
+  rejected while exact reviewed findings and an empty report pass.
+
+### Changed
+
+- Prepared the already validated Trust Assurance and Batch 1 functionality for publication as
+  `0.6.0-alpha.10`, without adding or changing security-rule behavior.
+- Hardened the release Gitleaks boundary with the immutable 8.30.1 image, explicit built-in rule
+  extension, complete-history log options, repository-ignore rejection, disabled inline
+  suppressions, and exact workflow-security validation. Complete-history scanning remains mandatory
+  and fails on every new or unreviewed finding.
+
+The `v0.6.0-alpha.9` tag is an immutable failed release attempt. Its release-context validation,
+exact hosted CI, OpenSSF verification, and deterministic history audit passed, but the trusted
+release workflow stopped when the independent complete-history Gitleaks scan produced 14 findings
+that had not yet been individually reviewed. Publication was skipped: no alpha.9 npm package, public
+GitHub prerelease, release asset, provenance attestation, or CycloneDX SBOM attestation was created.
+This was a release-governance failure, not a security-engine defect.
+
 ## [0.6.0-alpha.9] - 2026-09-12
 
 ### Added

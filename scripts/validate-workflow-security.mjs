@@ -36,6 +36,17 @@ if (release?.on?.push?.tags?.[0] !== "v*") issues.push("release.yml: tag trigger
 if (release?.on?.pull_request !== undefined)
   issues.push("release.yml: pull requests must not trigger releases");
 const publish = release?.jobs?.publish;
+const verifyRelease = release?.jobs?.["verify-release"];
+const releaseCheckoutStep = verifyRelease?.steps?.find(
+  (step) => step?.name === "Checkout tagged source without persisted credentials",
+);
+if (
+  releaseCheckoutStep?.with?.["fetch-depth"] !== 0 ||
+  releaseCheckoutStep?.with?.["persist-credentials"] !== false
+)
+  issues.push(
+    "release.yml: release checkout must fetch complete history without persisted credentials",
+  );
 if (publish?.environment !== "release")
   issues.push("release.yml: publish job lacks the protected release environment");
 for (const [permission, expected] of [
@@ -57,6 +68,42 @@ if (
     'npm run audit:history -- --enforce --ref "refs/tags/${CYDETIX_EXPECTED_TAG}"'
 )
   issues.push("release.yml: Git-history privacy audit is not scoped to the validated release tag");
+const gitleaksStep = release?.jobs?.["verify-release"]?.steps?.find(
+  (step) => step?.name === "Independently scan complete history",
+);
+const expectedGitleaksScript = [
+  "mkdir -p .cydetix/evidence",
+  "if [ -e .gitleaksignore ] || [ -L .gitleaksignore ]; then",
+  '  echo "Repository-controlled .gitleaksignore is forbidden in the release scan" >&2',
+  "  exit 1",
+  "fi",
+  "docker run --rm --network none --read-only --cap-drop ALL \\",
+  "  --security-opt no-new-privileges --pids-limit 128 --memory 512m --cpus 1 \\",
+  '  --user "$(id -u):$(id -g)" --mount "type=bind,source=$PWD,target=/repo,readonly" \\',
+  '  --mount "type=bind,source=$PWD/.cydetix/evidence,target=/evidence" \\',
+  "  ghcr.io/gitleaks/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f \\",
+  "  git /repo --redact=100 --report-format json --report-path /evidence/gitleaks.json \\",
+  "  --config /repo/validation/gitleaks.toml \\",
+  "  --gitleaks-ignore-path /dev/null --ignore-gitleaks-allow \\",
+  '  --log-opts="--full-history --all --text --no-textconv --no-ext-diff" \\',
+  "  --no-banner --no-color --exit-code 0 --timeout 180",
+  "node scripts/validate-gitleaks-report.mjs .cydetix/evidence/gitleaks.json",
+].join("\n");
+if (gitleaksStep?.shell !== "bash" || gitleaksStep?.run?.trim() !== expectedGitleaksScript)
+  issues.push(
+    "release.yml: complete-history Gitleaks scan must be pinned, unsuppressed, sandboxed, and exactly validated",
+  );
+let gitleaksConfig;
+try {
+  gitleaksConfig = await readFile(path.join("validation", "gitleaks.toml"), "utf8");
+} catch {
+  gitleaksConfig = undefined;
+}
+if (
+  gitleaksConfig?.replaceAll("\r\n", "\n") !==
+  'title = "Cydetix release history gate"\n\n[extend]\nuseDefault = true\n'
+)
+  issues.push("validation/gitleaks.toml: config must extend the built-in rules without allowlists");
 const npmPublishStep = publish?.steps?.find(
   (step) => step?.name === "Publish approved prerelease through npm OIDC",
 );
@@ -83,7 +130,9 @@ const result = {
     "TAG_ONLY_RELEASE_TRIGGER",
     "PROTECTED_RELEASE_ENVIRONMENT",
     "OIDC_ONLY_IN_PUBLISH_JOB",
+    "COMPLETE_RELEASE_HISTORY_CHECKOUT",
     "RELEASE_REACHABLE_HISTORY_SCOPE",
+    "PINNED_UNSUPPRESSED_COMPLETE_HISTORY_SECRET_SCAN",
     "EXPLICIT_SINGLE_LOCAL_NPM_TARBALL",
   ],
   issues,

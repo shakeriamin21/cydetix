@@ -1,11 +1,11 @@
 {
   "schemaVersion": "1.2.0",
-  "generatedAt": "2026-09-12T07:13:43.977Z",
+  "generatedAt": "2026-09-12T09:43:50.766Z",
   "product": {
     "name": "cydetix",
-    "version": "0.6.0-alpha.9",
+    "version": "0.6.0-alpha.10",
     "evidenceOrigin": "PUBLIC_GIT_COMMIT",
-    "publicSourceCommit": "2bc4f9c2b1e22753499e8ff4578809d3b0c39d31"
+    "publicSourceCommit": "fa048d2f66d337198df9085bfcf1f491eda9dcfd"
   },
   "verdict": "NOT_READY_FOR_PUBLIC_USE",
   "checks": [
@@ -22,7 +22,7 @@
     {
       "id": "complete-test-suite",
       "state": "executed_pass",
-      "evidence": "44 files and 310 tests passed; 0 files and 0 tests failed; 0 files and 0 tests skipped."
+      "evidence": "45 files and 353 tests passed; 0 files and 0 tests failed; 0 files and 0 tests skipped."
     },
     {
       "id": "container-capability",
@@ -176,7 +176,7 @@
     {
       "id": "self-scan",
       "state": "executed_pass",
-      "evidence": "473 files and 2270152 bytes scanned; 0 active and 55 suppressed findings."
+      "evidence": "478 files and 2319701 bytes scanned; 0 active and 55 suppressed findings."
     },
     {
       "id": "packed-install-current-host",
@@ -191,12 +191,12 @@
     {
       "id": "release-artifacts",
       "state": "executed_pass",
-      "evidence": "4 release artifacts were regenerated after source commit 2bc4f9c2b1e22753499e8ff4578809d3b0c39d31 and SHA-256 hashed."
+      "evidence": "4 release artifacts were regenerated after source commit fa048d2f66d337198df9085bfcf1f491eda9dcfd and SHA-256 hashed."
     },
     {
       "id": "clean-public-lineage",
       "state": "executed_fail",
-      "evidence": "34 commit(s) are reachable in the clean public lineage; 7 tag(s) exist before publication approval."
+      "evidence": "35 commit(s) are reachable in the clean public lineage; 8 tag(s) exist before publication approval."
     },
     {
       "id": "cross-platform-ci-matrix",
@@ -535,8 +535,8 @@
     ]
   },
   "tests": {
-    "filesPassed": 44,
-    "testsPassed": 310,
+    "filesPassed": 45,
+    "testsPassed": 353,
     "filesFailed": 0,
     "testsFailed": 0,
     "filesSkipped": 0,
@@ -545,50 +545,50 @@
   "performance": [
     {
       "name": "source-100",
-      "wallMilliseconds": 240.33589999999998,
-      "peakRssBytes": 84344832,
+      "wallMilliseconds": 212.16039999999998,
+      "peakRssBytes": 87826432,
       "files": 101,
-      "filesPerSecond": 420.2451652041996,
+      "filesPerSecond": 476.054909398738,
       "graphNodes": 101,
       "graphEdges": 0,
       "findings": 0
     },
     {
       "name": "source-1000",
-      "wallMilliseconds": 1842.6212,
-      "peakRssBytes": 100024320,
+      "wallMilliseconds": 1168.7024,
+      "peakRssBytes": 103460864,
       "files": 1001,
-      "filesPerSecond": 543.2478471429722,
+      "filesPerSecond": 856.505471367219,
       "graphNodes": 1001,
       "graphEdges": 0,
       "findings": 0
     },
     {
       "name": "source-5000",
-      "wallMilliseconds": 8698.5117,
-      "peakRssBytes": 160284672,
+      "wallMilliseconds": 9212.4175,
+      "peakRssBytes": 162807808,
       "files": 5001,
-      "filesPerSecond": 574.9259381923922,
+      "filesPerSecond": 542.8542507979041,
       "graphNodes": 5001,
       "graphEdges": 0,
       "findings": 0
     },
     {
       "name": "dependencies-2500",
-      "wallMilliseconds": 913.1677999999974,
-      "peakRssBytes": 322871296,
+      "wallMilliseconds": 891.5455999999995,
+      "peakRssBytes": 325529600,
       "files": 2,
-      "filesPerSecond": 2.1901779716718064,
+      "filesPerSecond": 2.2432952391891128,
       "graphNodes": 1,
       "graphEdges": 0,
       "findings": 0
     },
     {
       "name": "workflows-250",
-      "wallMilliseconds": 402.8803999999982,
-      "peakRssBytes": 332488704,
+      "wallMilliseconds": 413.90940000000046,
+      "peakRssBytes": 337084416,
       "files": 250,
-      "filesPerSecond": 620.5315522919485,
+      "filesPerSecond": 603.9969133341734,
       "graphNodes": 1,
       "graphEdges": 0,
       "findings": 0
@@ -597,29 +597,29 @@
   "package": {
     "state": "CURRENT",
     "entries": 388,
-    "packedBytes": 374838,
-    "unpackedBytes": 2351206,
+    "packedBytes": 375270,
+    "unpackedBytes": 2352845,
     "sizeGateBytes": 400000,
     "hashes": [
       {
-        "artifact": "cydetix-0.6.0-alpha.9.tgz",
-        "sha256": "8cfe6efa7b21a8fb63a71ad6140f6e7bff4e5e79a39e024abd8777b8c637baa6",
-        "bytes": 374838
+        "artifact": "cydetix-0.6.0-alpha.10.tgz",
+        "sha256": "e4a1712563f0a65a27c908630c314a1d7661f310759fa89e6b411d51d8fd0646",
+        "bytes": 375270
       },
       {
         "artifact": "cydetix.cdx.json",
-        "sha256": "a8ad1cdf6ea91d8ee0d7e95e109f22b673e784dde1dc72078e5253ad52a07740",
-        "bytes": 151992
+        "sha256": "bae94feb405547f2811ee28a898bef6646dc59a662061c4b038ca94a1e9ed6c3",
+        "bytes": 152000
       },
       {
-        "artifact": "cydetix-codex-plugin-0.6.0-alpha.9.tar.gz",
-        "sha256": "47109ff98c101da0fe399091bee7627fb56ecc37314111a42dbb12882ee58f82",
-        "bytes": 6680
+        "artifact": "cydetix-codex-plugin-0.6.0-alpha.10.tar.gz",
+        "sha256": "3713dc32e5aa04e425fc724d003083a749b47ba01cd65c7558ad95280314104e",
+        "bytes": 6679
       },
       {
-        "artifact": "cydetix-release-validation-0.6.0-alpha.9.json",
-        "sha256": "4500290c6746e7f2702a3bf9824eb14cfbb4c2231772d4e14d94a205249ab785",
-        "bytes": 2020
+        "artifact": "cydetix-release-validation-0.6.0-alpha.10.json",
+        "sha256": "18d3a1c610fb0a723e2678183757978c218fa13ad8002d31c283339a5e03aaba",
+        "bytes": 2189
       }
     ]
   },
