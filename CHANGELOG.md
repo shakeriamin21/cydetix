@@ -18,9 +18,9 @@ package; report and rule schemas are versioned independently.
 
 ### Changed
 
-- Prepared the validated Batch 2 application-security coverage for publication as
-  `0.6.0-alpha.11`. Batch 2 remediation ceilings remain `REVIEW_REQUIRED`; no new SAFE adapter
-  or remediation authority is introduced.
+- Prepared the validated Batch 2 application-security coverage for publication as `0.6.0-alpha.11`.
+  Batch 2 remediation ceilings remain `REVIEW_REQUIRED`; no new SAFE adapter or remediation
+  authority is introduced.
 
 ## [0.6.0-alpha.10] - 2026-09-12
 
