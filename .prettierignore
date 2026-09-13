@@ -6,3 +6,4 @@ package-lock.json
 rules/*.json
 schemas/*.json
 fixtures/batch1/incomplete/broken.ts
+validation/alpha12/**/*.json

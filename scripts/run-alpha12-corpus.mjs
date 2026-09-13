@@ -172,6 +172,7 @@ if (process.argv[2] === "--worker") {
     `${id}: ${result.findings.length} findings; ${result.completeness}; ${result.determinism}\n`,
   );
 } else {
+  const sourceCommit = git(process.cwd(), ["rev-parse", "HEAD"]);
   const results = [];
   const runtime = process.argv[2] ?? "dist";
   for (const target of manifest.targets) {
@@ -214,7 +215,7 @@ if (process.argv[2] === "--worker") {
   }
   const summary = {
     schemaVersion: "1.0.0",
-    sourceCommit: git(process.cwd(), ["rev-parse", "HEAD"]),
+    sourceCommit,
     manifestSha256: sha(await readFile(path.join(evidenceRoot, "corpus-manifest.json"))),
     normalization:
       "Only UUID, timestamps, stage durations and canonical root are normalized by normalizeScanForDeterminism. Findings, all proof engines, limits, fingerprints and suppression evidence are compared in full.",

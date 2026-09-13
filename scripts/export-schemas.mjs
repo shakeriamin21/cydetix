@@ -28,8 +28,10 @@ import { RULES } from "../dist/rule-engine/catalogue.js";
 import { agentCompatibilityReportSchema } from "../dist/integrations/compatibility.js";
 import { applicationDataflowAnalysisSchema } from "../dist/dataflow-analysis/model.js";
 import { rulesReportSchema, trustReportSchema } from "../dist/trust/model.js";
+import { betaReadinessSchema } from "../dist/validation/beta-readiness.js";
 
 const schemas = new Map([
+  ["beta-readiness.schema.json", toJSONSchema(betaReadinessSchema, { target: "draft-7" })],
   ["rule.schema.json", toJSONSchema(ruleDefinitionSchema, { target: "draft-7" })],
   ["finding.schema.json", toJSONSchema(findingSchema, { target: "draft-7" })],
   [

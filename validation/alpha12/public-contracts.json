@@ -1,0 +1,785 @@
+{
+  "schemaVersion": "1.0.0",
+  "version": "0.6.0-alpha.12",
+  "cli": [
+    {
+      "command": "cydetix",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [],
+      "flags": [
+        "-V, --version",
+        "-h, --help",
+        "--details",
+        "--json",
+        "--sarif"
+      ]
+    },
+    {
+      "command": "init",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [
+        "[path]"
+      ],
+      "flags": [
+        "-h, --help"
+      ]
+    },
+    {
+      "command": "setup",
+      "classification": "PUBLIC_EXPERIMENTAL",
+      "arguments": [],
+      "flags": [
+        "-h, --help",
+        "--agent <name>",
+        "--all",
+        "--yes",
+        "--dry-run",
+        "--status",
+        "--verify",
+        "--remove",
+        "--project <path>"
+      ]
+    },
+    {
+      "command": "status",
+      "classification": "PUBLIC_EXPERIMENTAL",
+      "arguments": [],
+      "flags": [
+        "-h, --help",
+        "--project <path>"
+      ]
+    },
+    {
+      "command": "scan",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [
+        "[path]"
+      ],
+      "flags": [
+        "-h, --help",
+        "--format <format>",
+        "--severity <level>",
+        "--confidence <level>",
+        "--offline",
+        "--non-interactive"
+      ]
+    },
+    {
+      "command": "auth",
+      "classification": "PUBLIC_EXPERIMENTAL",
+      "arguments": [
+        "[path]"
+      ],
+      "flags": [
+        "-h, --help",
+        "--format <format>",
+        "--severity <level>",
+        "--confidence <level>",
+        "--offline"
+      ]
+    },
+    {
+      "command": "graph",
+      "classification": "PUBLIC_EXPERIMENTAL",
+      "arguments": [
+        "[path]"
+      ],
+      "flags": [
+        "-h, --help",
+        "--format <format>"
+      ]
+    },
+    {
+      "command": "dependencies",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [
+        "[path]"
+      ],
+      "flags": [
+        "-h, --help",
+        "--advisories <mode>",
+        "--format <format>"
+      ]
+    },
+    {
+      "command": "secrets",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [
+        "[path]"
+      ],
+      "flags": [
+        "-h, --help",
+        "--history",
+        "--format <format>"
+      ]
+    },
+    {
+      "command": "supply-chain",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [
+        "[path]"
+      ],
+      "flags": [
+        "-h, --help",
+        "--advisories <mode>",
+        "--history",
+        "--format <format>"
+      ]
+    },
+    {
+      "command": "sbom",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [
+        "[path]"
+      ],
+      "flags": [
+        "-h, --help",
+        "--format <format>"
+      ]
+    },
+    {
+      "command": "fix",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [
+        "[path]"
+      ],
+      "flags": [
+        "-h, --help",
+        "--finding <fingerprint>",
+        "--dry-run",
+        "--non-interactive",
+        "--verify-command <json>",
+        "--verification-runner <mode>",
+        "--sandbox-image <digest>",
+        "--format <format>"
+      ]
+    },
+    {
+      "command": "mcp",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [],
+      "flags": [
+        "-h, --help",
+        "--project-root <path>",
+        "--require-version <version>"
+      ]
+    },
+    {
+      "command": "mcp-config",
+      "classification": "PUBLIC_EXPERIMENTAL",
+      "arguments": [],
+      "flags": [
+        "-h, --help",
+        "--project <path>",
+        "--format <format>"
+      ]
+    },
+    {
+      "command": "verify",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [
+        "[path]"
+      ],
+      "flags": [
+        "-h, --help",
+        "--format <format>"
+      ]
+    },
+    {
+      "command": "remediation",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [],
+      "flags": [
+        "-h, --help"
+      ]
+    },
+    {
+      "command": "remediation show",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [
+        "<report>"
+      ],
+      "flags": [
+        "-h, --help",
+        "--format <format>"
+      ]
+    },
+    {
+      "command": "explain",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [
+        "<rule-id>"
+      ],
+      "flags": [
+        "-h, --help",
+        "--format <format>"
+      ]
+    },
+    {
+      "command": "rules",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [],
+      "flags": [
+        "-h, --help",
+        "--format <format>"
+      ]
+    },
+    {
+      "command": "trust",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [],
+      "flags": [
+        "-h, --help",
+        "--format <format>"
+      ]
+    },
+    {
+      "command": "standards",
+      "classification": "PUBLIC_EXPERIMENTAL",
+      "arguments": [],
+      "flags": [
+        "-h, --help"
+      ]
+    },
+    {
+      "command": "ci",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [
+        "[path]"
+      ],
+      "flags": [
+        "-h, --help",
+        "--format <format>",
+        "--fail-on <level>"
+      ]
+    },
+    {
+      "command": "doctor",
+      "classification": "PUBLIC_EXPERIMENTAL",
+      "arguments": [],
+      "flags": [
+        "-h, --help",
+        "--agent",
+        "--agents",
+        "--format <format>",
+        "--project-root <path>",
+        "--sandbox-image <digest>"
+      ]
+    },
+    {
+      "command": "version",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "arguments": [],
+      "flags": [
+        "-h, --help"
+      ]
+    }
+  ],
+  "states": {
+    "classification": "PUBLIC_STABLE_CANDIDATE",
+    "proof": [
+      "PROVEN_SECURE",
+      "PROVEN_INSECURE",
+      "UNKNOWN",
+      "NOT_APPLICABLE"
+    ],
+    "confidence": [
+      "low",
+      "medium",
+      "high"
+    ],
+    "reachability": [
+      "unknown",
+      "unlikely",
+      "possible",
+      "likely",
+      "confirmed"
+    ],
+    "remediationAuthority": [
+      "SAFE",
+      "REVIEW_REQUIRED",
+      "ARCHITECTURAL"
+    ],
+    "completeness": [
+      "COMPLETE",
+      "PARTIAL",
+      "UNSUPPORTED",
+      "TRUNCATED"
+    ],
+    "remediation": [
+      "PLANNED",
+      "NOT_APPLICABLE",
+      "UNSUPPORTED",
+      "REQUIRES_REVIEW",
+      "APPLIED_UNVERIFIED",
+      "APPLIED_VERIFIED",
+      "VERIFICATION_FAILED",
+      "ROLLBACK_SUCCEEDED",
+      "ROLLBACK_FAILED",
+      "PARTIALLY_REMEDIATED",
+      "RESIDUAL_RISK",
+      "STALE_FINDING",
+      "RESCAN_REQUIRED",
+      "SANDBOX_UNAVAILABLE",
+      "SANDBOX_MISCONFIGURED"
+    ],
+    "verificationConclusion": [
+      "PROVEN_SECURE",
+      "PROVEN_INSECURE",
+      "UNKNOWN",
+      "NOT_APPLICABLE"
+    ],
+    "findingVerification": [
+      "not_attempted",
+      "verified",
+      "failed"
+    ],
+    "verificationStage": [
+      "PASSED",
+      "FAILED",
+      "SKIPPED",
+      "NOT_AUTHORIZED",
+      "UNAVAILABLE"
+    ]
+  },
+  "exitCodes": {
+    "classification": "PUBLIC_STABLE_CANDIDATE",
+    "values": {
+      "ok": 0,
+      "policyFindings": 1,
+      "usage": 2,
+      "scanFailure": 3,
+      "verificationFailure": 4,
+      "verifiedFixApplied": 5,
+      "unsafeRemediation": 6,
+      "providerUnavailable": 7
+    },
+    "semantics": "scan/default 0 means completed; use ci/verify for a finding policy gate. fix success is 5 when applied and verified. UNKNOWN never means secure, regardless of process exit."
+  },
+  "mcp": {
+    "classification": "PUBLIC_STABLE_CANDIDATE",
+    "tools": [
+      {
+        "name": "cydetix_scan",
+        "description": "Use when the user asks to check, audit, review, or harden project security, vulnerabilities, authentication, authorization, sessions, JWT, OAuth, secrets, dependencies, supply chain, or CI/CD. This deterministic scan is read-only, offline by default, returns a structured report, leaves the repository unmodified, and stays inside the configured trusted project root.",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Project-relative directory. Defaults to the configured project root."
+            }
+          }
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        }
+      },
+      {
+        "name": "cydetix_fix",
+        "description": "Use only when the user explicitly asks to fix, remediate, repair, or resolve security findings. Plan remediation first. Mutation requires explicit user intent plus apply=true and confirmedUserIntent. Only SAFE changes may autoapply; REVIEW_REQUIRED needs human review and ARCHITECTURAL never autoapplies. Omit apply or set it false for a zero-write plan.",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Project-relative directory. Defaults to the configured project root."
+            },
+            "finding": {
+              "type": "string",
+              "description": "Optional finding fingerprint to scope remediation."
+            },
+            "apply": {
+              "type": "boolean",
+              "default": false,
+              "description": "False plans only. True can apply SAFE fixes after explicit user intent."
+            },
+            "confirmedUserIntent": {
+              "type": "string",
+              "enum": [
+                "fix-security-issues"
+              ],
+              "description": "Required with apply=true. Assert only when the user explicitly requested source remediation."
+            }
+          }
+        },
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": false
+        }
+      },
+      {
+        "name": "cydetix_explain",
+        "description": "Explain a Cydetix finding, rule, evidence requirement, remediation class, or UNKNOWN result. Explanation is read-only and never modifies the repository.",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ruleId": {
+              "type": "string",
+              "description": "Stable Cydetix rule ID."
+            },
+            "finding": {
+              "type": "string",
+              "description": "Finding fingerprint to explain."
+            },
+            "path": {
+              "type": "string",
+              "description": "Project directory used to resolve a finding fingerprint."
+            }
+          },
+          "anyOf": [
+            {
+              "required": [
+                "ruleId"
+              ]
+            },
+            {
+              "required": [
+                "finding"
+              ]
+            }
+          ]
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        }
+      }
+    ],
+    "transport": "stdio newline-delimited JSON-RPC; 1048576 retained characters per request",
+    "results": [
+      "content plus structuredContent.report",
+      "content plus structuredContent.remediationReport",
+      "content plus structuredContent.rule or finding"
+    ],
+    "errors": {
+      "parse": -32700,
+      "invalidRequest": -32600,
+      "methodNotFound": -32601,
+      "invalidParameters": -32602
+    }
+  },
+  "rules": {
+    "classification": "PUBLIC_STABLE_CANDIDATE",
+    "entries": [
+      {
+        "id": "AS-SESSION-001",
+        "version": "1.0.0",
+        "ceiling": "SAFE"
+      },
+      {
+        "id": "AS-PASSWORD-001",
+        "version": "1.0.1",
+        "ceiling": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-TOKEN-001",
+        "version": "1.0.0",
+        "ceiling": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-SECRET-001",
+        "version": "1.0.0",
+        "ceiling": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-CORS-001",
+        "version": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-AUTHZ-001",
+        "version": "1.0.0",
+        "ceiling": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-TENANT-001",
+        "version": "1.0.0",
+        "ceiling": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-SESSION-001",
+        "version": "1.0.0",
+        "ceiling": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-SESSION-002",
+        "version": "1.0.0",
+        "ceiling": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-RESET-001",
+        "version": "1.0.0",
+        "ceiling": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-RESET-002",
+        "version": "1.0.0",
+        "ceiling": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-RESET-003",
+        "version": "1.0.0",
+        "ceiling": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-JWT-001",
+        "version": "1.0.0",
+        "ceiling": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-OAUTH-001",
+        "version": "1.0.0",
+        "ceiling": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-OAUTH-002",
+        "version": "1.0.0",
+        "ceiling": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-SCA-001",
+        "version": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-CI-001",
+        "version": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-CI-002",
+        "version": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-CI-003",
+        "version": "1.0.0",
+        "ceiling": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-CI-004",
+        "version": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-INJECTION-SQL-001",
+        "version": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-INJECTION-CMD-001",
+        "version": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-PATH-001",
+        "version": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-SSRF-001",
+        "version": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-XSS-001",
+        "version": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-REDIRECT-001",
+        "version": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-CSRF-001",
+        "version": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED"
+      }
+    ]
+  },
+  "schemas": [
+    {
+      "path": "schemas/agent-compatibility.schema.json",
+      "sha256": "3c39dc82e1a4b5b3d5498833529e8824061fc2dab1cda0da51ade83e8a809033",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/application-dataflow.schema.json",
+      "sha256": "6178fcca141743759335505fe75ec57583318deb213a45c326f2c3716fd71e45",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/authentication-analysis.schema.json",
+      "sha256": "17a08c1a02f9df79f16e862a257d2f844df90be1b1dd262b9e752b2c69e92f40",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/authorization-proof.schema.json",
+      "sha256": "1738bad7bf1b5c5d48cd2828b5c3ff47c8d4f37bbdb513e40c67004eaaa87a9b",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/beta-readiness.schema.json",
+      "sha256": "ce88d22d49a7aa5ebf07090a13fa34f75a8d78f12a0e8b205f8baa507a7d57df",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/cyclonedx-1.7.schema.json",
+      "sha256": "81fd195d7feb6692fd84c11964ec61cdd0e621fa080bc874b3a996a03f19f6df",
+      "classification": "PUBLIC_STABLE_CANDIDATE"
+    },
+    {
+      "path": "schemas/finding.schema.json",
+      "sha256": "133a40b493b96e526359659c215212531cbbdd20a76c5312ba06494cd1d37548",
+      "classification": "PUBLIC_STABLE_CANDIDATE"
+    },
+    {
+      "path": "schemas/release-validation.schema.json",
+      "sha256": "a2b841c7ee82409fd927345c55c578e55f5ea85d82f1c5311d033b39c84f5da7",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/remediation-report.schema.json",
+      "sha256": "05b27ad1fb5a1a14dc1f7da6dfc7df63f040e4182e157957c4addda0e75a3b6a",
+      "classification": "PUBLIC_STABLE_CANDIDATE"
+    },
+    {
+      "path": "schemas/repository-manifest.schema.json",
+      "sha256": "f43fe4782c90f4258fbf1a9e49e1216934a7163588ae1aec86104cef7313de10",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/rule.schema.json",
+      "sha256": "fc0462ea883452f25ae8de5c4f7b4bc65c4de82040a3a0d643020c2683c7e0c4",
+      "classification": "PUBLIC_STABLE_CANDIDATE"
+    },
+    {
+      "path": "schemas/rules-report.schema.json",
+      "sha256": "bdce7cbff5c1160e6eaf99b39b310f8274a06a68da6a48bb221c90433ea44f59",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/sandbox-capability.schema.json",
+      "sha256": "894cb1d36b718ea5a27efba8f6a48b9950287f92eeb021de78a9dfd76a4cab04",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/scan-report.schema.json",
+      "sha256": "77a8bc4fac7ac96afe3a64fddb0d67fd52762b342239152fe9661ac8cda993c8",
+      "classification": "PUBLIC_STABLE_CANDIDATE"
+    },
+    {
+      "path": "schemas/security-ir.schema.json",
+      "sha256": "153668e0ab346b8bb8c400f2f9c29f6b0ff8c222a8d5a76805893f3909f0b7c1",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/supply-chain-analysis.schema.json",
+      "sha256": "551225928fbe2e50afc84e99700f0f8cb7902c332a75465c578fa4e20c3a9807",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/trust-report.schema.json",
+      "sha256": "73da7d4662d809c1e973765beeb030a66f9730ec2b2d0654b76e99346a1695f0",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/validation-corpus.schema.json",
+      "sha256": "bf1875f2e6a41075e23b038a6f6c1a2dfcc6e51280d968ccc8cf05f3d29ca09b",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/validation-labels.schema.json",
+      "sha256": "0c15af8bb42662f10c9aa260d0540f474fb5d1b872a4ff9e1cdad655b09146d9",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/validation-result.schema.json",
+      "sha256": "a0dae4118029dfeaa8bf0e942d1e3b4e37d66f785ec86f558fd71ad4724af875",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/verification-execution.schema.json",
+      "sha256": "39187882323b0f6371b272416c803010fa503dbf31dcf9d88b2aee63003ceeed",
+      "classification": "PUBLIC_EXPERIMENTAL"
+    }
+  ],
+  "otherInterfaces": [
+    {
+      "name": "Human headings, ordering and wording",
+      "classification": "PUBLIC_EXPERIMENTAL",
+      "contract": "Locations and independent proof/confidence/reachability/completeness/verification/authority are required. Text is not a parsing API; no-findings never guarantees security."
+    },
+    {
+      "name": "SARIF 2.1.0 results, codeFlows and cydetix/v1 partial fingerprints",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "contract": "Severity mapping and file coordinates are stable candidates; Cydetix property bags remain additive experimental evidence."
+    },
+    {
+      "name": ".cydetix.json",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "keys": [
+        "schemaVersion",
+        "maxFileBytes",
+        "maxFiles",
+        "maxDepth",
+        "additionalIgnore",
+        "baseline",
+        "suppressions"
+      ],
+      "contract": "Strict data-only schema; no executable configuration. Exact baseline hashes and rule/scope/fingerprint suppressions remain auditable; expiration is evaluated at scan time."
+    },
+    {
+      "name": "Finding fingerprints",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "contract": "SHA-256 of rule identity, normalized relative path and detector evidence anchor joined by NUL. Rule-specific anchor changes require documented compatibility review; identical finding context is stable, arbitrary edits are not promised stable."
+    },
+    {
+      "name": "Catalogue/configuration/suppression fingerprints",
+      "classification": "PUBLIC_STABLE_CANDIDATE",
+      "contract": "Canonical sorted-key JSON SHA-256; array order preserved. Never normalize security evidence to force matching results."
+    },
+    {
+      "name": "Host configuration layouts and managed skills",
+      "classification": "PUBLIC_EXPERIMENTAL",
+      "contract": "Exact Node/entrypoint/project root/version binding; atomic managed edits. Host versions and live execution need separate validation."
+    },
+    {
+      "name": "release validation JSON",
+      "classification": "PUBLIC_EXPERIMENTAL",
+      "contract": "Versioned release-validation.schema.json; historical artifacts immutable. No local-only report establishes hosted gates or authorization."
+    },
+    {
+      "name": "beta readiness and corpus evidence",
+      "classification": "PUBLIC_EXPERIMENTAL",
+      "contract": "Internal validation methodology exposed publicly; incomplete adjudication, failures and gate provenance remain explicit."
+    },
+    {
+      "name": "dist module imports, Security IR builders, parser nodes, internal caches and hooks",
+      "classification": "INTERNAL",
+      "contract": "No public SDK or ABI promise. Versioned diagnostic projections do not stabilize implementation functions."
+    }
+  ],
+  "intentionalChanges": [
+    "MCP rejects unknown keys, wrong types, non-object arguments and invalid IDs rather than accepting inputs contrary to its published schema.",
+    "MCP retained request text is bounded before a terminating newline arrives; oversized frames cannot consume unbounded retained memory.",
+    "explain defaults to human text; --format json preserves structured rule access. status aliases read-only setup --status.",
+    "Human finding counts no longer deduplicate distinct evidence. UNKNOWN means proof uncertainty rather than unknown reachability; both remain visible independently.",
+    "SARIF property bags additionally retain full finding proof and UNKNOWN instances. Scan/remediation schema versions are unchanged.",
+    "AS-PASSWORD-001@1.0.1 preserves the observed hash signal but reports UNKNOWN for unestablished credential-storage purpose and runtime reachability; high confidence in a hash operation does not prove insecure password storage.",
+    "Babel scope failures are explicit file-local analysis limitations. Propagation iteration/evidence-path exhaustion is TRUNCATED with no actionable application-dataflow proof; numeric bounds are unchanged.",
+    "verify:development validates current versions and immutable historical evidence. Strict release gates remain unchanged and reject the unprepared development candidate."
+  ]
+}

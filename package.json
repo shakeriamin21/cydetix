@@ -60,6 +60,8 @@
     "validate:development": "npm run build && node scripts/validate-development.mjs",
     "corpus:alpha12:prepare": "node scripts/prepare-alpha12-corpus.mjs",
     "corpus:alpha12": "npm run build && node scripts/run-alpha12-corpus.mjs",
+    "gate:alpha12": "node scripts/run-alpha12-gate.mjs",
+    "validate:alpha12-readiness": "npm run build && node scripts/validate-alpha12-readiness.mjs",
     "validate:workflow-security": "node scripts/validate-workflow-security.mjs",
     "validate:release-report": "npm run build && node scripts/validate-release-report.mjs",
     "validate:remediation": "node scripts/validate-remediation.mjs",

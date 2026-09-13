@@ -1,0 +1,511 @@
+{
+  "$id": "https://cydetix.dev/schemas/v1/beta-readiness.schema.json",
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "sourceCommit": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "sourceBinding": {
+      "type": "string",
+      "minLength": 1
+    },
+    "version": {
+      "type": "string",
+      "const": "0.6.0-alpha.12"
+    },
+    "baselineCommit": {
+      "type": "string",
+      "const": "4e13b96cc3539e1b623a4c5a12f10a0954776253"
+    },
+    "baselineTagObject": {
+      "type": "string",
+      "const": "e692f1e23d58157a209f511adb6180d3f489a80c"
+    },
+    "tests": {
+      "type": "object",
+      "properties": {
+        "total": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "passed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "failed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "skipped": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "sandboxPassed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "sandboxSkipped": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "total",
+        "passed",
+        "failed",
+        "skipped",
+        "sandboxPassed",
+        "sandboxSkipped",
+        "evidence"
+      ],
+      "additionalProperties": false
+    },
+    "corpus": {
+      "type": "object",
+      "properties": {
+        "groundTruth": {
+          "type": "string",
+          "const": "INCOMPLETE"
+        },
+        "recall": {
+          "type": "null"
+        },
+        "accuracy": {
+          "type": "null"
+        },
+        "identities": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "repository": {
+                "type": "string",
+                "minLength": 1
+              },
+              "commit": {
+                "type": "string",
+                "pattern": "^[a-f0-9]{40}$"
+              },
+              "scansCompleted": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "determinism": {
+                "type": "string",
+                "enum": [
+                  "PASSED",
+                  "FAILED",
+                  "NOT_ESTABLISHED"
+                ]
+              },
+              "evidence": {
+                "type": "string",
+                "minLength": 1
+              }
+            },
+            "required": [
+              "repository",
+              "commit",
+              "scansCompleted",
+              "determinism",
+              "evidence"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "confirmedFP": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "supportedPatternFN": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "adjudicationScope": {
+          "type": "string",
+          "minLength": 1
+        },
+        "unadjudicatedFindings": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "fpEvidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "fnEvidence": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "unknown": {
+          "type": "object",
+          "properties": {
+            "applicationDataflow": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "authorization": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "authentication": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "findingProof": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "majorCauses": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "limitation": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "required": [
+            "applicationDataflow",
+            "authorization",
+            "authentication",
+            "findingProof",
+            "majorCauses",
+            "limitation"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "groundTruth",
+        "recall",
+        "accuracy",
+        "identities",
+        "confirmedFP",
+        "supportedPatternFN",
+        "adjudicationScope",
+        "unadjudicatedFindings",
+        "fpEvidence",
+        "fnEvidence",
+        "unknown"
+      ],
+      "additionalProperties": false
+    },
+    "performance": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "PASSED",
+            "FAILED",
+            "NOT_RUN",
+            "INCONCLUSIVE"
+          ]
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "measurements": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "target": {
+                "type": "string"
+              },
+              "size": {
+                "type": "string",
+                "enum": [
+                  "small",
+                  "medium",
+                  "large"
+                ]
+              },
+              "samplesPerVersion": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 9007199254740991
+              },
+              "baselineP50Milliseconds": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "candidateP50Milliseconds": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "baselineP95Milliseconds": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "candidateP95Milliseconds": {
+                "anyOf": [
+                  {
+                    "type": "number",
+                    "minimum": 0
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "semanticEquivalence": {
+                "type": "string",
+                "enum": [
+                  "PASSED",
+                  "FAILED",
+                  "NOT_ESTABLISHED"
+                ]
+              }
+            },
+            "required": [
+              "target",
+              "size",
+              "samplesPerVersion",
+              "baselineP50Milliseconds",
+              "candidateP50Milliseconds",
+              "baselineP95Milliseconds",
+              "candidateP95Milliseconds",
+              "semanticEquivalence"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "limitations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "state",
+        "evidence",
+        "measurements",
+        "limitations"
+      ],
+      "additionalProperties": false
+    },
+    "integrations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "agent": {
+            "type": "string",
+            "minLength": 1
+          },
+          "configuration": {
+            "type": "string",
+            "enum": [
+              "PASSED",
+              "FAILED",
+              "NOT_RUN",
+              "BLOCKED",
+              "NOT_AVAILABLE"
+            ]
+          },
+          "adapterTests": {
+            "type": "string",
+            "enum": [
+              "PASSED",
+              "FAILED",
+              "NOT_RUN",
+              "BLOCKED",
+              "NOT_AVAILABLE"
+            ]
+          },
+          "subprocess": {
+            "type": "string",
+            "enum": [
+              "PASSED",
+              "FAILED",
+              "NOT_RUN",
+              "BLOCKED",
+              "NOT_AVAILABLE"
+            ]
+          },
+          "liveHost": {
+            "type": "string",
+            "enum": [
+              "PASSED",
+              "FAILED",
+              "NOT_RUN",
+              "BLOCKED",
+              "NOT_AVAILABLE"
+            ]
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": [
+          "agent",
+          "configuration",
+          "adapterTests",
+          "subprocess",
+          "liveHost",
+          "evidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "publicContracts": {
+      "type": "object",
+      "properties": {
+        "state": {
+          "type": "string",
+          "enum": [
+            "PASSED",
+            "FAILED",
+            "NOT_RUN",
+            "BLOCKED",
+            "NOT_AVAILABLE"
+          ]
+        },
+        "evidence": {
+          "type": "string",
+          "minLength": 1
+        },
+        "intentionalChanges": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "state",
+        "evidence",
+        "intentionalChanges"
+      ],
+      "additionalProperties": false
+    },
+    "supplyChainGates": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "minLength": 1
+          },
+          "state": {
+            "type": "string",
+            "enum": [
+              "PASSED",
+              "FAILED",
+              "NOT_RUN",
+              "BLOCKED",
+              "NOT_AVAILABLE"
+            ]
+          },
+          "evidence": {
+            "type": "string",
+            "minLength": 1
+          },
+          "sourceCommit": {
+            "type": "string",
+            "pattern": "^[a-f0-9]{40}$"
+          }
+        },
+        "required": [
+          "id",
+          "state",
+          "evidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "remediationAuthority": {
+      "type": "string",
+      "const": "UNCHANGED_EXACT_HTTPONLY_SAFE_ONLY"
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "verdict": {
+      "type": "string",
+      "enum": [
+        "ALPHA12_NOT_BETA_READY",
+        "ALPHA12_BETA_READY_WITH_LIMITATIONS"
+      ]
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "sourceCommit",
+    "sourceBinding",
+    "version",
+    "baselineCommit",
+    "baselineTagObject",
+    "tests",
+    "corpus",
+    "performance",
+    "integrations",
+    "publicContracts",
+    "supplyChainGates",
+    "remediationAuthority",
+    "blockers",
+    "verdict"
+  ],
+  "additionalProperties": false
+}
