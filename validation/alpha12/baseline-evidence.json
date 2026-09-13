@@ -1,0 +1,76 @@
+{
+  "schemaVersion": "1.0.0",
+  "baselineCommit": "4e13b96cc3539e1b623a4c5a12f10a0954776253",
+  "baselineTagObject": "e692f1e23d58157a209f511adb6180d3f489a80c",
+  "version": "0.6.0-alpha.11",
+  "methodology": "Runtime built and copied from the clean immutable baseline before existing source modifications. Same Node and locked dependencies. Historical evidence was read only. Corrected observations were replayed twice with that preserved baseline runtime.",
+  "tests": {
+    "total": 374,
+    "passed": 374,
+    "failed": 0,
+    "pending": 0,
+    "reportSha256": "21ed0ed284341d688604335f1d48ad46d1e19f68e288e7488e52745a71ad142f",
+    "sandboxPassed": 13
+  },
+  "corrections": [
+    {
+      "id": "flask-security",
+      "repository": "pallets-eco/flask-security",
+      "commit": "5d47d697d6f0806d0fe58559fe61cd6fd8ae16ef",
+      "version": "0.6.0-alpha.11",
+      "determinism": "PASSED",
+      "normalizedReportSha256": [
+        "409c9386e7928d17667d5959e85fa114ee11bbb72cf5d4ae0d098729fd886b1f",
+        "409c9386e7928d17667d5959e85fa114ee11bbb72cf5d4ae0d098729fd886b1f"
+      ],
+      "reviewedFindings": [
+        {
+          "fingerprint": "2c80239ac17e2d6edc71591c284e69851ee0571e68fb872c12797d9dc4a9cf7a",
+          "ruleId": "AS-PASSWORD-001",
+          "ruleVersion": "1.0.0",
+          "path": "flask_security/utils.py",
+          "line": 1455,
+          "proofState": "PROVEN_INSECURE",
+          "confidence": "high",
+          "reachability": "likely",
+          "analysisCompleteness": "COMPLETE"
+        }
+      ]
+    },
+    {
+      "id": "vulnerable-typescript",
+      "repository": "ryanmcmorrowsnyk/vulnerable-typescript-app",
+      "commit": "7f8b240a2f02beba099da3632d1ba679ff8bc32f",
+      "version": "0.6.0-alpha.11",
+      "determinism": "PASSED",
+      "normalizedReportSha256": [
+        "5db1857003ad4d7c3fd84495e923282d0f084ea682befd643f3661dcec5d1f12",
+        "5db1857003ad4d7c3fd84495e923282d0f084ea682befd643f3661dcec5d1f12"
+      ],
+      "reviewedFindings": [
+        {
+          "fingerprint": "8293f90ca6bf6de224bcb33fe397beb1563af0bb715c7288dcc9eff65e783334",
+          "ruleId": "AS-SECRET-001",
+          "ruleVersion": "1.0.0",
+          "path": ".env",
+          "line": 53,
+          "proofState": "PROVEN_INSECURE",
+          "confidence": "high",
+          "reachability": "unknown",
+          "analysisCompleteness": "COMPLETE"
+        },
+        {
+          "fingerprint": "2a9ba069176fcaa6dd02af6cf7a6ba06fd1e38f6eed5d8e883a72072ee6a6738",
+          "ruleId": "AS-SECRET-001",
+          "ruleVersion": "1.0.0",
+          "path": ".env",
+          "line": 54,
+          "proofState": "PROVEN_INSECURE",
+          "confidence": "high",
+          "reachability": "unknown",
+          "analysisCompleteness": "COMPLETE"
+        }
+      ]
+    }
+  ]
+}
