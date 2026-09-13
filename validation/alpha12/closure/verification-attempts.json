@@ -26,6 +26,51 @@
       },
       "failure": "tests/validation/public-contracts.test.ts rejected drift between reviewed public-contracts.json intentionalChanges and its generator. The engine/CLI schemas were unchanged; explanatory inventory text was added without synchronizing generator source.",
       "correction": "Synchronize the same intentional-change description in inventory-alpha12-contracts.mjs, preserving the strict inventory comparison. Rerun affected tests and complete verification."
+    },
+    {
+      "id": "verify",
+      "sourceCommit": "3e87cb9503afc8009e627305cc67efee24eb5d51",
+      "command": [
+        "npm",
+        "run",
+        "verify:development"
+      ],
+      "startedAt": "2026-09-13T10:00:05.073Z",
+      "durationMilliseconds": 296045.4252,
+      "exitCode": 1,
+      "signal": null,
+      "outputLimited": false,
+      "state": "FAILED",
+      "stdoutSha256": "6cfe024ee74acf1b55003a5ce018d9f7e8e73811f7a496afc89f47182e67875d",
+      "stderrSha256": "2a2279dd14b379b78ab8547c9715c3aeb5c616985d439e1cf5493ac594346d67",
+      "sandboxImage": "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
+      "failure": "Microsoft SARIF Multitool phase-one validation reached the unchanged 210000ms process timeout (ETIMEDOUT). The prior attempt validated all six fixtures. Cause is not established; no timeout increase or skipped gate is accepted.",
+      "correction": "Inspect runtime/tool path and retry unchanged validation constraints."
+    },
+    {
+      "id": "verify",
+      "sourceCommit": "3e87cb9503afc8009e627305cc67efee24eb5d51",
+      "command": [
+        "npm",
+        "run",
+        "verify:development"
+      ],
+      "startedAt": "2026-09-13T10:07:38.688Z",
+      "durationMilliseconds": 621844.3274,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "e538e1be610147b4b8bb60be01aef5d5e4e1c5c2f2ceb8ab467df795292d0e3d",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
+      "tests": {
+        "passed": 449,
+        "failed": 0,
+        "total": 449,
+        "skipped": 0
+      },
+      "scope": "Successful full suite with the previous SARIF gate loaded at process startup. Does not cover the subsequent six new tests or strengthened SARIF diagnostic assertions. A new complete invocation is required and recorded in local-verification.json."
     }
   ]
 }

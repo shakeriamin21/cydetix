@@ -282,7 +282,16 @@ ${localRows}
 ${gateRows}
 
 Locked installation uses npm ci --ignore-scripts. Online OSV checks lockfile package identities,
-not source content. CycloneDX and SARIF are validated separately from vulnerability proof. Independent
+not source content. CycloneDX and SARIF are validated separately from vulnerability proof.
+SARIF gate hardening retains the exact OASIS Errata 01 draft-04 schema, fetched once with a pinned
+SHA-256, a 20-second download timeout and a 131072-byte bound. The existing 210-second Multitool
+timeout and six positive fixtures remain. A negative control exposed Multitool 5.7.0 reporting
+schema errors with exit code zero; the gate now rejects reported errors as well as process failures,
+and requires explicit errors for deliberately invalid schema and semantic controls. This changes
+development validation only. It does not establish that a historical report was invalid, and no
+historical evidence was rewritten. See [validation hardening](../../validation/alpha12/closure/sarif-validation-hardening.json)
+and [retained verification attempts](../../validation/alpha12/closure/verification-attempts.json).
+Independent
 Gitleaks scans complete --all history using its pinned image with no repository ignore bypass:
 ${gitleaks.findings} findings match exact reviewed non-secret fingerprints, ${gitleaks.unreviewedFindings}
 unreviewed. Deterministic reachable-history and public privacy audits remain separate gates.

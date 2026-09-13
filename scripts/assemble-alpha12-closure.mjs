@@ -76,6 +76,8 @@ const evidenceFiles = [
   "independent-reconciliation-check.json",
   "runtime-binding.json",
   "evidence-validation.json",
+  "sarif-validation-hardening.json",
+  "verification-attempts.json",
 ];
 const evidence = await Promise.all(
   evidenceFiles.map(async (file) => ({

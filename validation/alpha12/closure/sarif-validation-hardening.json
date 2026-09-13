@@ -1,0 +1,42 @@
+{
+  "schemaVersion": "1.0.0",
+  "discoverySourceCommit": "3e87cb9503afc8009e627305cc67efee24eb5d51",
+  "scope": "Development SARIF validation only; no runtime engine, report schema, rules or package dependency changed. Historical release evidence remains untouched.",
+  "observedFailure": {
+    "tool": "Microsoft SARIF Multitool 5.7.0+e506911c9bfb904c19d76d63686a40097021fa4e",
+    "probe": "Phase-one SARIF with version replaced by invalid-version, validated against the exact official schema",
+    "exitCode": 0,
+    "reportedError": "JSON1019: version does not match the allowed 2.1.0 enum",
+    "implication": "The previous process-exit-only check could accept a report with validation errors. No historical invalid report is established by this probe."
+  },
+  "timeoutInvestigation": {
+    "observed": "An unchanged 210000ms Multitool timeout occurred; a later run showed an outbound SYN_SENT connection and DNS cache correspondence to docs.oasis-open.org while making little CPU progress.",
+    "inference": "Repeated remote schema resolution is a plausible stall source, not proven as the exclusive cause of the timeout.",
+    "correction": "Download the exact referenced official schema once through a bounded checksum-pinned request and pass its local path explicitly to every Multitool invocation. Do not use the different bundled schema or skip validation on download failure."
+  },
+  "officialSchema": {
+    "url": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
+    "sha256": "c3b4bb2d6093897483348925aaa73af03b3e3f4bd4ca38cef26dcb4212a2682e",
+    "bytes": 112768,
+    "dialect": "http://json-schema.org/draft-04/schema#",
+    "downloadTimeoutMilliseconds": 20000,
+    "maximumDownloadBytes": 131072,
+    "redirects": "REJECTED"
+  },
+  "preservedProcessLimits": {
+    "timeoutMilliseconds": 210000,
+    "maximumOutputBytes": 1000000,
+    "threads": 1,
+    "shell": false
+  },
+  "regressionCoverage": {
+    "unitTests": 6,
+    "originalPositiveFixtures": 6,
+    "negativeControls": [
+      { "mutation": "Remove required tool.driver.name", "requiredErrorFamily": "JSON" },
+      { "mutation": "Set a result.ruleIndex outside the rule array", "requiredErrorFamily": "SARIF" }
+    ],
+    "assertion": "Positive validation requires process success and no reported error. Negative controls require process completion and an explicit expected validation error; timeout, process failure and missing diagnostics never qualify.",
+    "finalInvocationEvidence": "validation/alpha12/local-verification.json and validation/alpha12/gates/verify.txt"
+  }
+}
