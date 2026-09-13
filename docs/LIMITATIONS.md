@@ -49,31 +49,32 @@ compliant.
 
 ## Validation and release
 
-- NodeGoat evidence is a findings-only implementation review: six adjudicated positives and one
-  needs-domain-context result. Recall and broad precision are unavailable.
+- Alpha.12 covers thirty pinned repositories with two deterministic full-report scans each.
+  Implementation-agent review is scoped and lacks independent human adjudication or complete ground
+  truth. No corpus-wide recall or generic accuracy is claimed. See
+  [current readiness evidence](security/ALPHA12_BETA_READINESS.md).
 - BenchmarkPython reviewed cases are outside current rule applicability and do not become true
   negatives.
-- The Phase 6B local run validates packed installation on Windows. A six-case Linux/macOS/Windows
-  hosted matrix and a hosted Linux sandbox job are configured for Phase 7, but their state remains
-  `NOT_RUN` until the approved public repository executes them.
+- Local alpha.12 validation runs on Windows with Docker. Historical alpha.11 hosted results do not
+  establish alpha.12 exact-commit Linux/macOS/Windows, CodeQL or OpenSSF results.
 - Node.js support is limited to 22.18+ in the 22.x line and 24.11+ in the 24.x line; only Node 24.15
   was observed locally, while the six-case Node/OS CI matrix remains unobserved here.
-- OpenSSF Scorecard and the hosted matrix are not re-executed by local release preparation. The
-  pinned release workflow checks their exact-commit state before publication. Public artifact/SBOM
-  attestations and alpha.2 npm OIDC provenance remain unexecuted; bit-for-bit reproducibility is not
-  claimed.
+- The pinned release workflow requires exact-commit checks, protected environment approval,
+  OIDC-only Trusted Publishing and artifact/SBOM attestations. Alpha.12 development does not run a
+  publication transaction. No final release metadata is prepared; immutable alpha.11 tags and
+  evidence remain preserved. Bit-for-bit reproducibility is not claimed.
 - npm Trusted Publishing must be configured from the existing package's settings for the exact
   repository, workflow, and `release` environment. No token fallback is present in the workflow, and
   local preparation does not prove the external setting is configured.
-- The public identity is Cydetix and the unscoped npm/CLI name is `cydetix`. A historical exact
-  registry lookup returned `cydetix@0.6.0-alpha.1` on 2026-09-06; current registry and dist-tag
-  state is not asserted and must be rechecked before release. Registration does not provide
-  brand/legal review, exclusivity, or trademark clearance; none is claimed.
+- Warm-cache local performance measurements are descriptive. The observed FastAPI p95 regression
+  remains unresolved; no cross-machine performance or complete large-repository coverage is claimed.
+- The public identity is Cydetix. Package registration does not establish brand/legal review,
+  exclusivity or trademark clearance.
 - Setup adapters and the Codex plugin validate locally. Host-controlled implicit tool selection,
   remote plugin installation, Copilot CLI MCP consumption, marketplace acceptance, and live npm
   behavior are not claimed until their external tests execute.
-- The clean public Git repository has no imported private commits, refs, tags, or remotes. Its first
-  commit remains blocked until the user supplies approved public author metadata; inherited global
-  Git identity is not used automatically.
+- The all-refs privacy audit includes pre-existing remote branches. A public Dependabot noreply
+  author outside HEAD ancestry is absent from frozen publication approval metadata; that gate's
+  failure is retained separately from the passing HEAD-history audit.
 - HTML output is not implemented. Terminal, JSON, SARIF, CycloneDX, and remediation JSON are the
   current outputs.
