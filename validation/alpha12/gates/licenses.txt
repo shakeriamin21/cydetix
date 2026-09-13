@@ -1,0 +1,22 @@
+
+> cydetix@0.6.0-alpha.12 audit:licenses
+> node scripts/audit-licenses.mjs
+
+{
+  "schemaVersion": "1.0.0",
+  "state": "PASS",
+  "dependenciesReviewed": 162,
+  "platformOptionalDependenciesNotInstalled": 52,
+  "licenseCounts": {
+    "Apache-2.0": 15,
+    "BlueOak-1.0.0": 1,
+    "BSD-2-Clause": 6,
+    "BSD-3-Clause": 2,
+    "ISC": 8,
+    "MIT": 128,
+    "MPL-2.0": 2
+  },
+  "packageLicense": "Apache-2.0",
+  "bundledDependencies": false,
+  "issues": []
+}

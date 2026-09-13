@@ -1,0 +1,27 @@
+
+> cydetix@0.6.0-alpha.12 validate:workflow-security
+> node scripts/validate-workflow-security.mjs
+
+{
+  "schemaVersion": "1.0.0",
+  "state": "PASS",
+  "workflowsReviewed": [
+    "ci.yml",
+    "codeql.yml",
+    "release.yml",
+    "scorecard.yml"
+  ],
+  "controls": [
+    "NO_PULL_REQUEST_TARGET",
+    "FULL_SHA_ACTION_PINNING",
+    "NO_LONG_LIVED_NPM_TOKEN",
+    "TAG_ONLY_RELEASE_TRIGGER",
+    "PROTECTED_RELEASE_ENVIRONMENT",
+    "OIDC_ONLY_IN_PUBLISH_JOB",
+    "COMPLETE_RELEASE_HISTORY_CHECKOUT",
+    "RELEASE_REACHABLE_HISTORY_SCOPE",
+    "PINNED_UNSUPPRESSED_COMPLETE_HISTORY_SECRET_SCAN",
+    "EXPLICIT_SINGLE_LOCAL_NPM_TARBALL"
+  ],
+  "issues": []
+}

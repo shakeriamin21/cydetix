@@ -1,0 +1,12 @@
+
+> cydetix@0.6.0-alpha.12 audit:public-repository
+> node scripts/audit-public-repository.mjs
+
+{
+  "schemaVersion": "1.0.0",
+  "state": "PASS",
+  "filesReviewed": 1026,
+  "scope": "TRACKED_AND_UNTRACKED_NOT_IGNORED",
+  "bytesReviewed": 6419343,
+  "issues": []
+}

@@ -1,0 +1,16 @@
+
+> cydetix@0.6.0-alpha.12 validate:online-osv
+> npm run build && node scripts/validate-online-osv.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+{
+  "schemaVersion": "1.0.0",
+  "state": "PASS",
+  "provider": "OSV",
+  "advisoryState": "CHECKED_NO_FINDINGS",
+  "resolvedPackageIdentities": 214,
+  "sourceTransmitted": false
+}

@@ -1,0 +1,20 @@
+
+> cydetix@0.6.0-alpha.12 audit:history
+> node scripts/audit-git-history.mjs --enforce --all
+
+{
+  "schemaVersion": "1.0.0",
+  "state": "FAIL",
+  "scope": {
+    "mode": "ALL_REFS"
+  },
+  "commitsReviewed": 66,
+  "issues": [
+    {
+      "code": "UNAPPROVED_AUTHOR_EMAIL",
+      "commit": "d8b3d5a10f4c878c413a388d6f640fa390cb4b5b",
+      "fingerprint": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6"
+    }
+  ],
+  "note": "This deterministic privacy audit complements, but does not replace, an independent secret scanner."
+}

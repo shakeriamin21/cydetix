@@ -1,0 +1,31 @@
+
+> cydetix@0.6.0-alpha.12 benchmark:phase5
+> npm run build && node scripts/measure-phase5.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+{
+  "node": "v24.15.0",
+  "platform": "win32-x64",
+  "repetitions": 20,
+  "p95ThresholdMilliseconds": 300,
+  "externalCommandsIncluded": false,
+  "planning": {
+    "medianMilliseconds": 176.067,
+    "p95Milliseconds": 191.87
+  },
+  "verifiedTransaction": {
+    "medianMilliseconds": 81.114,
+    "p95Milliseconds": 90.759,
+    "stageMedianMilliseconds": {
+      "planning": 62.215,
+      "transformation": 2.333,
+      "fileTransaction": 7.3,
+      "targetedRescan": 4.58,
+      "verification": 7.751
+    }
+  },
+  "note": "One untimed warmup plus 20 temporary-fixture transactions; nearest-rank p95 is intentionally separate from read-only scan p95."
+}

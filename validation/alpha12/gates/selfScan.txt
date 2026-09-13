@@ -1,0 +1,9 @@
+
+> cydetix@0.6.0-alpha.12 release:self-scan
+> npm run build && node scripts/generate-self-scan-evidence.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+Self-scan PASSED: 0 active, 82 suppressed.

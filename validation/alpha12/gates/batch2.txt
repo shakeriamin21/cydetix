@@ -1,0 +1,51 @@
+
+> cydetix@0.6.0-alpha.12 benchmark:batch2
+> npm run build && node scripts/measure-batch2.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+{
+  "node": "v24.15.0",
+  "platform": "win32-x64",
+  "repetitions": 10,
+  "p95ThresholdMilliseconds": 1000,
+  "alpha10Comparison": "NOT_COMPARABLE: alpha.10 did not contain the Batch 2 engine or corpus; all existing phase and Batch 1 benchmarks remain separate regression gates.",
+  "note": "Warm-cache local static-fixture benchmark. Heap delta is observational rather than a process-wide peak-RSS proof.",
+  "measurements": [
+    {
+      "corpus": "xss",
+      "filesAnalyzed": 10,
+      "astNodes": 456,
+      "graphFacts": 10,
+      "dataflowPathsConsidered": 57,
+      "truncationEvents": 0,
+      "medianMilliseconds": 30.155,
+      "p95Milliseconds": 50.433,
+      "maximumObservedPositiveHeapDeltaBytes": 8306560
+    },
+    {
+      "corpus": "redirect",
+      "filesAnalyzed": 8,
+      "astNodes": 313,
+      "graphFacts": 4,
+      "dataflowPathsConsidered": 41,
+      "truncationEvents": 0,
+      "medianMilliseconds": 21.738,
+      "p95Milliseconds": 27.007,
+      "maximumObservedPositiveHeapDeltaBytes": 5323040
+    },
+    {
+      "corpus": "csrf",
+      "filesAnalyzed": 6,
+      "astNodes": 321,
+      "graphFacts": 1,
+      "dataflowPathsConsidered": 22,
+      "truncationEvents": 0,
+      "medianMilliseconds": 17.088,
+      "p95Milliseconds": 21.608,
+      "maximumObservedPositiveHeapDeltaBytes": 4710040
+    }
+  ]
+}

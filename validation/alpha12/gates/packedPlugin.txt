@@ -1,0 +1,9 @@
+
+> cydetix@0.6.0-alpha.12 validate:packed-plugin
+> npm run build && node scripts/validate-packed-plugin.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+Packed Codex plugin 0.6.0-alpha.12 validated from an isolated extraction (1 skills).

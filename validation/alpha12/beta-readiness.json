@@ -1,0 +1,555 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+  "sourceBinding": "Implementation and evidence-generation source at this commit. Individual corpus/performance/gate records bind their actual invocation commit. Later evidence-only commits may change HEAD; no historical release artifact is rewritten.",
+  "version": "0.6.0-alpha.12",
+  "baselineCommit": "4e13b96cc3539e1b623a4c5a12f10a0954776253",
+  "baselineTagObject": "e692f1e23d58157a209f511adb6180d3f489a80c",
+  "tests": {
+    "total": 440,
+    "passed": 440,
+    "failed": 0,
+    "skipped": 0,
+    "sandboxPassed": 13,
+    "sandboxSkipped": 0,
+    "evidence": "validation/alpha12/local-verification.json"
+  },
+  "corpus": {
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null,
+    "identities": [
+      {
+        "repository": "OWASP/NodeGoat",
+        "commit": "c5cb68a7084e4ae7dcc60e6a98768720a81841e8",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/nodegoat.json"
+      },
+      {
+        "repository": "appsecco/dvna",
+        "commit": "9ba473add536f66ac9007966acb2a775dd31277a",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/dvna.json"
+      },
+      {
+        "repository": "expressjs/express",
+        "commit": "53d4a0d606c0388f764f192b306ce0e90200e7e8",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/express.json"
+      },
+      {
+        "repository": "fastify/fastify",
+        "commit": "d266f833f2bff34c6115c026e461b682e94d0b9c",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/fastify.json"
+      },
+      {
+        "repository": "Vikas2171/vulnerable-website",
+        "commit": "1258fa3efac1547da5bb3c7e6ab8279f00e47206",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/vikas-vulnerable-website.json"
+      },
+      {
+        "repository": "juice-shop/juice-shop",
+        "commit": "1618a611b173b4bf114028e6e02549950606e29d",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/juice-shop.json"
+      },
+      {
+        "repository": "we45/Vulnerable-Flask-App",
+        "commit": "b6a4f97afd466e83e1f60781494252dec1c37039",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/vulnerable-flask-app.json"
+      },
+      {
+        "repository": "stephenbradshaw/breakableflask",
+        "commit": "553e8b2f51c14f259f565d5df478339c366a9172",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/breakableflask.json"
+      },
+      {
+        "repository": "pallets/flask",
+        "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/flask.json"
+      },
+      {
+        "repository": "LevaAverGit/appsec-review-lab-v2",
+        "commit": "372ed54ad40059f4228f9e08dc375c51fe60b625",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/fastapi-appsec-lab.json"
+      },
+      {
+        "repository": "vercel/nextjs-postgres-auth-starter",
+        "commit": "fde8ecf1da9337223081f70cf88b420060039d6e",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/nextjs-auth.json"
+      },
+      {
+        "repository": "AntonyNRM/vulnerable-flask-app",
+        "commit": "7a12a015d0fc0d028be5cf492db822bce9af45ba",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/antony-vulnerable-flask.json"
+      },
+      {
+        "repository": "axios/axios",
+        "commit": "18e7dfedf30c96e58652887f930642ae82e0130c",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/axios.json"
+      },
+      {
+        "repository": "django/django",
+        "commit": "2b30f6255b5ef84afbd827993643d52ef2c0963a",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/django.json"
+      },
+      {
+        "repository": "fastapi/fastapi",
+        "commit": "50113da16fec53b66b80d75e80a89296de4fa5a5",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/fastapi.json"
+      },
+      {
+        "repository": "guilatrova/flask-sqlinjection-vulnerable",
+        "commit": "708246139f2f216c55c683c7aec2297bc91b7346",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/flask-sqlinjection.json"
+      },
+      {
+        "repository": "payatu/vuln-nodejs-app",
+        "commit": "bc3c90920ba4e1c668d954e5027d9ca814d2d5c6",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/payatu-vuln-node.json"
+      },
+      {
+        "repository": "vulnerable-apps/simple-ssrf",
+        "commit": "9fe0f47ca9bc69faf8454e96e0dcdf1400ce8a5a",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/simple-ssrf.json"
+      },
+      {
+        "repository": "SirAppSec/vuln-node.js-express.js-app",
+        "commit": "b977c7407f328da929577745ad509639e26c428a",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/sirappsec-vuln-node.json"
+      },
+      {
+        "repository": "ryanmcmorrowsnyk/vulnerable-typescript-app",
+        "commit": "7f8b240a2f02beba099da3632d1ba679ff8bc32f",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/vulnerable-typescript.json"
+      },
+      {
+        "repository": "miguelgrinberg/microblog",
+        "commit": "a975ef64864354867c88e0ed3a17ba7d17dca752",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/microblog.json"
+      },
+      {
+        "repository": "pallets-eco/flask-security",
+        "commit": "5d47d697d6f0806d0fe58559fe61cd6fd8ae16ef",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/flask-security.json"
+      },
+      {
+        "repository": "encode/starlette",
+        "commit": "03f12b7fcf0a3e21a8da648ca0900c79472e9efe",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/starlette.json"
+      },
+      {
+        "repository": "fastapi/full-stack-fastapi-template",
+        "commit": "cb740b656d7a0a6c5e12c7bf8e50343ec94ee9c7",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/full-stack-fastapi.json"
+      },
+      {
+        "repository": "hagopj13/node-express-boilerplate",
+        "commit": "179ae84efec61b14206d0305d941daed6c6d07f9",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/node-express-boilerplate.json"
+      },
+      {
+        "repository": "sahat/hackathon-starter",
+        "commit": "636440342a5b7b640d127dcde0c405c711c0ddaa",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/hackathon-starter.json"
+      },
+      {
+        "repository": "gothinkster/node-express-realworld-example-app",
+        "commit": "30b68e1e881462b2f4164ea09ab4c4f5699c7b0b",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/realworld-express.json"
+      },
+      {
+        "repository": "expressjs/session",
+        "commit": "96ebea4b6cd805584fba04523773b1b918a836d7",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/express-session.json"
+      },
+      {
+        "repository": "fastify/fastify-secure-session",
+        "commit": "06f4afb58d2a91e6350b71a6e491d4604333e6d4",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/fastify-secure-session.json"
+      },
+      {
+        "repository": "strapi/strapi",
+        "commit": "34fdea8fb4e11afc475a0ffdc14311cce09ddded",
+        "scansCompleted": 2,
+        "determinism": "PASSED",
+        "evidence": "validation/alpha12/corpus/strapi.json"
+      }
+    ],
+    "confirmedFP": 0,
+    "supportedPatternFN": 0,
+    "adjudicationScope": "No supported-pattern FN was discovered in the explicitly reviewed local flow cases and selective source reviews listed here. Ground truth is incomplete; this is not a claim of zero corpus-wide false negatives, complete recall, or accuracy. Unsupported constructs, resource-bound omissions, missing password-purpose semantics and fixture-only observations are accounted separately.",
+    "unadjudicatedFindings": 0,
+    "fpEvidence": [
+      "validation/alpha12/baseline-evidence.json: three confirmed prior false insecure conclusions, retained as UNKNOWN in current corpus evidence"
+    ],
+    "fnEvidence": [
+      "validation/alpha12/corpus-adjudication.json: explicit review scope and unsupported-case separation"
+    ],
+    "unknown": {
+      "applicationDataflow": 220,
+      "authorization": 0,
+      "authentication": 1,
+      "findingProof": 13,
+      "majorCauses": [
+        "202: A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN.",
+        "6: Python raw HTML rendering is reached through a transformation with UNKNOWN context-specific safety.",
+        "5: Authentication or ambient browser credential reliance is not proven for this state-changing Python route.",
+        "2: SameSite cookie evidence exists, but route and browser request semantics are insufficient for universal CSRF proof.",
+        "2: SQL control semantics are UNKNOWN.",
+        "1: Authentication or ambient browser credential reliance is not proven for this state-changing Express route.",
+        "1: Network destination policy is UNKNOWN.",
+        "1: OAuth is detected, but complete state generation, binding, and callback validation cannot be proven.",
+        "1: Untrusted content reaches an HTML response through a transformation whose context-specific safety is UNKNOWN."
+      ],
+      "limitation": "Independent proof instances overlap; TRUNCATED/unsupported coverage is separately retained even when an engine emits no UNKNOWN instances."
+    }
+  },
+  "performance": {
+    "state": "INCONCLUSIVE",
+    "evidence": "validation/alpha12/performance.json",
+    "measurements": [
+      {
+        "target": "express-session",
+        "size": "small",
+        "samplesPerVersion": 20,
+        "baselineP50Milliseconds": 1542.8495000000003,
+        "candidateP50Milliseconds": 470.65299999999934,
+        "baselineP95Milliseconds": 1759.3339000000014,
+        "candidateP95Milliseconds": 527.8607000000002,
+        "semanticEquivalence": "PASSED"
+      },
+      {
+        "target": "express",
+        "size": "medium",
+        "samplesPerVersion": 20,
+        "baselineP50Milliseconds": 2724.8445,
+        "candidateP50Milliseconds": 1786.9608999999982,
+        "baselineP95Milliseconds": 3430.1155,
+        "candidateP95Milliseconds": 3073.4397000000026,
+        "semanticEquivalence": "PASSED"
+      },
+      {
+        "target": "fastapi",
+        "size": "large",
+        "samplesPerVersion": 20,
+        "baselineP50Milliseconds": 4539.8603,
+        "candidateP50Milliseconds": 4722.0826,
+        "baselineP95Milliseconds": 5420.000499999998,
+        "candidateP95Milliseconds": 6537.299300000002,
+        "semanticEquivalence": "PASSED"
+      }
+    ],
+    "limitations": [
+      "Warm OS cache and JIT; first-ever install/cold-disk latency not estimated.",
+      "Representative RSS is sampled after each scan; maxRSS is the OS process high-water mark, shared across warmup and ten samples, not individual scan allocation.",
+      "Three repository size classes are relative to this bounded analyzer; the large target exhausts repository AST coverage and is explicitly TRUNCATED in both versions.",
+      "Two timed batches reduce order bias but do not provide independent machines or statistical significance.",
+      "Files visited counts examined files plus skipped entries; it does not count every OS directory operation."
+    ]
+  },
+  "integrations": [
+    {
+      "agent": "codex",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "claude",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "cursor",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "gemini",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "cline",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "roo",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "continue",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "copilot",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "goose",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "windsurf",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "generic-mcp",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    }
+  ],
+  "publicContracts": {
+    "state": "PASSED",
+    "evidence": "validation/alpha12/public-contracts.json and tests/validation/public-contracts.test.ts",
+    "intentionalChanges": [
+      "Complete-history Gitleaks validation rejects empty/subset reports missing immutable reviewed findings; Git scan failures no longer pass through an empty JSON report.",
+      "MCP rejects unknown keys, wrong types, non-object arguments and invalid IDs rather than accepting inputs contrary to its published schema.",
+      "MCP retained request text is bounded before a terminating newline arrives; oversized frames cannot consume unbounded retained memory.",
+      "explain defaults to human text; --format json preserves structured rule access. status aliases read-only setup --status.",
+      "Human finding counts no longer deduplicate distinct evidence. UNKNOWN means proof uncertainty rather than unknown reachability; both remain visible independently.",
+      "SARIF property bags additionally retain full finding proof and UNKNOWN instances. Scan/remediation schema versions are unchanged.",
+      "AS-PASSWORD-001@1.0.1 preserves the observed hash signal but reports UNKNOWN for unestablished credential-storage purpose and runtime reachability; high confidence in a hash operation does not prove insecure password storage.",
+      "AS-SECRET-001@1.0.1 preserves private-key header observations as UNKNOWN for working-tree and history findings; marker-only matching does not prove key material or a deployed credential. Other credential patterns retain their existing proof semantics and every remediation ceiling remains unchanged.",
+      "Babel scope failures are explicit file-local analysis limitations. Propagation iteration/evidence-path exhaustion is TRUNCATED with no actionable application-dataflow proof; numeric bounds are unchanged.",
+      "Security identity propagation now enforces 10000 facts/eight iterations and discards incomplete propagated trust on exhaustion; optional securityIr.propagationBounds and TRUNCATED coverage retain counters while dependent authorization/tenant proofs remain UNKNOWN.",
+      "Commander usage errors are printed once with unchanged exit 2; a missing scan directory retains scan-failure exit 3.",
+      "verify:development validates current versions and immutable historical evidence. Strict release gates remain unchanged and reject the unprepared development candidate."
+    ]
+  },
+  "supplyChainGates": [
+    {
+      "id": "lockedInstallation",
+      "state": "PASSED",
+      "evidence": "validation/alpha12/gates/install.txt",
+      "sourceCommit": "c4638767b8176d56dcf8a8b5033d937e3960cc68"
+    },
+    {
+      "id": "npmAudit",
+      "state": "PASSED",
+      "evidence": "validation/alpha12/gates/audit.txt",
+      "sourceCommit": "65cf5f07a7cd37bfca7b0f07222863ded1dec606"
+    },
+    {
+      "id": "onlineOsv",
+      "state": "PASSED",
+      "evidence": "validation/alpha12/gates/osv.txt",
+      "sourceCommit": "983173fdc9bef4732b3f20819f2d22066f292b8c"
+    },
+    {
+      "id": "licenses",
+      "state": "PASSED",
+      "evidence": "validation/alpha12/gates/licenses.txt",
+      "sourceCommit": "7d0cb30c398dda7b2ea5cccfff098c6f3d04f46b"
+    },
+    {
+      "id": "privacy",
+      "state": "PASSED",
+      "evidence": "validation/alpha12/gates/privacy.txt",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e"
+    },
+    {
+      "id": "history",
+      "state": "FAILED",
+      "evidence": "validation/alpha12/gates/history.txt",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e"
+    },
+    {
+      "id": "workflowSecurity",
+      "state": "PASSED",
+      "evidence": "validation/alpha12/gates/workflow.txt",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e"
+    },
+    {
+      "id": "package",
+      "state": "PASSED",
+      "evidence": "validation/alpha12/gates/verify.txt",
+      "sourceCommit": "f5ebf910399aa4806831cecfe0a1bb88a8cbeffe"
+    },
+    {
+      "id": "packedInstall",
+      "state": "PASSED",
+      "evidence": "validation/alpha12/gates/verify.txt",
+      "sourceCommit": "f5ebf910399aa4806831cecfe0a1bb88a8cbeffe"
+    },
+    {
+      "id": "packedPlugin",
+      "state": "PASSED",
+      "evidence": "validation/alpha12/gates/packedPlugin.txt",
+      "sourceCommit": "9e7e3177ab748ca686bb573b221cbe899e0c71ba"
+    },
+    {
+      "id": "selfScan",
+      "state": "PASSED",
+      "evidence": "validation/alpha12/gates/selfScan.txt",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e"
+    },
+    {
+      "id": "cycloneDx",
+      "state": "PASSED",
+      "evidence": "verify:development log: official schema checks and unchanged strict workflow/publication controls. Static controls do not establish OIDC publication or hosted approvals.",
+      "sourceCommit": "f5ebf910399aa4806831cecfe0a1bb88a8cbeffe"
+    },
+    {
+      "id": "sarif",
+      "state": "PASSED",
+      "evidence": "verify:development log: official schema checks and unchanged strict workflow/publication controls. Static controls do not establish OIDC publication or hosted approvals.",
+      "sourceCommit": "f5ebf910399aa4806831cecfe0a1bb88a8cbeffe"
+    },
+    {
+      "id": "releaseControls",
+      "state": "PASSED",
+      "evidence": "verify:development log: official schema checks and unchanged strict workflow/publication controls. Static controls do not establish OIDC publication or hosted approvals.",
+      "sourceCommit": "f5ebf910399aa4806831cecfe0a1bb88a8cbeffe"
+    },
+    {
+      "id": "gitleaks",
+      "state": "PASSED",
+      "evidence": "validation/alpha12/gitleaks-review.json; pinned Docker v8.30.1, network disabled, complete --all history, no repository ignore directives",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e"
+    },
+    {
+      "id": "mandatorySandbox",
+      "state": "PASSED",
+      "evidence": "13 mandatory Docker integration tests; image digest recorded in tests/verify gate records",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e"
+    },
+    {
+      "id": "hostedCi",
+      "state": "NOT_RUN",
+      "evidence": "Exact development commit was not pushed or submitted to hosted workflows. Historical alpha.11 results do not satisfy this gate."
+    },
+    {
+      "id": "codeql",
+      "state": "NOT_RUN",
+      "evidence": "Exact development commit was not pushed or submitted to hosted workflows. Historical alpha.11 results do not satisfy this gate."
+    },
+    {
+      "id": "openssf",
+      "state": "NOT_RUN",
+      "evidence": "Exact development commit was not pushed or submitted to hosted workflows. Historical alpha.11 results do not satisfy this gate."
+    },
+    {
+      "id": "provenanceAttestation",
+      "state": "NOT_RUN",
+      "evidence": "Release workflow/configuration preserved and locally audited. No release, publication, attestation or live release-environment transaction was attempted."
+    },
+    {
+      "id": "sbomAttestation",
+      "state": "NOT_RUN",
+      "evidence": "Release workflow/configuration preserved and locally audited. No release, publication, attestation or live release-environment transaction was attempted."
+    },
+    {
+      "id": "trustedPublishing",
+      "state": "NOT_RUN",
+      "evidence": "Release workflow/configuration preserved and locally audited. No release, publication, attestation or live release-environment transaction was attempted."
+    },
+    {
+      "id": "protectedReleaseEnvironment",
+      "state": "NOT_RUN",
+      "evidence": "Release workflow/configuration preserved and locally audited. No release, publication, attestation or live release-environment transaction was attempted."
+    }
+  ],
+  "remediationAuthority": "UNCHANGED_EXACT_HTTPONLY_SAFE_ONLY",
+  "blockers": [
+    "Exact-commit hosted CI, CodeQL and OpenSSF gates remain unrun; local results do not replace them.",
+    "Corpus ground truth remains incomplete and implementation-time adjudication has no independent human review. Supported-pattern FN claims remain limited to named reviews.",
+    "Live-host validation has not been performed for the eleven supported client adapters; configuration and direct subprocess coverage are established separately.",
+    "At least one controlled p50/p95 comparison needs review; measurements are descriptive and no statistical equivalence is claimed.",
+    "All-refs history author audit flags a pre-existing Dependabot noreply identity outside HEAD ancestry. Frozen publication approval metadata was preserved; the separate HEAD audit does not replace this failed gate."
+  ],
+  "verdict": "ALPHA12_NOT_BETA_READY"
+}

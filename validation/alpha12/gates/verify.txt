@@ -1,0 +1,200 @@
+
+> cydetix@0.6.0-alpha.12 verify:development
+> npm run format && npm run lint && npm run check && npm run schemas:check && npm run validate:sarif && npm run validate:sbom && npm test && npm run validate:remediation && npm run validate:skills && npm run validate:plugin && npm run validate:triggers && npm run validate:mcp && npm run validate:development && npm run validate:package && npm run validate:install && npm run validate:workflow-security && npm run audit:public-repository && npm run audit:licenses
+
+
+> cydetix@0.6.0-alpha.12 format
+> prettier --check .
+
+Checking formatting...
+All matched files use Prettier code style!
+
+> cydetix@0.6.0-alpha.12 lint
+> eslint .
+
+
+> cydetix@0.6.0-alpha.12 check
+> tsc -p tsconfig.json --noEmit
+
+
+> cydetix@0.6.0-alpha.12 schemas:check
+> npm run build && node scripts/export-schemas.mjs --check
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+Checked 21 versioned JSON schemas and 27 rule definitions.
+
+> cydetix@0.6.0-alpha.12 validate:sarif
+> node scripts/validate-sarif.mjs
+
+Microsoft SARIF Multitool validated phase-one in 66036 ms.
+Microsoft SARIF Multitool validated phase-two-code-flow in 32784 ms.
+Microsoft SARIF Multitool validated phase-three-authentication-code-flow in 100430 ms.
+Microsoft SARIF Multitool validated phase-four-workflow-code-flow in 108505 ms.
+Microsoft SARIF Multitool validated phase-four-secret-redaction in 17335 ms.
+Microsoft SARIF Multitool validated phase-four-dependency-code-flow in 12916 ms.
+Microsoft SARIF Multitool validated Phase 1-5 SARIF 2.1.0 output, including SAFE fixes, dependency/workflow code flows, and redacted secrets.
+
+> cydetix@0.6.0-alpha.12 validate:sbom
+> node scripts/validate-sbom.mjs
+
+Validated CycloneDX 1.7 SBOM output for the fixture and Cydetix inventory.
+
+> cydetix@0.6.0-alpha.12 test
+> vitest run --maxWorkers=1 --testTimeout=120000
+
+
+ RUN  v4.1.11 <workspace>
+
+
+Detected AI agents:
+  Cursor
+
+Not enabled. Run cydetix setup whenever you are ready.
+
+Detected AI agents:
+  Cursor
+
+AI integration:
+  Cursor connected
+
+Done. You do not need to mention Cydetix. Just ask:
+
+  "Check this project for security issues."
+
+ Test Files  57 passed (57)
+      Tests  439 passed (439)
+   Start at  11:33:06
+   Duration  199.39s (transform 2.12s, setup 0ms, import 21.05s, tests 164.12s, environment 11ms)
+
+
+> cydetix@0.6.0-alpha.12 validate:remediation
+> node scripts/validate-remediation.mjs
+
+Validated remediation report v1, zero-write dry-run, APPLIED_VERIFIED proof, and idempotent second run.
+
+> cydetix@0.6.0-alpha.12 validate:skills
+> node scripts/validate-skills.mjs
+
+Validated 1 portable skills and plugin copies.
+
+> cydetix@0.6.0-alpha.12 validate:plugin
+> node scripts/validate-plugin.mjs
+
+Validated plugin manifest: <workspace>\plugins\cydetix\.codex-plugin\plugin.json
+
+> cydetix@0.6.0-alpha.12 validate:triggers
+> npm run build && node scripts/evaluate-agent-triggers.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+{
+  "corpus": "validation/agent-trigger-corpus.json",
+  "kind": "deterministic descriptor-selection proxy",
+  "correct": 36,
+  "missed": 0,
+  "unwanted": 0,
+  "total": 36,
+  "limitation": "Supported host agents make independent probabilistic invocation decisions."
+}
+
+> cydetix@0.6.0-alpha.12 validate:mcp
+> npm run build && node scripts/validate-mcp.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+Validated explicit-root Cydetix MCP initialize, exact-version startup, and three-tool stdio surface.
+
+> cydetix@0.6.0-alpha.12 validate:development
+> npm run build && node scripts/validate-development.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+Development 0.6.0-alpha.12 is consistent; 18 historical evidence files and immutable alpha.11 identity preserved. Release readiness is not asserted.
+
+> cydetix@0.6.0-alpha.12 validate:package
+> npm run build && node scripts/validate-package.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+Validated 215 package entries; 289076 packed bytes; 1811816 unpacked bytes.
+
+> cydetix@0.6.0-alpha.12 validate:install
+> npm run build && node scripts/validate-packed-install.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+Packed install smoke passed for cydetix 0.6.0-alpha.12.
+
+> cydetix@0.6.0-alpha.12 validate:workflow-security
+> node scripts/validate-workflow-security.mjs
+
+{
+  "schemaVersion": "1.0.0",
+  "state": "PASS",
+  "workflowsReviewed": [
+    "ci.yml",
+    "codeql.yml",
+    "release.yml",
+    "scorecard.yml"
+  ],
+  "controls": [
+    "NO_PULL_REQUEST_TARGET",
+    "FULL_SHA_ACTION_PINNING",
+    "NO_LONG_LIVED_NPM_TOKEN",
+    "TAG_ONLY_RELEASE_TRIGGER",
+    "PROTECTED_RELEASE_ENVIRONMENT",
+    "OIDC_ONLY_IN_PUBLISH_JOB",
+    "COMPLETE_RELEASE_HISTORY_CHECKOUT",
+    "RELEASE_REACHABLE_HISTORY_SCOPE",
+    "PINNED_UNSUPPRESSED_COMPLETE_HISTORY_SECRET_SCAN",
+    "EXPLICIT_SINGLE_LOCAL_NPM_TARBALL"
+  ],
+  "issues": []
+}
+
+> cydetix@0.6.0-alpha.12 audit:public-repository
+> node scripts/audit-public-repository.mjs
+
+{
+  "schemaVersion": "1.0.0",
+  "state": "PASS",
+  "filesReviewed": 995,
+  "scope": "TRACKED_AND_UNTRACKED_NOT_IGNORED",
+  "bytesReviewed": 6255176,
+  "issues": []
+}
+
+> cydetix@0.6.0-alpha.12 audit:licenses
+> node scripts/audit-licenses.mjs
+
+{
+  "schemaVersion": "1.0.0",
+  "state": "PASS",
+  "dependenciesReviewed": 162,
+  "platformOptionalDependenciesNotInstalled": 52,
+  "licenseCounts": {
+    "Apache-2.0": 15,
+    "BlueOak-1.0.0": 1,
+    "BSD-2-Clause": 6,
+    "BSD-3-Clause": 2,
+    "ISC": 8,
+    "MIT": 128,
+    "MPL-2.0": 2
+  },
+  "packageLicense": "Apache-2.0",
+  "bundledDependencies": false,
+  "issues": []
+}

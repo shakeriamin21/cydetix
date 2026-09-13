@@ -1,0 +1,61 @@
+
+> cydetix@0.6.0-alpha.12 benchmark:phase2
+> npm run build && node scripts/measure-phase2.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+{
+  "node": "v24.15.0",
+  "platform": "win32-x64",
+  "measuredAt": "2026-09-13T08:13:50.086Z",
+  "note": "Warm-cache local fixture benchmark; not a cross-machine performance guarantee.",
+  "measurements": [
+    {
+      "fixture": "idor-vulnerable",
+      "filesExamined": 6,
+      "repetitions": 10,
+      "medianMilliseconds": 35.717,
+      "p95Milliseconds": 44.97,
+      "minimumMilliseconds": 27.062,
+      "maximumMilliseconds": 44.97
+    },
+    {
+      "fixture": "idor-secure",
+      "filesExamined": 6,
+      "repetitions": 10,
+      "medianMilliseconds": 24.114,
+      "p95Milliseconds": 25.692,
+      "minimumMilliseconds": 22.197,
+      "maximumMilliseconds": 25.692
+    },
+    {
+      "fixture": "tenant-vulnerable",
+      "filesExamined": 6,
+      "repetitions": 10,
+      "medianMilliseconds": 22.583,
+      "p95Milliseconds": 26.259,
+      "minimumMilliseconds": 20.451,
+      "maximumMilliseconds": 26.259
+    },
+    {
+      "fixture": "tenant-secure",
+      "filesExamined": 6,
+      "repetitions": 10,
+      "medianMilliseconds": 21.527,
+      "p95Milliseconds": 24.151,
+      "minimumMilliseconds": 19.468,
+      "maximumMilliseconds": 24.151
+    },
+    {
+      "fixture": "false-positive-traps",
+      "filesExamined": 5,
+      "repetitions": 10,
+      "medianMilliseconds": 23.631,
+      "p95Milliseconds": 28.725,
+      "minimumMilliseconds": 19.978,
+      "maximumMilliseconds": 28.725
+    }
+  ]
+}

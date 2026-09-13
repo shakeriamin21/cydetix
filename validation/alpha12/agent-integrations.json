@@ -1,0 +1,215 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+  "version": "0.6.0-alpha.12",
+  "publicTools": [
+    "cydetix_scan",
+    "cydetix_fix",
+    "cydetix_explain"
+  ],
+  "integrations": [
+    {
+      "agent": "codex",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "claude",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "cursor",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "gemini",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "cline",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "roo",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "continue",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "copilot",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "goose",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "windsurf",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    },
+    {
+      "agent": "generic-mcp",
+      "configuration": "PASSED",
+      "adapterTests": "PASSED",
+      "subprocess": "PASSED",
+      "liveHost": "NOT_RUN",
+      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+    }
+  ],
+  "regressionSuites": [
+    {
+      "path": "tests/integrations/adapters.test.ts",
+      "status": "passed",
+      "passed": 25,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/integrations/agent-launch.integration.test.ts",
+      "status": "passed",
+      "passed": 1,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/integrations/alpha12.test.ts",
+      "status": "passed",
+      "passed": 11,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/integrations/compatibility.test.ts",
+      "status": "passed",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/integrations/runtime.test.ts",
+      "status": "passed",
+      "passed": 5,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/integrations/setup.test.ts",
+      "status": "passed",
+      "passed": 40,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/integrations/triggers.test.ts",
+      "status": "passed",
+      "passed": 37,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/mcp/alpha12.test.ts",
+      "status": "passed",
+      "passed": 14,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/mcp/server.test.ts",
+      "status": "passed",
+      "passed": 6,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/remediation/assessment.test.ts",
+      "status": "passed",
+      "passed": 7,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/remediation/planning.test.ts",
+      "status": "passed",
+      "passed": 4,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/remediation/safe-fix.test.ts",
+      "status": "passed",
+      "passed": 2,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/remediation/session-variations.test.ts",
+      "status": "passed",
+      "passed": 3,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/remediation/transaction-safety.test.ts",
+      "status": "passed",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/verification/container-sandbox.integration.test.ts",
+      "status": "passed",
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0
+    },
+    {
+      "path": "tests/verification/runner.test.ts",
+      "status": "passed",
+      "passed": 8,
+      "failed": 0,
+      "skipped": 0
+    }
+  ],
+  "scope": "Configuration validation, adapter tests and direct subprocess/protocol tests. The session-installed alpha.6 MCP bound to a different root is excluded. Live-host validation is NOT_RUN for every client; no network or host installation is inferred."
+}

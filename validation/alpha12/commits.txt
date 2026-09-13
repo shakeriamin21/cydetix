@@ -1,0 +1,28 @@
+Local alpha.12 commits through source 017c51664a8e596ab8d0f94cfe56a2618d18ec5e.
+The final evidence-only closing commit follows this inventory and is identified in the development handoff.
+
+6029667947a7798dce9d9235f9c9a32c26b1fd70 docs(alpha12): record baseline and hardening gap plan
+025c4379b4ca1c70cca2c7adc4d3820e0e195f4f fix(alpha12): expose proof uncertainty and enforce the MCP contract
+cc848cca7630a7695469ae753d87220c034bdb24 test(alpha12): revalidate all eleven agent adapters against hostile content
+0b74256516ea874e11a51c8bb87579802eac434d chore(alpha12): bind development versions without changing release evidence
+a3c86e1f5e68b766cea602b461aba64248fe9252 test(alpha12): add thirty pinned repositories and full-report corpus replay
+7715de9dca900495692e30074a2e9886cf784f5f fix(alpha12): contain parser scope failures and remove repeated graph work
+59d983d8221c2b1cbf8e2743bef5c65233d44941 fix(alpha12): withhold proofs when propagation or evidence bounds exhaust
+078946aacf260f35f49ff4a530e5e055948751c8 fix(alpha12): require purpose evidence before claiming insecure password storage
+11ad46a4e08da795e1411449afdf3a68ee377fa7 feat(alpha12): classify beta contracts and validate conservative readiness evidence
+254a08a45312c4f8d2c7ee598f3e01310f831478 fix(alpha12): keep private-key marker claims conditional on unknown payloads
+ee57a798a227a3ca77f58034bbc588aced9d7532 fix(alpha12): bound recursive identity propagation and retain truncation evidence
+de62935fa69a371e2708b0b8cbfee692ce2d0f1e test(alpha12): lock CLI errors, adapter launches and comparative evidence procedures
+983173fdc9bef4732b3f20819f2d22066f292b8c test(alpha12): compare large Python corpus without changed identity-bound semantics
+1818a693ef3dd871b01b136af6696a13aa332693 perf(alpha12): index authentication symbol lookups by source file
+a7b051e01a0e2dddb9701537c73e2e41d6d39997 test(alpha12): record scoped corpus adjudication and explicit comparison differences
+7eac7ab695aa08eb5304fda3786f75d745426e95 test(alpha12): retain immutable baseline tests and reproduced false-positive evidence
+c4638767b8176d56dcf8a8b5033d937e3960cc68 test(alpha12): spell Python fixtures without ambiguous email-like escape text
+98d67f95fc0d16de5d5a1bba27ab6a7ce4a70044 test(alpha12): retain thirty deterministic corpus pairs and scoped source adjudication
+65cf5f07a7cd37bfca7b0f07222863ded1dec606 test(alpha12): retain comparative performance and unify UNKNOWN summary accounting
+7d0cb30c398dda7b2ea5cccfff098c6f3d04f46b test(alpha12): align runtime assertions and retain observed performance regression
+f5ebf910399aa4806831cecfe0a1bb88a8cbeffe docs(alpha12): derive readiness narrative from measured evidence
+9e7e3177ab748ca686bb573b221cbe899e0c71ba fix(alpha12): reject incomplete Gitleaks history evidence
+f2981a72055970010b775c4464a2df8c5871a83f docs(alpha12): replace stale current limitations with development evidence scope
+1a3a46ec1f2060f90bce26a1ca70b312b8dab40a test(alpha12): retain self-scan evidence and require successful independent history execution
+017c51664a8e596ab8d0f94cfe56a2618d18ec5e test(alpha12): bind supplemental SARIF identifier reviews without altering historical evidence

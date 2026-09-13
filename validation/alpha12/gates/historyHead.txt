@@ -1,0 +1,16 @@
+
+> cydetix@0.6.0-alpha.12 audit:history
+> node scripts/audit-git-history.mjs --enforce --ref HEAD
+
+{
+  "schemaVersion": "1.0.0",
+  "state": "PASS",
+  "scope": {
+    "mode": "REACHABLE_FROM_REF",
+    "requestedRef": "HEAD",
+    "resolvedCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e"
+  },
+  "commitsReviewed": 57,
+  "issues": [],
+  "note": "This deterministic privacy audit complements, but does not replace, an independent secret scanner."
+}

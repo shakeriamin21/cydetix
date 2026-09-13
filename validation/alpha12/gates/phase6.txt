@@ -1,0 +1,63 @@
+
+> cydetix@0.6.0-alpha.12 benchmark:phase6
+> npm run build && node scripts/measure-phase6-scale.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+{
+  "version": "1.0.0",
+  "results": [
+    {
+      "name": "source-100",
+      "wallMilliseconds": 228.42230000000006,
+      "peakRssBytes": 84484096,
+      "files": 101,
+      "filesPerSecond": 442.163484038117,
+      "graphNodes": 101,
+      "graphEdges": 0,
+      "findings": 0
+    },
+    {
+      "name": "source-1000",
+      "wallMilliseconds": 1440.5783999999999,
+      "peakRssBytes": 102617088,
+      "files": 1001,
+      "filesPerSecond": 694.8597868744944,
+      "graphNodes": 1001,
+      "graphEdges": 0,
+      "findings": 0
+    },
+    {
+      "name": "source-5000",
+      "wallMilliseconds": 6725.381399999999,
+      "peakRssBytes": 157085696,
+      "files": 5001,
+      "filesPerSecond": 743.600950274731,
+      "graphNodes": 5001,
+      "graphEdges": 0,
+      "findings": 0
+    },
+    {
+      "name": "dependencies-2500",
+      "wallMilliseconds": 776.7281000000003,
+      "peakRssBytes": 321183744,
+      "files": 2,
+      "filesPerSecond": 2.5749036245759607,
+      "graphNodes": 1,
+      "graphEdges": 0,
+      "findings": 0
+    },
+    {
+      "name": "workflows-250",
+      "wallMilliseconds": 341.814699999999,
+      "peakRssBytes": 325554176,
+      "files": 250,
+      "filesPerSecond": 731.3904287908061,
+      "graphNodes": 1,
+      "graphEdges": 0,
+      "findings": 0
+    }
+  ]
+}

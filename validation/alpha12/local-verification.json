@@ -1,0 +1,872 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+  "version": "0.6.0-alpha.12",
+  "tests": {
+    "total": 440,
+    "passed": 440,
+    "failed": 0,
+    "skipped": 0,
+    "sourceReportSha256": "e5b5f8559abebd682e46257b82f323be8c679fd0a01c20f2cb412a225d7575e1",
+    "suites": [
+      {
+        "path": "tests/auth-graph/model.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/authentication-analysis/invariants.test.ts",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/authorization-analysis/proof.test.ts",
+        "status": "passed",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/cli/agent-subprocess.test.ts",
+        "status": "passed",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/cli/smoke.test.ts",
+        "status": "passed",
+        "passed": 16,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/cli/trust.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/call-graph/builder.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/dataflow-analysis/alpha12-bounds.test.ts",
+        "status": "passed",
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/dataflow-analysis/alpha12-identity-bounds.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/dataflow-analysis/security-facts.test.ts",
+        "status": "passed",
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/integration/accepted-risk.test.ts",
+        "status": "passed",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/integration/phase2-fixtures.test.ts",
+        "status": "passed",
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/integration/phase3-fixtures.test.ts",
+        "status": "passed",
+        "passed": 14,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/integration/scan-fixtures.test.ts",
+        "status": "passed",
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/integrations/adapters.test.ts",
+        "status": "passed",
+        "passed": 25,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/integrations/agent-launch.integration.test.ts",
+        "status": "passed",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/integrations/alpha12.test.ts",
+        "status": "passed",
+        "passed": 11,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/integrations/compatibility.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/integrations/runtime.test.ts",
+        "status": "passed",
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/integrations/setup.test.ts",
+        "status": "passed",
+        "passed": 40,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/integrations/triggers.test.ts",
+        "status": "passed",
+        "passed": 37,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/mcp/alpha12.test.ts",
+        "status": "passed",
+        "passed": 14,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/mcp/server.test.ts",
+        "status": "passed",
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/reporting/alpha12.test.ts",
+        "status": "passed",
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/reporting/human.test.ts",
+        "status": "passed",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/reporting/sarif.test.ts",
+        "status": "passed",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/remediation/assessment.test.ts",
+        "status": "passed",
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/remediation/planning.test.ts",
+        "status": "passed",
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/remediation/safe-fix.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/remediation/session-variations.test.ts",
+        "status": "passed",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/remediation/transaction-safety.test.ts",
+        "status": "passed",
+        "passed": 8,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/repository-discovery/git-metadata.test.ts",
+        "status": "passed",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/rules/alpha12-password-purpose.test.ts",
+        "status": "passed",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/rules/alpha12-secret-marker.test.ts",
+        "status": "passed",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/rules/batch1.test.ts",
+        "status": "passed",
+        "passed": 25,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/rules/batch2.test.ts",
+        "status": "passed",
+        "passed": 21,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/rules/catalogue.test.ts",
+        "status": "passed",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/security-ir/model.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/supply-chain/phase4.test.ts",
+        "status": "passed",
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/supply-chain/provider-failures.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/security/boundary.test.ts",
+        "status": "passed",
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/security/external-tools.test.ts",
+        "status": "passed",
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/security/gitleaks-report.test.ts",
+        "status": "passed",
+        "passed": 32,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/security/history-audit.test.ts",
+        "status": "passed",
+        "passed": 5,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/security/hostile-repository.test.ts",
+        "status": "passed",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/security/supply-chain.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/security/workflow-security.test.ts",
+        "status": "passed",
+        "passed": 19,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/tenant-isolation/proof.test.ts",
+        "status": "passed",
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/validation/alpha12-parser-performance.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/validation/beta-readiness.test.ts",
+        "status": "passed",
+        "passed": 12,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/validation/development.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/validation/evaluator.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/validation/mutations.test.ts",
+        "status": "passed",
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/validation/public-contracts.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/validation/sarif-multitool.test.ts",
+        "status": "passed",
+        "passed": 7,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/verification/container-sandbox.integration.test.ts",
+        "status": "passed",
+        "passed": 13,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/verification/runner.test.ts",
+        "status": "passed",
+        "passed": 8,
+        "failed": 0,
+        "skipped": 0
+      }
+    ]
+  },
+  "gates": [
+    {
+      "id": "audit",
+      "sourceCommit": "65cf5f07a7cd37bfca7b0f07222863ded1dec606",
+      "command": [
+        "npm",
+        "audit",
+        "--json",
+        "--audit-level=high"
+      ],
+      "startedAt": "2026-09-13T07:49:42.816Z",
+      "durationMilliseconds": 2974.9473,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "bdd3780f5835365333db23f7c7b165bdbafd081e414be9e3956446937adffba1",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/audit.txt",
+      "publicLogSha256": "bdd3780f5835365333db23f7c7b165bdbafd081e414be9e3956446937adffba1",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "batch1",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "command": [
+        "npm",
+        "run",
+        "benchmark:batch1"
+      ],
+      "startedAt": "2026-09-13T08:14:45.725Z",
+      "durationMilliseconds": 8455.5183,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "e749995180793d20c581dbd2feac7113195720871f6bdb27bef1c1816735a976",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/batch1.txt",
+      "publicLogSha256": "e749995180793d20c581dbd2feac7113195720871f6bdb27bef1c1816735a976",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "batch2",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "command": [
+        "npm",
+        "run",
+        "benchmark:batch2"
+      ],
+      "startedAt": "2026-09-13T08:14:54.789Z",
+      "durationMilliseconds": 8611.0463,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "cddf714ac9ce71d579921ee06e1af79d749fcfc2face9f0a85f9af901b122c4a",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/batch2.txt",
+      "publicLogSha256": "cddf714ac9ce71d579921ee06e1af79d749fcfc2face9f0a85f9af901b122c4a",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "externalNodeGoat",
+      "sourceCommit": "f2981a72055970010b775c4464a2df8c5871a83f",
+      "command": [
+        "npm",
+        "run",
+        "validate:external",
+        "--",
+        "validation/corpora/owasp-nodegoat.json",
+        ".cydetix/corpora/NodeGoat"
+      ],
+      "startedAt": "2026-09-13T08:02:44.843Z",
+      "durationMilliseconds": 18942.555500000002,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "96f2f2d6449648584a99a0a7bb4936762695c424a76b5c39b3b1f3d491c5b2d9",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/externalNodeGoat.txt",
+      "publicLogSha256": "96f2f2d6449648584a99a0a7bb4936762695c424a76b5c39b3b1f3d491c5b2d9",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "externalPython",
+      "sourceCommit": "f2981a72055970010b775c4464a2df8c5871a83f",
+      "command": [
+        "npm",
+        "run",
+        "validate:external",
+        "--",
+        "validation/corpora/owasp-benchmark-python.json",
+        ".cydetix/corpora/BenchmarkPython"
+      ],
+      "startedAt": "2026-09-13T08:03:04.598Z",
+      "durationMilliseconds": 21496.927499999998,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "d843a1a8cc99fd6fcf886df28e774b698e3516b4f8d6fed3bc38bb9ae5b248ba",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/externalPython.txt",
+      "publicLogSha256": "d843a1a8cc99fd6fcf886df28e774b698e3516b4f8d6fed3bc38bb9ae5b248ba",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "history",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "command": [
+        "npm",
+        "run",
+        "audit:history",
+        "--",
+        "--enforce",
+        "--all"
+      ],
+      "startedAt": "2026-09-13T08:18:18.420Z",
+      "durationMilliseconds": 34023.8856,
+      "exitCode": 1,
+      "signal": null,
+      "outputLimited": false,
+      "state": "FAILED",
+      "stdoutSha256": "d7175c3ac9895d5d7e51f9fabcb6c6f1dbde4009e26b9ea97279ab53f42b6c9d",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/history.txt",
+      "publicLogSha256": "d7175c3ac9895d5d7e51f9fabcb6c6f1dbde4009e26b9ea97279ab53f42b6c9d",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "historyHead",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "command": [
+        "npm",
+        "run",
+        "audit:history",
+        "--",
+        "--enforce",
+        "--ref",
+        "HEAD"
+      ],
+      "startedAt": "2026-09-13T08:18:53.219Z",
+      "durationMilliseconds": 24667.996300000003,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "b0a45a3f0f3c4cd819c0196bf33f25bfc7935afd3550d305b5041e00b942e338",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/historyHead.txt",
+      "publicLogSha256": "b0a45a3f0f3c4cd819c0196bf33f25bfc7935afd3550d305b5041e00b942e338",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "install",
+      "sourceCommit": "c4638767b8176d56dcf8a8b5033d937e3960cc68",
+      "command": [
+        "npm",
+        "ci",
+        "--ignore-scripts"
+      ],
+      "startedAt": "2026-09-13T07:27:50.000Z",
+      "durationMilliseconds": 332240.55460000003,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "f1225d562eb65f63221e1d4228d27bb2937e2ce7bcc9589d3b24136c67c96f7c",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/install.txt",
+      "publicLogSha256": "f1225d562eb65f63221e1d4228d27bb2937e2ce7bcc9589d3b24136c67c96f7c",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "licenses",
+      "sourceCommit": "7d0cb30c398dda7b2ea5cccfff098c6f3d04f46b",
+      "command": [
+        "npm",
+        "run",
+        "audit:licenses"
+      ],
+      "startedAt": "2026-09-13T07:55:02.919Z",
+      "durationMilliseconds": 1729.5636,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "9a7a1af578a7876def699838ad98f7be09d188c77887548c7c1d7a44aa982791",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/licenses.txt",
+      "publicLogSha256": "9a7a1af578a7876def699838ad98f7be09d188c77887548c7c1d7a44aa982791",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "osv",
+      "sourceCommit": "983173fdc9bef4732b3f20819f2d22066f292b8c",
+      "command": [
+        "npm",
+        "run",
+        "validate:online-osv"
+      ],
+      "startedAt": "2026-09-13T07:14:54.633Z",
+      "durationMilliseconds": 85877.30960000001,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "e5c63e84247960fac39d7f129ba07824013ad38030d89e10a410b8d7ca854a61",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/osv.txt",
+      "publicLogSha256": "e5c63e84247960fac39d7f129ba07824013ad38030d89e10a410b8d7ca854a61",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "packedPlugin",
+      "sourceCommit": "9e7e3177ab748ca686bb573b221cbe899e0c71ba",
+      "command": [
+        "npm",
+        "run",
+        "validate:packed-plugin"
+      ],
+      "startedAt": "2026-09-13T08:00:54.371Z",
+      "durationMilliseconds": 10299.124099999999,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "fbcee0c0a797a2c50e414f379a0ef98776dc0fc398d2ebae2ecf37380827192f",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/packedPlugin.txt",
+      "publicLogSha256": "fbcee0c0a797a2c50e414f379a0ef98776dc0fc398d2ebae2ecf37380827192f",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "phase2",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "command": [
+        "npm",
+        "run",
+        "benchmark:phase2"
+      ],
+      "startedAt": "2026-09-13T08:13:41.099Z",
+      "durationMilliseconds": 9032.6689,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "342e6234e5f5b332a4e26a5190b321b717037883cffcc09517cb68f26e076fe0",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/phase2.txt",
+      "publicLogSha256": "342e6234e5f5b332a4e26a5190b321b717037883cffcc09517cb68f26e076fe0",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "phase3",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "command": [
+        "npm",
+        "run",
+        "benchmark:phase3"
+      ],
+      "startedAt": "2026-09-13T08:13:50.871Z",
+      "durationMilliseconds": 10877.567,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "b7afb13cf5fbe8322fdebd98002ddd0a799c5affc75ab9728ee4bb836aeaac65",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/phase3.txt",
+      "publicLogSha256": "b7afb13cf5fbe8322fdebd98002ddd0a799c5affc75ab9728ee4bb836aeaac65",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "phase4",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "command": [
+        "npm",
+        "run",
+        "benchmark:phase4"
+      ],
+      "startedAt": "2026-09-13T08:14:02.307Z",
+      "durationMilliseconds": 8230.120799999999,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "5b49a7a94467c9a6538dfbf0ea6817497cee2acfaa0471e4805400c3767efcdc",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/phase4.txt",
+      "publicLogSha256": "5b49a7a94467c9a6538dfbf0ea6817497cee2acfaa0471e4805400c3767efcdc",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "phase5",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "command": [
+        "npm",
+        "run",
+        "benchmark:phase5"
+      ],
+      "startedAt": "2026-09-13T08:14:11.118Z",
+      "durationMilliseconds": 12647.390399999998,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "e194e9fe8fba78cd3f424132eb5f6e1888f01a2b67e08edaa5609250aac42732",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/phase5.txt",
+      "publicLogSha256": "e194e9fe8fba78cd3f424132eb5f6e1888f01a2b67e08edaa5609250aac42732",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "phase6",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "command": [
+        "npm",
+        "run",
+        "benchmark:phase6"
+      ],
+      "startedAt": "2026-09-13T08:14:24.442Z",
+      "durationMilliseconds": 20709.609999999997,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "75da41fef846860a4a640687d0a99f71e62c62dd43f4283af5c2981f638ef904",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/phase6.txt",
+      "publicLogSha256": "75da41fef846860a4a640687d0a99f71e62c62dd43f4283af5c2981f638ef904",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "privacy",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "command": [
+        "npm",
+        "run",
+        "audit:public-repository"
+      ],
+      "startedAt": "2026-09-13T08:21:05.066Z",
+      "durationMilliseconds": 1089.1082999999999,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "9f0fde185268d5d870de633d87d978d8294ea3b680dcbafd918b724ad51bf0b8",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/privacy.txt",
+      "publicLogSha256": "9f0fde185268d5d870de633d87d978d8294ea3b680dcbafd918b724ad51bf0b8",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "selfScan",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "command": [
+        "npm",
+        "run",
+        "release:self-scan"
+      ],
+      "startedAt": "2026-09-13T08:19:24.150Z",
+      "durationMilliseconds": 15970.7165,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "d9f74bf73848eb4d8b16929f61a1b9ba9852b7bd828776af1940e80411d6a0ff",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/selfScan.txt",
+      "publicLogSha256": "d9f74bf73848eb4d8b16929f61a1b9ba9852b7bd828776af1940e80411d6a0ff",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "tests",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "command": [
+        "npm",
+        "test",
+        "--",
+        "--reporter=json",
+        "--outputFile=.cydetix/alpha12/tests.json"
+      ],
+      "startedAt": "2026-09-13T08:15:25.303Z",
+      "durationMilliseconds": 204788.8584,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "2b32e2ae518e66a7a98bcb5c265ba7c0dad19e94a8894c329084296beccab316",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
+      "publicLog": "validation/alpha12/gates/tests.txt",
+      "publicLogSha256": "75db3a0153f9441bfd5db15923186d2e4351388b5b85933b1e0890507f92474e",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "verify",
+      "sourceCommit": "f5ebf910399aa4806831cecfe0a1bb88a8cbeffe",
+      "command": [
+        "npm",
+        "run",
+        "verify:development"
+      ],
+      "startedAt": "2026-09-13T07:55:53.353Z",
+      "durationMilliseconds": 758479.6930000001,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "63c8f9dea555a65dcf002ccddd2395f84c44a33c82423e43628c6bb1e99fbb73",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
+      "publicLog": "validation/alpha12/gates/verify.txt",
+      "publicLogSha256": "0af9494f5dec6f38d911128dbf12622eb1e43928bbe6efe5a2dee4c730cd5a16",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    },
+    {
+      "id": "workflow",
+      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "command": [
+        "npm",
+        "run",
+        "validate:workflow-security"
+      ],
+      "startedAt": "2026-09-13T08:16:02.447Z",
+      "durationMilliseconds": 640.3462,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "4f93297058dbd48d48d545dcb686a292d64567d8b9379d0e79736c82d0f34e68",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": null,
+      "publicLog": "validation/alpha12/gates/workflow.txt",
+      "publicLogSha256": "4f93297058dbd48d48d545dcb686a292d64567d8b9379d0e79736c82d0f34e68",
+      "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
+    }
+  ]
+}

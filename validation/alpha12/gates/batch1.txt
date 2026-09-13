@@ -1,0 +1,62 @@
+
+> cydetix@0.6.0-alpha.12 benchmark:batch1
+> npm run build && node scripts/measure-batch1.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+{
+  "node": "v24.15.0",
+  "platform": "win32-x64",
+  "repetitions": 10,
+  "p95ThresholdMilliseconds": 750,
+  "alpha7Comparison": "NOT_COMPARABLE: alpha.7 did not contain the Batch 1 engine or corpus; existing phase benchmarks remain separate regression gates.",
+  "note": "Warm-cache local static-fixture benchmark. Heap delta is observational rather than a process-wide peak-RSS proof.",
+  "measurements": [
+    {
+      "corpus": "sql",
+      "filesAnalyzed": 6,
+      "astNodes": 360,
+      "graphFacts": 7,
+      "dataflowPathsConsidered": 41,
+      "truncationEvents": 0,
+      "medianMilliseconds": 26.984,
+      "p95Milliseconds": 47.435,
+      "maximumObservedPositiveHeapDeltaBytes": 7650640
+    },
+    {
+      "corpus": "command",
+      "filesAnalyzed": 7,
+      "astNodes": 332,
+      "graphFacts": 4,
+      "dataflowPathsConsidered": 36,
+      "truncationEvents": 0,
+      "medianMilliseconds": 23.321,
+      "p95Milliseconds": 29.797,
+      "maximumObservedPositiveHeapDeltaBytes": 4532952
+    },
+    {
+      "corpus": "path",
+      "filesAnalyzed": 7,
+      "astNodes": 323,
+      "graphFacts": 5,
+      "dataflowPathsConsidered": 37,
+      "truncationEvents": 0,
+      "medianMilliseconds": 20.327,
+      "p95Milliseconds": 22.697,
+      "maximumObservedPositiveHeapDeltaBytes": 4503344
+    },
+    {
+      "corpus": "ssrf",
+      "filesAnalyzed": 6,
+      "astNodes": 279,
+      "graphFacts": 5,
+      "dataflowPathsConsidered": 35,
+      "truncationEvents": 0,
+      "medianMilliseconds": 16.806,
+      "p95Milliseconds": 21.394,
+      "maximumObservedPositiveHeapDeltaBytes": 4394144
+    }
+  ]
+}

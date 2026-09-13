@@ -1,0 +1,20 @@
+
+> cydetix@0.6.0-alpha.12 test
+> vitest run --maxWorkers=1 --testTimeout=120000 --reporter=json --outputFile=.cydetix/alpha12/tests.json
+
+
+Detected AI agents:
+  Cursor
+
+Not enabled. Run cydetix setup whenever you are ready.
+
+Detected AI agents:
+  Cursor
+
+AI integration:
+  Cursor connected
+
+Done. You do not need to mention Cydetix. Just ask:
+
+  "Check this project for security issues."
+JSON report written to <workspace>/.cydetix/alpha12/tests.json

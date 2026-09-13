@@ -1,0 +1,188 @@
+
+> cydetix@0.6.0-alpha.12 benchmark:phase4
+> npm run build && node scripts/measure-phase4.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+{
+  "node": "v24.15.0",
+  "platform": "win32-x64",
+  "measuredAt": "2026-09-13T08:14:10.509Z",
+  "repetitions": 10,
+  "p95ThresholdMilliseconds": 150,
+  "networkLatencyIncluded": false,
+  "historyModeIncluded": false,
+  "note": "Warm-cache local fixture benchmark with a generous regression gate; not a cross-machine throughput claim.",
+  "measurements": [
+    {
+      "fixture": "dependencies-vulnerable",
+      "repetitions": 10,
+      "medianMilliseconds": 9.487,
+      "p95Milliseconds": 13.059,
+      "stageMedianMilliseconds": {
+        "dependencyParsing": 0.559,
+        "advisoryProcessing": 0.055,
+        "secretScan": 0.05,
+        "historyScan": 0,
+        "workflowAnalysis": 0.029,
+        "sbomGeneration": 0.281
+      }
+    },
+    {
+      "fixture": "dependencies-secure",
+      "repetitions": 10,
+      "medianMilliseconds": 5.627,
+      "p95Milliseconds": 6.598,
+      "stageMedianMilliseconds": {
+        "dependencyParsing": 0.218,
+        "advisoryProcessing": 0.036,
+        "secretScan": 0.024,
+        "historyScan": 0,
+        "workflowAnalysis": 0.008,
+        "sbomGeneration": 0.107
+      }
+    },
+    {
+      "fixture": "secret-exposed",
+      "repetitions": 10,
+      "medianMilliseconds": 6.769,
+      "p95Milliseconds": 7.705,
+      "stageMedianMilliseconds": {
+        "dependencyParsing": 0.015,
+        "advisoryProcessing": 0.034,
+        "secretScan": 0.104,
+        "historyScan": 0,
+        "workflowAnalysis": 0.008,
+        "sbomGeneration": 0.071
+      }
+    },
+    {
+      "fixture": "secret-placeholder",
+      "repetitions": 10,
+      "medianMilliseconds": 5.77,
+      "p95Milliseconds": 6.228,
+      "stageMedianMilliseconds": {
+        "dependencyParsing": 0.014,
+        "advisoryProcessing": 0.033,
+        "secretScan": 0.032,
+        "historyScan": 0,
+        "workflowAnalysis": 0.007,
+        "sbomGeneration": 0.071
+      }
+    },
+    {
+      "fixture": "actions-secure",
+      "repetitions": 10,
+      "medianMilliseconds": 6.406,
+      "p95Milliseconds": 7.352,
+      "stageMedianMilliseconds": {
+        "dependencyParsing": 0.013,
+        "advisoryProcessing": 0.024,
+        "secretScan": 0.026,
+        "historyScan": 0,
+        "workflowAnalysis": 0.946,
+        "sbomGeneration": 0.066
+      }
+    },
+    {
+      "fixture": "actions-tagged",
+      "repetitions": 10,
+      "medianMilliseconds": 6.054,
+      "p95Milliseconds": 6.834,
+      "stageMedianMilliseconds": {
+        "dependencyParsing": 0.014,
+        "advisoryProcessing": 0.026,
+        "secretScan": 0.027,
+        "historyScan": 0,
+        "workflowAnalysis": 0.604,
+        "sbomGeneration": 0.07
+      }
+    },
+    {
+      "fixture": "actions-write-all",
+      "repetitions": 10,
+      "medianMilliseconds": 5.919,
+      "p95Milliseconds": 6.406,
+      "stageMedianMilliseconds": {
+        "dependencyParsing": 0.013,
+        "advisoryProcessing": 0.024,
+        "secretScan": 0.023,
+        "historyScan": 0,
+        "workflowAnalysis": 0.501,
+        "sbomGeneration": 0.065
+      }
+    },
+    {
+      "fixture": "actions-pr-target-dangerous",
+      "repetitions": 10,
+      "medianMilliseconds": 6.314,
+      "p95Milliseconds": 6.657,
+      "stageMedianMilliseconds": {
+        "dependencyParsing": 0.013,
+        "advisoryProcessing": 0.025,
+        "secretScan": 0.024,
+        "historyScan": 0,
+        "workflowAnalysis": 0.675,
+        "sbomGeneration": 0.068
+      }
+    },
+    {
+      "fixture": "actions-pr-target-benign",
+      "repetitions": 10,
+      "medianMilliseconds": 5.53,
+      "p95Milliseconds": 6.811,
+      "stageMedianMilliseconds": {
+        "dependencyParsing": 0.013,
+        "advisoryProcessing": 0.025,
+        "secretScan": 0.023,
+        "historyScan": 0,
+        "workflowAnalysis": 0.498,
+        "sbomGeneration": 0.065
+      }
+    },
+    {
+      "fixture": "actions-expression-injection",
+      "repetitions": 10,
+      "medianMilliseconds": 6.155,
+      "p95Milliseconds": 8.263,
+      "stageMedianMilliseconds": {
+        "dependencyParsing": 0.013,
+        "advisoryProcessing": 0.025,
+        "secretScan": 0.024,
+        "historyScan": 0,
+        "workflowAnalysis": 0.461,
+        "sbomGeneration": 0.073
+      }
+    },
+    {
+      "fixture": "actions-expression-safe",
+      "repetitions": 10,
+      "medianMilliseconds": 5.102,
+      "p95Milliseconds": 5.717,
+      "stageMedianMilliseconds": {
+        "dependencyParsing": 0.013,
+        "advisoryProcessing": 0.022,
+        "secretScan": 0.024,
+        "historyScan": 0,
+        "workflowAnalysis": 0.452,
+        "sbomGeneration": 0.064
+      }
+    },
+    {
+      "fixture": "sbom",
+      "repetitions": 10,
+      "medianMilliseconds": 4.803,
+      "p95Milliseconds": 5.538,
+      "stageMedianMilliseconds": {
+        "dependencyParsing": 0.178,
+        "advisoryProcessing": 0.02,
+        "secretScan": 0.02,
+        "historyScan": 0,
+        "workflowAnalysis": 0.007,
+        "sbomGeneration": 0.096
+      }
+    }
+  ]
+}

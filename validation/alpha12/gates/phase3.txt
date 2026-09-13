@@ -1,0 +1,242 @@
+
+> cydetix@0.6.0-alpha.12 benchmark:phase3
+> npm run build && node scripts/measure-phase3.mjs
+
+
+> cydetix@0.6.0-alpha.12 build
+> tsc -p tsconfig.build.json
+
+{
+  "node": "v24.15.0",
+  "platform": "win32-x64",
+  "measuredAt": "2026-09-13T08:14:01.708Z",
+  "repetitions": 10,
+  "p95ThresholdMilliseconds": 100,
+  "note": "Warm-cache local fixture benchmark with a deliberately generous regression gate; not a cross-machine throughput claim.",
+  "measurements": [
+    {
+      "fixture": "session-secure",
+      "filesExamined": 4,
+      "repetitions": 10,
+      "medianMilliseconds": 24.935,
+      "p95Milliseconds": 37.918,
+      "stageMedianMilliseconds": {
+        "repositoryDiscovery": 7.824,
+        "parsing": 2.974,
+        "callGraph": 1.916,
+        "securityGraph": 1.461,
+        "authenticationGraph": 0.251,
+        "invariantEvaluation": 1.478,
+        "reportGeneration": 2.451
+      }
+    },
+    {
+      "fixture": "session-fixation",
+      "filesExamined": 4,
+      "repetitions": 10,
+      "medianMilliseconds": 16.166,
+      "p95Milliseconds": 16.954,
+      "stageMedianMilliseconds": {
+        "repositoryDiscovery": 6.848,
+        "parsing": 1.32,
+        "callGraph": 0.978,
+        "securityGraph": 0.664,
+        "authenticationGraph": 0.122,
+        "invariantEvaluation": 0.855,
+        "reportGeneration": 1.521
+      }
+    },
+    {
+      "fixture": "logout-incomplete",
+      "filesExamined": 3,
+      "repetitions": 10,
+      "medianMilliseconds": 11.302,
+      "p95Milliseconds": 12.572,
+      "stageMedianMilliseconds": {
+        "repositoryDiscovery": 5.104,
+        "parsing": 0.777,
+        "callGraph": 0.668,
+        "securityGraph": 0.389,
+        "authenticationGraph": 0.079,
+        "invariantEvaluation": 0.604,
+        "reportGeneration": 1.285
+      }
+    },
+    {
+      "fixture": "reset-secure",
+      "filesExamined": 7,
+      "repetitions": 10,
+      "medianMilliseconds": 34.991,
+      "p95Milliseconds": 43.884,
+      "stageMedianMilliseconds": {
+        "repositoryDiscovery": 11.345,
+        "parsing": 3.204,
+        "callGraph": 2.71,
+        "securityGraph": 2.851,
+        "authenticationGraph": 0.362,
+        "invariantEvaluation": 2.328,
+        "reportGeneration": 2.591
+      }
+    },
+    {
+      "fixture": "reset-persistent-sessions",
+      "filesExamined": 7,
+      "repetitions": 10,
+      "medianMilliseconds": 29.799,
+      "p95Milliseconds": 37.918,
+      "stageMedianMilliseconds": {
+        "repositoryDiscovery": 10.878,
+        "parsing": 2.258,
+        "callGraph": 2.222,
+        "securityGraph": 2.181,
+        "authenticationGraph": 0.315,
+        "invariantEvaluation": 1.464,
+        "reportGeneration": 2.235
+      }
+    },
+    {
+      "fixture": "reset-weak-credential",
+      "filesExamined": 4,
+      "repetitions": 10,
+      "medianMilliseconds": 17.654,
+      "p95Milliseconds": 27.123,
+      "stageMedianMilliseconds": {
+        "repositoryDiscovery": 6.31,
+        "parsing": 1.081,
+        "callGraph": 1.193,
+        "securityGraph": 1.145,
+        "authenticationGraph": 0.25,
+        "invariantEvaluation": 1.034,
+        "reportGeneration": 1.815
+      }
+    },
+    {
+      "fixture": "reset-unknown",
+      "filesExamined": 4,
+      "repetitions": 10,
+      "medianMilliseconds": 15.097,
+      "p95Milliseconds": 16.972,
+      "stageMedianMilliseconds": {
+        "repositoryDiscovery": 6.226,
+        "parsing": 0.863,
+        "callGraph": 0.859,
+        "securityGraph": 0.906,
+        "authenticationGraph": 0.166,
+        "invariantEvaluation": 0.717,
+        "reportGeneration": 1.623
+      }
+    },
+    {
+      "fixture": "jwt-verified",
+      "filesExamined": 4,
+      "repetitions": 10,
+      "medianMilliseconds": 12.316,
+      "p95Milliseconds": 13.189,
+      "stageMedianMilliseconds": {
+        "repositoryDiscovery": 6.337,
+        "parsing": 0.815,
+        "callGraph": 0.61,
+        "securityGraph": 0.362,
+        "authenticationGraph": 0.086,
+        "invariantEvaluation": 0.665,
+        "reportGeneration": 1.26
+      }
+    },
+    {
+      "fixture": "jwt-unverified",
+      "filesExamined": 4,
+      "repetitions": 10,
+      "medianMilliseconds": 11.737,
+      "p95Milliseconds": 12.1,
+      "stageMedianMilliseconds": {
+        "repositoryDiscovery": 5.984,
+        "parsing": 0.695,
+        "callGraph": 0.584,
+        "securityGraph": 0.31,
+        "authenticationGraph": 0.075,
+        "invariantEvaluation": 0.605,
+        "reportGeneration": 1.208
+      }
+    },
+    {
+      "fixture": "oauth-secure",
+      "filesExamined": 3,
+      "repetitions": 10,
+      "medianMilliseconds": 13.649,
+      "p95Milliseconds": 16.127,
+      "stageMedianMilliseconds": {
+        "repositoryDiscovery": 5.109,
+        "parsing": 0.974,
+        "callGraph": 0.829,
+        "securityGraph": 0.642,
+        "authenticationGraph": 0.198,
+        "invariantEvaluation": 0.996,
+        "reportGeneration": 1.351
+      }
+    },
+    {
+      "fixture": "oauth-broken-state",
+      "filesExamined": 3,
+      "repetitions": 10,
+      "medianMilliseconds": 12.288,
+      "p95Milliseconds": 14.115,
+      "stageMedianMilliseconds": {
+        "repositoryDiscovery": 5.129,
+        "parsing": 0.71,
+        "callGraph": 0.687,
+        "securityGraph": 0.518,
+        "authenticationGraph": 0.118,
+        "invariantEvaluation": 0.782,
+        "reportGeneration": 1.35
+      }
+    },
+    {
+      "fixture": "oauth-missing-pkce",
+      "filesExamined": 3,
+      "repetitions": 10,
+      "medianMilliseconds": 12.047,
+      "p95Milliseconds": 13.899,
+      "stageMedianMilliseconds": {
+        "repositoryDiscovery": 5.078,
+        "parsing": 0.702,
+        "callGraph": 0.673,
+        "securityGraph": 0.505,
+        "authenticationGraph": 0.122,
+        "invariantEvaluation": 0.736,
+        "reportGeneration": 1.287
+      }
+    },
+    {
+      "fixture": "refresh-rotation",
+      "filesExamined": 5,
+      "repetitions": 10,
+      "medianMilliseconds": 17.449,
+      "p95Milliseconds": 19.306,
+      "stageMedianMilliseconds": {
+        "repositoryDiscovery": 7.323,
+        "parsing": 1.02,
+        "callGraph": 1,
+        "securityGraph": 1.242,
+        "authenticationGraph": 0.206,
+        "invariantEvaluation": 0.769,
+        "reportGeneration": 1.498
+      }
+    },
+    {
+      "fixture": "false-positive-traps",
+      "filesExamined": 4,
+      "repetitions": 10,
+      "medianMilliseconds": 11.627,
+      "p95Milliseconds": 12.969,
+      "stageMedianMilliseconds": {
+        "repositoryDiscovery": 5.719,
+        "parsing": 0.668,
+        "callGraph": 0.582,
+        "securityGraph": 0.368,
+        "authenticationGraph": 0.076,
+        "invariantEvaluation": 0.59,
+        "reportGeneration": 1.13
+      }
+    }
+  ]
+}
