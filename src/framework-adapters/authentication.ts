@@ -71,9 +71,13 @@ function importsFrom(declarations: readonly ImportDeclaration[]): Map<string, Im
   return imports;
 }
 
-function containingSymbol(ir: SecurityIr, filePath: string, node: Node): IrSymbol | undefined {
+function containingSymbol(
+  symbols: readonly IrSymbol[],
+  filePath: string,
+  node: Node,
+): IrSymbol | undefined {
   if (typeof node.start !== "number" || typeof node.end !== "number") return undefined;
-  return ir.symbols
+  return symbols
     .filter(
       (symbol) =>
         symbol.location.path === filePath &&
@@ -776,6 +780,12 @@ export function analyzeAuthenticationOperations(
   files: readonly SourceFile[],
   parsedByPath: ReadonlyMap<string, ParsedSource>,
 ): AuthenticationOperation[] {
+  const symbolsByPath = new Map<string, IrSymbol[]>();
+  for (const symbol of ir.symbols) {
+    const symbols = symbolsByPath.get(symbol.location.path) ?? [];
+    symbols.push(symbol);
+    symbolsByPath.set(symbol.location.path, symbols);
+  }
   const operations: AuthenticationOperation[] = [];
   const hasExpressSession = manifest.sessionAndTokenTechnology.includes("express-session");
   const hasJwt = manifest.sessionAndTokenTechnology.some((technology) =>
@@ -811,6 +821,7 @@ export function analyzeAuthenticationOperations(
   for (const file of files) {
     const parsed = parsedByPath.get(file.relativePath);
     if (parsed?.language !== "javascript" && parsed?.language !== "typescript") continue;
+    const fileSymbols = symbolsByPath.get(file.relativePath) ?? [];
     const imports = importsFrom(
       parsed.ast.program.body.filter(
         (statement): statement is ImportDeclaration => statement.type === "ImportDeclaration",
@@ -820,7 +831,7 @@ export function analyzeAuthenticationOperations(
       CallExpression(callPath) {
         const sourceLocation = location(file, callPath.node);
         if (sourceLocation === undefined) return;
-        const symbol = containingSymbol(ir, file.relativePath, callPath.node);
+        const symbol = containingSymbol(fileSymbols, file.relativePath, callPath.node);
         const text = sourceText(file, callPath.node);
         for (const input of classifyPrismaCall(callPath.node, text, symbol, sourceLocation))
           add(input);
@@ -848,7 +859,7 @@ export function analyzeAuthenticationOperations(
       AssignmentExpression(assignmentPath) {
         const sourceLocation = location(file, assignmentPath.node);
         if (sourceLocation === undefined) return;
-        const symbol = containingSymbol(ir, file.relativePath, assignmentPath.node);
+        const symbol = containingSymbol(fileSymbols, file.relativePath, assignmentPath.node);
         for (const input of assignmentOperation(
           assignmentPath.node,
           file,
@@ -875,7 +886,7 @@ export function analyzeAuthenticationOperations(
         }
         const sourceLocation = location(file, memberPath.node);
         if (sourceLocation === undefined) return;
-        const symbol = containingSymbol(ir, file.relativePath, memberPath.node);
+        const symbol = containingSymbol(fileSymbols, file.relativePath, memberPath.node);
         for (const input of sessionLookupMember(
           memberPath.node,
           file,
