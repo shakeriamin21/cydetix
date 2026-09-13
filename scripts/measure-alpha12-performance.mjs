@@ -77,6 +77,13 @@ for (const target of targets) {
       "reproducibility.ruleCatalogueFingerprint",
       "securityAnalysis.supplyChainAnalysis.sbom.metadata.tools.components.0.version",
     ].includes(delta.path) ||
+    (delta.path === "securityAnalysis.supplyChainAnalysis.secrets.limitations.2" &&
+      delta.baseline === "Git history was not checked; use the explicit history mode." &&
+      delta.candidate ===
+        "Private-key headers are marker observations only; their findings remain UNKNOWN because payload validity, fixture purpose and deployment are not established.") ||
+    (delta.path === "securityAnalysis.supplyChainAnalysis.secrets.limitations.3" &&
+      delta.baseline === null &&
+      delta.candidate === "Git history was not checked; use the explicit history mode.") ||
     (/^reproducibility.enabledRules.\d+.version$/u.test(delta.path) &&
       ["AS-PASSWORD-001", "AS-SECRET-001"].includes(
         baseline.reproducibility.enabledRules[Number(delta.path.split(".")[2])]?.id,
@@ -119,7 +126,7 @@ for (const target of targets) {
     candidateToBaselineP95Ratio:
       variants.candidate.p95Milliseconds / variants.baseline.p95Milliseconds,
     semanticEquivalence: deltas.every(metadata) ? "PASSED" : "FAILED",
-    intentionalMetadataDifferences: deltas.filter(metadata),
+    intentionalMetadataAndExplanationDifferences: deltas.filter(metadata),
     unexpectedDifferences: deltas.filter((d) => !metadata(d)),
   });
 }
