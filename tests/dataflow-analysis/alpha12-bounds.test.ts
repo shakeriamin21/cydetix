@@ -78,7 +78,14 @@ describe("alpha.12 fail-closed propagation bounds", () => {
       const text =
         language === "typescript"
           ? `import express from 'express'; const app=express(); ${Array.from({ length: 12 }, (_, i) => `function f${i}(x){return f${i + 1}(x);}`).join("")} function f12(x){return x;} app.get('/x', (req,res)=>res.redirect(f0(req.query.x)));`
-          : `from flask import Flask, request, redirect\napp=Flask(__name__)\n@app.route('/x')\ndef route():\n${assignments.map((line) => `    ${line}`).join("\n")}\n    v0=request.args['x']\n    return redirect(v12)\n`;
+          : `from flask import Flask, request, redirect
+app=Flask(__name__)
+@app.route('/x')
+def route():
+${assignments.map((line) => `    ${line}`).join("\n")}
+    v0=request.args['x']
+    return redirect(v12)
+`;
       const result = analyze(text, language);
       expect(result.analysis.metrics.iterations).toBe(8);
       expect(result.analysis.completeness).toBe("TRUNCATED");
@@ -93,7 +100,14 @@ describe("alpha.12 fail-closed propagation bounds", () => {
       const text =
         language === "typescript"
           ? `import express from 'express'; const app=express(); app.get('/x', (req,res)=>{const v0=req.query.x;${assignments.map((line) => `const ${line};`).join("")}res.redirect(v22);});`
-          : `from flask import Flask, request, redirect\napp=Flask(__name__)\n@app.route('/x')\ndef route():\n    v0=request.args['x']\n${assignments.map((line) => `    ${line}`).join("\n")}\n    return redirect(v22)\n`;
+          : `from flask import Flask, request, redirect
+app=Flask(__name__)
+@app.route('/x')
+def route():
+    v0=request.args['x']
+${assignments.map((line) => `    ${line}`).join("\n")}
+    return redirect(v22)
+`;
       const result = analyze(text, language);
       expect(result.analysis.completeness).toBe("TRUNCATED");
       expect(result.candidates).toEqual([]);
