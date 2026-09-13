@@ -66,7 +66,7 @@ export function renderHuman(report) {
     const counts = { "FIX NOW": 0, REVIEW: 0, UNKNOWN: 0 };
     for (const item of categorized)
         counts[item.category] += 1;
-    counts.UNKNOWN += unknownEvidence(report).length;
+    counts.UNKNOWN = unknownEvidence(report).length;
     const safe = categorized.filter(({ finding, category }) => finding.autofix === "SAFE" && category !== "UNKNOWN").length;
     const status = needsAttention.length > 0
         ? "NEEDS ATTENTION"

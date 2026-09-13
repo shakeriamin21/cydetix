@@ -4,6 +4,12 @@ import { terminalSafe } from "./terminal.js";
 /** Proof instances, not a count of unique vulnerabilities or affected routes. */
 export function unknownEvidence(report: ScanReport): string[] {
   return [
+    ...report.findings
+      .filter((finding) => finding.proofState === "UNKNOWN")
+      .map(
+        (finding) =>
+          `${finding.ruleId} ${finding.location.path}:${finding.location.start.line}: ${finding.evidence.map((item) => item.message).join(" ")}`,
+      ),
     ...(report.securityAnalysis.applicationDataflow?.unknowns ?? []).map(
       (item) => `${item.ruleId} ${item.path}:${item.line}: ${item.explanation}`,
     ),

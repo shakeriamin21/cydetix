@@ -69,7 +69,7 @@ export function renderHuman(report: ScanReport): string {
   const shown = categorized.slice(0, 5);
   const counts: Record<DecisionCategory, number> = { "FIX NOW": 0, REVIEW: 0, UNKNOWN: 0 };
   for (const item of categorized) counts[item.category] += 1;
-  counts.UNKNOWN += unknownEvidence(report).length;
+  counts.UNKNOWN = unknownEvidence(report).length;
   const safe = categorized.filter(
     ({ finding, category }) => finding.autofix === "SAFE" && category !== "UNKNOWN",
   ).length;

@@ -15,6 +15,15 @@ Development target: `0.6.0-alpha.12` (final alpha hardening; no release preparat
   output. These intentional presentation changes are documented in the alpha.12 contract inventory.
 - Separate explicit development verification from unchanged release gates and preserve historical
   release evidence. Expand pinned all-rule corpus and beta-readiness evidence.
+- Retain password-adjacent hashes and private-key headers as UNKNOWN when storage purpose or key
+  material is unproven (`AS-PASSWORD-001@1.0.1`, `AS-SECRET-001@1.0.1`). Reproduce three corrected
+  false insecure conclusions against the preserved alpha.11 runtime.
+- Contain Babel scope failures per file; fail closed on application propagation/evidence exhaustion
+  and recursive identity propagation. Keep the existing AST/application limits and enforce the same
+  eight-iteration/10,000-fact policy for security identity propagation, with explicit counters.
+- Cache source coordinates and index repeated evidence/symbol lookups without changing their order
+  or content. Record 30 pinned deterministic scan pairs, scoped adjudication, comparative
+  performance, eleven adapter launch checks and machine-readable beta-readiness gates.
 
 ## [0.6.0-alpha.11] - 2026-09-12
 

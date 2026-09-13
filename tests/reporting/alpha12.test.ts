@@ -10,8 +10,24 @@ import { renderFinding } from "../../src/reporting/text.js";
 import { toSarif } from "../../src/reporting/sarif.js";
 import { unknownEvidence } from "../../src/reporting/uncertainty.js";
 import { createMcpServerContext, handleMcpRequest } from "../../src/mcp/server.js";
+import { writeFile } from "node:fs/promises";
+import { temporaryDirectory } from "../helpers/temporary.js";
 
 describe("alpha.12 evidence presentation", () => {
+  it("uses one consistent UNKNOWN count for retained findings and coverage details", async () => {
+    const root = await temporaryDirectory("cydetix-a12-unknown-summary-");
+    await writeFile(
+      `${root}/hashing.py`,
+      "import hashlib\ndef password_hash(password):\n    return hashlib.sha1(password.encode()).hexdigest()\n",
+    );
+    const report = await scanRepository({ path: root });
+    expect(report.findings).toHaveLength(1);
+    expect(report.findings[0]?.proofState).toBe("UNKNOWN");
+    const text = renderHuman(report);
+    expect(text).toContain("UNKNOWN   1\n");
+    expect(text).toContain("UNKNOWN proof instances: 1");
+    expect(text).not.toContain("UNKNOWN proof instances: 0");
+  });
   it("shows exact SAFE verification and does not infer successful rollback", async () => {
     const report = await runRemediation({ path: "fixtures/autofix/vulnerable", dryRun: true });
     const text = renderRemediationHuman(report);
