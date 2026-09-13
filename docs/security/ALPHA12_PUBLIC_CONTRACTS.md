@@ -24,6 +24,10 @@ claim that beta has shipped or that the analysis covers arbitrary applications.
 
 ## Intentional corrections before beta
 
+- Complete-history Gitleaks validation now rejects empty/subset reports that omit immutable reviewed
+  findings. A reproduced Docker Git ownership error had produced an empty report with zero scanned
+  commits. Historical reviews are unchanged; missing evidence no longer passes this gate.
+
 - `explain <rule>` now defaults to readable text. Consumers of its previous default JSON must use
   `explain <rule> --format json`. `status` is a read-only alias of `setup --status`.
 - Default output retains distinct findings at a shared source line. Its UNKNOWN count refers to

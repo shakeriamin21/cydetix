@@ -69,6 +69,10 @@ release metadata is part of this work.
 - Added reproducible thirty-repository replay, controlled alpha.11 comparisons, public-contract
   inventory, conservative readiness schema and an explicit development validation path. Release
   validation and publication controls retain their stricter requirements.
+- Complete-history Gitleaks review now rejects missing historical evidence after a reproduced Git
+  ownership failure returned an empty report without scanning commits. Two existing acceptance
+  tests were deliberately corrected to reject empty/subset history; a missing-one regression was
+  added. Exact historical reviews remain unchanged.
 
 No architecture redesign, new vulnerability family, LLM proof authority or new SAFE adapter was
 introduced. The engine remains deterministic and authoritative. Proof states remain
@@ -233,6 +237,11 @@ not source content. CycloneDX and SARIF are validated separately from vulnerabil
 Gitleaks scans complete --all history using its pinned image with no repository ignore bypass:
 ${gitleaks.findings} findings match exact reviewed non-secret fingerprints, ${gitleaks.unreviewedFindings}
 unreviewed. Deterministic reachable-history and public privacy audits remain separate gates.
+The all-refs author audit flags the public Dependabot noreply identity on the pre-existing remote
+branch commit d8b3d5a10f4c878c413a388d6f640fa390cb4b5b. This commit is outside HEAD ancestry. Its
+identity hash is not in the immutable publication configuration, so the all-refs gate remains FAILED;
+the separate HEAD-ancestry result is retained. No remote ref, author metadata or frozen release
+allowlist was changed to make this pass.
 
 Self-scan: ${self.state}, ${self.findings.length} active and ${self.suppressedFindings.length}
 existing suppressed findings; overall completeness ${self.completeness}. This meets the configured

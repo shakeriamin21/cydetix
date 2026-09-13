@@ -165,6 +165,15 @@ for (const [index, finding] of findings.entries()) {
   );
 }
 
+// Complete reachable-history scans must rediscover the immutable reviewed evidence.
+// Git failures and truncated/subset scans can otherwise produce a valid empty array.
+if (
+  [...reviewsByFingerprint.keys()].some((fingerprint) => !seenReportFingerprints.has(fingerprint))
+)
+  throw new Error(
+    "Complete-history Gitleaks report is missing reviewed historical findings; verify that Git scanned the full reachable history.",
+  );
+
 const result = {
   schemaVersion: "1.0.0",
   state: "PASS",

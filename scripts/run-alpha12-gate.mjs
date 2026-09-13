@@ -20,6 +20,7 @@ const gates = {
   privacy: ["run", "audit:public-repository"],
   licenses: ["run", "audit:licenses"],
   history: ["run", "audit:history", "--", "--enforce", "--all"],
+  historyHead: ["run", "audit:history", "--", "--enforce", "--ref", "HEAD"],
   selfScan: ["run", "release:self-scan"],
   externalNodeGoat: [
     "run",

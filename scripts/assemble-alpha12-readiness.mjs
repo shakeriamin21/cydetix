@@ -201,7 +201,11 @@ if (performanceState !== "PASSED")
     "At least one controlled p50/p95 comparison needs review; measurements are descriptive and no statistical equivalence is claimed.",
   );
 for (const gate of gateRecords.filter((g) => g.state !== "PASSED"))
-  blockers.push(`Local gate failed: ${gate.id}`);
+  blockers.push(
+    gate.id === "history"
+      ? "All-refs history author audit flags a pre-existing Dependabot noreply identity outside HEAD ancestry. Frozen publication approval metadata was preserved; the separate HEAD audit does not replace this failed gate."
+      : `Local gate failed: ${gate.id}`,
+  );
 if (corpus.totals.unadjudicatedFindings)
   blockers.push("Emitted corpus findings remain unadjudicated.");
 const report = validateBetaReadiness({

@@ -5,6 +5,10 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+- Reject empty or incomplete complete-history Gitleaks reports when immutable reviewed findings are
+  missing; retain all reviewed-fingerprint checks. This closes a reproduced Git ownership-error path
+  that returned an empty report after scanning zero commits.
+
 Development target: `0.6.0-alpha.12` (final alpha hardening; no release preparation).
 
 - Show finding locations, independent proof dimensions, useful UNKNOWN causes and remediation

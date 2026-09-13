@@ -102,14 +102,10 @@ describe("Gitleaks reviewed-finding validator", () => {
     });
   });
 
-  it("accepts an exact reviewed subset", () => {
+  it("rejects an exact reviewed subset as incomplete history", () => {
     const result = validate([reviewedDocumentation]);
-    expect(result.status).toBe(0);
-    expect(JSON.parse(result.stdout)).toMatchObject({
-      findings: 1,
-      reviewedFindings: 1,
-      unreviewedFindings: 0,
-    });
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain("missing reviewed historical findings");
   });
 
   it("rejects a new finding in an otherwise reviewed file", () => {
@@ -192,14 +188,16 @@ describe("Gitleaks reviewed-finding validator", () => {
     expect(validate([finding]).status).not.toBe(0);
   });
 
-  it("accepts an empty Gitleaks report", () => {
+  it("rejects the empty report produced when Git scans no commits", () => {
     const result = validate([]);
-    expect(result.status).toBe(0);
-    expect(JSON.parse(result.stdout)).toMatchObject({
-      state: "PASS",
-      findings: 0,
-      unreviewedFindings: 0,
-    });
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain("verify that Git scanned the full reachable history");
+  });
+
+  it("rejects a scan missing only one reviewed historical finding", () => {
+    const result = validate(exactFindings.slice(1));
+    expect(result.status).not.toBe(0);
+    expect(result.stderr).toContain("missing reviewed historical findings");
   });
 
   it.each([

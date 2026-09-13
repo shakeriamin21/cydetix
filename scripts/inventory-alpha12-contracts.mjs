@@ -173,6 +173,7 @@ const inventory = {
     },
   ],
   intentionalChanges: [
+    "Complete-history Gitleaks validation rejects empty/subset reports missing immutable reviewed findings; Git scan failures no longer pass through an empty JSON report.",
     "MCP rejects unknown keys, wrong types, non-object arguments and invalid IDs rather than accepting inputs contrary to its published schema.",
     "MCP retained request text is bounded before a terminating newline arrives; oversized frames cannot consume unbounded retained memory.",
     "explain defaults to human text; --format json preserves structured rule access. status aliases read-only setup --status.",
