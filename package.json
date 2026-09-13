@@ -1,6 +1,6 @@
 {
   "name": "cydetix",
-  "version": "0.6.0-alpha.11",
+  "version": "0.6.0-alpha.12",
   "description": "Zero-config deterministic application security and policy-bounded remediation CLI",
   "type": "module",
   "bin": {
@@ -57,6 +57,9 @@
     "validate:install": "npm run build && node scripts/validate-packed-install.mjs",
     "validate:packed-plugin": "npm run build && node scripts/validate-packed-plugin.mjs",
     "validate:version": "npm run build && node scripts/validate-version.mjs",
+    "validate:development": "npm run build && node scripts/validate-development.mjs",
+    "corpus:alpha12:prepare": "node scripts/prepare-alpha12-corpus.mjs",
+    "corpus:alpha12": "npm run build && node scripts/run-alpha12-corpus.mjs",
     "validate:workflow-security": "node scripts/validate-workflow-security.mjs",
     "validate:release-report": "npm run build && node scripts/validate-release-report.mjs",
     "validate:remediation": "node scripts/validate-remediation.mjs",
@@ -66,7 +69,8 @@
     "validate:mcp": "npm run build && node scripts/validate-mcp.mjs",
     "validate:sarif": "node scripts/validate-sarif.mjs",
     "validate:sbom": "node scripts/validate-sbom.mjs",
-    "verify": "npm run format && npm run lint && npm run check && npm run schemas:check && npm run validate:sarif && npm run validate:sbom && npm test && npm run validate:remediation && npm run validate:skills && npm run validate:plugin && npm run validate:triggers && npm run validate:mcp && npm run validate:version && npm run validate:package && npm run validate:install && npm run validate:release-report && npm run validate:workflow-security && npm run audit:public-repository && npm run audit:licenses"
+    "verify": "npm run format && npm run lint && npm run check && npm run schemas:check && npm run validate:sarif && npm run validate:sbom && npm test && npm run validate:remediation && npm run validate:skills && npm run validate:plugin && npm run validate:triggers && npm run validate:mcp && npm run validate:version && npm run validate:package && npm run validate:install && npm run validate:release-report && npm run validate:workflow-security && npm run audit:public-repository && npm run audit:licenses",
+    "verify:development": "npm run format && npm run lint && npm run check && npm run schemas:check && npm run validate:sarif && npm run validate:sbom && npm test && npm run validate:remediation && npm run validate:skills && npm run validate:plugin && npm run validate:triggers && npm run validate:mcp && npm run validate:development && npm run validate:package && npm run validate:install && npm run validate:workflow-security && npm run audit:public-repository && npm run audit:licenses"
   },
   "engines": {
     "node": "^22.18.0 || ^24.11.0"

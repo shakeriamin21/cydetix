@@ -35,9 +35,9 @@ jobs:
       - name: Check dependency advisories
         run: npm run audit
       - name: Run complete verification gate
-        run: npm run verify
+        run: npm run verify:development
       - name: Verify versions and release package allowlist
-        run: npm run validate:version && npm run validate:package
+        run: npm run validate:development && npm run validate:package
       - name: Install and smoke-test the packed artifact
         run: npm run validate:install
       - name: Ensure generated runtime is committed and current

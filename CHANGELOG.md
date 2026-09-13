@@ -5,6 +5,17 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+Development target: `0.6.0-alpha.12` (final alpha hardening; no release preparation).
+
+- Show finding locations, independent proof dimensions, useful UNKNOWN causes and remediation
+  verification in human output; preserve distinct findings at a shared location.
+- Enforce declared MCP argument types and unknown-key rejection; bound request buffering before a
+  newline arrives. Keep exactly three public tools and unchanged remediation authority.
+- Add `cydetix status`; make `explain` readable by default with `--format json` for structured rule
+  output. These intentional presentation changes are documented in the alpha.12 contract inventory.
+- Separate explicit development verification from unchanged release gates and preserve historical
+  release evidence. Expand pinned all-rule corpus and beta-readiness evidence.
+
 ## [0.6.0-alpha.11] - 2026-09-12
 
 ### Added
