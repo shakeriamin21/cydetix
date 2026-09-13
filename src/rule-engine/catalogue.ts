@@ -50,11 +50,11 @@ const definitions = [
   {
     schemaVersion: PRODUCT.ruleSchemaVersion,
     id: "AS-PASSWORD-001",
-    version: "1.0.0",
-    title: "Fast general-purpose hash used for password storage",
+    version: "1.0.1",
+    title: "Fast hash used with password-adjacent input; storage purpose is unproven",
     category: "password-storage",
     description:
-      "Detects password-adjacent MD5, SHA-1, SHA-256, or SHA-512 hashing instead of an adaptive password hashing function.",
+      "Observes fast hashing of password-adjacent input. The current adapter does not establish persistence as a credential verifier; findings retain UNKNOWN proof and runtime reachability.",
     severity: "high",
     confidence: "high",
     standards: {
@@ -70,14 +70,14 @@ const definitions = [
       "An AST-resolved fast hash constructor appears in the same expression or statement as password-adjacent data.",
     ],
     reachabilityAssessment:
-      "Likely when the fast hash consumes a password-named value; persistence and invocation are not yet proven by interprocedural data flow.",
+      "The local hash operation is observed; persistence, invocation and runtime reachability remain UNKNOWN.",
     securityInvariant:
       "Stored passwords must use a salted, adaptive password hashing function with a work factor.",
     attackPrerequisite:
       "An attacker obtains the credential verifier database or stored hash values.",
     impact: "Fast offline guessing can recover user passwords and enable credential reuse attacks.",
     remediation:
-      "Use Argon2id where available, or an appropriately configured scrypt, bcrypt, or PBKDF2 implementation, and plan migration of existing hashes.",
+      "Trace whether the digest is stored or accepted as a credential verifier. If it is, plan an adaptive password-hash migration. Protocol or breach-lookup hashing must be reviewed for its actual purpose before changing algorithms.",
     autofix: "ARCHITECTURAL",
     references: [
       "https://cheatsheetseries.owasp.org/cheatsheets/Password_Storage_Cheat_Sheet.html",

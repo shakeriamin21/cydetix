@@ -1,7 +1,7 @@
 import traverse from "@babel/traverse";
 
 import { literalString, memberName } from "../ast-analysis/babel-utils.js";
-import type { Finding } from "../core/schema.js";
+import { findingSchema, type Finding } from "../core/schema.js";
 import { requireRule } from "../rule-engine/catalogue.js";
 import { makeFinding, nodeRange } from "../rule-engine/finding.js";
 import type { AnalysisContext, SecurityRule } from "../rule-engine/types.js";
@@ -10,6 +10,25 @@ const definition = requireRule("AS-PASSWORD-001");
 
 const FAST_HASHES = new Set(["md5", "sha1", "sha-1", "sha256", "sha-256", "sha512", "sha-512"]);
 const PASSWORD_CONTEXT = /\b(password|passwd|pwd|passphrase|credential)\b/i;
+
+function storagePurposeUnknown(finding: Finding): Finding {
+  return findingSchema.parse({
+    ...finding,
+    proofState: "UNKNOWN",
+    analysisCompleteness: "PARTIAL",
+    reachability: "unknown",
+    affectedComponent: "password-adjacent hashing; storage purpose unresolved",
+    evidence: [
+      ...finding.evidence,
+      {
+        message:
+          "The hash operation is observed, but persistence as a credential verifier is not established. Breach lookup, protocol use and password storage require different treatment.",
+        excerpt: "Storage purpose and runtime reachability are UNKNOWN.",
+        redacted: false,
+      },
+    ],
+  });
+}
 
 function analyzeJavaScript(context: AnalysisContext): Finding[] {
   if (context.parsed?.language !== "javascript" && context.parsed?.language !== "typescript")
@@ -73,6 +92,6 @@ function analyzePython(context: AnalysisContext): Finding[] {
 export const passwordHashRule: SecurityRule = {
   definition,
   analyze(context) {
-    return [...analyzeJavaScript(context), ...analyzePython(context)];
+    return [...analyzeJavaScript(context), ...analyzePython(context)].map(storagePurposeUnknown);
   },
 };
