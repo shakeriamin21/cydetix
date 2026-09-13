@@ -46,7 +46,7 @@ commits can change HEAD without changing the tested implementation; the developm
 the final HEAD. The immutable alpha.11 commit is
 \`${report.baselineCommit}\` and its annotated tag object is
 \`${report.baselineTagObject}\`. Development validation checks their identity and the byte identity
-of 18 historical evidence files. No release tag, GitHub release, npm publication, push or final
+of 19 historical evidence files. No release tag, GitHub release, npm publication, push or final
 release metadata is part of this work.
 
 ## Changes and preserved authority
@@ -237,6 +237,10 @@ not source content. CycloneDX and SARIF are validated separately from vulnerabil
 Gitleaks scans complete --all history using its pinned image with no repository ignore bypass:
 ${gitleaks.findings} findings match exact reviewed non-secret fingerprints, ${gitleaks.unreviewedFindings}
 unreviewed. Deterministic reachable-history and public privacy audits remain separate gates.
+The original 14 historical review entries remain byte-identical. Nine exact supplemental reviews
+cover deterministic authentication-operation/proof IDs in the new SARIF evidence; their generator
+and schema establish that these are analysis identifiers, not credentials. Supplemental reviews are
+hash-bound to the historical manifest and checked with the same field/fingerprint/match-digest rules.
 The all-refs author audit flags the public Dependabot noreply identity on the pre-existing remote
 branch commit d8b3d5a10f4c878c413a388d6f640fa390cb4b5b. This commit is outside HEAD ancestry. Its
 identity hash is not in the immutable publication configuration, so the all-refs gate remains FAILED;

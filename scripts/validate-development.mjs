@@ -45,6 +45,7 @@ const historicalPaths = [
   "release",
   "docs/releases",
   "validation/validation-report.json",
+  "validation/gitleaks-reviewed-findings.json",
   "docs/security/ALPHA11_BATCH2_VALIDATION.md",
   "docs/security/ALPHA11_BATCH2_EXTERNAL_CORPUS_VALIDATION.md",
   "docs/security/ALPHA11_BATCH2_EXTERNAL_CORPUS_MANIFEST.json",

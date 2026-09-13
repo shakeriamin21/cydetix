@@ -137,8 +137,8 @@ const supplyChainGates = Object.entries({
   privacy: "privacy",
   history: "history",
   workflowSecurity: "workflow",
-  package: "package",
-  packedInstall: "packedInstall",
+  package: "verify",
+  packedInstall: "verify",
   packedPlugin: "packedPlugin",
   selfScan: "selfScan",
 }).map(([id, local]) => {

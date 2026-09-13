@@ -26,8 +26,16 @@ const validator = path.join(repositoryRoot, "scripts", "validate-gitleaks-report
 const manifest = JSON.parse(
   readFileSync(path.join(repositoryRoot, "validation", "gitleaks-reviewed-findings.json"), "utf8"),
 ) as ReviewManifest;
+const supplemental = JSON.parse(
+  readFileSync(
+    path.join(repositoryRoot, "validation", "alpha12", "gitleaks-reviewed-findings.json"),
+    "utf8",
+  ),
+) as ReviewManifest;
 
 function redactedMatchFor(review: ReviewedFinding) {
+  if (review.file === "validation/alpha12/self-scan.sarif.json")
+    return review.startLine === 6736 ? 'authproof:REDACTED"' : 'authop:REDACTED"';
   if (review.file === "docs/security/ALPHA8_EXTERNAL_CORPUS_VALIDATION.md")
     return "FastAPI annotations. Commit:\n`REDACTED`";
   if (review.file === "fixtures/phase4/secret-exposed/config.ts") return 'credential = "REDACTED"';
@@ -76,7 +84,9 @@ function validate(report: unknown) {
 }
 
 describe("Gitleaks reviewed-finding validator", () => {
-  const exactFindings = manifest.reviewedFindings.map(asGitleaksFinding);
+  const exactFindings = [...manifest.reviewedFindings, ...supplemental.reviewedFindings].map(
+    asGitleaksFinding,
+  );
   function findingAt(index: number) {
     const finding = exactFindings[index];
     if (finding === undefined) throw new Error(`Missing reviewed finding ${index}.`);
@@ -85,21 +95,34 @@ describe("Gitleaks reviewed-finding validator", () => {
   const reviewedDocumentation = findingAt(0);
   const reviewedFixture = findingAt(1);
 
-  it("accepts all 14 findings only with their exact reviewed evidence", () => {
-    expect(exactFindings).toHaveLength(14);
+  it("accepts 14 immutable historical and nine supplemental findings only with exact reviewed evidence", () => {
+    expect(manifest.reviewedFindings).toHaveLength(14);
+    expect(supplemental.reviewedFindings).toHaveLength(9);
+    expect(exactFindings).toHaveLength(23);
     const result = validate(exactFindings);
     expect(result.status).toBe(0);
     expect(JSON.parse(result.stdout)).toMatchObject({
       state: "PASS",
-      findings: 14,
-      reviewedFindings: 14,
+      findings: 23,
+      reviewedFindings: 23,
       unreviewedFindings: 0,
       classifications: {
-        DOCUMENTATION_EVIDENCE: 1,
+        DOCUMENTATION_EVIDENCE: 10,
         FALSE_POSITIVE_PATTERN: 5,
         INTENTIONAL_TEST_FIXTURE: 8,
       },
     });
+  });
+
+  it("rejects altered supplemental evidence and omitted supplemental history", () => {
+    expect(
+      validate(
+        exactFindings.map((finding, index) =>
+          index === 14 ? { ...finding, Match: 'authop:ALTERED"' } : finding,
+        ),
+      ).status,
+    ).not.toBe(0);
+    expect(validate(exactFindings.slice(0, 14)).status).not.toBe(0);
   });
 
   it("rejects an exact reviewed subset as incomplete history", () => {

@@ -10,6 +10,10 @@ if (scope !== "history")
 const manifestPath = path.resolve("validation", "gitleaks-reviewed-findings.json");
 const reportSource = await readFile(reportPath, "utf8");
 const manifestSource = await readFile(manifestPath, "utf8");
+const supplementalSource = await readFile(
+  path.resolve("validation", "alpha12", "gitleaks-reviewed-findings.json"),
+  "utf8",
+);
 function parseJson(source, label) {
   try {
     return JSON.parse(source);
@@ -19,6 +23,7 @@ function parseJson(source, label) {
 }
 const findings = parseJson(reportSource, "Gitleaks report");
 const manifest = parseJson(manifestSource, "Gitleaks reviewed-finding manifest");
+const supplemental = parseJson(supplementalSource, "Alpha.12 supplemental Gitleaks reviews");
 if (!Array.isArray(findings)) throw new Error("Gitleaks report must be a JSON array.");
 if (
   manifest === null ||
@@ -29,6 +34,19 @@ if (
   !Array.isArray(manifest.reviewedFindings)
 )
   throw new Error("Gitleaks reviewed-finding manifest is malformed.");
+if (
+  supplemental === null ||
+  typeof supplemental !== "object" ||
+  Array.isArray(supplemental) ||
+  supplemental.schemaVersion !== "1.0.0" ||
+  supplemental.gitleaksVersion !== manifest.gitleaksVersion ||
+  supplemental.historicalReviewManifestSha256 !==
+    createHash("sha256").update(manifestSource).digest("hex") ||
+  !Array.isArray(supplemental.reviewedFindings)
+)
+  throw new Error(
+    "Supplemental Gitleaks reviews are malformed or not bound to immutable historical reviews.",
+  );
 
 const classifications = new Set([
   "PUBLIC_NON_SECRET_IDENTIFIER",
@@ -91,7 +109,10 @@ function validateReview(review, index) {
 }
 
 const reviewsByFingerprint = new Map();
-for (const [index, review] of manifest.reviewedFindings.entries()) {
+for (const [index, review] of [
+  ...manifest.reviewedFindings,
+  ...supplemental.reviewedFindings,
+].entries()) {
   validateReview(review, index);
   if (reviewsByFingerprint.has(review.fingerprint))
     throw new Error(`Duplicate reviewed Gitleaks fingerprint: ${review.fingerprint}`);
@@ -189,6 +210,7 @@ const result = {
   ),
   reportSha256: createHash("sha256").update(reportSource).digest("hex"),
   reviewManifestSha256: createHash("sha256").update(manifestSource).digest("hex"),
+  supplementalReviewManifestSha256: createHash("sha256").update(supplementalSource).digest("hex"),
   disposition: "EXACT_REVIEWED_NON_SECRET_FINDINGS",
 };
 const evidenceDirectory = path.resolve(".cydetix", "evidence");
