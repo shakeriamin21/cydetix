@@ -1,0 +1,2243 @@
+{
+  "id": "juice-shop",
+  "repository": "juice-shop/juice-shop",
+  "commit": "1618a611b173b4bf114028e6e02549950606e29d",
+  "language": "TypeScript",
+  "framework": "Express; Angular",
+  "classification": "VULNERABLE",
+  "previousAlpha11Batch2": true,
+  "purpose": "Replay alpha.11 across all enabled rules and the full normalized report.",
+  "version": "0.6.0-alpha.12",
+  "enabledRuleIds": [
+    "AS-SESSION-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-AUTHZ-001",
+    "AS-TENANT-001",
+    "AS-AUTH-SESSION-001",
+    "AS-AUTH-SESSION-002",
+    "AS-AUTH-RESET-001",
+    "AS-AUTH-RESET-002",
+    "AS-AUTH-RESET-003",
+    "AS-AUTH-JWT-001",
+    "AS-AUTH-OAUTH-001",
+    "AS-AUTH-OAUTH-002",
+    "AS-SCA-001",
+    "AS-CI-001",
+    "AS-CI-002",
+    "AS-CI-003",
+    "AS-CI-004",
+    "AS-INJECTION-SQL-001",
+    "AS-INJECTION-CMD-001",
+    "AS-PATH-001",
+    "AS-SSRF-001",
+    "AS-XSS-001",
+    "AS-REDIRECT-001",
+    "AS-CSRF-001"
+  ],
+  "applicability": "Enabled rules are not all applicable. Framework detection, finding/UNKNOWN rule IDs and declared limitations describe the checked envelope.",
+  "detectedLanguages": [
+    "javascript",
+    "python",
+    "typescript"
+  ],
+  "detectedFrameworks": [
+    "Express"
+  ],
+  "findingRuleIds": [
+    "AS-CI-001",
+    "AS-SECRET-001"
+  ],
+  "completeness": "TRUNCATED",
+  "determinism": "PASSED",
+  "normalizedReportSha256": [
+    "e521ccb0d3d8728e9673a2f685d873d12dc1ea294b04cf25f9a2ef63be3fbaad",
+    "e521ccb0d3d8728e9673a2f685d873d12dc1ea294b04cf25f9a2ef63be3fbaad"
+  ],
+  "sourceManifestSha256": "e766c8b077df187c150ca49b42a9ac19df50eaa936e1737e74df03a40f8a0489",
+  "measurements": [
+    {
+      "totalScanMilliseconds": 12560.3789,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 1847.1271000000002,
+        "parsing": 1902.5901000000003,
+        "callGraph": 1190.8876,
+        "securityGraph": 731.1827000000003,
+        "authenticationGraph": 3.4434000000001106,
+        "invariantEvaluation": 804.5813999999991,
+        "applicationDataflow": 2953.875100000001,
+        "reportGeneration": 77.87540000000081
+      },
+      "representativeRssBytes": 776798208,
+      "processHighWaterRssBytes": 789438464,
+      "filesVisited": 1301,
+      "filesExamined": 1168,
+      "skippedEntries": 133,
+      "bytesExamined": 14050684,
+      "filesAnalyzed": 340,
+      "astNodesVisited": 455124,
+      "factsCreated": 0,
+      "pathsConsidered": 1851,
+      "iterations": 1,
+      "truncationEvents": 274,
+      "securityIdentityBounds": {
+        "status": "TRUNCATED",
+        "iterations": 8,
+        "factsCreated": 1193,
+        "maxIterations": 8,
+        "maxFacts": 10000
+      },
+      "findings": 10,
+      "unknown": {
+        "applicationDataflow": 140,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 3
+      }
+    },
+    {
+      "totalScanMilliseconds": 17634.0489,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 1614.1521000000012,
+        "parsing": 1485.1436000000012,
+        "callGraph": 1229.8623000000007,
+        "securityGraph": 713.4861000000019,
+        "authenticationGraph": 2.103499999997439,
+        "invariantEvaluation": 2314.8135,
+        "applicationDataflow": 4262.237399999998,
+        "reportGeneration": 85.40650000000096
+      },
+      "representativeRssBytes": 1393700864,
+      "processHighWaterRssBytes": 1406308352,
+      "filesVisited": 1301,
+      "filesExamined": 1168,
+      "skippedEntries": 133,
+      "bytesExamined": 14050684,
+      "filesAnalyzed": 340,
+      "astNodesVisited": 455124,
+      "factsCreated": 0,
+      "pathsConsidered": 1851,
+      "iterations": 1,
+      "truncationEvents": 274,
+      "securityIdentityBounds": {
+        "status": "TRUNCATED",
+        "iterations": 8,
+        "factsCreated": 1193,
+        "maxIterations": 8,
+        "maxFacts": 10000
+      },
+      "findings": 10,
+      "unknown": {
+        "applicationDataflow": 140,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 3
+      }
+    }
+  ],
+  "findings": [
+    {
+      "fingerprint": "a319cb7d76f8dff55669376fc63ebcea7e60bb7f88bebd1b7c9f1b0387fcab81",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/ci.yml",
+        "start": {
+          "line": 188,
+          "column": 14,
+          "offset": 9223
+        },
+        "end": {
+          "line": 188,
+          "column": 43,
+          "offset": 9252
+        }
+      },
+      "evidence": [
+        {
+          "message": "coverallsapp/github-action uses tag reference v2; no authoritative SHA was invented.",
+          "excerpt": "uses: coverallsapp/github-action@v2",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "deb7d5c296dd55208c81f9ba3d693961abe03c3e795726ae876204fe801c55c2",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/codeql-analysis.yml",
+        "start": {
+          "line": 23,
+          "column": 12,
+          "offset": 459
+        },
+        "end": {
+          "line": 23,
+          "column": 40,
+          "offset": 487
+        }
+      },
+      "evidence": [
+        {
+          "message": "github/codeql-action/init uses tag reference v3; no authoritative SHA was invented.",
+          "excerpt": "uses: github/codeql-action/init@v3",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "3b7196c84f4633b64873998459754bcc71e54c7568eb1baa42cad5d546caea5d",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/codeql-analysis.yml",
+        "start": {
+          "line": 34,
+          "column": 12,
+          "offset": 781
+        },
+        "end": {
+          "line": 34,
+          "column": 45,
+          "offset": 814
+        }
+      },
+      "evidence": [
+        {
+          "message": "github/codeql-action/autobuild uses tag reference v3; no authoritative SHA was invented.",
+          "excerpt": "uses: github/codeql-action/autobuild@v3",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "d443ca5a4dfc964dc1ff368f1ea8a28c8e2553f50e5ce4296188d94a34e3bffb",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/codeql-analysis.yml",
+        "start": {
+          "line": 36,
+          "column": 12,
+          "offset": 863
+        },
+        "end": {
+          "line": 36,
+          "column": 43,
+          "offset": 894
+        }
+      },
+      "evidence": [
+        {
+          "message": "github/codeql-action/analyze uses tag reference v3; no authoritative SHA was invented.",
+          "excerpt": "uses: github/codeql-action/analyze@v3",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "7e58a6f29075da7f44a41fabe14f486f9c8624f026bc3c42bb063848e30ee08f",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/image_actions.yml",
+        "start": {
+          "line": 30,
+          "column": 14,
+          "offset": 610
+        },
+        "end": {
+          "line": 30,
+          "column": 33,
+          "offset": 629
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "b6aa3c06651217fe2787a2cc84fcfa748de53243fcc42e08e190726eccfc4904",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/image_actions.yml",
+        "start": {
+          "line": 33,
+          "column": 14,
+          "offset": 694
+        },
+        "end": {
+          "line": 33,
+          "column": 43,
+          "offset": 723
+        }
+      },
+      "evidence": [
+        {
+          "message": "calibreapp/image-actions uses branch reference main; no authoritative SHA was invented.",
+          "excerpt": "uses: calibreapp/image-actions@main",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "1c1651093deefaefb97b8e10aa4596f65f0dcb6547ea63eb2c4000268f619e9c",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/image_actions.yml",
+        "start": {
+          "line": 42,
+          "column": 14,
+          "offset": 1096
+        },
+        "end": {
+          "line": 42,
+          "column": 48,
+          "offset": 1130
+        }
+      },
+      "evidence": [
+        {
+          "message": "peter-evans/create-pull-request uses tag reference v8; no authoritative SHA was invented.",
+          "excerpt": "uses: peter-evans/create-pull-request@v8",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "426855530797f82930f1700d3038816868fa6fc5f160740d4676780a2746a7cc",
+      "ruleId": "AS-SECRET-001",
+      "ruleVersion": "1.0.1",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "unknown",
+      "title": "Private-key marker observed; credential material is unproven",
+      "category": "secrets",
+      "affectedComponent": "private-key marker; payload and deployment unresolved",
+      "location": {
+        "path": "infrastructure/terraform/networking.tf",
+        "start": {
+          "line": 171,
+          "column": 22,
+          "offset": 4008
+        },
+        "end": {
+          "line": 171,
+          "column": 53,
+          "offset": 4039
+        }
+      },
+      "evidence": [
+        {
+          "message": "A private-key header was observed. The bounded detector does not validate the payload or establish whether this is a placeholder, test fixture, or deployed credential. Contents remain redacted; no provider was contacted.",
+          "excerpt": "[REDACTED cryptographic-key credential; length=31; sha256=8bcac7908eb9]",
+          "redacted": true
+        }
+      ],
+      "securityInvariant": "Long-lived credentials must not be stored in source-controlled plaintext.",
+      "attackPrerequisite": "An attacker gains read access to the working tree, repository, artifact, log, or history.",
+      "impact": "The exposed credential may permit unauthorized access to data or infrastructure.",
+      "standards": {
+        "cwe": [
+          "CWE-798"
+        ],
+        "owaspTop10": [
+          "A02:2025"
+        ],
+        "asvs": [
+          "v5.0.0-13.3.1"
+        ],
+        "nist": []
+      },
+      "remediation": "Inspect the marker and its payload locally. If it contains credential material used outside a test fixture, revoke or rotate that credential and review its history. A marker alone does not justify a key migration; automatic modification is withheld.",
+      "autofix": "ARCHITECTURAL",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "UNKNOWN",
+      "analysisCompleteness": "PARTIAL",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "ARCHITECTURAL",
+        "requestedClass": "ARCHITECTURAL",
+        "finalClass": "ARCHITECTURAL",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "c8c76ac526171e5c74475d531872029e8b3f7b1f51dd320c0fc32dcd69a2a9d1",
+      "ruleId": "AS-SECRET-001",
+      "ruleVersion": "1.0.1",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "unknown",
+      "title": "Private-key marker observed; credential material is unproven",
+      "category": "secrets",
+      "affectedComponent": "private-key marker; payload and deployment unresolved",
+      "location": {
+        "path": "lib/insecurity.ts",
+        "start": {
+          "line": 21,
+          "column": 20,
+          "offset": 747
+        },
+        "end": {
+          "line": 21,
+          "column": 51,
+          "offset": 778
+        }
+      },
+      "evidence": [
+        {
+          "message": "A private-key header was observed. The bounded detector does not validate the payload or establish whether this is a placeholder, test fixture, or deployed credential. Contents remain redacted; no provider was contacted.",
+          "excerpt": "[REDACTED cryptographic-key credential; length=31; sha256=8bcac7908eb9]",
+          "redacted": true
+        }
+      ],
+      "securityInvariant": "Long-lived credentials must not be stored in source-controlled plaintext.",
+      "attackPrerequisite": "An attacker gains read access to the working tree, repository, artifact, log, or history.",
+      "impact": "The exposed credential may permit unauthorized access to data or infrastructure.",
+      "standards": {
+        "cwe": [
+          "CWE-798"
+        ],
+        "owaspTop10": [
+          "A02:2025"
+        ],
+        "asvs": [
+          "v5.0.0-13.3.1"
+        ],
+        "nist": []
+      },
+      "remediation": "Inspect the marker and its payload locally. If it contains credential material used outside a test fixture, revoke or rotate that credential and review its history. A marker alone does not justify a key migration; automatic modification is withheld.",
+      "autofix": "ARCHITECTURAL",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "UNKNOWN",
+      "analysisCompleteness": "PARTIAL",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "ARCHITECTURAL",
+        "requestedClass": "ARCHITECTURAL",
+        "finalClass": "ARCHITECTURAL",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "d89e8a33cc9dbe486d825b032724b3a33f97533235b6f211108a3bc9ab719d2f",
+      "ruleId": "AS-SECRET-001",
+      "ruleVersion": "1.0.1",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "unknown",
+      "title": "Private-key marker observed; credential material is unproven",
+      "category": "secrets",
+      "affectedComponent": "private-key marker; payload and deployment unresolved",
+      "location": {
+        "path": "terraform/networking.tf",
+        "start": {
+          "line": 171,
+          "column": 22,
+          "offset": 4008
+        },
+        "end": {
+          "line": 171,
+          "column": 53,
+          "offset": 4039
+        }
+      },
+      "evidence": [
+        {
+          "message": "A private-key header was observed. The bounded detector does not validate the payload or establish whether this is a placeholder, test fixture, or deployed credential. Contents remain redacted; no provider was contacted.",
+          "excerpt": "[REDACTED cryptographic-key credential; length=31; sha256=8bcac7908eb9]",
+          "redacted": true
+        }
+      ],
+      "securityInvariant": "Long-lived credentials must not be stored in source-controlled plaintext.",
+      "attackPrerequisite": "An attacker gains read access to the working tree, repository, artifact, log, or history.",
+      "impact": "The exposed credential may permit unauthorized access to data or infrastructure.",
+      "standards": {
+        "cwe": [
+          "CWE-798"
+        ],
+        "owaspTop10": [
+          "A02:2025"
+        ],
+        "asvs": [
+          "v5.0.0-13.3.1"
+        ],
+        "nist": []
+      },
+      "remediation": "Inspect the marker and its payload locally. If it contains credential material used outside a test fixture, revoke or rotate that credential and review its history. A marker alone does not justify a key migration; automatic modification is withheld.",
+      "autofix": "ARCHITECTURAL",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "UNKNOWN",
+      "analysisCompleteness": "PARTIAL",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "ARCHITECTURAL",
+        "requestedClass": "ARCHITECTURAL",
+        "finalClass": "ARCHITECTURAL",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    }
+  ],
+  "suppressedFindings": [],
+  "unknowns": {
+    "applicationDataflow": [
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 16,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 17,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 19,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 22,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 28,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 32,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 35,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 36,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 38,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 50,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 51,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 53,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 54,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 57,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 62,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 64,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 65,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 68,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 72,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 74,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_1.ts",
+        "line": 75,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 16,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 19,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 25,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 29,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 32,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 33,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 35,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 47,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 48,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 50,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 51,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 54,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 59,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 61,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 62,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 65,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 69,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 71,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_2.ts",
+        "line": 72,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 16,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 17,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 18,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 20,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 23,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 29,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 33,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 36,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 37,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 39,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 51,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 52,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 54,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 55,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 58,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 63,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 65,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 66,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 69,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 73,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 75,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_3_correct.ts",
+        "line": 76,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 16,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 17,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 18,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 20,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 23,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 29,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 33,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 36,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 37,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 39,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 51,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 52,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 54,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 55,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 58,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 63,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 65,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 66,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 69,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 73,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 75,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "data/static/codefixes/changeProductChallenge_4.ts",
+        "line": 76,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 329,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 330,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 331,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 388,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 390,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 392,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 395,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 401,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 405,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 408,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 409,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 411,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 421,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 423,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 425,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 439,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 440,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 441,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 445,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 446,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 448,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 449,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 452,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 457,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 459,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 460,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 463,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 467,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 469,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 470,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 477,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 484,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 490,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 615,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 617,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 623,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 624,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 631,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 632,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 633,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 639,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 640,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 644,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 646,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 648,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 652,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 653,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 654,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 657,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 660,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 663,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 664,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 667,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 686,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 690,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "server.ts",
+        "line": 692,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      }
+    ],
+    "authorization": [],
+    "authentication": []
+  },
+  "resourceLimitEvents": {
+    "securityIdentity": {
+      "status": "TRUNCATED",
+      "iterations": 8,
+      "factsCreated": 1193,
+      "maxIterations": 8,
+      "maxFacts": 10000
+    },
+    "applicationDataflow": 274,
+    "traversal": [
+      {
+        "path": "frontend/src/assets/public/videos/owasp_promo.mp4",
+        "reason": "too_large"
+      },
+      {
+        "path": "screenshots/slideshow.gif",
+        "reason": "too_large"
+      }
+    ]
+  },
+  "engineCompleteness": [
+    {
+      "engine": "security-identity-propagation",
+      "status": "TRUNCATED",
+      "details": "8 iterations; 1193 facts produced. Incomplete trust was discarded; dependent authorization and tenant proofs remain UNKNOWN."
+    },
+    {
+      "engine": "repository-discovery",
+      "status": "TRUNCATED",
+      "details": "One or more configured file, size, or depth bounds were reached."
+    },
+    {
+      "engine": "syntax-parsing",
+      "status": "PARTIAL",
+      "details": "40 supported source file(s) failed parsing."
+    },
+    {
+      "engine": "application-dataflow",
+      "status": "TRUNCATED",
+      "details": "1851 bounded path(s) considered; 274 truncation event(s)."
+    }
+  ],
+  "limitations": [
+    "Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.",
+    "Working-tree state was obtained with a five-second/one-MiB no-lock Git status probe; repository hooks/fsmonitor and submodule inspection were disabled.",
+    "Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.",
+    "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
+    "Git history was not analyzed; use cydetix secrets . --history.",
+    "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",
+    "Generated code, runtime configuration, and dependency function reachability were not analyzed.",
+    "data/static/codefixes/chatbotPromptInjectionChallenge_1.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (11:4)",
+    "data/static/codefixes/chatbotPromptInjectionChallenge_2_correct.ts: JavaScript/TypeScript parse failed: SyntaxError: Missing semicolon. (15:18)",
+    "data/static/codefixes/chatbotPromptInjectionChallenge_3.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (15:4)",
+    "data/static/codefixes/chatbotPromptInjectionChallenge_4.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (16:4)",
+    "data/static/codefixes/localXssChallenge_1.ts: JavaScript/TypeScript parse failed: SyntaxError: Missing semicolon. (1:14)",
+    "data/static/codefixes/localXssChallenge_2_correct.ts: JavaScript/TypeScript parse failed: SyntaxError: Missing semicolon. (1:14)",
+    "data/static/codefixes/localXssChallenge_3.ts: JavaScript/TypeScript parse failed: SyntaxError: Missing semicolon. (1:14)",
+    "data/static/codefixes/localXssChallenge_4.ts: JavaScript/TypeScript parse failed: SyntaxError: Missing semicolon. (1:14)",
+    "data/static/codefixes/loginAdminChallenge_1.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (39:3)",
+    "data/static/codefixes/loginAdminChallenge_2.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (37:3)",
+    "data/static/codefixes/loginAdminChallenge_3.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (37:3)",
+    "data/static/codefixes/loginAdminChallenge_4_correct.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (37:3)",
+    "data/static/codefixes/loginBenderChallenge_1.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (39:3)",
+    "data/static/codefixes/loginBenderChallenge_2_correct.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (37:3)",
+    "data/static/codefixes/loginBenderChallenge_3.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (37:3)",
+    "data/static/codefixes/loginBenderChallenge_4.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (36:3)",
+    "data/static/codefixes/loginJimChallenge_1_correct.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (37:3)",
+    "data/static/codefixes/loginJimChallenge_2.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (36:3)",
+    "data/static/codefixes/loginJimChallenge_3.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (37:3)",
+    "data/static/codefixes/loginJimChallenge_4.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (39:3)",
+    "20 additional parse failures omitted from this summary.",
+    "Phase two projects statically resolved Express routes, identity provenance, Prisma resources, and authorization/tenant proof states.",
+    "Authentication Graph v2 projects adapter-guaranteed lifecycle operations, validation boundaries, trust transitions, revocation events, and invariant results.",
+    "Generated routes, dynamic middleware composition, unsupported ORM behavior, and runtime policy remain UNKNOWN.",
+    "The absence of a graph edge is not evidence that a security control is absent.",
+    "Cross-file call resolution is limited to repository-local relative ESM imports and statically named direct or namespace calls.",
+    "CommonJS require, tsconfig path aliases, package exports, re-exports, dependency injection, decorators, computed properties, and runtime dispatch remain UNKNOWN.",
+    "Express routes require literal paths and statically named handlers; inline and dynamically composed handlers remain UNKNOWN.",
+    "4258 call target(s) remained unresolved or dynamic.",
+    "Security identity propagation exhausted the eight-iteration or 10000-fact bound. Incomplete propagated trust was discarded; dependent authorization and tenant proofs remain UNKNOWN.",
+    "Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.",
+    "Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.",
+    "Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.",
+    "JavaScript/TypeScript propagation is bounded to direct assignments, aliases, object properties, templates, concatenation, resolved same-file calls, arguments, and returns.",
+    "Python propagation is bounded to parsed decorated routes and local assignments; cross-function and cross-file Python propagation is unsupported.",
+    "Unknown custom sanitizers and unresolved dynamic transformations produce UNKNOWN instead of an actionable finding.",
+    "No target code, package script, hook, framework CLI, test, build, or arbitrary interpreter was executed.",
+    "Phase 3 authentication proofs cover explicit TypeScript/JavaScript Express, express-session, Prisma authentication records, jsonwebtoken, jose, and oauth4webapi evidence only.",
+    "Library behavior is trusted only for the exact supported API surface; version-hidden or unsupported behavior remains UNKNOWN.",
+    "Application names alone never establish an authentication operation; adapters require protocol APIs, persistence operations, or resolved lifecycle evidence.",
+    "OAuth 2.1 remains an Internet-Draft and is not used as normative detector guidance."
+  ],
+  "adjudication": {
+    "state": "PENDING_MANUAL_REVIEW",
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null
+  }
+}

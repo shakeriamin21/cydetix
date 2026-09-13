@@ -1,0 +1,244 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "1818a693ef3dd871b01b136af6696a13aa332693",
+  "version": "0.6.0-alpha.12",
+  "fixture": "fixtures/phase4/actions-tagged",
+  "execution": "Non-interactive child CLI processes in an isolated fixture copy and setup home. fix has no SAFE plan and is withheld. Actual SAFE patch/rollback is covered separately by CLI and sandbox tests.",
+  "cases": [
+    {
+      "command": [
+        "cydetix"
+      ],
+      "name": "default",
+      "expectedExit": 0,
+      "actualExit": 0,
+      "state": "PASSED",
+      "structure": null,
+      "stdout": "Cydetix\n\nScanning Project With Spaces...\n\n  Application\n  Secrets\n  CI/CD\n\nSecurity status: NEEDS ATTENTION\n\nFIX NOW   0\nREVIEW    1\nUNKNOWN   0\nUrgency is separate from remediation authority. UNKNOWN counts proof instances, not confirmed vulnerabilities.\n\nAnalysis completeness: PARTIAL (within supported patterns)\nUNKNOWN proof instances: 0 (may refer to the same code)\nUNKNOWN means the available evidence cannot establish the invariant; review the missing control or unsupported path and rescan after changes.\n  application-dataflow: UNSUPPORTED. 0 bounded path(s) considered; 0 truncation event(s).\nDependency advisories: NOT_CHECKED_OFFLINE\nNo findings is not a security guarantee. Runtime behavior, unsupported constructs and unchecked advisories remain outside the proof.\n\nREVIEW\nMEDIUM  AS-CI-001  External GitHub Action is not pinned to a full commit SHA\n  Location: .github/workflows/ci.yml:9:15\n  Confidence: high  Reachability: likely\n  Proof: PROVEN_INSECURE  Analysis: COMPLETE  Maturity: PRODUCTION\n  Evidence: actions/checkout uses tag reference v4; no authoritative SHA was invented.\n  Invariant: Third-party workflow code should be immutably identified before execution.\n  Impact: Changed third-party workflow code executes with the job's token, secrets, and runner access.\n  Remediation: Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.\n  Autofix: REVIEW_REQUIRED\n  Maximum remediation authority: REVIEW_REQUIRED; permitted for this finding: REVIEW_REQUIRED\n  REVIEW_REQUIRED: Cydetix has no independently verifiable SAFE transformation for this finding. Review the control semantics and application policy before modifying code, then rescan.\n  Verification: not_attempted (separate from proof and confidence)\n  Not established: Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security. Likely when the containing workflow and job run; local Actions and digest-pinned containers are excluded.\n  Remediation assessment: ceiling REVIEW_REQUIRED; final REVIEW_REQUIRED; DYNAMIC_EXPRESSION, MULTI_FILE_SEMANTIC_CHANGE, VERIFICATION_INSUFFICIENT\n  Standards: CWE-829, A03:2025\n  Fingerprint: 485309d7faeda97c6516874c81be4f79f35d88935c1879de6f2d49a9495ef6a2\n\nNext: inspect proposed changes with cydetix fix --dry-run --format json.\n",
+      "stderr": "",
+      "stdoutSha256": "dbeed2a55a225021bb4fecbbc311a22242351009cbcfa9ae84e1847f9e290536"
+    },
+    {
+      "command": [
+        "cydetix",
+        "--help"
+      ],
+      "name": "help",
+      "expectedExit": 0,
+      "actualExit": 0,
+      "state": "PASSED",
+      "structure": null,
+      "stdout": "Usage: cydetix [options] [command]\n\nLocal-first application, authentication, and software supply-chain assurance\n\nOptions:\n  -V, --version                  output the version number\n  --details                      show complete evidence, coverage, standards,\n                                 and proof details (default: false)\n  --json                         emit the complete structured scan report as\n                                 JSON (default: false)\n  --sarif                        emit the complete scan report as SARIF\n                                 (default: false)\n  -h, --help                     display help for command\n\nCommands:\n  init [path]                    Create an optional bounded, data-only Cydetix\n                                 configuration\n  setup [options]                Detect and configure supported AI coding agents\n  status [options]               Show AI integration status without changing\n                                 configuration (setup --status)\n  scan [options] [path]          Run a read-only deterministic security scan\n  auth [options] [path]          Reconstruct and report authentication/security\n                                 architecture evidence\n  graph [options] [path]         Expose evidence-backed authentication graph\n                                 nodes and edges\n  dependencies [options] [path]  Inventory resolved dependencies and optionally\n                                 query advisories\n  secrets [options] [path]       Run passive, redacted working-tree secret\n                                 analysis\n  supply-chain [options] [path]  Correlate dependencies, secrets, CI trust,\n                                 SBOM, and provenance evidence\n  sbom [options] [path]          Generate a CycloneDX 1.7 SBOM from lockfile\n                                 evidence without installation\n  fix [options] [path]           Apply and verify only SAFE remediation after\n                                 explicit fix intent\n  mcp [options]                  Run the first-party Cydetix stdio MCP server\n  mcp-config [options]           Print a validated project-bound local MCP\n                                 definition without modifying files\n  verify [options] [path]        Rescan and fail when active high or critical\n                                 findings remain\n  remediation                    Inspect a user-controlled remediation report\n                                 without executing repository code\n  explain [options] <rule-id>    Explain a rule and its evidence requirements\n  rules [options]                List the exact runtime rule catalogue and\n                                 remediation ceilings\n  trust [options]                Report deterministic runtime trust capabilities\n                                 and explicit limitations\n  standards                      List implemented standards mappings\n  ci [options] [path]            Run an offline scan with a deterministic policy\n                                 gate\n  doctor [options]               Report local engine and optional adapter\n                                 availability\n  version                        Print the Cydetix version\n",
+      "stderr": "",
+      "stdoutSha256": "404e19cdae77aa663c94262ba8c806d04d049218bc5d05013ee9702f6d7cf474"
+    },
+    {
+      "command": [
+        "cydetix",
+        "--version"
+      ],
+      "name": "version",
+      "expectedExit": 0,
+      "actualExit": 0,
+      "state": "PASSED",
+      "structure": null,
+      "stdout": "0.6.0-alpha.12\n",
+      "stderr": "",
+      "stdoutSha256": "efd151f9763b6b43a95b250d203cdb21a26865ed2eca070611a304cacd51874a"
+    },
+    {
+      "command": [
+        "cydetix",
+        "setup"
+      ],
+      "name": "setup",
+      "expectedExit": 0,
+      "actualExit": 0,
+      "state": "PASSED",
+      "structure": null,
+      "stdout": "Cydetix Setup\n\nDetected agents:\n  OpenAI Codex — not configured\n  Claude Code — not configured\n\nInstall or update:\n  OpenAI Codex\n  Claude Code\n\nNo changes made. Rerun with --yes for non-interactive setup.\n",
+      "stderr": "",
+      "stdoutSha256": "e70776c0bf9210a64eb05b94aab200099d440f5c1c38872d87f235d1db46d05a"
+    },
+    {
+      "command": [
+        "cydetix",
+        "status"
+      ],
+      "name": "status",
+      "expectedExit": 0,
+      "actualExit": 0,
+      "state": "PASSED",
+      "structure": null,
+      "stdout": "Cydetix Setup\n\nDetected agents:\n  OpenAI Codex — not configured\n  Claude Code — not configured\n  Cursor — not installed\n  GitHub Copilot — not installed\n  Windsurf — not installed\n  Gemini CLI — not installed\n  Cline — not installed\n  Roo Code — not installed\n  Continue — not installed\n  Goose — not installed\n  Generic MCP — not configured\n\nNo configuration changes were made.\n",
+      "stderr": "",
+      "stdoutSha256": "be26bc3f4ae28355d0c6ab51dc4b0eaafa1fbee8a7edb5aa91c98ff11ccb9f8a"
+    },
+    {
+      "command": [
+        "cydetix",
+        "scan"
+      ],
+      "name": "scan",
+      "expectedExit": 0,
+      "actualExit": 0,
+      "state": "PASSED",
+      "structure": null,
+      "stdout": "cydetix 0.6.0-alpha.12\nTarget: <temporary>\\Project With Spaces\nFindings: 0 critical, 0 high, 1 medium, 0 low, 0 info (0 suppressed)\n\nCOVERAGE\n  Analysis completeness: PARTIAL (within supported patterns)\n  UNKNOWN proof instances: 0 (may refer to the same code)\n  UNKNOWN means the available evidence cannot establish the invariant; review the missing control or unsupported path and rescan after changes.\n    application-dataflow: UNSUPPORTED. 0 bounded path(s) considered; 0 truncation event(s).\n  Dependency advisories: NOT_CHECKED_OFFLINE\n  No findings is not a security guarantee. Runtime behavior, unsupported constructs and unchecked advisories remain outside the proof.\n  Files examined: 1 (147 bytes)\n  Files/directories skipped: 0\n  Languages: none detected\n  Frameworks: none detected\n  Analyzed languages: none\n  Analyzed frameworks: none\n  Engines run: bounded repository discovery; Babel JavaScript/TypeScript AST; Lezer Python syntax tree; deterministic Cydetix rule engine; bounded application source-propagation-control-sink engine; authentication graph (literal/dependency evidence); Security IR and repository-local ESM call graph; Express identity trust and Prisma resource-flow analysis; object-level authorization proof engine; tenant-isolation proof engine; Authentication Graph v2 and authentication protocol adapters; authentication invariant proof engine; npm package-lock dependency inventory and Package URL normalization; passive redacted secret exposure engine; GitHub Actions trust-boundary analysis; CycloneDX 1.7 SBOM model\n  Engines unavailable: Semgrep adapter (ROADMAP; not invoked); Gitleaks adapter (ROADMAP; not invoked); Cosign adapter (optional foundation; not invoked); OSV advisory provider (NOT_CHECKED_OFFLINE)\n  Rules enabled: AS-SESSION-001, AS-PASSWORD-001, AS-TOKEN-001, AS-SECRET-001, AS-CORS-001, AS-AUTHZ-001, AS-TENANT-001, AS-AUTH-SESSION-001, AS-AUTH-SESSION-002, AS-AUTH-RESET-001, AS-AUTH-RESET-002, AS-AUTH-RESET-003, AS-AUTH-JWT-001, AS-AUTH-OAUTH-001, AS-AUTH-OAUTH-002, AS-SCA-001, AS-CI-001, AS-CI-002, AS-CI-003, AS-CI-004, AS-INJECTION-SQL-001, AS-INJECTION-CMD-001, AS-PATH-001, AS-SSRF-001, AS-XSS-001, AS-REDIRECT-001, AS-CSRF-001\n  Analysis completeness: PARTIAL\n  Rule catalogue fingerprint: 18ec6599088d147e1e05a9a7cf4980d8b987ac45c26d2ddbbf2efe4e43cc2168\n  Limitations:\n    - Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.\n    - No regular repository-local .git directory was available for passive metadata inspection.\n    - Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.\n    - No repository code, lifecycle script, hook, build, test, container, or network operation was executed.\n    - Git history was not analyzed; use cydetix secrets . --history.\n    - Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.\n    - Generated code, runtime configuration, and dependency function reachability were not analyzed.\n\nAUTHENTICATION GRAPH: 1 nodes, 0 edges\n  - Phase two projects statically resolved Express routes, identity provenance, Prisma resources, and authorization/tenant proof states.\n  - Authentication Graph v2 projects adapter-guaranteed lifecycle operations, validation boundaries, trust transitions, revocation events, and invariant results.\n  - Generated routes, dynamic middleware composition, unsupported ORM behavior, and runtime policy remain UNKNOWN.\n  - The absence of a graph edge is not evidence that a security control is absent.\n\nSECURITY IR: 0 modules, 0 calls, 0 resource operations\nAUTHORIZATION PROOFS: 0 proven, 0 violated, 0 unknown\nAUTHENTICATION INVARIANTS: 0 proven secure, 0 proven insecure, 0 applicable unknown, 12 not applicable\n  - Cross-file call resolution is limited to repository-local relative ESM imports and statically named direct or namespace calls.\n  - CommonJS require, tsconfig path aliases, package exports, re-exports, dependency injection, decorators, computed properties, and runtime dispatch remain UNKNOWN.\n  - Express routes require literal paths and statically named handlers; inline and dynamically composed handlers remain UNKNOWN.\n  - Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.\n  - Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.\n  - Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.\n\nSUPPLY CHAIN: 0 resolved dependencies, advisory state NOT_CHECKED_OFFLINE\nSECRETS: CHECKED_NO_FINDINGS; history NOT_CHECKED\nGITHUB ACTIONS: 1 references across 1 workflows\n\nMEDIUM  AS-CI-001  External GitHub Action is not pinned to a full commit SHA\n  Location: .github/workflows/ci.yml:9:15\n  Confidence: high  Reachability: likely\n  Proof: PROVEN_INSECURE  Analysis: COMPLETE  Maturity: PRODUCTION\n  Evidence: actions/checkout uses tag reference v4; no authoritative SHA was invented.\n  Invariant: Third-party workflow code should be immutably identified before execution.\n  Impact: Changed third-party workflow code executes with the job's token, secrets, and runner access.\n  Remediation: Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.\n  Autofix: REVIEW_REQUIRED\n  Maximum remediation authority: REVIEW_REQUIRED; permitted for this finding: REVIEW_REQUIRED\n  REVIEW_REQUIRED: Cydetix has no independently verifiable SAFE transformation for this finding. Review the control semantics and application policy before modifying code, then rescan.\n  Verification: not_attempted (separate from proof and confidence)\n  Not established: Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security. Likely when the containing workflow and job run; local Actions and digest-pinned containers are excluded.\n  Remediation assessment: ceiling REVIEW_REQUIRED; final REVIEW_REQUIRED; DYNAMIC_EXPRESSION, MULTI_FILE_SEMANTIC_CHANGE, VERIFICATION_INSUFFICIENT\n  Standards: CWE-829, A03:2025\n  Fingerprint: 485309d7faeda97c6516874c81be4f79f35d88935c1879de6f2d49a9495ef6a2\n",
+      "stderr": "",
+      "stdoutSha256": "0cca356b555cf1be9091c1967c2f2895a5323e281b97f343487c6d18bcc3162f"
+    },
+    {
+      "command": [
+        "cydetix",
+        "fix"
+      ],
+      "name": "fix",
+      "expectedExit": 6,
+      "actualExit": 6,
+      "state": "PASSED",
+      "structure": null,
+      "stdout": "Cydetix Fix\n\nNo SAFE source changes were applied.\n\n\nReview-required and architectural work was not applied automatically.\n\nREMEDIATION SUMMARY\n\nFindings considered: 1\nSAFE: 0\nREVIEW_REQUIRED: 1\nARCHITECTURAL: 0\nApplied transactions: 0\nVerified transactions: 0\nVerification failed: 0\nRolled back: 0\nResidual findings: 1\n\nAS-CI-001 REVIEW_REQUIRED REQUIRES_REVIEW\nFinding: 485309d7faeda97c6516874c81be4f79f35d88935c1879de6f2d49a9495ef6a2\nInvariant: Third-party workflow code should be immutably identified before execution.\nFiles: .github/workflows/ci.yml\nAuthority: Automatic modification withheld: application policy or control semantics require review.\nPreconditions: The target remains a regular non-symlink file inside the canonical repository root. The complete affected-file SHA-256 matches the scan-time baseline.\nVerification: TARGETED_RESCAN, SECURITY_INVARIANT; scope WORKFLOW; external commands authorized: false\nRollback: Keep original bytes in transaction memory and restore only Cydetix-written files whose post-write hashes still match.\nTransformation: Resolve the intended Action release to an authoritative full commit SHA; no SHA was invented.\nResidual risk: No immutable Action revision can be proposed without an authoritative full commit SHA.\n\nLimitation: Only SAFE plans in PLANNED state can enter the mutation transaction.\n\nLimitation: Repository commands are not executed unless supplied as explicit trusted verification commands.\n\nLimitation: Authorized local commands are bounded and non-shell but are not sandboxed; network isolation is not claimed.\n",
+      "stderr": "",
+      "stdoutSha256": "7c3c8e08a508e97dc3320f60f1610ff598e5b985401d7f551aa21cf3b53a4f17"
+    },
+    {
+      "command": [
+        "cydetix",
+        "explain"
+      ],
+      "name": "explain-missing",
+      "expectedExit": 2,
+      "actualExit": 2,
+      "state": "PASSED",
+      "structure": null,
+      "stdout": "",
+      "stderr": "error: missing required argument 'rule-id'\n\nUsage: cydetix explain [options] <rule-id>\n\nExplain a rule and its evidence requirements\n\nArguments:\n  rule-id            rule identifier, for example AS-SESSION-001\n\nOptions:\n  --format <format>  output format (default: \"text\")\n  -h, --help         display help for command\n",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "cydetix",
+        "explain",
+        "AS-CI-001"
+      ],
+      "name": "explain",
+      "expectedExit": 0,
+      "actualExit": 0,
+      "state": "PASSED",
+      "structure": null,
+      "stdout": "AS-CI-001@1.0.0: External GitHub Action is not pinned to a full commit SHA\nDetects external Action and reusable-workflow references whose revision is mutable or abbreviated.\nEvidence required: A uses reference targets an external Action or reusable workflow. The reference is not a 40-character hexadecimal commit SHA.\nInvariant: Third-party workflow code should be immutably identified before execution.\nImpact: Changed third-party workflow code executes with the job's token, secrets, and runner access.\nConfidence: high; based on the declared evidence requirements\nReachability scope: Likely when the containing workflow and job run; local Actions and digest-pinned containers are excluded.\nProof: a rule description is not a finding or proof about your repository.\nMaximum remediation authority: REVIEW_REQUIRED\nNext: Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.\nVerification: No automatic remediation is admitted; after reviewed changes, rescan the invariant and do not infer security solely because the original syntax disappeared.\nLimitations: Coverage is limited to the declared evidence requirements, supported languages/frameworks, and deterministic alpha.7 analysis strategy; unsupported behavior is not proof of security.\n",
+      "stderr": "",
+      "stdoutSha256": "fda4a102f32a16f1501f602b61d3e09cb4a70c8e33e9a87b331a044b3f8b9fac"
+    },
+    {
+      "command": [
+        "cydetix",
+        "explain",
+        "AS-CI-001",
+        "--format",
+        "json"
+      ],
+      "name": "explain-json",
+      "expectedExit": 0,
+      "actualExit": 0,
+      "state": "PASSED",
+      "structure": null,
+      "stdout": null,
+      "stderr": "",
+      "stdoutSha256": "b5c18888a516f6e10d0120460992a67b39a41f3ef5adb3a22b9cfb7a1417b64d"
+    },
+    {
+      "command": [
+        "cydetix",
+        "scan",
+        "--format",
+        "json"
+      ],
+      "name": "scan-json",
+      "expectedExit": 0,
+      "actualExit": 0,
+      "state": "PASSED",
+      "structure": {
+        "schema": "PASSED",
+        "findings": 1,
+        "proofStates": [
+          "PROVEN_INSECURE"
+        ],
+        "remediation": [
+          null
+        ]
+      },
+      "stdout": null,
+      "stderr": "",
+      "stdoutSha256": "1ca118667a030e3de4d0c5dfbe40da4093d130ef087c6bdafbfa81c6311cd705"
+    },
+    {
+      "command": [
+        "cydetix",
+        "scan",
+        "--format",
+        "sarif"
+      ],
+      "name": "scan-sarif",
+      "expectedExit": 0,
+      "actualExit": 0,
+      "state": "PASSED",
+      "structure": {
+        "version": "2.1.0",
+        "findings": 1
+      },
+      "stdout": null,
+      "stderr": "",
+      "stdoutSha256": "dcc3dd66e36280490934621c7b3122acc32d8d6cb9576f2dbb185af331dc1b21"
+    },
+    {
+      "command": [
+        "cydetix",
+        "ci",
+        "--format",
+        "json",
+        "--fail-on",
+        "low"
+      ],
+      "name": "ci-json",
+      "expectedExit": 1,
+      "actualExit": 1,
+      "state": "PASSED",
+      "structure": null,
+      "stdout": null,
+      "stderr": "",
+      "stdoutSha256": "73f0e5fefee0a9fe27a399892fa81d8b25db0ad50ce6abf4efc0126f8bbabae7"
+    },
+    {
+      "command": [
+        "cydetix",
+        "explain",
+        "AS-NOT-REAL"
+      ],
+      "name": "unknown-rule",
+      "expectedExit": 2,
+      "actualExit": 2,
+      "state": "PASSED",
+      "structure": null,
+      "stdout": "",
+      "stderr": "Unknown rule: AS-NOT-REAL. Run cydetix rules to list supported rule IDs.\n",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "command": [
+        "cydetix",
+        "scan",
+        "absent-directory"
+      ],
+      "name": "missing-path",
+      "expectedExit": 3,
+      "actualExit": 3,
+      "state": "PASSED",
+      "structure": null,
+      "stdout": "",
+      "stderr": "Cannot inspect target path: <temporary>\\Project With Spaces\\absent-directory\n",
+      "stdoutSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}

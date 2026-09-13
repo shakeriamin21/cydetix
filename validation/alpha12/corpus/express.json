@@ -1,0 +1,194 @@
+{
+  "id": "express",
+  "repository": "expressjs/express",
+  "commit": "53d4a0d606c0388f764f192b306ce0e90200e7e8",
+  "language": "JavaScript",
+  "framework": "Express",
+  "classification": "ORDINARY",
+  "previousAlpha11Batch2": true,
+  "purpose": "Replay alpha.11 across all enabled rules and the full normalized report.",
+  "version": "0.6.0-alpha.12",
+  "enabledRuleIds": [
+    "AS-SESSION-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-AUTHZ-001",
+    "AS-TENANT-001",
+    "AS-AUTH-SESSION-001",
+    "AS-AUTH-SESSION-002",
+    "AS-AUTH-RESET-001",
+    "AS-AUTH-RESET-002",
+    "AS-AUTH-RESET-003",
+    "AS-AUTH-JWT-001",
+    "AS-AUTH-OAUTH-001",
+    "AS-AUTH-OAUTH-002",
+    "AS-SCA-001",
+    "AS-CI-001",
+    "AS-CI-002",
+    "AS-CI-003",
+    "AS-CI-004",
+    "AS-INJECTION-SQL-001",
+    "AS-INJECTION-CMD-001",
+    "AS-PATH-001",
+    "AS-SSRF-001",
+    "AS-XSS-001",
+    "AS-REDIRECT-001",
+    "AS-CSRF-001"
+  ],
+  "applicability": "Enabled rules are not all applicable. Framework detection, finding/UNKNOWN rule IDs and declared limitations describe the checked envelope.",
+  "detectedLanguages": [
+    "javascript"
+  ],
+  "detectedFrameworks": [],
+  "findingRuleIds": [],
+  "completeness": "PARTIAL",
+  "determinism": "PASSED",
+  "normalizedReportSha256": [
+    "d94791b565106005066635f6590384af6e78c700fcd840a2a3072baf22519c57",
+    "d94791b565106005066635f6590384af6e78c700fcd840a2a3072baf22519c57"
+  ],
+  "sourceManifestSha256": "d7464fd78103a1f7c05aea29a2d315dc83c23a11c85465f20b41fb00e36b0b68",
+  "measurements": [
+    {
+      "totalScanMilliseconds": 2472.4172,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 360.34439999999995,
+        "parsing": 463.3488,
+        "callGraph": 258.61739999999986,
+        "securityGraph": 144.3200999999999,
+        "authenticationGraph": 4.375499999999647,
+        "invariantEvaluation": 142.71929999999975,
+        "applicationDataflow": 739.8344999999999,
+        "reportGeneration": 20.333100000000286
+      },
+      "representativeRssBytes": 296235008,
+      "processHighWaterRssBytes": 297701376,
+      "filesVisited": 214,
+      "filesExamined": 213,
+      "skippedEntries": 1,
+      "bytesExamined": 713814,
+      "filesAnalyzed": 141,
+      "astNodesVisited": 80490,
+      "factsCreated": 0,
+      "pathsConsidered": 857,
+      "iterations": 1,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 0,
+      "unknown": {
+        "applicationDataflow": 1,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    },
+    {
+      "totalScanMilliseconds": 2026.4022000000004,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 252.30169999999998,
+        "parsing": 278.8529999999996,
+        "callGraph": 221.9303,
+        "securityGraph": 104.30130000000008,
+        "authenticationGraph": 2.336199999999735,
+        "invariantEvaluation": 135.29979999999978,
+        "applicationDataflow": 705.2659999999996,
+        "reportGeneration": 10.176400000000285
+      },
+      "representativeRssBytes": 382214144,
+      "processHighWaterRssBytes": 383680512,
+      "filesVisited": 214,
+      "filesExamined": 213,
+      "skippedEntries": 1,
+      "bytesExamined": 713814,
+      "filesAnalyzed": 141,
+      "astNodesVisited": 80490,
+      "factsCreated": 0,
+      "pathsConsidered": 857,
+      "iterations": 1,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 0,
+      "unknown": {
+        "applicationDataflow": 1,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    }
+  ],
+  "findings": [],
+  "suppressedFindings": [],
+  "unknowns": {
+    "applicationDataflow": [
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "examples/route-separation/index.js",
+        "line": 45,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      }
+    ],
+    "authorization": [],
+    "authentication": []
+  },
+  "resourceLimitEvents": {
+    "securityIdentity": null,
+    "applicationDataflow": 0,
+    "traversal": []
+  },
+  "engineCompleteness": [
+    {
+      "engine": "repository-discovery",
+      "status": "COMPLETE",
+      "details": "Repository traversal completed within configured bounds."
+    },
+    {
+      "engine": "syntax-parsing",
+      "status": "COMPLETE",
+      "details": "All supported source files parsed successfully."
+    },
+    {
+      "engine": "application-dataflow",
+      "status": "PARTIAL",
+      "details": "857 bounded path(s) considered; 0 truncation event(s)."
+    }
+  ],
+  "limitations": [
+    "Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.",
+    "Working-tree state was obtained with a five-second/one-MiB no-lock Git status probe; repository hooks/fsmonitor and submodule inspection were disabled.",
+    "Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.",
+    "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
+    "Git history was not analyzed; use cydetix secrets . --history.",
+    "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",
+    "Generated code, runtime configuration, and dependency function reachability were not analyzed.",
+    "Phase two projects statically resolved Express routes, identity provenance, Prisma resources, and authorization/tenant proof states.",
+    "Authentication Graph v2 projects adapter-guaranteed lifecycle operations, validation boundaries, trust transitions, revocation events, and invariant results.",
+    "Generated routes, dynamic middleware composition, unsupported ORM behavior, and runtime policy remain UNKNOWN.",
+    "The absence of a graph edge is not evidence that a security control is absent.",
+    "Cross-file call resolution is limited to repository-local relative ESM imports and statically named direct or namespace calls.",
+    "CommonJS require, tsconfig path aliases, package exports, re-exports, dependency injection, decorators, computed properties, and runtime dispatch remain UNKNOWN.",
+    "Express routes require literal paths and statically named handlers; inline and dynamically composed handlers remain UNKNOWN.",
+    "274 call target(s) remained unresolved or dynamic.",
+    "Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.",
+    "Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.",
+    "Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.",
+    "JavaScript/TypeScript propagation is bounded to direct assignments, aliases, object properties, templates, concatenation, resolved same-file calls, arguments, and returns.",
+    "Python propagation is bounded to parsed decorated routes and local assignments; cross-function and cross-file Python propagation is unsupported.",
+    "Unknown custom sanitizers and unresolved dynamic transformations produce UNKNOWN instead of an actionable finding.",
+    "No target code, package script, hook, framework CLI, test, build, or arbitrary interpreter was executed.",
+    "Phase 3 authentication proofs cover explicit TypeScript/JavaScript Express, express-session, Prisma authentication records, jsonwebtoken, jose, and oauth4webapi evidence only.",
+    "Library behavior is trusted only for the exact supported API surface; version-hidden or unsupported behavior remains UNKNOWN.",
+    "Application names alone never establish an authentication operation; adapters require protocol APIs, persistence operations, or resolved lifecycle evidence.",
+    "OAuth 2.1 remains an Internet-Draft and is not used as normative detector guidance."
+  ],
+  "adjudication": {
+    "state": "PENDING_MANUAL_REVIEW",
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null
+  }
+}

@@ -1,0 +1,201 @@
+{
+  "id": "fastapi",
+  "repository": "fastapi/fastapi",
+  "commit": "50113da16fec53b66b80d75e80a89296de4fa5a5",
+  "language": "Python",
+  "framework": "FastAPI",
+  "classification": "ORDINARY",
+  "previousAlpha11Batch2": false,
+  "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds.",
+  "version": "0.6.0-alpha.12",
+  "enabledRuleIds": [
+    "AS-SESSION-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-AUTHZ-001",
+    "AS-TENANT-001",
+    "AS-AUTH-SESSION-001",
+    "AS-AUTH-SESSION-002",
+    "AS-AUTH-RESET-001",
+    "AS-AUTH-RESET-002",
+    "AS-AUTH-RESET-003",
+    "AS-AUTH-JWT-001",
+    "AS-AUTH-OAUTH-001",
+    "AS-AUTH-OAUTH-002",
+    "AS-SCA-001",
+    "AS-CI-001",
+    "AS-CI-002",
+    "AS-CI-003",
+    "AS-CI-004",
+    "AS-INJECTION-SQL-001",
+    "AS-INJECTION-CMD-001",
+    "AS-PATH-001",
+    "AS-SSRF-001",
+    "AS-XSS-001",
+    "AS-REDIRECT-001",
+    "AS-CSRF-001"
+  ],
+  "applicability": "Enabled rules are not all applicable. Framework detection, finding/UNKNOWN rule IDs and declared limitations describe the checked envelope.",
+  "detectedLanguages": [
+    "javascript",
+    "python"
+  ],
+  "detectedFrameworks": [
+    "FastAPI",
+    "Flask"
+  ],
+  "findingRuleIds": [],
+  "completeness": "TRUNCATED",
+  "determinism": "PASSED",
+  "normalizedReportSha256": [
+    "171ffc0adbea542c32196932a78929699084f446e034793942d18d493390006a",
+    "171ffc0adbea542c32196932a78929699084f446e034793942d18d493390006a"
+  ],
+  "sourceManifestSha256": "d15c2019f0bdb659b5ab43029964c36d214a7159fbfaf192d68e58c0f7278fa7",
+  "measurements": [
+    {
+      "totalScanMilliseconds": 11680.3117,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 7808.9564,
+        "parsing": 2875.0609999999997,
+        "callGraph": 51.82880000000114,
+        "securityGraph": 37.59360000000015,
+        "authenticationGraph": 2.6687000000001717,
+        "invariantEvaluation": 46.44180000000051,
+        "applicationDataflow": 244.66640000000007,
+        "reportGeneration": 22.46219999999994
+      },
+      "representativeRssBytes": 272642048,
+      "processHighWaterRssBytes": 274186240,
+      "filesVisited": 3140,
+      "filesExamined": 2951,
+      "skippedEntries": 189,
+      "bytesExamined": 22822034,
+      "filesAnalyzed": 590,
+      "astNodesVisited": 579574,
+      "factsCreated": 68,
+      "pathsConsidered": 813,
+      "iterations": 2,
+      "truncationEvents": 544,
+      "securityIdentityBounds": null,
+      "findings": 0,
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    },
+    {
+      "totalScanMilliseconds": 6822.604600000001,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 5078.009799999998,
+        "parsing": 1243.6239999999998,
+        "callGraph": 11.316999999999098,
+        "securityGraph": 9.897899999999936,
+        "authenticationGraph": 0.9247999999970489,
+        "invariantEvaluation": 20.47229999999763,
+        "applicationDataflow": 106.40629999999874,
+        "reportGeneration": 5.4953999999997905
+      },
+      "representativeRssBytes": 339587072,
+      "processHighWaterRssBytes": 341155840,
+      "filesVisited": 3140,
+      "filesExamined": 2951,
+      "skippedEntries": 189,
+      "bytesExamined": 22822034,
+      "filesAnalyzed": 590,
+      "astNodesVisited": 579574,
+      "factsCreated": 68,
+      "pathsConsidered": 813,
+      "iterations": 2,
+      "truncationEvents": 544,
+      "securityIdentityBounds": null,
+      "findings": 0,
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    }
+  ],
+  "findings": [],
+  "suppressedFindings": [],
+  "unknowns": {
+    "applicationDataflow": [],
+    "authorization": [],
+    "authentication": []
+  },
+  "resourceLimitEvents": {
+    "securityIdentity": null,
+    "applicationDataflow": 544,
+    "traversal": [
+      {
+        "path": "docs/en/docs/img/deployment/https/https03.drawio.svg",
+        "reason": "too_large"
+      }
+    ]
+  },
+  "engineCompleteness": [
+    {
+      "engine": "repository-discovery",
+      "status": "TRUNCATED",
+      "details": "One or more configured file, size, or depth bounds were reached."
+    },
+    {
+      "engine": "syntax-parsing",
+      "status": "PARTIAL",
+      "details": "8 supported source file(s) failed parsing."
+    },
+    {
+      "engine": "application-dataflow",
+      "status": "TRUNCATED",
+      "details": "813 bounded path(s) considered; 544 truncation event(s)."
+    }
+  ],
+  "limitations": [
+    "Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.",
+    "Working-tree state was obtained with a five-second/one-MiB no-lock Git status probe; repository hooks/fsmonitor and submodule inspection were disabled.",
+    "Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.",
+    "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
+    "Git history was not analyzed; use cydetix secrets . --history.",
+    "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",
+    "Generated code, runtime configuration, and dependency function reachability were not analyzed.",
+    "docs_src/app_testing/tutorial004_py310.py: Python parse failed: syntax tree contains errors",
+    "docs_src/events/tutorial003_py310.py: Python parse failed: syntax tree contains errors",
+    "scripts/tests/test_translation_fixer/conftest.py: Python parse failed: syntax tree contains errors",
+    "tests/test_dependency_models.py: Python parse failed: syntax tree contains errors",
+    "tests/test_dependency_yield_scope.py: Python parse failed: syntax tree contains errors",
+    "tests/test_router_events.py: Python parse failed: syntax tree contains errors",
+    "tests/test_tutorial/test_security/test_tutorial005.py: Python parse failed: syntax tree contains errors",
+    "tests/test_tutorial/test_websockets/test_tutorial003.py: Python parse failed: syntax tree contains errors",
+    "Phase two projects statically resolved Express routes, identity provenance, Prisma resources, and authorization/tenant proof states.",
+    "Authentication Graph v2 projects adapter-guaranteed lifecycle operations, validation boundaries, trust transitions, revocation events, and invariant results.",
+    "Generated routes, dynamic middleware composition, unsupported ORM behavior, and runtime policy remain UNKNOWN.",
+    "The absence of a graph edge is not evidence that a security control is absent.",
+    "Cross-file call resolution is limited to repository-local relative ESM imports and statically named direct or namespace calls.",
+    "CommonJS require, tsconfig path aliases, package exports, re-exports, dependency injection, decorators, computed properties, and runtime dispatch remain UNKNOWN.",
+    "Express routes require literal paths and statically named handlers; inline and dynamically composed handlers remain UNKNOWN.",
+    "89 call target(s) remained unresolved or dynamic.",
+    "Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.",
+    "Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.",
+    "Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.",
+    "JavaScript/TypeScript propagation is bounded to direct assignments, aliases, object properties, templates, concatenation, resolved same-file calls, arguments, and returns.",
+    "Python propagation is bounded to parsed decorated routes and local assignments; cross-function and cross-file Python propagation is unsupported.",
+    "Unknown custom sanitizers and unresolved dynamic transformations produce UNKNOWN instead of an actionable finding.",
+    "No target code, package script, hook, framework CLI, test, build, or arbitrary interpreter was executed.",
+    "Phase 3 authentication proofs cover explicit TypeScript/JavaScript Express, express-session, Prisma authentication records, jsonwebtoken, jose, and oauth4webapi evidence only.",
+    "Library behavior is trusted only for the exact supported API surface; version-hidden or unsupported behavior remains UNKNOWN.",
+    "Application names alone never establish an authentication operation; adapters require protocol APIs, persistence operations, or resolved lifecycle evidence.",
+    "OAuth 2.1 remains an Internet-Draft and is not used as normative detector guidance."
+  ],
+  "adjudication": {
+    "state": "PENDING_MANUAL_REVIEW",
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null
+  }
+}

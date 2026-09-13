@@ -1,0 +1,239 @@
+{
+  "schemaVersion": "1.0.0",
+  "comparison": "Before/after authentication per-file symbol index only; both runtimes already contain the intentional alpha.12 proof and bound corrections. This is not an alpha.11 equivalence claim.",
+  "normalization": "Full normalized reports; only documented run-local metadata normalized by the existing deterministic comparator.",
+  "reports": [
+    {
+      "id": "nodegoat",
+      "repository": "OWASP/NodeGoat",
+      "commit": "c5cb68a7084e4ae7dcc60e6a98768720a81841e8",
+      "before": "448d0828217a2de1f14f689ca76459191a8985287d91579e243084687b8146ff",
+      "after": "448d0828217a2de1f14f689ca76459191a8985287d91579e243084687b8146ff",
+      "state": "PASSED"
+    },
+    {
+      "id": "dvna",
+      "repository": "appsecco/dvna",
+      "commit": "9ba473add536f66ac9007966acb2a775dd31277a",
+      "before": "a88618d9ef395425b8bdfd354f38f28468e6c69409bd22648898665ef5b3d868",
+      "after": "a88618d9ef395425b8bdfd354f38f28468e6c69409bd22648898665ef5b3d868",
+      "state": "PASSED"
+    },
+    {
+      "id": "express",
+      "repository": "expressjs/express",
+      "commit": "53d4a0d606c0388f764f192b306ce0e90200e7e8",
+      "before": "d94791b565106005066635f6590384af6e78c700fcd840a2a3072baf22519c57",
+      "after": "d94791b565106005066635f6590384af6e78c700fcd840a2a3072baf22519c57",
+      "state": "PASSED"
+    },
+    {
+      "id": "fastify",
+      "repository": "fastify/fastify",
+      "commit": "d266f833f2bff34c6115c026e461b682e94d0b9c",
+      "before": "41ce6021d22bbed9bbc75b41c2239883eacacc3332306346ba7886294a1d2505",
+      "after": "41ce6021d22bbed9bbc75b41c2239883eacacc3332306346ba7886294a1d2505",
+      "state": "PASSED"
+    },
+    {
+      "id": "vikas-vulnerable-website",
+      "repository": "Vikas2171/vulnerable-website",
+      "commit": "1258fa3efac1547da5bb3c7e6ab8279f00e47206",
+      "before": "dab53f4eb5a4857bf8c6cc4437a5f60a455bec841efa2f01eaa436c22a269c03",
+      "after": "dab53f4eb5a4857bf8c6cc4437a5f60a455bec841efa2f01eaa436c22a269c03",
+      "state": "PASSED"
+    },
+    {
+      "id": "juice-shop",
+      "repository": "juice-shop/juice-shop",
+      "commit": "1618a611b173b4bf114028e6e02549950606e29d",
+      "before": "e521ccb0d3d8728e9673a2f685d873d12dc1ea294b04cf25f9a2ef63be3fbaad",
+      "after": "e521ccb0d3d8728e9673a2f685d873d12dc1ea294b04cf25f9a2ef63be3fbaad",
+      "state": "PASSED"
+    },
+    {
+      "id": "vulnerable-flask-app",
+      "repository": "we45/Vulnerable-Flask-App",
+      "commit": "b6a4f97afd466e83e1f60781494252dec1c37039",
+      "before": "e9893518e6a52e3be19c2c7d4c42d8bf52d68f668812477cc0902739a3483d9f",
+      "after": "e9893518e6a52e3be19c2c7d4c42d8bf52d68f668812477cc0902739a3483d9f",
+      "state": "PASSED"
+    },
+    {
+      "id": "breakableflask",
+      "repository": "stephenbradshaw/breakableflask",
+      "commit": "553e8b2f51c14f259f565d5df478339c366a9172",
+      "before": "b927c83b02098d29333c7a5905ed6855f3613a8914f882fe6d6799f64cab3ccd",
+      "after": "b927c83b02098d29333c7a5905ed6855f3613a8914f882fe6d6799f64cab3ccd",
+      "state": "PASSED"
+    },
+    {
+      "id": "flask",
+      "repository": "pallets/flask",
+      "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "before": "5bc8e29b5108f642a27780abd5690565c729b45b1b65c32c318b4af7853c400b",
+      "after": "5bc8e29b5108f642a27780abd5690565c729b45b1b65c32c318b4af7853c400b",
+      "state": "PASSED"
+    },
+    {
+      "id": "fastapi-appsec-lab",
+      "repository": "LevaAverGit/appsec-review-lab-v2",
+      "commit": "372ed54ad40059f4228f9e08dc375c51fe60b625",
+      "before": "f145b9ba9fde0a2530ff1737d2f12162eb2a1642a3b9e0d9ac268f19ef762c19",
+      "after": "f145b9ba9fde0a2530ff1737d2f12162eb2a1642a3b9e0d9ac268f19ef762c19",
+      "state": "PASSED"
+    },
+    {
+      "id": "nextjs-auth",
+      "repository": "vercel/nextjs-postgres-auth-starter",
+      "commit": "fde8ecf1da9337223081f70cf88b420060039d6e",
+      "before": "8a108a5a39ee734bb036cb47a43490c81ad4695ff167b9e3bcd1a9890d7d10dc",
+      "after": "8a108a5a39ee734bb036cb47a43490c81ad4695ff167b9e3bcd1a9890d7d10dc",
+      "state": "PASSED"
+    },
+    {
+      "id": "antony-vulnerable-flask",
+      "repository": "AntonyNRM/vulnerable-flask-app",
+      "commit": "7a12a015d0fc0d028be5cf492db822bce9af45ba",
+      "before": "fa39d41f33e39f6b36e49889c39f6e4c4f2c13f2a658a79c11726864c1da78ba",
+      "after": "fa39d41f33e39f6b36e49889c39f6e4c4f2c13f2a658a79c11726864c1da78ba",
+      "state": "PASSED"
+    },
+    {
+      "id": "axios",
+      "repository": "axios/axios",
+      "commit": "18e7dfedf30c96e58652887f930642ae82e0130c",
+      "before": "0dca77930cf3ea71fb6376964c79d30a549a1ca093f94b38a02a1ec10dc1f394",
+      "after": "0dca77930cf3ea71fb6376964c79d30a549a1ca093f94b38a02a1ec10dc1f394",
+      "state": "PASSED"
+    },
+    {
+      "id": "django",
+      "repository": "django/django",
+      "commit": "2b30f6255b5ef84afbd827993643d52ef2c0963a",
+      "before": "e00f246dbda60014ec9e9b1191d82c1dffedeeb0905b6db436b6a40bee97e8a6",
+      "after": "e00f246dbda60014ec9e9b1191d82c1dffedeeb0905b6db436b6a40bee97e8a6",
+      "state": "PASSED"
+    },
+    {
+      "id": "fastapi",
+      "repository": "fastapi/fastapi",
+      "commit": "50113da16fec53b66b80d75e80a89296de4fa5a5",
+      "before": "171ffc0adbea542c32196932a78929699084f446e034793942d18d493390006a",
+      "after": "171ffc0adbea542c32196932a78929699084f446e034793942d18d493390006a",
+      "state": "PASSED"
+    },
+    {
+      "id": "flask-sqlinjection",
+      "repository": "guilatrova/flask-sqlinjection-vulnerable",
+      "commit": "708246139f2f216c55c683c7aec2297bc91b7346",
+      "before": "39699db2d78edc37fe44d8736ceec87f319ec7c01cd087d4e2e14e39c1cf112e",
+      "after": "39699db2d78edc37fe44d8736ceec87f319ec7c01cd087d4e2e14e39c1cf112e",
+      "state": "PASSED"
+    },
+    {
+      "id": "payatu-vuln-node",
+      "repository": "payatu/vuln-nodejs-app",
+      "commit": "bc3c90920ba4e1c668d954e5027d9ca814d2d5c6",
+      "before": "63b321de32abeac1b008b2962f45f121eb36294be22d6948f1f400d30aac6fee",
+      "after": "63b321de32abeac1b008b2962f45f121eb36294be22d6948f1f400d30aac6fee",
+      "state": "PASSED"
+    },
+    {
+      "id": "simple-ssrf",
+      "repository": "vulnerable-apps/simple-ssrf",
+      "commit": "9fe0f47ca9bc69faf8454e96e0dcdf1400ce8a5a",
+      "before": "469d1367cefd151530bf9b00bcb485eb64d3dad43e5200c65493fb1f1799860c",
+      "after": "469d1367cefd151530bf9b00bcb485eb64d3dad43e5200c65493fb1f1799860c",
+      "state": "PASSED"
+    },
+    {
+      "id": "sirappsec-vuln-node",
+      "repository": "SirAppSec/vuln-node.js-express.js-app",
+      "commit": "b977c7407f328da929577745ad509639e26c428a",
+      "before": "52a9eff4509b0aae2d7d4cbb85ca5141de2b47024942b29d4a4db9e25307ff47",
+      "after": "52a9eff4509b0aae2d7d4cbb85ca5141de2b47024942b29d4a4db9e25307ff47",
+      "state": "PASSED"
+    },
+    {
+      "id": "vulnerable-typescript",
+      "repository": "ryanmcmorrowsnyk/vulnerable-typescript-app",
+      "commit": "7f8b240a2f02beba099da3632d1ba679ff8bc32f",
+      "before": "cd0651213a66c15453c011f8f3610c8a21d8b73eca1e51e91f0e7fbc39846b28",
+      "after": "cd0651213a66c15453c011f8f3610c8a21d8b73eca1e51e91f0e7fbc39846b28",
+      "state": "PASSED"
+    },
+    {
+      "id": "microblog",
+      "repository": "miguelgrinberg/microblog",
+      "commit": "a975ef64864354867c88e0ed3a17ba7d17dca752",
+      "before": "bdb2fc0c9bcafb067552fd45e78c142374578fcab6f8f3c92f14a4879c3ee79f",
+      "after": "bdb2fc0c9bcafb067552fd45e78c142374578fcab6f8f3c92f14a4879c3ee79f",
+      "state": "PASSED"
+    },
+    {
+      "id": "flask-security",
+      "repository": "pallets-eco/flask-security",
+      "commit": "5d47d697d6f0806d0fe58559fe61cd6fd8ae16ef",
+      "before": "a56403566cc80969e5e69e3729440542ba90379220d498765a470a923f13027b",
+      "after": "a56403566cc80969e5e69e3729440542ba90379220d498765a470a923f13027b",
+      "state": "PASSED"
+    },
+    {
+      "id": "starlette",
+      "repository": "encode/starlette",
+      "commit": "03f12b7fcf0a3e21a8da648ca0900c79472e9efe",
+      "before": "1e65a31a9e1119101c9c57235445dd01adbf80e4036eae09a5ef47e04651a76f",
+      "after": "1e65a31a9e1119101c9c57235445dd01adbf80e4036eae09a5ef47e04651a76f",
+      "state": "PASSED"
+    },
+    {
+      "id": "full-stack-fastapi",
+      "repository": "fastapi/full-stack-fastapi-template",
+      "commit": "cb740b656d7a0a6c5e12c7bf8e50343ec94ee9c7",
+      "before": "6d4384252e06fbad90a42102fb84a5772fcd184910e2c0f56c8e56a57c69de8b",
+      "after": "6d4384252e06fbad90a42102fb84a5772fcd184910e2c0f56c8e56a57c69de8b",
+      "state": "PASSED"
+    },
+    {
+      "id": "node-express-boilerplate",
+      "repository": "hagopj13/node-express-boilerplate",
+      "commit": "179ae84efec61b14206d0305d941daed6c6d07f9",
+      "before": "ac9cad9bbdd4e2f333c9c1daeeec4b9fab81cbc30cf82f881c07fb0ac091fe76",
+      "after": "ac9cad9bbdd4e2f333c9c1daeeec4b9fab81cbc30cf82f881c07fb0ac091fe76",
+      "state": "PASSED"
+    },
+    {
+      "id": "hackathon-starter",
+      "repository": "sahat/hackathon-starter",
+      "commit": "636440342a5b7b640d127dcde0c405c711c0ddaa",
+      "before": "e3e34565b04f21ff102a8ca42ccc6c92afaa0b8b39feb9675a3a5ac6194a12d5",
+      "after": "e3e34565b04f21ff102a8ca42ccc6c92afaa0b8b39feb9675a3a5ac6194a12d5",
+      "state": "PASSED"
+    },
+    {
+      "id": "realworld-express",
+      "repository": "gothinkster/node-express-realworld-example-app",
+      "commit": "30b68e1e881462b2f4164ea09ab4c4f5699c7b0b",
+      "before": "f4f3a235e1fe288edd37e1834770a057a6edafd2873fa159b51980e72872f49d",
+      "after": "f4f3a235e1fe288edd37e1834770a057a6edafd2873fa159b51980e72872f49d",
+      "state": "PASSED"
+    },
+    {
+      "id": "express-session",
+      "repository": "expressjs/session",
+      "commit": "96ebea4b6cd805584fba04523773b1b918a836d7",
+      "before": "01a6a0c7b003b97e1c20b9d2788f7c2d392f6db04805f67c447a4af062428580",
+      "after": "01a6a0c7b003b97e1c20b9d2788f7c2d392f6db04805f67c447a4af062428580",
+      "state": "PASSED"
+    },
+    {
+      "id": "fastify-secure-session",
+      "repository": "fastify/fastify-secure-session",
+      "commit": "06f4afb58d2a91e6350b71a6e491d4604333e6d4",
+      "before": "c2fc2ad97ca8e84c9b82bd60bafb49c70cd8ff8ad91195789507df9d74cc22c6",
+      "after": "c2fc2ad97ca8e84c9b82bd60bafb49c70cd8ff8ad91195789507df9d74cc22c6",
+      "state": "PASSED"
+    }
+  ]
+}

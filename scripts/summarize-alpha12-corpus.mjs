@@ -130,7 +130,7 @@ for (const target of manifest.targets) {
       rationale =
         target.id === "vulnerable-typescript"
           ? "Confirmed prior false insecure conclusion: .env contains header placeholders without complete key blocks. Current proof retains only an UNKNOWN marker observation."
-          : "Key header is present. NodeGoat/Axios are test key locations; Juice Shop contains embedded encoded blocks. The lexical detector does not prove key validity, deployment or active credentials. All material remains redacted; no active validation.";
+          : "Key header is present. NodeGoat/Axios/Strapi are test key locations; Juice Shop contains embedded encoded blocks. The lexical detector does not prove key validity, deployment or active credentials. All material remains redacted; no active validation.";
     } else if (reviewedFlows[target.id]?.[finding.location.start.line]) {
       classification = "SUPPORTED_FLOW_CONFIRMED_STATIC";
       rationale = reviewedFlows[target.id][finding.location.start.line];

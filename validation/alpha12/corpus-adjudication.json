@@ -1,0 +1,2436 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "1818a693ef3dd871b01b136af6696a13aa332693",
+  "version": "0.6.0-alpha.12",
+  "reviewMethod": "Implementation-agent static source review and independent source-line checks; no target execution and no independent human audit. Emitted-finding review is separate from selective source inspection for missed supported patterns.",
+  "groundTruth": "INCOMPLETE",
+  "recall": null,
+  "accuracy": null,
+  "totals": {
+    "findings": 134,
+    "confirmedFalseInsecureBeforeCorrection": 3,
+    "unresolvedConfirmedFalseInsecure": 0,
+    "supportedPatternFalseNegativesDiscovered": 0,
+    "unadjudicatedFindings": 0,
+    "unknown": {
+      "applicationDataflow": 220,
+      "authorization": 0,
+      "authentication": 1,
+      "findingProof": 13
+    },
+    "resourceBoundRepositories": 13
+  },
+  "falseInsecureCorrections": [
+    {
+      "id": "FP-PASSWORD-PURPOSE",
+      "repositoryId": "flask-security",
+      "path": "flask_security/utils.py",
+      "line": 1455,
+      "count": 1,
+      "correction": "AS-PASSWORD-001@1.0.1 UNKNOWN purpose"
+    },
+    {
+      "id": "FP-KEY-PLACEHOLDER",
+      "repositoryId": "vulnerable-typescript",
+      "path": ".env",
+      "lines": [
+        53,
+        54
+      ],
+      "count": 2,
+      "correction": "AS-SECRET-001@1.0.1 UNKNOWN key material"
+    }
+  ],
+  "supportedPatternFnScope": "No supported-pattern FN was discovered in the explicitly reviewed local flow cases and selective source reviews listed here. Ground truth is incomplete; this is not a claim of zero corpus-wide false negatives, complete recall, or accuracy. Unsupported constructs, resource-bound omissions, missing password-purpose semantics and fixture-only observations are accounted separately.",
+  "unsupportedReviews": [
+    {
+      "repositoryId": "flask-sqlinjection",
+      "paths": [
+        "src/flask_app.py",
+        "src/db.py"
+      ],
+      "classification": "UNSUPPORTED_PATTERN",
+      "explanation": "Route path parameter is passed to an imported Python helper before SQL execution. Cross-file/function Python propagation is outside the declared envelope; this is not counted as a supported-pattern FN."
+    },
+    {
+      "repositoryId": "payatu-vuln-node",
+      "paths": [
+        "routes/app.js",
+        "controllers/vuln_controller.js"
+      ],
+      "classification": "UNSUPPORTED_PATTERN_AND_RESOURCE_BOUND",
+      "explanation": "CommonJS imported controllers, router.route chaining and custom authentication are outside supported cross-file ESM propagation; full scan also exhausts repository AST coverage."
+    },
+    {
+      "repositoryId": "sirappsec-vuln-node",
+      "paths": [
+        "src/router/routes/system.js"
+      ],
+      "classification": "UNSUPPORTED_PATTERN_AND_RESOURCE_BOUND",
+      "explanation": "Routes are constructed inside a CommonJS exported app factory with locally loaded sink aliases. Full scan exhausts repository AST coverage. These cases are not used to claim supported recall."
+    },
+    {
+      "repositoryId": "vulnerable-typescript",
+      "paths": [
+        "src/server.ts"
+      ],
+      "classification": "NEGATIVE_SOURCE_REVIEW",
+      "explanation": "The SQL-looking string at lines 72-74 is only logged; no SQL execution sink exists in that route. Lack of AS-INJECTION-SQL-001 there is not a FN. Math.random token, ReDoS and prototype pollution examples are outside the current rule families."
+    },
+    {
+      "repositoryId": "strapi",
+      "paths": [
+        "packages/core/admin/admin/src/pages/Auth/components/ResetPassword.tsx",
+        "packages/plugins/i18n/admin/src/components/CreateLocale.tsx"
+      ],
+      "classification": "UNSUPPORTED_SCOPE_AND_RESOURCE_BOUND",
+      "explanation": "Babel cannot build scopes for these type/value duplicate declarations. They are file-local parse failures; Strapi/Koa factory and plugin behavior is not a supported authorization adapter. Identity recursion is explicitly bounded."
+    }
+  ],
+  "unknownCauses": [
+    {
+      "cause": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN.",
+      "count": 202
+    },
+    {
+      "cause": "Python raw HTML rendering is reached through a transformation with UNKNOWN context-specific safety.",
+      "count": 6
+    },
+    {
+      "cause": "Authentication or ambient browser credential reliance is not proven for this state-changing Python route.",
+      "count": 5
+    },
+    {
+      "cause": "SameSite cookie evidence exists, but route and browser request semantics are insufficient for universal CSRF proof.",
+      "count": 2
+    },
+    {
+      "cause": "SQL control semantics are UNKNOWN.",
+      "count": 2
+    },
+    {
+      "cause": "Authentication or ambient browser credential reliance is not proven for this state-changing Express route.",
+      "count": 1
+    },
+    {
+      "cause": "Network destination policy is UNKNOWN.",
+      "count": 1
+    },
+    {
+      "cause": "OAuth is detected, but complete state generation, binding, and callback validation cannot be proven.",
+      "count": 1
+    },
+    {
+      "cause": "Untrusted content reaches an HTML response through a transformation whose context-specific safety is UNKNOWN.",
+      "count": 1
+    }
+  ],
+  "repositories": [
+    {
+      "id": "nodegoat",
+      "repository": "OWASP/NodeGoat",
+      "commit": "c5cb68a7084e4ae7dcc60e6a98768720a81841e8",
+      "language": "JavaScript",
+      "framework": "Express; CommonJS",
+      "evidence": "validation/alpha12/corpus/nodegoat.json",
+      "evidenceSha256": "6b0610048f148be55b8860283962258243a1b11b5dfd333101680480b8049e17",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "ced06d0dc413013bf315a9a48afc8d9174ef83eb883d695c7d9902a60163756e",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/e2e-test.yml",
+          "line": 16,
+          "sourceFileSha256": "86c785b915ea58e30cfbb28506fcec3cdbe12d7fe7e0e8d954268c1ef76d3953",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "3c6775a3edfe0e04bb1dedba1996d88d4ae77a7ab333346eaa29812745a13236",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/e2e-test.yml",
+          "line": 21,
+          "sourceFileSha256": "86c785b915ea58e30cfbb28506fcec3cdbe12d7fe7e0e8d954268c1ef76d3953",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "4199e62f6b7c4901f67d969d30abdeab4684102ba73ba288a7bb3e2170405c83",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/e2e-test.yml",
+          "line": 26,
+          "sourceFileSha256": "86c785b915ea58e30cfbb28506fcec3cdbe12d7fe7e0e8d954268c1ef76d3953",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "532441a9f1a0cc93418eb38e1fb2e35e794730c996c3bf40e19035a967f3fe5a",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/e2e-test.yml",
+          "line": 58,
+          "sourceFileSha256": "86c785b915ea58e30cfbb28506fcec3cdbe12d7fe7e0e8d954268c1ef76d3953",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "225ccc104105a917657ee142bebefaa198d88e0c1d53f56565ee819d7a5a9bf1",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/lint.yml",
+          "line": 16,
+          "sourceFileSha256": "9784affbc05341822b6522a3d92a5a03c50d13e4dc2e694f372f53d0806befa8",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "77380f716fc6ce5c157a2c0e29a383e1ee6d8ebf673a5c99ad01fa43753d3533",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/lint.yml",
+          "line": 21,
+          "sourceFileSha256": "9784affbc05341822b6522a3d92a5a03c50d13e4dc2e694f372f53d0806befa8",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "dd946c7b30dab5e51c4da36f2f84d3ff15355a65932d7f2f5b45d3ffbfd9b01a",
+          "ruleId": "AS-SECRET-001",
+          "path": "artifacts/cert/server.key",
+          "line": 1,
+          "sourceFileSha256": "2636d492d53218a5344d5568dedcd6f02eebbb3e925a96b904fc731a66b57f77",
+          "classification": "KEY_MARKER_UNKNOWN",
+          "rationale": "Key header is present. NodeGoat/Axios/Strapi are test key locations; Juice Shop contains embedded encoded blocks. The lexical detector does not prove key validity, deployment or active credentials. All material remains redacted; no active validation."
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 6,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 1
+      },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": {
+          "status": "TRUNCATED",
+          "iterations": 8,
+          "factsCreated": 304,
+          "maxIterations": 8,
+          "maxFacts": 10000
+        },
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        4640.864100000001,
+        3742.6196
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "dvna",
+      "repository": "appsecco/dvna",
+      "commit": "9ba473add536f66ac9007966acb2a775dd31277a",
+      "language": "JavaScript",
+      "framework": "Express; controllers",
+      "evidence": "validation/alpha12/corpus/dvna.json",
+      "evidenceSha256": "90c2fb8a1533406f07f64bbd6ffd46fd6006d290c0dea61a5a1b487488b1a600",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "3934e563937408e23cf015634024b31918e1b7a331d7ac8e6ff8bdd06bec96b5",
+          "ruleId": "AS-SESSION-001",
+          "path": "server.js",
+          "line": 27,
+          "sourceFileSha256": "46fea6b48ee71281ee4448224879e7b2633e2acbf8acb496298a33cef1598524",
+          "classification": "VALID_CONFIGURATION_OBSERVATION",
+          "rationale": "Explicit false session-cookie configuration is present. Test-only settings are not counted as deployed application vulnerabilities; production use is not inferred."
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 12,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": [
+          {
+            "path": "docs/resources/appsecco.png",
+            "reason": "too_large"
+          }
+        ]
+      },
+      "durationMilliseconds": [
+        1715.7823,
+        1731.5077
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "express",
+      "repository": "expressjs/express",
+      "commit": "53d4a0d606c0388f764f192b306ce0e90200e7e8",
+      "language": "JavaScript",
+      "framework": "Express",
+      "evidence": "validation/alpha12/corpus/express.json",
+      "evidenceSha256": "7897f65a7f8d9e054959f8cdf2a8b8f01c3fc10d76bb1291ebd81fc48310052c",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [],
+      "unknown": {
+        "applicationDataflow": 1,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "PARTIAL",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        2472.4172,
+        2026.4022000000004
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "fastify",
+      "repository": "fastify/fastify",
+      "commit": "d266f833f2bff34c6115c026e461b682e94d0b9c",
+      "language": "JavaScript; TypeScript",
+      "framework": "Fastify",
+      "evidence": "validation/alpha12/corpus/fastify.json",
+      "evidenceSha256": "161f40f888a1ceeeabbb4ca6c1f78acd29124fb61bd06b0dcd49f35b17796d15",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": {
+          "status": "TRUNCATED",
+          "iterations": 8,
+          "factsCreated": 558,
+          "maxIterations": 8,
+          "maxFacts": 10000
+        },
+        "applicationDataflow": 121,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        8807.7989,
+        10121.7823
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "vikas-vulnerable-website",
+      "repository": "Vikas2171/vulnerable-website",
+      "commit": "1258fa3efac1547da5bb3c7e6ab8279f00e47206",
+      "language": "JavaScript",
+      "framework": "Express; express-session",
+      "evidence": "validation/alpha12/corpus/vikas-vulnerable-website.json",
+      "evidenceSha256": "af5faafc628f45fb3fa41ff364c2c0792e1867e36d5d43144b448063ed036afa",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "74c321f467bc7e3d3831604462023142d2797355280a7a43dd5ca7a05096347b",
+          "ruleId": "AS-SESSION-001",
+          "path": "server/server.js",
+          "line": 28,
+          "sourceFileSha256": "1f12ef6403a56246bf838ca6f7fb49b2b84d6455ef932c305df3988c04451db5",
+          "classification": "VALID_CONFIGURATION_OBSERVATION",
+          "rationale": "Explicit false session-cookie configuration is present. Test-only settings are not counted as deployed application vulnerabilities; production use is not inferred."
+        },
+        {
+          "fingerprint": "34a1773673b27b41042cc841d9d1de3577ca223ea2e66eb8164dbe74d9a2b8f8",
+          "ruleId": "AS-CSRF-001",
+          "path": "server/server.js",
+          "line": 117,
+          "sourceFileSha256": "1f12ef6403a56246bf838ca6f7fb49b2b84d6455ef932c305df3988c04451db5",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "POST shell operation under global session middleware; no route-bound anti-CSRF control"
+        },
+        {
+          "fingerprint": "2ae0c983f95fde12fb5b90a6a82d40ad08a073a511c558255a98332c669b933a",
+          "ruleId": "AS-INJECTION-CMD-001",
+          "path": "server/server.js",
+          "line": 120,
+          "sourceFileSha256": "1f12ef6403a56246bf838ca6f7fb49b2b84d6455ef932c305df3988c04451db5",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.body host -> template shell command -> imported exec"
+        },
+        {
+          "fingerprint": "dd5771a54c01e358c5409790b1d03f04b3394e6ee77c954704430161c6919e87",
+          "ruleId": "AS-XSS-001",
+          "path": "server/server.js",
+          "line": 170,
+          "sourceFileSha256": "1f12ef6403a56246bf838ca6f7fb49b2b84d6455ef932c305df3988c04451db5",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request query searchTerm -> raw HTML response"
+        },
+        {
+          "fingerprint": "62d84ff2d31deae6891efa6a3aec20617d5a5df262640c346d57f81bdf9422d2",
+          "ruleId": "AS-XSS-001",
+          "path": "server/server.js",
+          "line": 197,
+          "sourceFileSha256": "1f12ef6403a56246bf838ca6f7fb49b2b84d6455ef932c305df3988c04451db5",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.body comment -> raw HTML response"
+        },
+        {
+          "fingerprint": "d6318e2099b037d5459d46b638bcff990e332a2435a77125850cef8f77323ce7",
+          "ruleId": "AS-XSS-001",
+          "path": "server/server.js",
+          "line": 228,
+          "sourceFileSha256": "1f12ef6403a56246bf838ca6f7fb49b2b84d6455ef932c305df3988c04451db5",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request recipient -> HTML response without HTML encoding"
+        },
+        {
+          "fingerprint": "f1e78cce49932c4db32313d9cedb757f7890693b38d4b1917568f80925623f6e",
+          "ruleId": "AS-CSRF-001",
+          "path": "server/server.js",
+          "line": 231,
+          "sourceFileSha256": "1f12ef6403a56246bf838ca6f7fb49b2b84d6455ef932c305df3988c04451db5",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "POST session balance mutation with ambient session credentials and no route-bound anti-CSRF control"
+        },
+        {
+          "fingerprint": "11030b2628f717e0b8028e96ca7f71761a75f45ae9b67ea06ac64fc76d2c6554",
+          "ruleId": "AS-XSS-001",
+          "path": "server/server.js",
+          "line": 259,
+          "sourceFileSha256": "1f12ef6403a56246bf838ca6f7fb49b2b84d6455ef932c305df3988c04451db5",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.body recipient -> raw HTML response"
+        },
+        {
+          "fingerprint": "06abde37f3e8ddba85c6dbead10a29554303f424dd05270056588d7f5c2e3404",
+          "ruleId": "AS-SSRF-001",
+          "path": "server/server.js",
+          "line": 267,
+          "sourceFileSha256": "1f12ef6403a56246bf838ca6f7fb49b2b84d6455ef932c305df3988c04451db5",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.body url -> server fetch without destination policy"
+        },
+        {
+          "fingerprint": "b67c4811cdbd5cf08deab318c32197741cef0f249d13f42c61839e8df810935e",
+          "ruleId": "AS-XSS-001",
+          "path": "server/server.js",
+          "line": 302,
+          "sourceFileSha256": "1f12ef6403a56246bf838ca6f7fb49b2b84d6455ef932c305df3988c04451db5",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.body url remains unencoded in response HTML even though responseContent is escaped"
+        },
+        {
+          "fingerprint": "72ac35133951760fe3883a941b4769092591166202a43e8e8feffbbcfcbd3746",
+          "ruleId": "AS-INJECTION-SQL-001",
+          "path": "server/server.js",
+          "line": 309,
+          "sourceFileSha256": "1f12ef6403a56246bf838ca6f7fb49b2b84d6455ef932c305df3988c04451db5",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.body username/password -> SQL template -> mysql query without separate parameters"
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "COMPLETE",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        277.3962,
+        140.19870000000003
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "juice-shop",
+      "repository": "juice-shop/juice-shop",
+      "commit": "1618a611b173b4bf114028e6e02549950606e29d",
+      "language": "TypeScript",
+      "framework": "Express; Angular",
+      "evidence": "validation/alpha12/corpus/juice-shop.json",
+      "evidenceSha256": "9de3b95077fe25e219fcc315a37cd446c3db26003c2cb16d4830b38039e6ef25",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "a319cb7d76f8dff55669376fc63ebcea7e60bb7f88bebd1b7c9f1b0387fcab81",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/ci.yml",
+          "line": 188,
+          "sourceFileSha256": "f9867d42824011a7cebd91215d9a41ae7debf98dd5dbc66ab73a68ca9ee663ad",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "deb7d5c296dd55208c81f9ba3d693961abe03c3e795726ae876204fe801c55c2",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/codeql-analysis.yml",
+          "line": 23,
+          "sourceFileSha256": "221342ccae65027ab6edef21010aa0c6c0ea8a042325ea265e9c42038ac9c165",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "3b7196c84f4633b64873998459754bcc71e54c7568eb1baa42cad5d546caea5d",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/codeql-analysis.yml",
+          "line": 34,
+          "sourceFileSha256": "221342ccae65027ab6edef21010aa0c6c0ea8a042325ea265e9c42038ac9c165",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "d443ca5a4dfc964dc1ff368f1ea8a28c8e2553f50e5ce4296188d94a34e3bffb",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/codeql-analysis.yml",
+          "line": 36,
+          "sourceFileSha256": "221342ccae65027ab6edef21010aa0c6c0ea8a042325ea265e9c42038ac9c165",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "7e58a6f29075da7f44a41fabe14f486f9c8624f026bc3c42bb063848e30ee08f",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/image_actions.yml",
+          "line": 30,
+          "sourceFileSha256": "88e2f659c53888f21ebccb825ac105b21e9a2ae2129162a6540fd448ed4df283",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "b6aa3c06651217fe2787a2cc84fcfa748de53243fcc42e08e190726eccfc4904",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/image_actions.yml",
+          "line": 33,
+          "sourceFileSha256": "88e2f659c53888f21ebccb825ac105b21e9a2ae2129162a6540fd448ed4df283",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "1c1651093deefaefb97b8e10aa4596f65f0dcb6547ea63eb2c4000268f619e9c",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/image_actions.yml",
+          "line": 42,
+          "sourceFileSha256": "88e2f659c53888f21ebccb825ac105b21e9a2ae2129162a6540fd448ed4df283",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "426855530797f82930f1700d3038816868fa6fc5f160740d4676780a2746a7cc",
+          "ruleId": "AS-SECRET-001",
+          "path": "infrastructure/terraform/networking.tf",
+          "line": 171,
+          "sourceFileSha256": "2ac74e053edf128b31d0596af6ff8e09b3966dacfb56b80dd7f7778bb8acf0ab",
+          "classification": "KEY_MARKER_UNKNOWN",
+          "rationale": "Key header is present. NodeGoat/Axios/Strapi are test key locations; Juice Shop contains embedded encoded blocks. The lexical detector does not prove key validity, deployment or active credentials. All material remains redacted; no active validation."
+        },
+        {
+          "fingerprint": "c8c76ac526171e5c74475d531872029e8b3f7b1f51dd320c0fc32dcd69a2a9d1",
+          "ruleId": "AS-SECRET-001",
+          "path": "lib/insecurity.ts",
+          "line": 21,
+          "sourceFileSha256": "c3496760cac6a5fde403bf739a8ab5e2536d2bbc57a6e3b6a0ac50b01a6e8b8d",
+          "classification": "KEY_MARKER_UNKNOWN",
+          "rationale": "Key header is present. NodeGoat/Axios/Strapi are test key locations; Juice Shop contains embedded encoded blocks. The lexical detector does not prove key validity, deployment or active credentials. All material remains redacted; no active validation."
+        },
+        {
+          "fingerprint": "d89e8a33cc9dbe486d825b032724b3a33f97533235b6f211108a3bc9ab719d2f",
+          "ruleId": "AS-SECRET-001",
+          "path": "terraform/networking.tf",
+          "line": 171,
+          "sourceFileSha256": "2ac74e053edf128b31d0596af6ff8e09b3966dacfb56b80dd7f7778bb8acf0ab",
+          "classification": "KEY_MARKER_UNKNOWN",
+          "rationale": "Key header is present. NodeGoat/Axios/Strapi are test key locations; Juice Shop contains embedded encoded blocks. The lexical detector does not prove key validity, deployment or active credentials. All material remains redacted; no active validation."
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 140,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 3
+      },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": {
+          "status": "TRUNCATED",
+          "iterations": 8,
+          "factsCreated": 1193,
+          "maxIterations": 8,
+          "maxFacts": 10000
+        },
+        "applicationDataflow": 274,
+        "traversal": [
+          {
+            "path": "frontend/src/assets/public/videos/owasp_promo.mp4",
+            "reason": "too_large"
+          },
+          {
+            "path": "screenshots/slideshow.gif",
+            "reason": "too_large"
+          }
+        ]
+      },
+      "durationMilliseconds": [
+        12560.3789,
+        17634.0489
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "vulnerable-flask-app",
+      "repository": "we45/Vulnerable-Flask-App",
+      "commit": "b6a4f97afd466e83e1f60781494252dec1c37039",
+      "language": "Python",
+      "framework": "Flask; Jinja",
+      "evidence": "validation/alpha12/corpus/vulnerable-flask-app.json",
+      "evidenceSha256": "cfcdfc9236dd5c4adb5a6d5308c794353178cd65d4e2280a66ab049789d3e25d",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "164be27d9af4b2528cce85189b13996baa00fcb542faa2c983e2dbef63a5513f",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/zap_test.yml",
+          "line": 11,
+          "sourceFileSha256": "c2c8daf4e559ef24e6a18a50114b452736cb3f0c69d4b3f3b86fee0fdb2bd973",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "edc365cb50e9af446747afee29a723c940274a882c627a8485a6d419afd3d391",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/zap_test.yml",
+          "line": 13,
+          "sourceFileSha256": "c2c8daf4e559ef24e6a18a50114b452736cb3f0c69d4b3f3b86fee0fdb2bd973",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "abc68ec56105291a3f650ea780394f98a253ce69a489454ca0ee2891567d3060",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/zap_test.yml",
+          "line": 49,
+          "sourceFileSha256": "c2c8daf4e559ef24e6a18a50114b452736cb3f0c69d4b3f3b86fee0fdb2bd973",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "6f9a71a920bc3d77b93aacdcaf77b6fdcaf327ae22c9a0ed70109bc1a28d9d05",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/zap_test.yml",
+          "line": 57,
+          "sourceFileSha256": "c2c8daf4e559ef24e6a18a50114b452736cb3f0c69d4b3f3b86fee0fdb2bd973",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "281816cc1d573f2111dc57927bcafa4039b4974d13c4d1957a84114f95f2d97e",
+          "ruleId": "AS-PASSWORD-001",
+          "path": "app/app.py",
+          "line": 141,
+          "sourceFileSha256": "42f7b3909fca2e040a4428b54bd18a4745def719a445b834c98bf54e4dcbb1c2",
+          "classification": "VALID_OBSERVATION_WITH_UNKNOWN_PURPOSE",
+          "rationale": "Hash operation is observed; storage purpose is outside the adapter's proof. Observation retained with ARCHITECTURAL ceiling and UNKNOWN conclusion."
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 3,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 1
+      },
+      "completeness": "PARTIAL",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        1673.2579,
+        1232.065
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "breakableflask",
+      "repository": "stephenbradshaw/breakableflask",
+      "commit": "553e8b2f51c14f259f565d5df478339c366a9172",
+      "language": "Python",
+      "framework": "Flask; Jinja",
+      "evidence": "validation/alpha12/corpus/breakableflask.json",
+      "evidenceSha256": "d9b42e91c4f2dbd0b6a2f86381a4c3e498fde4b2a3840dabcbf7fb9d4da44cb8",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "6dabb70d744cca8531a0f7c0ab1f4ce4362a748eec5f866d61cdb4dd54f9d96c",
+          "ruleId": "AS-XSS-001",
+          "path": "main.py",
+          "line": 468,
+          "sourceFileSha256": "b98331ab2e75c2a63ebd1b276cac9b5d094dc6f6228d5a9d76b889ce13c80aec",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "POST request.form name -> percent-format HTML template -> render_template_string; template source itself is attacker influenced"
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 4,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "PARTIAL",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        245.91460000000006,
+        145.79809999999998
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "flask",
+      "repository": "pallets/flask",
+      "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "language": "Python",
+      "framework": "Flask; Jinja",
+      "evidence": "validation/alpha12/corpus/flask.json",
+      "evidenceSha256": "e858109c7bd443a994b41146ef5231b42ea72bf5155e85da94b78f77c65cc24a",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "9399d1a67e631e03a64a0d7401c8e85e08380154a7cee088f3db15a7e415e7fc",
+          "ruleId": "AS-SESSION-001",
+          "path": "tests/test_basic.py",
+          "line": 318,
+          "sourceFileSha256": "ed677d4140710071d7344e67ab5d9f4a73e4c0eca2374fbd3cc447e0715fc58b",
+          "classification": "VALID_TEST_CONFIGURATION_OBSERVATION",
+          "rationale": "Explicit false session-cookie configuration is present. Test-only settings are not counted as deployed application vulnerabilities; production use is not inferred."
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 4,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "PARTIAL",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        1224.6597000000002,
+        816.3471
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "fastapi-appsec-lab",
+      "repository": "LevaAverGit/appsec-review-lab-v2",
+      "commit": "372ed54ad40059f4228f9e08dc375c51fe60b625",
+      "language": "Python",
+      "framework": "FastAPI; Starlette",
+      "evidence": "validation/alpha12/corpus/fastapi-appsec-lab.json",
+      "evidenceSha256": "12b8d81fc287ff7f36713e7f2a8df6eba587d38b779c32ba2f114b6d59ee49d8",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "6c5922e47ac99ef98c57a0756d4414ab7b0a2d6fc8532486ac76b4093da8c5e4",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/ci.yml",
+          "line": 17,
+          "sourceFileSha256": "62549a2e9d3dbc81e6e49391f2a08b192c8a2a5bfd904dd16c3492967442081f",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "a5d70871d2c3b45d03da1c79c4dbe1ed0db5037554b39127f9276765290257d1",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/ci.yml",
+          "line": 18,
+          "sourceFileSha256": "62549a2e9d3dbc81e6e49391f2a08b192c8a2a5bfd904dd16c3492967442081f",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "eaed3dda2ab87569d4623a85ba3ae5ff13b3c862210785223659c82caac32865",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/ci.yml",
+          "line": 37,
+          "sourceFileSha256": "62549a2e9d3dbc81e6e49391f2a08b192c8a2a5bfd904dd16c3492967442081f",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "4858085ecb6653e2698ac21cf9c43c994718b8dad73a30ca888cfe8ab901e3bb",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/ci.yml",
+          "line": 38,
+          "sourceFileSha256": "62549a2e9d3dbc81e6e49391f2a08b192c8a2a5bfd904dd16c3492967442081f",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "69bad2909da3864b421bf459c88fae774d91112526416b3faca98748a99fb464",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/ci.yml",
+          "line": 47,
+          "sourceFileSha256": "62549a2e9d3dbc81e6e49391f2a08b192c8a2a5bfd904dd16c3492967442081f",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "7b5a0401cf31eff3af80fb5eec92a9d985fccd361e659d689ab35a3744f30cfe",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/ci.yml",
+          "line": 58,
+          "sourceFileSha256": "62549a2e9d3dbc81e6e49391f2a08b192c8a2a5bfd904dd16c3492967442081f",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "8a0b7ef3f2339605c7af3bcc9cb445945127dad3b25c2ff1cc093501280674eb",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/ci.yml",
+          "line": 68,
+          "sourceFileSha256": "62549a2e9d3dbc81e6e49391f2a08b192c8a2a5bfd904dd16c3492967442081f",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "28b27e9bc1b0cb42ffc16488cd65dfd06176d74bb42e0f54eeeefc42055cf07f",
+          "ruleId": "AS-INJECTION-SQL-001",
+          "path": "app/api/routes_vulnerable.py",
+          "line": 39,
+          "sourceFileSha256": "c344e2ef4ca4d9fe95913f8abb8ec6033e24623a8ce53f31bd66c432662e3e82",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "FastAPI q parameter -> interpolated SQL structure -> sqlite connection.execute"
+        },
+        {
+          "fingerprint": "02f57570bf7cd646abf8c4c0f7690e5842ddd9c5282deb3a5f020ece7050618c",
+          "ruleId": "AS-PASSWORD-001",
+          "path": "app/api/routes_vulnerable.py",
+          "line": 237,
+          "sourceFileSha256": "c344e2ef4ca4d9fe95913f8abb8ec6033e24623a8ce53f31bd66c432662e3e82",
+          "classification": "VALID_OBSERVATION_WITH_UNKNOWN_PURPOSE",
+          "rationale": "Hash operation is observed; storage purpose is outside the adapter's proof. Observation retained with ARCHITECTURAL ceiling and UNKNOWN conclusion."
+        },
+        {
+          "fingerprint": "3ce201e780808377b797db2935014c5ab6bb5f094f95ebabfcb0c8f5f37fc801",
+          "ruleId": "AS-PASSWORD-001",
+          "path": "app/services/report_service.py",
+          "line": 179,
+          "sourceFileSha256": "95846c7d626f7a0206423d037b6d59acd4e54809e3f06ac509a41863cd33b292",
+          "classification": "VALID_OBSERVATION_WITH_UNKNOWN_PURPOSE",
+          "rationale": "Hash operation is observed; storage purpose is outside the adapter's proof. Observation retained with ARCHITECTURAL ceiling and UNKNOWN conclusion."
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 4,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 2
+      },
+      "completeness": "PARTIAL",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        742.1116000000001,
+        485.6390000000001
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "nextjs-auth",
+      "repository": "vercel/nextjs-postgres-auth-starter",
+      "commit": "fde8ecf1da9337223081f70cf88b420060039d6e",
+      "language": "TypeScript",
+      "framework": "Next.js; React",
+      "evidence": "validation/alpha12/corpus/nextjs-auth.json",
+      "evidenceSha256": "867f819534d8c15c507d28623258cfe5324cb0b8669899f87d310ffd3fe7acd9",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "COMPLETE",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        642.2377999999999,
+        212.86079999999993
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "antony-vulnerable-flask",
+      "repository": "AntonyNRM/vulnerable-flask-app",
+      "commit": "7a12a015d0fc0d028be5cf492db822bce9af45ba",
+      "language": "Python",
+      "framework": "Flask",
+      "evidence": "validation/alpha12/corpus/antony-vulnerable-flask.json",
+      "evidenceSha256": "5ddd79c4d44f69721c8b0e05e372b3ed4898a054ea180c3307b7cda6eaae9f2b",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "0a8c1b797f5e32afaa20ebeb952791154a041ad10fe80131633eb55accd07063",
+          "ruleId": "AS-INJECTION-SQL-001",
+          "path": "app.py",
+          "line": 37,
+          "sourceFileSha256": "cebd897083bb7769bad8fcc27879ab63d70055ccd9fa0cc4a5f8681741f06963",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.form username -> f-string SQL -> sqlite cursor.execute"
+        },
+        {
+          "fingerprint": "4f8f503de06b6ca32133948e8c771f0622ef99bc3deb94349e080cf7adb080f8",
+          "ruleId": "AS-INJECTION-SQL-001",
+          "path": "app.py",
+          "line": 57,
+          "sourceFileSha256": "cebd897083bb7769bad8fcc27879ab63d70055ccd9fa0cc4a5f8681741f06963",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.args username -> SQL variable -> sqlite cursor.execute"
+        },
+        {
+          "fingerprint": "1d309ee400f4248169de1f2e2d8c8ecb6b507236234f9dcd3039e5d755ba014a",
+          "ruleId": "AS-INJECTION-CMD-001",
+          "path": "app.py",
+          "line": 65,
+          "sourceFileSha256": "cebd897083bb7769bad8fcc27879ab63d70055ccd9fa0cc4a5f8681741f06963",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.args target -> shell command -> os.system"
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "COMPLETE",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        230.625,
+        117.2589999999999
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "axios",
+      "repository": "axios/axios",
+      "commit": "18e7dfedf30c96e58652887f930642ae82e0130c",
+      "language": "JavaScript; TypeScript",
+      "framework": "HTTP client library",
+      "evidence": "validation/alpha12/corpus/axios.json",
+      "evidenceSha256": "fb90cbd71240fad3c9834f3b748ffa7ef2d62b29964446fb634ddbda810ace64",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "a94fe493b9829d6fe318ad42b9e2c3d07a8ef21c015b8817a5bbce6fcf84b119",
+          "ruleId": "AS-SECRET-001",
+          "path": "tests/unit/adapters/key.pem",
+          "line": 1,
+          "sourceFileSha256": "39612760b8e412b89e07dc073d98d7667e982215de7caaf63ff61645115d4070",
+          "classification": "KEY_MARKER_UNKNOWN",
+          "rationale": "Key header is present. NodeGoat/Axios/Strapi are test key locations; Juice Shop contains embedded encoded blocks. The lexical detector does not prove key validity, deployment or active credentials. All material remains redacted; no active validation."
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 1,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 1
+      },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": {
+          "status": "TRUNCATED",
+          "iterations": 8,
+          "factsCreated": 413,
+          "maxIterations": 8,
+          "maxFacts": 10000
+        },
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        7779.7825,
+        6708.530000000001
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "django",
+      "repository": "django/django",
+      "commit": "2b30f6255b5ef84afbd827993643d52ef2c0963a",
+      "language": "Python",
+      "framework": "Django",
+      "evidence": "validation/alpha12/corpus/django.json",
+      "evidenceSha256": "171cd4c2026a4fabc4d01fde897d076d7485d0b485086ab7b2cb7323917959c3",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "ea054c7d3f0a94343f1c1cfc194070d51640258bf6f529da5e1278f9723bbcf0",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/benchmark.yml",
+          "line": 17,
+          "sourceFileSha256": "0458e12b829d6b455f5bf2e62dc7fa8f87313174d73086201f275831ffd3c16c",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "7bac193eec7c2888529db8ef5776ef6fd99d33d4de0ca1291fb5d2032ad3bb62",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/benchmark.yml",
+          "line": 31,
+          "sourceFileSha256": "0458e12b829d6b455f5bf2e62dc7fa8f87313174d73086201f275831ffd3c16c",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "5ddfcf21b963df7f2bd25d4c149b5dc66767d4eb9908c76ee2a687e952d15800",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/check_commit_messages.yml",
+          "line": 21,
+          "sourceFileSha256": "2fe53834db8201021bca5bcba1baf94d00e348b9f3463065c669cf57629b2aff",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "a7e373fb2e630c3658fd1fb577856ad4a91026fff464b9e2154627dfd082d86e",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/check_commit_messages.yml",
+          "line": 79,
+          "sourceFileSha256": "2fe53834db8201021bca5bcba1baf94d00e348b9f3463065c669cf57629b2aff",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "238a82ef2cf5adc49090d1b14d4acac80b6e403c03571c6b46654f86053e6982",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/check_pr_quality.yml",
+          "line": 24,
+          "sourceFileSha256": "e07e64bcdb1ab8893c7d3ec502f8c007c6e9d538d49074e673e44a8b7b690b05",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "238f3742e4cd4ba781158cc0d961545fbbbaa8e8403ba99a09767461d95ad6da",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/check_pr_quality.yml",
+          "line": 32,
+          "sourceFileSha256": "e07e64bcdb1ab8893c7d3ec502f8c007c6e9d538d49074e673e44a8b7b690b05",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "8fdcef6904c3e6cf13e41face6b9c1d4d9e22b9eea616c3737481adedbf95931",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/check-migrations.yml",
+          "line": 44,
+          "sourceFileSha256": "2647a7fcd299d4f702596d689667e377b82add8227357ea4cad569b1a6c41c26",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "30c93838adbb0707d12438bc299254081e24dd9812ba5c90baf44b75abd0eac8",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/check-migrations.yml",
+          "line": 49,
+          "sourceFileSha256": "2647a7fcd299d4f702596d689667e377b82add8227357ea4cad569b1a6c41c26",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "2cb84578693fff6911260b0750e72fce83e52c1028a4d0143fffe1d5a7e09cd2",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/coverage_comment.yml",
+          "line": 27,
+          "sourceFileSha256": "a8dd4a7a13f119e438c55453dee32dc8986b9092e6e055159b1c60dd247cb33e",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "787b4c9d29b33f10023749aa049d8dd7d6b3382bdc44d6f88c76848c8a2c3441",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/coverage_comment.yml",
+          "line": 34,
+          "sourceFileSha256": "a8dd4a7a13f119e438c55453dee32dc8986b9092e6e055159b1c60dd247cb33e",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "df18c375a9a3a0601c111342995a29efe930df441a754dbb1b7e613e087206e6",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/coverage_tests.yml",
+          "line": 38,
+          "sourceFileSha256": "8ca5bbf245bd4a32a99942a458a0aebb1d5e3d5a8af7bf069978fca4e2a64d7b",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "66aac8e0aba374bcfea07895c1ed179ac484ab63ebbd2aa91ef80847cbb7efe7",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/coverage_tests.yml",
+          "line": 44,
+          "sourceFileSha256": "8ca5bbf245bd4a32a99942a458a0aebb1d5e3d5a8af7bf069978fca4e2a64d7b",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "d36ead494419d12ff48561975a221f2e3233fa89ee249f80556487f730e0e660",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/coverage_tests.yml",
+          "line": 92,
+          "sourceFileSha256": "8ca5bbf245bd4a32a99942a458a0aebb1d5e3d5a8af7bf069978fca4e2a64d7b",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "f58c7c1eeed89388d23e0062a74627444fd7415b65dd25247b999e319d423b13",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/docs.yml",
+          "line": 31,
+          "sourceFileSha256": "7a46dee72391df8dc53cf1a89f21f336c478db9716278c2c1d2f077b40f6cc83",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "176ced14686d712cea03fe6fb7cf1d30d7a0445ffdc71a8384948d7446d0815a",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/docs.yml",
+          "line": 35,
+          "sourceFileSha256": "7a46dee72391df8dc53cf1a89f21f336c478db9716278c2c1d2f077b40f6cc83",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "0303a3397afb107b3b4f02ad223f79e5bf1106e4476937a71ce708f229fe4d46",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/labels.yml",
+          "line": 26,
+          "sourceFileSha256": "dcb80341c0d401220996589d48ee42cc09e43f1d48847a54aa5583cfaece58c3",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "5486555e96974e4533289c4544e3fab6db5d7702547e14039c09b0c5b04e2d2f",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/linters.yml",
+          "line": 27,
+          "sourceFileSha256": "addd593adfd4c16f1baac0fa4e90f978f1cabc55239f9e2c89dbef1d49de7284",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "45723a5aacafd59facce448d3bda621a0652a3933a994761b29f7a123ca1be7a",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/linters.yml",
+          "line": 31,
+          "sourceFileSha256": "addd593adfd4c16f1baac0fa4e90f978f1cabc55239f9e2c89dbef1d49de7284",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "d105aef8daf6f55a351c243f6f1a61f87adea82a28c7e0ba3b8bc588e89d6b35",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/linters.yml",
+          "line": 47,
+          "sourceFileSha256": "addd593adfd4c16f1baac0fa4e90f978f1cabc55239f9e2c89dbef1d49de7284",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "2fc723cf426a460c3f56fa984d30963219dc18ee0465dd95912ecc8b33542795",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/linters.yml",
+          "line": 51,
+          "sourceFileSha256": "addd593adfd4c16f1baac0fa4e90f978f1cabc55239f9e2c89dbef1d49de7284",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "427887cc648b83c97bfede20faee93bc500449046898657ccf1a38911670e5ab",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/linters.yml",
+          "line": 67,
+          "sourceFileSha256": "addd593adfd4c16f1baac0fa4e90f978f1cabc55239f9e2c89dbef1d49de7284",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "0172edfcea35c62ac255d2324939d858871a5a4f662164c4b1ca75cdaf4422bc",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/linters.yml",
+          "line": 71,
+          "sourceFileSha256": "addd593adfd4c16f1baac0fa4e90f978f1cabc55239f9e2c89dbef1d49de7284",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "4c2b65a991bee543e0ecf9b70169b02b1710d58722729493fc83dfa9fdf2b1ef",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/linters.yml",
+          "line": 78,
+          "sourceFileSha256": "addd593adfd4c16f1baac0fa4e90f978f1cabc55239f9e2c89dbef1d49de7284",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "56815e5ad16ea546650b45e7c33d4048201266b545600fb7e233956f50e1887c",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/linters.yml",
+          "line": 92,
+          "sourceFileSha256": "addd593adfd4c16f1baac0fa4e90f978f1cabc55239f9e2c89dbef1d49de7284",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "5866921f945aa103de0ed9838d996fdd3b02442fbf3ca26ea989c8547919344e",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/linters.yml",
+          "line": 96,
+          "sourceFileSha256": "addd593adfd4c16f1baac0fa4e90f978f1cabc55239f9e2c89dbef1d49de7284",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "33c7bcadfec62751d0e57da57e3605b6c85591e957d25fb06941d7e4d65fb1f7",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/new_contributor_pr.yml",
+          "line": 21,
+          "sourceFileSha256": "23ff0205343f02c45374bb22e82f2b77db1417764de3b47c70996b19f6e8e20c",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "6e81f8fb559cf1efd5d3c41b8a617a66cec1b6beba84f88f2dc3d90014f86127",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/playwright.yml",
+          "line": 24,
+          "sourceFileSha256": "a95417e3f188d3bced0bc53fe68a99ebbcf4f483969d74d46be14bdd19400c97",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "33c7942745c8f4c366b9a9508ad037529a1fa2bf65ebf64f5b2b00c5b7c28b12",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/playwright.yml",
+          "line": 28,
+          "sourceFileSha256": "a95417e3f188d3bced0bc53fe68a99ebbcf4f483969d74d46be14bdd19400c97",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "007abc468d8e72dd97d6f4b77b199e9ee972afc20b4fb85aa231c56625bb7263",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/playwright.yml",
+          "line": 68,
+          "sourceFileSha256": "a95417e3f188d3bced0bc53fe68a99ebbcf4f483969d74d46be14bdd19400c97",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "240fb7181355ea90395e71f44ad62dff15abeb667394576c47d0ba5941f85d25",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/playwright.yml",
+          "line": 72,
+          "sourceFileSha256": "a95417e3f188d3bced0bc53fe68a99ebbcf4f483969d74d46be14bdd19400c97",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "22943a6e0fd820e987c5cc0e139fd44eb0b2049d546fcb57b9916f0a3767820d",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/postgis.yml",
+          "line": 43,
+          "sourceFileSha256": "f14fcfa2dc99077caf7da0ba8301558793b65d50c3d74da072a19ba8f9ddfc3d",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "b29e3c2900f23fd9d9447a2229a8ba4a9b76332a709dce373567a1bc9442c190",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/python_matrix.yml",
+          "line": 26,
+          "sourceFileSha256": "07220e1d734ac80c2bb0a7f2fa811302a6dfc72e188aa95a7a5e50254263f452",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "daa9bea370ca541754633499cd45504b7c4d2b0515ec60ad9419209f1e5beb07",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/python_matrix.yml",
+          "line": 44,
+          "sourceFileSha256": "07220e1d734ac80c2bb0a7f2fa811302a6dfc72e188aa95a7a5e50254263f452",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "723bff038c5b34fea24528c1b05a12bd92e0ca3d6d5b447e5308cc26389c82de",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/python_matrix.yml",
+          "line": 48,
+          "sourceFileSha256": "07220e1d734ac80c2bb0a7f2fa811302a6dfc72e188aa95a7a5e50254263f452",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "f3c2d42ed873dc520e6f3fb6dc7a037bb259be781efd4318223b894a329d7477",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/schedule_tests.yml",
+          "line": 28,
+          "sourceFileSha256": "5f1d70b701611cf5ada128bbee45c70a5540419957eeb423adde249bab4cd9a0",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "11cde9992d00c9c7406c03a67752bbb415586d27e673017d6c1ea2ade8020cae",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/schedule_tests.yml",
+          "line": 32,
+          "sourceFileSha256": "5f1d70b701611cf5ada128bbee45c70a5540419957eeb423adde249bab4cd9a0",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "17d4e132516861a4da73c3ff5f574af3cf85712bce95c4cf310894112e5063f3",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/schedule_tests.yml",
+          "line": 49,
+          "sourceFileSha256": "5f1d70b701611cf5ada128bbee45c70a5540419957eeb423adde249bab4cd9a0",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "1cf9d0837eb977c870122747e09d84662bd825ac756a0ee99afc9f7c2ccdf868",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/schedule_tests.yml",
+          "line": 53,
+          "sourceFileSha256": "5f1d70b701611cf5ada128bbee45c70a5540419957eeb423adde249bab4cd9a0",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "3765975febec5711afd123cb27116c6336668bdaf7aa256d8eae79fd304150e2",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/schedule_tests.yml",
+          "line": 80,
+          "sourceFileSha256": "5f1d70b701611cf5ada128bbee45c70a5540419957eeb423adde249bab4cd9a0",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "40127fe6599935244ee46cc1614c7470d823d663cd22b9504ef20e506473f464",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/schedule_tests.yml",
+          "line": 84,
+          "sourceFileSha256": "5f1d70b701611cf5ada128bbee45c70a5540419957eeb423adde249bab4cd9a0",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "dfc76372a82dcbc08726f4cf66facf10c6caa49c149f255798677ac6f65b2f47",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/schedule_tests.yml",
+          "line": 100,
+          "sourceFileSha256": "5f1d70b701611cf5ada128bbee45c70a5540419957eeb423adde249bab4cd9a0",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "1c69901d5f73c5138b424111c7d984e18048204da6350e9911113fcd2609cf6d",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/schedule_tests.yml",
+          "line": 104,
+          "sourceFileSha256": "5f1d70b701611cf5ada128bbee45c70a5540419957eeb423adde249bab4cd9a0",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "3c7e76ce419fca57493a5299cfe23bd7f22b63d099f9a028686d4e05b7aed136",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/schedule_tests.yml",
+          "line": 143,
+          "sourceFileSha256": "5f1d70b701611cf5ada128bbee45c70a5540419957eeb423adde249bab4cd9a0",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "fbd00b0dac0b054c66f30505be7404c5033c584dda2b3606233a27c3be5512cc",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/schedule_tests.yml",
+          "line": 147,
+          "sourceFileSha256": "5f1d70b701611cf5ada128bbee45c70a5540419957eeb423adde249bab4cd9a0",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "29b7ef0b84384aacd5fc01a94a43396c86253bf6117e235008f8ee847090368b",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/schedule_tests.yml",
+          "line": 195,
+          "sourceFileSha256": "5f1d70b701611cf5ada128bbee45c70a5540419957eeb423adde249bab4cd9a0",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "7e470fb45d19dd7e80d1b98fe74db174b603155bf29e42ff232313ae2aeae4cd",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/schedule_tests.yml",
+          "line": 199,
+          "sourceFileSha256": "5f1d70b701611cf5ada128bbee45c70a5540419957eeb423adde249bab4cd9a0",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "3d707a55beff6ef04faf8bbc8e58cd4ede977b74209971c83ae08e5a33a3da30",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/schedules.yml",
+          "line": 25,
+          "sourceFileSha256": "95f2e83beef9cc1a499b5d86f9aff703b501cfff4f60281c73807b92f61fc3ec",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "b018bd62cf56bbff61e570a0223b87ceab204d0e16bb908427fdfa59177aa4a1",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/screenshots.yml",
+          "line": 24,
+          "sourceFileSha256": "21d27284e9489f00960883f5ffb4d0fa803f10a903370a7ebd91c8a0d46d1950",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "54c535c770db25d8924c0efce4f9dbf7ed9a576368603bc13f8a8da8db72ad29",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/screenshots.yml",
+          "line": 28,
+          "sourceFileSha256": "21d27284e9489f00960883f5ffb4d0fa803f10a903370a7ebd91c8a0d46d1950",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "df9aa88bbc85693b851d86e828eff51a70466ef25645d2e7bbf1f7ed9dcd8fc3",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/screenshots.yml",
+          "line": 48,
+          "sourceFileSha256": "21d27284e9489f00960883f5ffb4d0fa803f10a903370a7ebd91c8a0d46d1950",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "93d1fc192c0fea2b743c886c16a4fc5c29a4dfc99b1842a529c227ace38b3c47",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/screenshots.yml",
+          "line": 65,
+          "sourceFileSha256": "21d27284e9489f00960883f5ffb4d0fa803f10a903370a7ebd91c8a0d46d1950",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "d8da97148182a96ef0fcef603a7bb30b4095cd320c9944a4b4b0426965993f5e",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/tests.yml",
+          "line": 31,
+          "sourceFileSha256": "4c981b82c60f8d0eeccdd6a9af7bdaaba17de311beec5ffecc7918ee60b6c50a",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "67561df59c79a03d1e74094212cb9695a395c802810eae6ad061888acecc135d",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/tests.yml",
+          "line": 35,
+          "sourceFileSha256": "4c981b82c60f8d0eeccdd6a9af7bdaaba17de311beec5ffecc7918ee60b6c50a",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "a470a6799124f8f279e8a372d41c56495987fa800d48723989fd73ef2ace5f38",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/tests.yml",
+          "line": 59,
+          "sourceFileSha256": "4c981b82c60f8d0eeccdd6a9af7bdaaba17de311beec5ffecc7918ee60b6c50a",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "b8a9ac75136b889974e56b12bcaad17522dd07716a512eca5354e136e330d20c",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/tests.yml",
+          "line": 63,
+          "sourceFileSha256": "4c981b82c60f8d0eeccdd6a9af7bdaaba17de311beec5ffecc7918ee60b6c50a",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "1c87bd91e8a6ab8e581fa6da92363c2edd411bdba028a9a4b160d92497c39f2f",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/tests.yml",
+          "line": 82,
+          "sourceFileSha256": "4c981b82c60f8d0eeccdd6a9af7bdaaba17de311beec5ffecc7918ee60b6c50a",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "fd14fb6ce895ec707a8e224f46da3e40a99d8d3d4220334f2d017ef9117e8fd7",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/tests.yml",
+          "line": 86,
+          "sourceFileSha256": "4c981b82c60f8d0eeccdd6a9af7bdaaba17de311beec5ffecc7918ee60b6c50a",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "017f5a8667df8157972b5c413984f4dbe38c1aae78519adb3ddaad5094d281ba",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/tests.yml",
+          "line": 102,
+          "sourceFileSha256": "4c981b82c60f8d0eeccdd6a9af7bdaaba17de311beec5ffecc7918ee60b6c50a",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "6e1fcc21d04e1533eb034f5a685d0b07889d59070ea0ad2e88460c40f29a4bea",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/tests.yml",
+          "line": 106,
+          "sourceFileSha256": "4c981b82c60f8d0eeccdd6a9af7bdaaba17de311beec5ffecc7918ee60b6c50a",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "33d951203efbe9b41fe5bc2272222a1e537dd66d4be87d5026efea88fdd7d40b",
+          "ruleId": "AS-SESSION-001",
+          "path": "tests/check_framework/test_security.py",
+          "line": 55,
+          "sourceFileSha256": "948b95ea34113166e47ce45150f709e03a1043c8f0ce268f03f6e736309469b2",
+          "classification": "VALID_TEST_CONFIGURATION_OBSERVATION",
+          "rationale": "Explicit false session-cookie configuration is present. Test-only settings are not counted as deployed application vulnerabilities; production use is not inferred."
+        },
+        {
+          "fingerprint": "b2771d60aa57818a4902a46e9ed503b99cb4e70706535a0198760095e6d6aeee",
+          "ruleId": "AS-SESSION-001",
+          "path": "tests/check_framework/test_security.py",
+          "line": 114,
+          "sourceFileSha256": "948b95ea34113166e47ce45150f709e03a1043c8f0ce268f03f6e736309469b2",
+          "classification": "VALID_TEST_CONFIGURATION_OBSERVATION",
+          "rationale": "Explicit false session-cookie configuration is present. Test-only settings are not counted as deployed application vulnerabilities; production use is not inferred."
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 2699,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        29227.1668,
+        20644.586599999995
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "fastapi",
+      "repository": "fastapi/fastapi",
+      "commit": "50113da16fec53b66b80d75e80a89296de4fa5a5",
+      "language": "Python",
+      "framework": "FastAPI",
+      "evidence": "validation/alpha12/corpus/fastapi.json",
+      "evidenceSha256": "7f54b201880987c31a2b17a7b18c07a59b19d5458b582c4ce89dfc8caf3e47f9",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 544,
+        "traversal": [
+          {
+            "path": "docs/en/docs/img/deployment/https/https03.drawio.svg",
+            "reason": "too_large"
+          }
+        ]
+      },
+      "durationMilliseconds": [
+        11680.3117,
+        6822.604600000001
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "flask-sqlinjection",
+      "repository": "guilatrova/flask-sqlinjection-vulnerable",
+      "commit": "708246139f2f216c55c683c7aec2297bc91b7346",
+      "language": "Python",
+      "framework": "Flask; SQL",
+      "evidence": "validation/alpha12/corpus/flask-sqlinjection.json",
+      "evidenceSha256": "303a44a8e08b4a90b05101c3e1444869dc88849951082a56ec59d2f377b83b67",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "COMPLETE",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        259.0447999999999,
+        130.81499999999983
+      ],
+      "unsupportedPatterns": [
+        {
+          "repositoryId": "flask-sqlinjection",
+          "paths": [
+            "src/flask_app.py",
+            "src/db.py"
+          ],
+          "classification": "UNSUPPORTED_PATTERN",
+          "explanation": "Route path parameter is passed to an imported Python helper before SQL execution. Cross-file/function Python propagation is outside the declared envelope; this is not counted as a supported-pattern FN."
+        }
+      ],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "payatu-vuln-node",
+      "repository": "payatu/vuln-nodejs-app",
+      "commit": "bc3c90920ba4e1c668d954e5027d9ca814d2d5c6",
+      "language": "JavaScript",
+      "framework": "Express; CommonJS",
+      "evidence": "validation/alpha12/corpus/payatu-vuln-node.json",
+      "evidenceSha256": "271a79bd12a6d6b7735eec7d2b6cb6f93a7f134daf8cbdd4c4a6b336b327821f",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [],
+      "unknown": {
+        "applicationDataflow": 4,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": {
+          "status": "TRUNCATED",
+          "iterations": 8,
+          "factsCreated": 390,
+          "maxIterations": 8,
+          "maxFacts": 10000
+        },
+        "applicationDataflow": 0,
+        "traversal": [
+          {
+            "path": "vuln_react_app/package-lock.json",
+            "reason": "too_large"
+          }
+        ]
+      },
+      "durationMilliseconds": [
+        2906.9163000000003,
+        2033.9700999999995
+      ],
+      "unsupportedPatterns": [
+        {
+          "repositoryId": "payatu-vuln-node",
+          "paths": [
+            "routes/app.js",
+            "controllers/vuln_controller.js"
+          ],
+          "classification": "UNSUPPORTED_PATTERN_AND_RESOURCE_BOUND",
+          "explanation": "CommonJS imported controllers, router.route chaining and custom authentication are outside supported cross-file ESM propagation; full scan also exhausts repository AST coverage."
+        }
+      ],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "simple-ssrf",
+      "repository": "vulnerable-apps/simple-ssrf",
+      "commit": "9fe0f47ca9bc69faf8454e96e0dcdf1400ce8a5a",
+      "language": "Python",
+      "framework": "Flask; requests",
+      "evidence": "validation/alpha12/corpus/simple-ssrf.json",
+      "evidenceSha256": "f585198a2c6581826cd3420af1b1f364efe0ba15871a9644cdec323d4a097857",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "65dbb98f07097870dab74948cf640ec16f9035b4da4ea8447ff5cb188dd696b1",
+          "ruleId": "AS-SSRF-001",
+          "path": "api/app.py",
+          "line": 47,
+          "sourceFileSha256": "0c7835baeb14568c26ede3e129b1d97baa44b4805dd07ae30fd2012f4ed0d6c0",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.args website -> requests.get URL; truthiness check is not a destination policy"
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "COMPLETE",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        169.25779999999997,
+        87.22739999999999
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "sirappsec-vuln-node",
+      "repository": "SirAppSec/vuln-node.js-express.js-app",
+      "commit": "b977c7407f328da929577745ad509639e26c428a",
+      "language": "JavaScript",
+      "framework": "Express",
+      "evidence": "validation/alpha12/corpus/sirappsec-vuln-node.json",
+      "evidenceSha256": "6f3f47b72f64305ed9e255e8b803cf69c7612a11abaaaaddf0860b35a6eb2f50",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [],
+      "unknown": {
+        "applicationDataflow": 1,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": [
+          {
+            "path": "src/public/vendor/fonts/boxicons/boxicons.svg",
+            "reason": "too_large"
+          },
+          {
+            "path": "src/public/vendor/libs/apex-charts/apexcharts.js",
+            "reason": "too_large"
+          },
+          {
+            "path": "src/public/vendor/libs/highlight/highlight.js",
+            "reason": "too_large"
+          }
+        ]
+      },
+      "durationMilliseconds": [
+        1023.0863999999999,
+        685.854
+      ],
+      "unsupportedPatterns": [
+        {
+          "repositoryId": "sirappsec-vuln-node",
+          "paths": [
+            "src/router/routes/system.js"
+          ],
+          "classification": "UNSUPPORTED_PATTERN_AND_RESOURCE_BOUND",
+          "explanation": "Routes are constructed inside a CommonJS exported app factory with locally loaded sink aliases. Full scan exhausts repository AST coverage. These cases are not used to claim supported recall."
+        }
+      ],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "vulnerable-typescript",
+      "repository": "ryanmcmorrowsnyk/vulnerable-typescript-app",
+      "commit": "7f8b240a2f02beba099da3632d1ba679ff8bc32f",
+      "language": "TypeScript",
+      "framework": "Express",
+      "evidence": "validation/alpha12/corpus/vulnerable-typescript.json",
+      "evidenceSha256": "2cffe5c4b3584a83fb6f0841cfa118c0e825808908605d068e9bf9768d67e2a1",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "8293f90ca6bf6de224bcb33fe397beb1563af0bb715c7288dcc9eff65e783334",
+          "ruleId": "AS-SECRET-001",
+          "path": ".env",
+          "line": 53,
+          "sourceFileSha256": "f4dc15bd63f2d0e424f0530eea378d68712397df42d2a568272b1a5ed28b295e",
+          "classification": "PLACEHOLDER_MARKER_UNKNOWN",
+          "rationale": "Confirmed prior false insecure conclusion: .env contains header placeholders without complete key blocks. Current proof retains only an UNKNOWN marker observation."
+        },
+        {
+          "fingerprint": "2a9ba069176fcaa6dd02af6cf7a6ba06fd1e38f6eed5d8e883a72072ee6a6738",
+          "ruleId": "AS-SECRET-001",
+          "path": ".env",
+          "line": 54,
+          "sourceFileSha256": "f4dc15bd63f2d0e424f0530eea378d68712397df42d2a568272b1a5ed28b295e",
+          "classification": "PLACEHOLDER_MARKER_UNKNOWN",
+          "rationale": "Confirmed prior false insecure conclusion: .env contains header placeholders without complete key blocks. Current proof retains only an UNKNOWN marker observation."
+        },
+        {
+          "fingerprint": "5778902c88cd929919f8445ac2e67923624632f7a83a87d61051edb5a936329f",
+          "ruleId": "AS-SESSION-001",
+          "path": "src/server.ts",
+          "line": 40,
+          "sourceFileSha256": "14c7e1e0189e4688edaa48ad1d777943d667d9d8040c74baafd7b7c2b81ac9bb",
+          "classification": "VALID_CONFIGURATION_OBSERVATION",
+          "rationale": "Explicit false session-cookie configuration is present. Test-only settings are not counted as deployed application vulnerabilities; production use is not inferred."
+        },
+        {
+          "fingerprint": "bff9d8dfc936379d60b02f8771364db5ba4aa069c7b3c4424a71b25a9285e6fe",
+          "ruleId": "AS-SESSION-001",
+          "path": "src/server.ts",
+          "line": 41,
+          "sourceFileSha256": "14c7e1e0189e4688edaa48ad1d777943d667d9d8040c74baafd7b7c2b81ac9bb",
+          "classification": "VALID_CONFIGURATION_OBSERVATION",
+          "rationale": "Explicit false session-cookie configuration is present. Test-only settings are not counted as deployed application vulnerabilities; production use is not inferred."
+        },
+        {
+          "fingerprint": "f3b544b7cd224f3f82a572ad3aed93450fc033bf706a1dd20f0278b9c7dca7bc",
+          "ruleId": "AS-INJECTION-CMD-001",
+          "path": "src/server.ts",
+          "line": 90,
+          "sourceFileSha256": "14c7e1e0189e4688edaa48ad1d777943d667d9d8040c74baafd7b7c2b81ac9bb",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.query host -> imported exec shell command"
+        },
+        {
+          "fingerprint": "718a04bcd1469ab53ed8ce45c74f456868d6bc2239e56804bf155f8cda3627a4",
+          "ruleId": "AS-PATH-001",
+          "path": "src/server.ts",
+          "line": 104,
+          "sourceFileSha256": "14c7e1e0189e4688edaa48ad1d777943d667d9d8040c74baafd7b7c2b81ac9bb",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.query filename -> path.join -> fs.readFile; joining alone is not authorized-root confinement"
+        },
+        {
+          "fingerprint": "e4b128f4e93ebcc932a0e3d3da2d9b057517dcf2264f78d684455e40b7108fad",
+          "ruleId": "AS-XSS-001",
+          "path": "src/server.ts",
+          "line": 117,
+          "sourceFileSha256": "14c7e1e0189e4688edaa48ad1d777943d667d9d8040c74baafd7b7c2b81ac9bb",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.query query -> res.send HTML body without encoding"
+        },
+        {
+          "fingerprint": "76c5044c0e855e8747010e1c7a755e7799cc5ccae6f081c5f5720bdada828fe0",
+          "ruleId": "AS-SSRF-001",
+          "path": "src/server.ts",
+          "line": 125,
+          "sourceFileSha256": "14c7e1e0189e4688edaa48ad1d777943d667d9d8040c74baafd7b7c2b81ac9bb",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.query url -> axios.default.get without destination policy"
+        },
+        {
+          "fingerprint": "7d4cd761b4eb6c76bbd86d2d7bfa2bec58aeb0d3cf17ecb68b0f9b553040c00a",
+          "ruleId": "AS-REDIRECT-001",
+          "path": "src/server.ts",
+          "line": 239,
+          "sourceFileSha256": "14c7e1e0189e4688edaa48ad1d777943d667d9d8040c74baafd7b7c2b81ac9bb",
+          "classification": "SUPPORTED_FLOW_CONFIRMED_STATIC",
+          "rationale": "request.query url -> local url alias -> res.redirect; no approved destination policy"
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 2
+      },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": [
+          {
+            "path": "package-lock.json",
+            "reason": "too_large"
+          }
+        ]
+      },
+      "durationMilliseconds": [
+        261.72290000000004,
+        137.0317
+      ],
+      "unsupportedPatterns": [
+        {
+          "repositoryId": "vulnerable-typescript",
+          "paths": [
+            "src/server.ts"
+          ],
+          "classification": "NEGATIVE_SOURCE_REVIEW",
+          "explanation": "The SQL-looking string at lines 72-74 is only logged; no SQL execution sink exists in that route. Lack of AS-INJECTION-SQL-001 there is not a FN. Math.random token, ReDoS and prototype pollution examples are outside the current rule families."
+        }
+      ],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "microblog",
+      "repository": "miguelgrinberg/microblog",
+      "commit": "a975ef64864354867c88e0ed3a17ba7d17dca752",
+      "language": "Python",
+      "framework": "Flask; Flask-Login; Flask-WTF",
+      "evidence": "validation/alpha12/corpus/microblog.json",
+      "evidenceSha256": "382eb40f56a005f63b1bf4fd4e2efe998dcfc9a70d24b3c4ac965d9e12c3c2c1",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "COMPLETE",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        437.3035,
+        183.72749999999996
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "flask-security",
+      "repository": "pallets-eco/flask-security",
+      "commit": "5d47d697d6f0806d0fe58559fe61cd6fd8ae16ef",
+      "language": "Python",
+      "framework": "Flask; Flask-Security",
+      "evidence": "validation/alpha12/corpus/flask-security.json",
+      "evidenceSha256": "612dbbff256d5f6f3e354a700cc97b24e4e006783375e9615b6230355e8c2595",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "2c80239ac17e2d6edc71591c284e69851ee0571e68fb872c12797d9dc4a9cf7a",
+          "ruleId": "AS-PASSWORD-001",
+          "path": "flask_security/utils.py",
+          "line": 1455,
+          "sourceFileSha256": "1dfc53d885c924e4e16ff63773aea21321c707073004d77033ebb3bb53016039",
+          "classification": "VALID_OBSERVATION_WITH_UNKNOWN_PURPOSE",
+          "rationale": "Confirmed prior false insecure conclusion: SHA-1 prefix/suffix are used for a k-anonymous breach lookup in utils.py:1439-1468, not credential storage. Current proof is UNKNOWN."
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 1
+      },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 5,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        1315.7215,
+        857.5229000000002
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "starlette",
+      "repository": "encode/starlette",
+      "commit": "03f12b7fcf0a3e21a8da648ca0900c79472e9efe",
+      "language": "Python",
+      "framework": "Starlette",
+      "evidence": "validation/alpha12/corpus/starlette.json",
+      "evidenceSha256": "785dc176335e889d72e5cbd98871ccce0b623bb1a66eedcbe5c35ecbb80ca313",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": [
+          {
+            "path": "docs/img/gh-actions-fail-test.png",
+            "reason": "too_large"
+          }
+        ]
+      },
+      "durationMilliseconds": [
+        932.5308000000001,
+        524.4221000000002
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "full-stack-fastapi",
+      "repository": "fastapi/full-stack-fastapi-template",
+      "commit": "cb740b656d7a0a6c5e12c7bf8e50343ec94ee9c7",
+      "language": "Python; TypeScript",
+      "framework": "FastAPI; React",
+      "evidence": "validation/alpha12/corpus/full-stack-fastapi.json",
+      "evidenceSha256": "c2da86f520bd7e34dfff83fb8b952b9970af38fb38ef852087e43e6462bbcbf1",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [],
+      "unknown": {
+        "applicationDataflow": 1,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "PARTIAL",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        2428.7114,
+        1604.8130999999998
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "node-express-boilerplate",
+      "repository": "hagopj13/node-express-boilerplate",
+      "commit": "179ae84efec61b14206d0305d941daed6c6d07f9",
+      "language": "JavaScript",
+      "framework": "Express; Passport; Mongoose",
+      "evidence": "validation/alpha12/corpus/node-express-boilerplate.json",
+      "evidenceSha256": "a8b883ef530843ff07cf78692d1a92fc0fa42da5a53f7adafd724c81f9fab542",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [],
+      "unknown": {
+        "applicationDataflow": 8,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "PARTIAL",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        736.6375999999999,
+        440.3119999999999
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "hackathon-starter",
+      "repository": "sahat/hackathon-starter",
+      "commit": "636440342a5b7b640d127dcde0c405c711c0ddaa",
+      "language": "JavaScript",
+      "framework": "Express; Passport; Pug",
+      "evidence": "validation/alpha12/corpus/hackathon-starter.json",
+      "evidenceSha256": "a4573e38f7fb3fc65c6a19b353a3f04fc49f24292516e2b05f7aded85df39cc2",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "0ad67339782ade4f146d83f9d93951a3ad371a6fcd32c5a31c5f53f6c213c2d5",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/build.yml",
+          "line": 28,
+          "sourceFileSha256": "0bf07124138e328c1cb71aa46a3d56e1a719c2ed033e30e1a218e9025ff881a3",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "675216cd53744d66146b8b2680fea444a727388507da73916994c692d2b2a71f",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/build.yml",
+          "line": 30,
+          "sourceFileSha256": "0bf07124138e328c1cb71aa46a3d56e1a719c2ed033e30e1a218e9025ff881a3",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "6eeeb1318a2c52e3a1d18ae58b7e81c7175576cf00145decae0d8932c9ca91ce",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/build.yml",
+          "line": 51,
+          "sourceFileSha256": "0bf07124138e328c1cb71aa46a3d56e1a719c2ed033e30e1a218e9025ff881a3",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "2687840ebc6ee5d2b8573cba4b3445aa9fe14fd643646d6c21924c270e2a3088",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/dependabot-automerge.yml",
+          "line": 24,
+          "sourceFileSha256": "fb665e17680f4244a8ab8c40b452eaa190d045e0e1728890017d59d2149b6c2c",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "c7c17f09d78440f5edbb02ffdeeac44c6e097a246c7efd50edae17e3322a2589",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/dependabot-automerge.yml",
+          "line": 45,
+          "sourceFileSha256": "fb665e17680f4244a8ab8c40b452eaa190d045e0e1728890017d59d2149b6c2c",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "a65772891997cabf1fbe9aaada58de230e966c6d5c62b970c567b597448df072",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/dependabot-automerge.yml",
+          "line": 50,
+          "sourceFileSha256": "fb665e17680f4244a8ab8c40b452eaa190d045e0e1728890017d59d2149b6c2c",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 31,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "PARTIAL",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        3172.8466,
+        2332.3948
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "realworld-express",
+      "repository": "gothinkster/node-express-realworld-example-app",
+      "commit": "30b68e1e881462b2f4164ea09ab4c4f5699c7b0b",
+      "language": "TypeScript",
+      "framework": "Express; Prisma",
+      "evidence": "validation/alpha12/corpus/realworld-express.json",
+      "evidenceSha256": "fb87e787640c1082f2cc0d8b2686ea1d5d0ae4998c84ddef7a107dd95948e62b",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "COMPLETE",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        1215.4501,
+        861.8005999999998
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "express-session",
+      "repository": "expressjs/session",
+      "commit": "96ebea4b6cd805584fba04523773b1b918a836d7",
+      "language": "JavaScript",
+      "framework": "express-session",
+      "evidence": "validation/alpha12/corpus/express-session.json",
+      "evidenceSha256": "9b7ff5599ede753af553beb1ccfa6d60fb870cd996a4461d8d9def40251ef0b0",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "COMPLETE",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        801.3073999999999,
+        538.06
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "fastify-secure-session",
+      "repository": "fastify/fastify-secure-session",
+      "commit": "06f4afb58d2a91e6350b71a6e491d4604333e6d4",
+      "language": "JavaScript; TypeScript",
+      "framework": "Fastify; secure-session",
+      "evidence": "validation/alpha12/corpus/fastify-secure-session.json",
+      "evidenceSha256": "ef7c9458375ca2a4cf0310e3ac60e0600a0753cf4d5a50c4a7d1f2aa8ab83fd1",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      },
+      "completeness": "COMPLETE",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      },
+      "durationMilliseconds": [
+        682.9876999999999,
+        434.34709999999995
+      ],
+      "unsupportedPatterns": [],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    },
+    {
+      "id": "strapi",
+      "repository": "strapi/strapi",
+      "commit": "34fdea8fb4e11afc475a0ffdc14311cce09ddded",
+      "language": "TypeScript; JavaScript",
+      "framework": "Strapi; Koa; React",
+      "evidence": "validation/alpha12/corpus/strapi.json",
+      "evidenceSha256": "ef1a8c9ab64af705bff375a07971020f8d61a1bc9e7c6a4a57ce8e3394773104",
+      "determinism": "PASSED",
+      "scansCompleted": 2,
+      "findings": [
+        {
+          "fingerprint": "652e1cc9e3df70980e686f90b6844ca3cab60c47fb90ae57c6d7f694d7e93651",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/draft-release.yml",
+          "line": 43,
+          "sourceFileSha256": "fb11028614d3b043ed72e68c66556ec1852a24308057e167cb95bc04488050d2",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "7097f35dc9b346a31239bf7511ed1837aee773a4496367f769b0dccff21d090d",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/draft-release.yml",
+          "line": 49,
+          "sourceFileSha256": "fb11028614d3b043ed72e68c66556ec1852a24308057e167cb95bc04488050d2",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "eee076064a352495074d39057d48b25952c3161583b22b148ca990b6dab689c7",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/draft-release.yml",
+          "line": 56,
+          "sourceFileSha256": "fb11028614d3b043ed72e68c66556ec1852a24308057e167cb95bc04488050d2",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "de1553469d76115a0103243eb5f70f12d0c2a24e9f7fe5575323720c0c6f21d2",
+          "ruleId": "AS-CI-001",
+          "path": ".github/workflows/draft-release.yml",
+          "line": 70,
+          "sourceFileSha256": "fb11028614d3b043ed72e68c66556ec1852a24308057e167cb95bc04488050d2",
+          "classification": "VALID_POLICY_OBSERVATION",
+          "rationale": "Source location names a mutable external Action reference. This confirms the immutable-pinning policy observation, not malicious code or runtime exploitation."
+        },
+        {
+          "fingerprint": "3d480a19f9f066698cf203e78424f6ed3819125cba550cea24dcc485853b42f1",
+          "ruleId": "AS-SECRET-001",
+          "path": "packages/core/admin/server/src/services/__tests__/token.test.ts",
+          "line": 273,
+          "sourceFileSha256": "593cf7c811e5a35718ff7e66fc1604cb8f598f082bbcfead49724434d3b3271c",
+          "classification": "KEY_MARKER_UNKNOWN",
+          "rationale": "Key header is present. NodeGoat/Axios/Strapi are test key locations; Juice Shop contains embedded encoded blocks. The lexical detector does not prove key validity, deployment or active credentials. All material remains redacted; no active validation."
+        },
+        {
+          "fingerprint": "b9cff430fb4e765ea65039ae9712e2688354c05c049ce1fb47e807f6bc00f732",
+          "ruleId": "AS-SECRET-001",
+          "path": "packages/providers/email-nodemailer/src/__tests__/index.vitest.test.ts",
+          "line": 368,
+          "sourceFileSha256": "79566b2694bd0ed441b050b2389dea99876f032c9941914ff4a31fc35d0ac244",
+          "classification": "KEY_MARKER_UNKNOWN",
+          "rationale": "Key header is present. NodeGoat/Axios/Strapi are test key locations; Juice Shop contains embedded encoded blocks. The lexical detector does not prove key validity, deployment or active credentials. All material remains redacted; no active validation."
+        }
+      ],
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 1,
+        "findingProof": 2
+      },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": {
+          "status": "TRUNCATED",
+          "iterations": 8,
+          "factsCreated": 9172,
+          "maxIterations": 8,
+          "maxFacts": 10000
+        },
+        "applicationDataflow": 4553,
+        "traversal": [
+          {
+            "path": ".yarn/releases/yarn-4.12.0.cjs",
+            "reason": "too_large"
+          },
+          {
+            "path": "docs/static/img/database/reordering-algo-2.png",
+            "reason": "too_large"
+          },
+          {
+            "path": "examples/getstarted/data/uploads/coffee-art.jpg",
+            "reason": "too_large"
+          },
+          {
+            "path": "examples/getstarted/data/uploads/coffee-beans.jpg",
+            "reason": "too_large"
+          },
+          {
+            "path": "examples/getstarted/data/uploads/coffee-shadow.jpg",
+            "reason": "too_large"
+          },
+          {
+            "path": "packages/cli/create-strapi-app/templates/example-js/data/uploads/coffee-art.jpg",
+            "reason": "too_large"
+          },
+          {
+            "path": "packages/cli/create-strapi-app/templates/example-js/data/uploads/coffee-beans.jpg",
+            "reason": "too_large"
+          },
+          {
+            "path": "packages/cli/create-strapi-app/templates/example-js/data/uploads/coffee-shadow.jpg",
+            "reason": "too_large"
+          },
+          {
+            "path": "public/assets/admin-demo.gif",
+            "reason": "too_large"
+          },
+          {
+            "path": "templates/website/data/uploads/user.png",
+            "reason": "too_large"
+          },
+          {
+            "path": "tests/cli/tests/strapi/strapi/__snapshots__/openapi-generate.test.cli.ts.snap",
+            "reason": "too_large"
+          },
+          {
+            "path": "tests/e2e/data/with-admin/assets/uploads/ted_lasso_profile_f4262e821d.jpeg",
+            "reason": "too_large"
+          },
+          {
+            "path": "yarn.lock",
+            "reason": "too_large"
+          }
+        ]
+      },
+      "durationMilliseconds": [
+        91450.9591,
+        104083.8262
+      ],
+      "unsupportedPatterns": [
+        {
+          "repositoryId": "strapi",
+          "paths": [
+            "packages/core/admin/admin/src/pages/Auth/components/ResetPassword.tsx",
+            "packages/plugins/i18n/admin/src/components/CreateLocale.tsx"
+          ],
+          "classification": "UNSUPPORTED_SCOPE_AND_RESOURCE_BOUND",
+          "explanation": "Babel cannot build scopes for these type/value duplicate declarations. They are file-local parse failures; Strapi/Koa factory and plugin behavior is not a supported authorization adapter. Identity recursion is explicitly bounded."
+        }
+      ],
+      "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
+    }
+  ]
+}

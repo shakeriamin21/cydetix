@@ -1,0 +1,200 @@
+{
+  "id": "full-stack-fastapi",
+  "repository": "fastapi/full-stack-fastapi-template",
+  "commit": "cb740b656d7a0a6c5e12c7bf8e50343ec94ee9c7",
+  "language": "Python; TypeScript",
+  "framework": "FastAPI; React",
+  "classification": "ORDINARY",
+  "previousAlpha11Batch2": false,
+  "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds.",
+  "version": "0.6.0-alpha.12",
+  "enabledRuleIds": [
+    "AS-SESSION-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-AUTHZ-001",
+    "AS-TENANT-001",
+    "AS-AUTH-SESSION-001",
+    "AS-AUTH-SESSION-002",
+    "AS-AUTH-RESET-001",
+    "AS-AUTH-RESET-002",
+    "AS-AUTH-RESET-003",
+    "AS-AUTH-JWT-001",
+    "AS-AUTH-OAUTH-001",
+    "AS-AUTH-OAUTH-002",
+    "AS-SCA-001",
+    "AS-CI-001",
+    "AS-CI-002",
+    "AS-CI-003",
+    "AS-CI-004",
+    "AS-INJECTION-SQL-001",
+    "AS-INJECTION-CMD-001",
+    "AS-PATH-001",
+    "AS-SSRF-001",
+    "AS-XSS-001",
+    "AS-REDIRECT-001",
+    "AS-CSRF-001"
+  ],
+  "applicability": "Enabled rules are not all applicable. Framework detection, finding/UNKNOWN rule IDs and declared limitations describe the checked envelope.",
+  "detectedLanguages": [
+    "python",
+    "typescript"
+  ],
+  "detectedFrameworks": [
+    "FastAPI",
+    "React"
+  ],
+  "findingRuleIds": [],
+  "completeness": "PARTIAL",
+  "determinism": "PASSED",
+  "normalizedReportSha256": [
+    "6d4384252e06fbad90a42102fb84a5772fcd184910e2c0f56c8e56a57c69de8b",
+    "6d4384252e06fbad90a42102fb84a5772fcd184910e2c0f56c8e56a57c69de8b"
+  ],
+  "sourceManifestSha256": "f4074b5c79caec914e6c9b26bda61216c5a667852abfeca838620817a0ff5542",
+  "measurements": [
+    {
+      "totalScanMilliseconds": 2428.7114,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 817.79,
+        "parsing": 417.38940000000025,
+        "callGraph": 230.3112000000001,
+        "securityGraph": 101.99479999999994,
+        "authenticationGraph": 3.6962000000003172,
+        "invariantEvaluation": 69.4052999999999,
+        "applicationDataflow": 473.0644000000002,
+        "reportGeneration": 35.37519999999995
+      },
+      "representativeRssBytes": 253943808,
+      "processHighWaterRssBytes": 256913408,
+      "filesVisited": 253,
+      "filesExamined": 243,
+      "skippedEntries": 10,
+      "bytesExamined": 1114872,
+      "filesAnalyzed": 151,
+      "astNodesVisited": 60290,
+      "factsCreated": 10,
+      "pathsConsidered": 315,
+      "iterations": 2,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 0,
+      "unknown": {
+        "applicationDataflow": 1,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    },
+    {
+      "totalScanMilliseconds": 1604.8130999999998,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 409.51070000000027,
+        "parsing": 245.6655999999998,
+        "callGraph": 192.38790000000063,
+        "securityGraph": 87.1306999999997,
+        "authenticationGraph": 1.7107999999998356,
+        "invariantEvaluation": 53.6890999999996,
+        "applicationDataflow": 411.0171,
+        "reportGeneration": 13.59730000000036
+      },
+      "representativeRssBytes": 260509696,
+      "processHighWaterRssBytes": 263507968,
+      "filesVisited": 253,
+      "filesExamined": 243,
+      "skippedEntries": 10,
+      "bytesExamined": 1114872,
+      "filesAnalyzed": 151,
+      "astNodesVisited": 60290,
+      "factsCreated": 10,
+      "pathsConsidered": 315,
+      "iterations": 2,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 0,
+      "unknown": {
+        "applicationDataflow": 1,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    }
+  ],
+  "findings": [],
+  "suppressedFindings": [],
+  "unknowns": {
+    "applicationDataflow": [
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "backend/app/api/routes/users.py",
+        "line": 104,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Authentication or ambient browser credential reliance is not proven for this state-changing Python route."
+      }
+    ],
+    "authorization": [],
+    "authentication": []
+  },
+  "resourceLimitEvents": {
+    "securityIdentity": null,
+    "applicationDataflow": 0,
+    "traversal": []
+  },
+  "engineCompleteness": [
+    {
+      "engine": "repository-discovery",
+      "status": "COMPLETE",
+      "details": "Repository traversal completed within configured bounds."
+    },
+    {
+      "engine": "syntax-parsing",
+      "status": "PARTIAL",
+      "details": "1 supported source file(s) failed parsing."
+    },
+    {
+      "engine": "application-dataflow",
+      "status": "PARTIAL",
+      "details": "315 bounded path(s) considered; 0 truncation event(s)."
+    }
+  ],
+  "limitations": [
+    "Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.",
+    "Working-tree state was obtained with a five-second/one-MiB no-lock Git status probe; repository hooks/fsmonitor and submodule inspection were disabled.",
+    "Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.",
+    "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
+    "Git history was not analyzed; use cydetix secrets . --history.",
+    "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",
+    "Generated code, runtime configuration, and dependency function reachability were not analyzed.",
+    "Reduced coverage: no framework-specific rules support React.",
+    "frontend/src/client/client/utils.gen.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (13:40)",
+    "Phase two projects statically resolved Express routes, identity provenance, Prisma resources, and authorization/tenant proof states.",
+    "Authentication Graph v2 projects adapter-guaranteed lifecycle operations, validation boundaries, trust transitions, revocation events, and invariant results.",
+    "Generated routes, dynamic middleware composition, unsupported ORM behavior, and runtime policy remain UNKNOWN.",
+    "The absence of a graph edge is not evidence that a security control is absent.",
+    "Cross-file call resolution is limited to repository-local relative ESM imports and statically named direct or namespace calls.",
+    "CommonJS require, tsconfig path aliases, package exports, re-exports, dependency injection, decorators, computed properties, and runtime dispatch remain UNKNOWN.",
+    "Express routes require literal paths and statically named handlers; inline and dynamically composed handlers remain UNKNOWN.",
+    "652 call target(s) remained unresolved or dynamic.",
+    "Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.",
+    "Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.",
+    "Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.",
+    "JavaScript/TypeScript propagation is bounded to direct assignments, aliases, object properties, templates, concatenation, resolved same-file calls, arguments, and returns.",
+    "Python propagation is bounded to parsed decorated routes and local assignments; cross-function and cross-file Python propagation is unsupported.",
+    "Unknown custom sanitizers and unresolved dynamic transformations produce UNKNOWN instead of an actionable finding.",
+    "No target code, package script, hook, framework CLI, test, build, or arbitrary interpreter was executed.",
+    "Phase 3 authentication proofs cover explicit TypeScript/JavaScript Express, express-session, Prisma authentication records, jsonwebtoken, jose, and oauth4webapi evidence only.",
+    "Library behavior is trusted only for the exact supported API surface; version-hidden or unsupported behavior remains UNKNOWN.",
+    "Application names alone never establish an authentication operation; adapters require protocol APIs, persistence operations, or resolved lifecycle evidence.",
+    "OAuth 2.1 remains an Internet-Draft and is not used as normative detector guidance."
+  ],
+  "adjudication": {
+    "state": "PENDING_MANUAL_REVIEW",
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null
+  }
+}

@@ -1,0 +1,750 @@
+{
+  "id": "strapi",
+  "repository": "strapi/strapi",
+  "commit": "34fdea8fb4e11afc475a0ffdc14311cce09ddded",
+  "language": "TypeScript; JavaScript",
+  "framework": "Strapi; Koa; React",
+  "classification": "ORDINARY",
+  "previousAlpha11Batch2": false,
+  "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds.",
+  "version": "0.6.0-alpha.12",
+  "enabledRuleIds": [
+    "AS-SESSION-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-AUTHZ-001",
+    "AS-TENANT-001",
+    "AS-AUTH-SESSION-001",
+    "AS-AUTH-SESSION-002",
+    "AS-AUTH-RESET-001",
+    "AS-AUTH-RESET-002",
+    "AS-AUTH-RESET-003",
+    "AS-AUTH-JWT-001",
+    "AS-AUTH-OAUTH-001",
+    "AS-AUTH-OAUTH-002",
+    "AS-SCA-001",
+    "AS-CI-001",
+    "AS-CI-002",
+    "AS-CI-003",
+    "AS-CI-004",
+    "AS-INJECTION-SQL-001",
+    "AS-INJECTION-CMD-001",
+    "AS-PATH-001",
+    "AS-SSRF-001",
+    "AS-XSS-001",
+    "AS-REDIRECT-001",
+    "AS-CSRF-001"
+  ],
+  "applicability": "Enabled rules are not all applicable. Framework detection, finding/UNKNOWN rule IDs and declared limitations describe the checked envelope.",
+  "detectedLanguages": [
+    "javascript",
+    "typescript"
+  ],
+  "detectedFrameworks": [
+    "React"
+  ],
+  "findingRuleIds": [
+    "AS-CI-001",
+    "AS-SECRET-001"
+  ],
+  "completeness": "TRUNCATED",
+  "determinism": "PASSED",
+  "normalizedReportSha256": [
+    "a7de98548b8bca2fcfaa7e1582887571d73c37b33ee78ca0c4fc71fa464d8d60",
+    "a7de98548b8bca2fcfaa7e1582887571d73c37b33ee78ca0c4fc71fa464d8d60"
+  ],
+  "sourceManifestSha256": "ec70e5f2b7517b6b54c049b968461d246ad244c86ffe87d2fa874084a891245b",
+  "measurements": [
+    {
+      "totalScanMilliseconds": 91450.9591,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 8983.3037,
+        "parsing": 14650.449499999999,
+        "callGraph": 10512.506699999998,
+        "securityGraph": 14641.482199999999,
+        "authenticationGraph": 2.921699999991688,
+        "invariantEvaluation": 7395.516799999998,
+        "applicationDataflow": 16178.486700000001,
+        "reportGeneration": 1231.5488999999943
+      },
+      "representativeRssBytes": 2744778752,
+      "processHighWaterRssBytes": 2870382592,
+      "filesVisited": 6679,
+      "filesExamined": 6532,
+      "skippedEntries": 147,
+      "bytesExamined": 28460120,
+      "filesAnalyzed": 622,
+      "astNodesVisited": 2527328,
+      "factsCreated": 0,
+      "pathsConsidered": 2189,
+      "iterations": 1,
+      "truncationEvents": 4553,
+      "securityIdentityBounds": {
+        "status": "TRUNCATED",
+        "iterations": 8,
+        "factsCreated": 9172,
+        "maxIterations": 8,
+        "maxFacts": 10000
+      },
+      "findings": 6,
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 1,
+        "findingProof": 2
+      }
+    },
+    {
+      "totalScanMilliseconds": 104083.8262,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 25804.10029999999,
+        "parsing": 14499.305500000002,
+        "callGraph": 12625.161699999997,
+        "securityGraph": 12614.875,
+        "authenticationGraph": 1.6828000000095926,
+        "invariantEvaluation": 5413.715800000005,
+        "applicationDataflow": 19395.916800000006,
+        "reportGeneration": 904.3706000000238
+      },
+      "representativeRssBytes": 3017052160,
+      "processHighWaterRssBytes": 3163537408,
+      "filesVisited": 6679,
+      "filesExamined": 6532,
+      "skippedEntries": 147,
+      "bytesExamined": 28460120,
+      "filesAnalyzed": 622,
+      "astNodesVisited": 2527328,
+      "factsCreated": 0,
+      "pathsConsidered": 2189,
+      "iterations": 1,
+      "truncationEvents": 4553,
+      "securityIdentityBounds": {
+        "status": "TRUNCATED",
+        "iterations": 8,
+        "factsCreated": 9172,
+        "maxIterations": 8,
+        "maxFacts": 10000
+      },
+      "findings": 6,
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 1,
+        "findingProof": 2
+      }
+    }
+  ],
+  "findings": [
+    {
+      "fingerprint": "652e1cc9e3df70980e686f90b6844ca3cab60c47fb90ae57c6d7f694d7e93651",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/draft-release.yml",
+        "start": {
+          "line": 43,
+          "column": 14,
+          "offset": 1498
+        },
+        "end": {
+          "line": 43,
+          "column": 48,
+          "offset": 1532
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/create-github-app-token uses tag reference v1; no authoritative SHA was invented.",
+          "excerpt": "- uses: actions/create-github-app-token@v1",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "7097f35dc9b346a31239bf7511ed1837aee773a4496367f769b0dccff21d090d",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/draft-release.yml",
+        "start": {
+          "line": 49,
+          "column": 14,
+          "offset": 1707
+        },
+        "end": {
+          "line": 49,
+          "column": 33,
+          "offset": 1726
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "- uses: actions/checkout@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "eee076064a352495074d39057d48b25952c3161583b22b148ca990b6dab689c7",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/draft-release.yml",
+        "start": {
+          "line": 56,
+          "column": 14,
+          "offset": 2077
+        },
+        "end": {
+          "line": 56,
+          "column": 35,
+          "offset": 2098
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-node uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "- uses: actions/setup-node@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "de1553469d76115a0103243eb5f70f12d0c2a24e9f7fe5575323720c0c6f21d2",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/draft-release.yml",
+        "start": {
+          "line": 70,
+          "column": 14,
+          "offset": 2518
+        },
+        "end": {
+          "line": 70,
+          "column": 40,
+          "offset": 2544
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/upload-artifact uses tag reference v4; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/upload-artifact@v4",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "3d480a19f9f066698cf203e78424f6ed3819125cba550cea24dcc485853b42f1",
+      "ruleId": "AS-SECRET-001",
+      "ruleVersion": "1.0.1",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "unknown",
+      "title": "Private-key marker observed; credential material is unproven",
+      "category": "secrets",
+      "affectedComponent": "private-key marker; payload and deployment unresolved",
+      "location": {
+        "path": "packages/core/admin/server/src/services/__tests__/token.test.ts",
+        "start": {
+          "line": 273,
+          "column": 23,
+          "offset": 7945
+        },
+        "end": {
+          "line": 273,
+          "column": 50,
+          "offset": 7972
+        }
+      },
+      "evidence": [
+        {
+          "message": "A private-key header was observed. The bounded detector does not validate the payload or establish whether this is a placeholder, test fixture, or deployed credential. Contents remain redacted; no provider was contacted.",
+          "excerpt": "[REDACTED cryptographic-key credential; length=27; sha256=3021d90eb943]",
+          "redacted": true
+        }
+      ],
+      "securityInvariant": "Long-lived credentials must not be stored in source-controlled plaintext.",
+      "attackPrerequisite": "An attacker gains read access to the working tree, repository, artifact, log, or history.",
+      "impact": "The exposed credential may permit unauthorized access to data or infrastructure.",
+      "standards": {
+        "cwe": [
+          "CWE-798"
+        ],
+        "owaspTop10": [
+          "A02:2025"
+        ],
+        "asvs": [
+          "v5.0.0-13.3.1"
+        ],
+        "nist": []
+      },
+      "remediation": "Inspect the marker and its payload locally. If it contains credential material used outside a test fixture, revoke or rotate that credential and review its history. A marker alone does not justify a key migration; automatic modification is withheld.",
+      "autofix": "ARCHITECTURAL",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "UNKNOWN",
+      "analysisCompleteness": "PARTIAL",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "ARCHITECTURAL",
+        "requestedClass": "ARCHITECTURAL",
+        "finalClass": "ARCHITECTURAL",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "b9cff430fb4e765ea65039ae9712e2688354c05c049ce1fb47e807f6bc00f732",
+      "ruleId": "AS-SECRET-001",
+      "ruleVersion": "1.0.1",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "unknown",
+      "title": "Private-key marker observed; credential material is unproven",
+      "category": "secrets",
+      "affectedComponent": "private-key marker; payload and deployment unresolved",
+      "location": {
+        "path": "packages/providers/email-nodemailer/src/__tests__/index.vitest.test.ts",
+        "start": {
+          "line": 368,
+          "column": 21,
+          "offset": 10821
+        },
+        "end": {
+          "line": 368,
+          "column": 52,
+          "offset": 10852
+        }
+      },
+      "evidence": [
+        {
+          "message": "A private-key header was observed. The bounded detector does not validate the payload or establish whether this is a placeholder, test fixture, or deployed credential. Contents remain redacted; no provider was contacted.",
+          "excerpt": "[REDACTED cryptographic-key credential; length=31; sha256=8bcac7908eb9]",
+          "redacted": true
+        }
+      ],
+      "securityInvariant": "Long-lived credentials must not be stored in source-controlled plaintext.",
+      "attackPrerequisite": "An attacker gains read access to the working tree, repository, artifact, log, or history.",
+      "impact": "The exposed credential may permit unauthorized access to data or infrastructure.",
+      "standards": {
+        "cwe": [
+          "CWE-798"
+        ],
+        "owaspTop10": [
+          "A02:2025"
+        ],
+        "asvs": [
+          "v5.0.0-13.3.1"
+        ],
+        "nist": []
+      },
+      "remediation": "Inspect the marker and its payload locally. If it contains credential material used outside a test fixture, revoke or rotate that credential and review its history. A marker alone does not justify a key migration; automatic modification is withheld.",
+      "autofix": "ARCHITECTURAL",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "UNKNOWN",
+      "analysisCompleteness": "PARTIAL",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "ARCHITECTURAL",
+        "requestedClass": "ARCHITECTURAL",
+        "finalClass": "ARCHITECTURAL",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    }
+  ],
+  "suppressedFindings": [],
+  "unknowns": {
+    "applicationDataflow": [],
+    "authorization": [],
+    "authentication": [
+      {
+        "schemaVersion": "1.0.0",
+        "id": "authproof:78e2aec850f3f819",
+        "invariantId": "OAUTH_STATE_VALIDATED",
+        "applicability": "UNKNOWN",
+        "conclusion": "UNKNOWN",
+        "confidence": "medium",
+        "reachability": "unknown",
+        "operationIds": [],
+        "routeIds": [],
+        "evidencePath": [],
+        "unresolvedConditions": [
+          "A supported alternative CSRF transaction binding is not established."
+        ],
+        "explanation": "OAuth is detected, but complete state generation, binding, and callback validation cannot be proven.",
+        "correlationKey": "oauth-state-flow:packages/plugins/users-permissions"
+      }
+    ]
+  },
+  "resourceLimitEvents": {
+    "securityIdentity": {
+      "status": "TRUNCATED",
+      "iterations": 8,
+      "factsCreated": 9172,
+      "maxIterations": 8,
+      "maxFacts": 10000
+    },
+    "applicationDataflow": 4553,
+    "traversal": [
+      {
+        "path": ".yarn/releases/yarn-4.12.0.cjs",
+        "reason": "too_large"
+      },
+      {
+        "path": "docs/static/img/database/reordering-algo-2.png",
+        "reason": "too_large"
+      },
+      {
+        "path": "examples/getstarted/data/uploads/coffee-art.jpg",
+        "reason": "too_large"
+      },
+      {
+        "path": "examples/getstarted/data/uploads/coffee-beans.jpg",
+        "reason": "too_large"
+      },
+      {
+        "path": "examples/getstarted/data/uploads/coffee-shadow.jpg",
+        "reason": "too_large"
+      },
+      {
+        "path": "packages/cli/create-strapi-app/templates/example-js/data/uploads/coffee-art.jpg",
+        "reason": "too_large"
+      },
+      {
+        "path": "packages/cli/create-strapi-app/templates/example-js/data/uploads/coffee-beans.jpg",
+        "reason": "too_large"
+      },
+      {
+        "path": "packages/cli/create-strapi-app/templates/example-js/data/uploads/coffee-shadow.jpg",
+        "reason": "too_large"
+      },
+      {
+        "path": "public/assets/admin-demo.gif",
+        "reason": "too_large"
+      },
+      {
+        "path": "templates/website/data/uploads/user.png",
+        "reason": "too_large"
+      },
+      {
+        "path": "tests/cli/tests/strapi/strapi/__snapshots__/openapi-generate.test.cli.ts.snap",
+        "reason": "too_large"
+      },
+      {
+        "path": "tests/e2e/data/with-admin/assets/uploads/ted_lasso_profile_f4262e821d.jpeg",
+        "reason": "too_large"
+      },
+      {
+        "path": "yarn.lock",
+        "reason": "too_large"
+      }
+    ]
+  },
+  "engineCompleteness": [
+    {
+      "engine": "security-identity-propagation",
+      "status": "TRUNCATED",
+      "details": "8 iterations; 9172 facts produced. Incomplete trust was discarded; dependent authorization and tenant proofs remain UNKNOWN."
+    },
+    {
+      "engine": "repository-discovery",
+      "status": "TRUNCATED",
+      "details": "One or more configured file, size, or depth bounds were reached."
+    },
+    {
+      "engine": "syntax-parsing",
+      "status": "PARTIAL",
+      "details": "31 supported source file(s) failed parsing."
+    },
+    {
+      "engine": "application-dataflow",
+      "status": "TRUNCATED",
+      "details": "2189 bounded path(s) considered; 4553 truncation event(s)."
+    }
+  ],
+  "limitations": [
+    "Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.",
+    "Working-tree state was obtained with a five-second/one-MiB no-lock Git status probe; repository hooks/fsmonitor and submodule inspection were disabled.",
+    "Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.",
+    "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
+    "Git history was not analyzed; use cydetix secrets . --history.",
+    "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",
+    "Generated code, runtime configuration, and dependency function reachability were not analyzed.",
+    "Reduced coverage: no framework-specific rules support React.",
+    "examples/complex/scripts/bench-hook.ts: JavaScript/TypeScript parse failed: SyntaxError: 'return' outside of function. (39:2)",
+    "packages/core/admin/admin/src/core/store/hooks.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (12:66)",
+    "packages/core/admin/admin/src/hooks/usePersistentState.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (16:62)",
+    "packages/core/admin/admin/src/hooks/usePrev.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (3:53)",
+    "packages/core/admin/admin/src/hooks/useQueryParams.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (61:48)",
+    "packages/core/admin/admin/src/pages/Auth/components/ResetPassword.tsx: JavaScript/TypeScript scope analysis failed: TypeError: Duplicate declaration \"ResetPassword\"",
+    "packages/core/admin/admin/src/pages/Settings/pages/Roles/utils/createArrayOfValues.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (4:71)",
+    "packages/core/admin/admin/src/utils/arrays.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (23:19)",
+    "packages/core/admin/admin/src/utils/getFetchClient.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (483:11)",
+    "packages/core/content-manager/admin/src/hooks/usePrev.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (3:53)",
+    "packages/core/content-type-builder/admin/src/components/DataManager/undoRedo.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (44:41)",
+    "packages/core/core/src/migrations/database/5.0.0-discard-drafts.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (919:42)",
+    "packages/core/core/src/services/document-service/utils/__tests__/ordered-parallel.test.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (3:30)",
+    "packages/core/core/src/services/mcp/utils/withTimeout.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (10:15)",
+    "packages/core/core/src/services/server/__tests__/koa.test.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (25:91)",
+    "packages/core/data-transfer/src/__tests__/test-utils.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (10:37)",
+    "packages/core/data-transfer/src/engine/index.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (227:74)",
+    "packages/core/data-transfer/src/utils/stream.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (12:25)",
+    "packages/core/strapi/src/node/develop.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (15:37)",
+    "packages/core/types/src/modules/__tests__/mcp-capability-results.test.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (147:40)",
+    "11 additional parse failures omitted from this summary.",
+    "Phase two projects statically resolved Express routes, identity provenance, Prisma resources, and authorization/tenant proof states.",
+    "Authentication Graph v2 projects adapter-guaranteed lifecycle operations, validation boundaries, trust transitions, revocation events, and invariant results.",
+    "Generated routes, dynamic middleware composition, unsupported ORM behavior, and runtime policy remain UNKNOWN.",
+    "The absence of a graph edge is not evidence that a security control is absent.",
+    "Cross-file call resolution is limited to repository-local relative ESM imports and statically named direct or namespace calls.",
+    "CommonJS require, tsconfig path aliases, package exports, re-exports, dependency injection, decorators, computed properties, and runtime dispatch remain UNKNOWN.",
+    "Express routes require literal paths and statically named handlers; inline and dynamically composed handlers remain UNKNOWN.",
+    "37003 call target(s) remained unresolved or dynamic.",
+    "Security identity propagation exhausted the eight-iteration or 10000-fact bound. Incomplete propagated trust was discarded; dependent authorization and tenant proofs remain UNKNOWN.",
+    "Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.",
+    "Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.",
+    "Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.",
+    "JavaScript/TypeScript propagation is bounded to direct assignments, aliases, object properties, templates, concatenation, resolved same-file calls, arguments, and returns.",
+    "Python propagation is bounded to parsed decorated routes and local assignments; cross-function and cross-file Python propagation is unsupported.",
+    "Unknown custom sanitizers and unresolved dynamic transformations produce UNKNOWN instead of an actionable finding.",
+    "No target code, package script, hook, framework CLI, test, build, or arbitrary interpreter was executed.",
+    "Phase 3 authentication proofs cover explicit TypeScript/JavaScript Express, express-session, Prisma authentication records, jsonwebtoken, jose, and oauth4webapi evidence only.",
+    "Library behavior is trusted only for the exact supported API surface; version-hidden or unsupported behavior remains UNKNOWN.",
+    "Application names alone never establish an authentication operation; adapters require protocol APIs, persistence operations, or resolved lifecycle evidence.",
+    "OAuth 2.1 remains an Internet-Draft and is not used as normative detector guidance."
+  ],
+  "adjudication": {
+    "state": "PENDING_MANUAL_REVIEW",
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null
+  }
+}

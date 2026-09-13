@@ -1,0 +1,625 @@
+{
+  "id": "antony-vulnerable-flask",
+  "repository": "AntonyNRM/vulnerable-flask-app",
+  "commit": "7a12a015d0fc0d028be5cf492db822bce9af45ba",
+  "language": "Python",
+  "framework": "Flask",
+  "classification": "VULNERABLE",
+  "previousAlpha11Batch2": false,
+  "purpose": "Challenge admitted source/sink propagation and review unsupported composition.",
+  "version": "0.6.0-alpha.12",
+  "enabledRuleIds": [
+    "AS-SESSION-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-AUTHZ-001",
+    "AS-TENANT-001",
+    "AS-AUTH-SESSION-001",
+    "AS-AUTH-SESSION-002",
+    "AS-AUTH-RESET-001",
+    "AS-AUTH-RESET-002",
+    "AS-AUTH-RESET-003",
+    "AS-AUTH-JWT-001",
+    "AS-AUTH-OAUTH-001",
+    "AS-AUTH-OAUTH-002",
+    "AS-SCA-001",
+    "AS-CI-001",
+    "AS-CI-002",
+    "AS-CI-003",
+    "AS-CI-004",
+    "AS-INJECTION-SQL-001",
+    "AS-INJECTION-CMD-001",
+    "AS-PATH-001",
+    "AS-SSRF-001",
+    "AS-XSS-001",
+    "AS-REDIRECT-001",
+    "AS-CSRF-001"
+  ],
+  "applicability": "Enabled rules are not all applicable. Framework detection, finding/UNKNOWN rule IDs and declared limitations describe the checked envelope.",
+  "detectedLanguages": [
+    "python"
+  ],
+  "detectedFrameworks": [
+    "Flask"
+  ],
+  "findingRuleIds": [
+    "AS-INJECTION-SQL-001",
+    "AS-INJECTION-CMD-001"
+  ],
+  "completeness": "COMPLETE",
+  "determinism": "PASSED",
+  "normalizedReportSha256": [
+    "fa39d41f33e39f6b36e49889c39f6e4c4f2c13f2a658a79c11726864c1da78ba",
+    "fa39d41f33e39f6b36e49889c39f6e4c4f2c13f2a658a79c11726864c1da78ba"
+  ],
+  "sourceManifestSha256": "acc12f854a717f9501b2f0e7a89b211c46721115ac560ec109c2a75a7714bd75",
+  "measurements": [
+    {
+      "totalScanMilliseconds": 230.625,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 131.25760000000002,
+        "parsing": 31.444099999999935,
+        "callGraph": 1.922800000000052,
+        "securityGraph": 1.390100000000075,
+        "authenticationGraph": 0.9029000000000451,
+        "invariantEvaluation": 8.213799999999992,
+        "applicationDataflow": 10.993099999999913,
+        "reportGeneration": 20.717300000000023
+      },
+      "representativeRssBytes": 87502848,
+      "processHighWaterRssBytes": 89841664,
+      "filesVisited": 7,
+      "filesExamined": 4,
+      "skippedEntries": 3,
+      "bytesExamined": 11782,
+      "filesAnalyzed": 2,
+      "astNodesVisited": 2094,
+      "factsCreated": 22,
+      "pathsConsidered": 84,
+      "iterations": 2,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 3,
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    },
+    {
+      "totalScanMilliseconds": 117.2589999999999,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 91.57670000000007,
+        "parsing": 12.182099999999991,
+        "callGraph": 0.14400000000000546,
+        "securityGraph": 0.09570000000007894,
+        "authenticationGraph": 0.1754000000000815,
+        "invariantEvaluation": 1.1668999999999414,
+        "applicationDataflow": 3.2596000000000913,
+        "reportGeneration": 3.8722999999999956
+      },
+      "representativeRssBytes": 92532736,
+      "processHighWaterRssBytes": 92536832,
+      "filesVisited": 7,
+      "filesExamined": 4,
+      "skippedEntries": 3,
+      "bytesExamined": 11782,
+      "filesAnalyzed": 2,
+      "astNodesVisited": 2094,
+      "factsCreated": 22,
+      "pathsConsidered": 84,
+      "iterations": 2,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 3,
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    }
+  ],
+  "findings": [
+    {
+      "fingerprint": "0a8c1b797f5e32afaa20ebeb952791154a041ad10fe80131633eb55accd07063",
+      "ruleId": "AS-INJECTION-SQL-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Untrusted input controls SQL statement structure",
+      "category": "injection",
+      "affectedComponent": "Python database execute API",
+      "location": {
+        "path": "app.py",
+        "start": {
+          "line": 37,
+          "column": 4,
+          "offset": 1152
+        },
+        "end": {
+          "line": 37,
+          "column": 70,
+          "offset": 1218
+        }
+      },
+      "evidence": [
+        {
+          "message": "Proven untrusted request data controls SQL structure at an imported database API.",
+          "excerpt": "cursor.execute(f\"SELECT * FROM users WHERE username='{username}'\")",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "UNTRUSTED_SQL_DATA_MUST_NOT_CONTROL_SQL_STRUCTURE",
+      "attackPrerequisite": "An attacker can control the proven request value reaching the database call.",
+      "impact": "Injected SQL structure can disclose, modify, or delete data and may bypass application authorization.",
+      "standards": {
+        "cwe": [
+          "CWE-89"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.4"
+        ],
+        "nist": []
+      },
+      "remediation": "Use the database library's parameterized query interface and separately constrain any dynamic identifiers to an explicit application-defined allowlist.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "proof": {
+        "schemaVersion": "1.0.0",
+        "source": {
+          "kind": "SOURCE",
+          "label": "request.form is untrusted Flask request input",
+          "location": {
+            "path": "app.py",
+            "line": 33,
+            "column": 4
+          }
+        },
+        "propagationPath": [
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to username",
+            "location": {
+              "path": "app.py",
+              "line": 33,
+              "column": 4
+            }
+          },
+          {
+            "kind": "PROPAGATION",
+            "label": "propagates through f\"SELECT * FROM users WHERE username='{username}'\"",
+            "location": {
+              "path": "app.py",
+              "line": 37,
+              "column": 19
+            }
+          }
+        ],
+        "sink": {
+          "kind": "SINK",
+          "label": "Python database execute API",
+          "location": {
+            "path": "app.py",
+            "line": 37,
+            "column": 4
+          }
+        },
+        "securityControlEncountered": false,
+        "securityControlEvaluation": "ABSENT",
+        "reachability": "likely",
+        "invariant": "UNTRUSTED_SQL_DATA_MUST_NOT_CONTROL_SQL_STRUCTURE",
+        "conclusion": "UNTRUSTED_SQL_DATA_MUST_NOT_CONTROL_SQL_STRUCTURE is violated by a complete, reachable source-to-sink path.",
+        "proofState": "PROVEN_INSECURE",
+        "ruleId": "AS-INJECTION-SQL-001",
+        "ruleVersion": "1.0.0",
+        "ruleMaturity": "PRODUCTION",
+        "cwe": [
+          "CWE-89"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.4"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "analysisLimitations": [
+          "Python proof is bounded to a parsed decorated route, local assignments, import-qualified sinks, and documented controls."
+        ]
+      },
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "AMBIGUOUS_SEMANTICS",
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": false,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "4f8f503de06b6ca32133948e8c771f0622ef99bc3deb94349e080cf7adb080f8",
+      "ruleId": "AS-INJECTION-SQL-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Untrusted input controls SQL statement structure",
+      "category": "injection",
+      "affectedComponent": "Python database execute API",
+      "location": {
+        "path": "app.py",
+        "start": {
+          "line": 57,
+          "column": 4,
+          "offset": 2000
+        },
+        "end": {
+          "line": 57,
+          "column": 25,
+          "offset": 2021
+        }
+      },
+      "evidence": [
+        {
+          "message": "Proven untrusted request data controls SQL structure at an imported database API.",
+          "excerpt": "cursor.execute(query)",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "UNTRUSTED_SQL_DATA_MUST_NOT_CONTROL_SQL_STRUCTURE",
+      "attackPrerequisite": "An attacker can control the proven request value reaching the database call.",
+      "impact": "Injected SQL structure can disclose, modify, or delete data and may bypass application authorization.",
+      "standards": {
+        "cwe": [
+          "CWE-89"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.4"
+        ],
+        "nist": []
+      },
+      "remediation": "Use the database library's parameterized query interface and separately constrain any dynamic identifiers to an explicit application-defined allowlist.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "proof": {
+        "schemaVersion": "1.0.0",
+        "source": {
+          "kind": "SOURCE",
+          "label": "request.args is untrusted Flask request input",
+          "location": {
+            "path": "app.py",
+            "line": 54,
+            "column": 4
+          }
+        },
+        "propagationPath": [
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to username",
+            "location": {
+              "path": "app.py",
+              "line": 54,
+              "column": 4
+            }
+          },
+          {
+            "kind": "PROPAGATION",
+            "label": "propagates through f\"SELECT * FROM users WHERE username='{username}'\"",
+            "location": {
+              "path": "app.py",
+              "line": 56,
+              "column": 4
+            }
+          },
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to query",
+            "location": {
+              "path": "app.py",
+              "line": 56,
+              "column": 4
+            }
+          },
+          {
+            "kind": "PROPAGATION",
+            "label": "propagates through query",
+            "location": {
+              "path": "app.py",
+              "line": 57,
+              "column": 19
+            }
+          }
+        ],
+        "sink": {
+          "kind": "SINK",
+          "label": "Python database execute API",
+          "location": {
+            "path": "app.py",
+            "line": 57,
+            "column": 4
+          }
+        },
+        "securityControlEncountered": false,
+        "securityControlEvaluation": "ABSENT",
+        "reachability": "likely",
+        "invariant": "UNTRUSTED_SQL_DATA_MUST_NOT_CONTROL_SQL_STRUCTURE",
+        "conclusion": "UNTRUSTED_SQL_DATA_MUST_NOT_CONTROL_SQL_STRUCTURE is violated by a complete, reachable source-to-sink path.",
+        "proofState": "PROVEN_INSECURE",
+        "ruleId": "AS-INJECTION-SQL-001",
+        "ruleVersion": "1.0.0",
+        "ruleMaturity": "PRODUCTION",
+        "cwe": [
+          "CWE-89"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.4"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "analysisLimitations": [
+          "Python proof is bounded to a parsed decorated route, local assignments, import-qualified sinks, and documented controls."
+        ]
+      },
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "AMBIGUOUS_SEMANTICS",
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": false,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "1d309ee400f4248169de1f2e2d8c8ecb6b507236234f9dcd3039e5d755ba014a",
+      "ruleId": "AS-INJECTION-CMD-001",
+      "ruleVersion": "1.0.0",
+      "severity": "critical",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Untrusted input controls shell syntax",
+      "category": "injection",
+      "affectedComponent": "Python shell execution API",
+      "location": {
+        "path": "app.py",
+        "start": {
+          "line": 65,
+          "column": 4,
+          "offset": 2221
+        },
+        "end": {
+          "line": 65,
+          "column": 36,
+          "offset": 2253
+        }
+      },
+      "evidence": [
+        {
+          "message": "Proven untrusted request data controls shell syntax.",
+          "excerpt": "os.system(f\"ping -c 1 {target}\")  # BAD: user input directly in OS command",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "UNTRUSTED_INPUT_MUST_NOT_CONTROL_SHELL_SYNTAX",
+      "attackPrerequisite": "An attacker can control the proven request value supplied to shell parsing.",
+      "impact": "Injected shell syntax can execute commands with the application's operating-system privileges.",
+      "standards": {
+        "cwe": [
+          "CWE-78",
+          "CWE-77",
+          "CWE-88"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.5"
+        ],
+        "nist": []
+      },
+      "remediation": "Remove shell interpretation and invoke an explicitly chosen executable with a validated argument array; review argument-level injection semantics separately.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "proof": {
+        "schemaVersion": "1.0.0",
+        "source": {
+          "kind": "SOURCE",
+          "label": "request.args is untrusted Flask request input",
+          "location": {
+            "path": "app.py",
+            "line": 64,
+            "column": 4
+          }
+        },
+        "propagationPath": [
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to target",
+            "location": {
+              "path": "app.py",
+              "line": 64,
+              "column": 4
+            }
+          },
+          {
+            "kind": "PROPAGATION",
+            "label": "propagates through f\"ping -c 1 {target}\"",
+            "location": {
+              "path": "app.py",
+              "line": 65,
+              "column": 14
+            }
+          }
+        ],
+        "sink": {
+          "kind": "SINK",
+          "label": "Python shell execution API",
+          "location": {
+            "path": "app.py",
+            "line": 65,
+            "column": 4
+          }
+        },
+        "securityControlEncountered": false,
+        "securityControlEvaluation": "ABSENT",
+        "reachability": "likely",
+        "invariant": "UNTRUSTED_INPUT_MUST_NOT_CONTROL_SHELL_SYNTAX",
+        "conclusion": "UNTRUSTED_INPUT_MUST_NOT_CONTROL_SHELL_SYNTAX is violated by a complete, reachable source-to-sink path.",
+        "proofState": "PROVEN_INSECURE",
+        "ruleId": "AS-INJECTION-CMD-001",
+        "ruleVersion": "1.0.0",
+        "ruleMaturity": "PRODUCTION",
+        "cwe": [
+          "CWE-78",
+          "CWE-77",
+          "CWE-88"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.5"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "analysisLimitations": [
+          "Python proof is bounded to a parsed decorated route, local assignments, import-qualified sinks, and documented controls."
+        ]
+      },
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "AMBIGUOUS_SEMANTICS",
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": false,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    }
+  ],
+  "suppressedFindings": [],
+  "unknowns": {
+    "applicationDataflow": [],
+    "authorization": [],
+    "authentication": []
+  },
+  "resourceLimitEvents": {
+    "securityIdentity": null,
+    "applicationDataflow": 0,
+    "traversal": []
+  },
+  "engineCompleteness": [
+    {
+      "engine": "repository-discovery",
+      "status": "COMPLETE",
+      "details": "Repository traversal completed within configured bounds."
+    },
+    {
+      "engine": "syntax-parsing",
+      "status": "COMPLETE",
+      "details": "All supported source files parsed successfully."
+    },
+    {
+      "engine": "application-dataflow",
+      "status": "COMPLETE",
+      "details": "84 bounded path(s) considered; 0 truncation event(s)."
+    }
+  ],
+  "limitations": [
+    "Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.",
+    "Working-tree state was obtained with a five-second/one-MiB no-lock Git status probe; repository hooks/fsmonitor and submodule inspection were disabled.",
+    "Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.",
+    "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
+    "Git history was not analyzed; use cydetix secrets . --history.",
+    "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",
+    "Generated code, runtime configuration, and dependency function reachability were not analyzed.",
+    "Phase two projects statically resolved Express routes, identity provenance, Prisma resources, and authorization/tenant proof states.",
+    "Authentication Graph v2 projects adapter-guaranteed lifecycle operations, validation boundaries, trust transitions, revocation events, and invariant results.",
+    "Generated routes, dynamic middleware composition, unsupported ORM behavior, and runtime policy remain UNKNOWN.",
+    "The absence of a graph edge is not evidence that a security control is absent.",
+    "Cross-file call resolution is limited to repository-local relative ESM imports and statically named direct or namespace calls.",
+    "CommonJS require, tsconfig path aliases, package exports, re-exports, dependency injection, decorators, computed properties, and runtime dispatch remain UNKNOWN.",
+    "Express routes require literal paths and statically named handlers; inline and dynamically composed handlers remain UNKNOWN.",
+    "Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.",
+    "Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.",
+    "Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.",
+    "JavaScript/TypeScript propagation is bounded to direct assignments, aliases, object properties, templates, concatenation, resolved same-file calls, arguments, and returns.",
+    "Python propagation is bounded to parsed decorated routes and local assignments; cross-function and cross-file Python propagation is unsupported.",
+    "Unknown custom sanitizers and unresolved dynamic transformations produce UNKNOWN instead of an actionable finding.",
+    "No target code, package script, hook, framework CLI, test, build, or arbitrary interpreter was executed.",
+    "Phase 3 authentication proofs cover explicit TypeScript/JavaScript Express, express-session, Prisma authentication records, jsonwebtoken, jose, and oauth4webapi evidence only.",
+    "Library behavior is trusted only for the exact supported API surface; version-hidden or unsupported behavior remains UNKNOWN.",
+    "Application names alone never establish an authentication operation; adapters require protocol APIs, persistence operations, or resolved lifecycle evidence.",
+    "OAuth 2.1 remains an Internet-Draft and is not used as normative detector guidance."
+  ],
+  "adjudication": {
+    "state": "PENDING_MANUAL_REVIEW",
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null
+  }
+}

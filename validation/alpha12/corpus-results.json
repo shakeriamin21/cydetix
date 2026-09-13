@@ -1,0 +1,280 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "1818a693ef3dd871b01b136af6696a13aa332693",
+  "manifestSha256": "dc0c2ec44f9a555da6c42bfaf3d07d451fd3da708c904b6f8ae6723522b04d2c",
+  "normalization": "Only UUID, timestamps, stage durations and canonical root are normalized by normalizeScanForDeterminism. Findings, all proof engines, limits, fingerprints and suppression evidence are compared in full.",
+  "measurements": "Two fresh identical offline scans per target. No p50/p95 from two samples. RSS is process-wide observation; filesVisited counts discovered files plus skipped file/directory entries, not every OS directory operation.",
+  "targetExecution": false,
+  "results": [
+    {
+      "id": "nodegoat",
+      "repository": "OWASP/NodeGoat",
+      "commit": "c5cb68a7084e4ae7dcc60e6a98768720a81841e8",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/nodegoat.json",
+      "sha256": "6b0610048f148be55b8860283962258243a1b11b5dfd333101680480b8049e17"
+    },
+    {
+      "id": "dvna",
+      "repository": "appsecco/dvna",
+      "commit": "9ba473add536f66ac9007966acb2a775dd31277a",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/dvna.json",
+      "sha256": "90c2fb8a1533406f07f64bbd6ffd46fd6006d290c0dea61a5a1b487488b1a600"
+    },
+    {
+      "id": "express",
+      "repository": "expressjs/express",
+      "commit": "53d4a0d606c0388f764f192b306ce0e90200e7e8",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/express.json",
+      "sha256": "7897f65a7f8d9e054959f8cdf2a8b8f01c3fc10d76bb1291ebd81fc48310052c"
+    },
+    {
+      "id": "fastify",
+      "repository": "fastify/fastify",
+      "commit": "d266f833f2bff34c6115c026e461b682e94d0b9c",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/fastify.json",
+      "sha256": "161f40f888a1ceeeabbb4ca6c1f78acd29124fb61bd06b0dcd49f35b17796d15"
+    },
+    {
+      "id": "vikas-vulnerable-website",
+      "repository": "Vikas2171/vulnerable-website",
+      "commit": "1258fa3efac1547da5bb3c7e6ab8279f00e47206",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/vikas-vulnerable-website.json",
+      "sha256": "af5faafc628f45fb3fa41ff364c2c0792e1867e36d5d43144b448063ed036afa"
+    },
+    {
+      "id": "juice-shop",
+      "repository": "juice-shop/juice-shop",
+      "commit": "1618a611b173b4bf114028e6e02549950606e29d",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/juice-shop.json",
+      "sha256": "9de3b95077fe25e219fcc315a37cd446c3db26003c2cb16d4830b38039e6ef25"
+    },
+    {
+      "id": "vulnerable-flask-app",
+      "repository": "we45/Vulnerable-Flask-App",
+      "commit": "b6a4f97afd466e83e1f60781494252dec1c37039",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/vulnerable-flask-app.json",
+      "sha256": "cfcdfc9236dd5c4adb5a6d5308c794353178cd65d4e2280a66ab049789d3e25d"
+    },
+    {
+      "id": "breakableflask",
+      "repository": "stephenbradshaw/breakableflask",
+      "commit": "553e8b2f51c14f259f565d5df478339c366a9172",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/breakableflask.json",
+      "sha256": "d9b42e91c4f2dbd0b6a2f86381a4c3e498fde4b2a3840dabcbf7fb9d4da44cb8"
+    },
+    {
+      "id": "flask",
+      "repository": "pallets/flask",
+      "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/flask.json",
+      "sha256": "e858109c7bd443a994b41146ef5231b42ea72bf5155e85da94b78f77c65cc24a"
+    },
+    {
+      "id": "fastapi-appsec-lab",
+      "repository": "LevaAverGit/appsec-review-lab-v2",
+      "commit": "372ed54ad40059f4228f9e08dc375c51fe60b625",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/fastapi-appsec-lab.json",
+      "sha256": "12b8d81fc287ff7f36713e7f2a8df6eba587d38b779c32ba2f114b6d59ee49d8"
+    },
+    {
+      "id": "nextjs-auth",
+      "repository": "vercel/nextjs-postgres-auth-starter",
+      "commit": "fde8ecf1da9337223081f70cf88b420060039d6e",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/nextjs-auth.json",
+      "sha256": "867f819534d8c15c507d28623258cfe5324cb0b8669899f87d310ffd3fe7acd9"
+    },
+    {
+      "id": "antony-vulnerable-flask",
+      "repository": "AntonyNRM/vulnerable-flask-app",
+      "commit": "7a12a015d0fc0d028be5cf492db822bce9af45ba",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/antony-vulnerable-flask.json",
+      "sha256": "5ddd79c4d44f69721c8b0e05e372b3ed4898a054ea180c3307b7cda6eaae9f2b"
+    },
+    {
+      "id": "axios",
+      "repository": "axios/axios",
+      "commit": "18e7dfedf30c96e58652887f930642ae82e0130c",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/axios.json",
+      "sha256": "fb90cbd71240fad3c9834f3b748ffa7ef2d62b29964446fb634ddbda810ace64"
+    },
+    {
+      "id": "django",
+      "repository": "django/django",
+      "commit": "2b30f6255b5ef84afbd827993643d52ef2c0963a",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/django.json",
+      "sha256": "171cd4c2026a4fabc4d01fde897d076d7485d0b485086ab7b2cb7323917959c3"
+    },
+    {
+      "id": "fastapi",
+      "repository": "fastapi/fastapi",
+      "commit": "50113da16fec53b66b80d75e80a89296de4fa5a5",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/fastapi.json",
+      "sha256": "7f54b201880987c31a2b17a7b18c07a59b19d5458b582c4ce89dfc8caf3e47f9"
+    },
+    {
+      "id": "flask-sqlinjection",
+      "repository": "guilatrova/flask-sqlinjection-vulnerable",
+      "commit": "708246139f2f216c55c683c7aec2297bc91b7346",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/flask-sqlinjection.json",
+      "sha256": "303a44a8e08b4a90b05101c3e1444869dc88849951082a56ec59d2f377b83b67"
+    },
+    {
+      "id": "payatu-vuln-node",
+      "repository": "payatu/vuln-nodejs-app",
+      "commit": "bc3c90920ba4e1c668d954e5027d9ca814d2d5c6",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/payatu-vuln-node.json",
+      "sha256": "271a79bd12a6d6b7735eec7d2b6cb6f93a7f134daf8cbdd4c4a6b336b327821f"
+    },
+    {
+      "id": "simple-ssrf",
+      "repository": "vulnerable-apps/simple-ssrf",
+      "commit": "9fe0f47ca9bc69faf8454e96e0dcdf1400ce8a5a",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/simple-ssrf.json",
+      "sha256": "f585198a2c6581826cd3420af1b1f364efe0ba15871a9644cdec323d4a097857"
+    },
+    {
+      "id": "sirappsec-vuln-node",
+      "repository": "SirAppSec/vuln-node.js-express.js-app",
+      "commit": "b977c7407f328da929577745ad509639e26c428a",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/sirappsec-vuln-node.json",
+      "sha256": "6f3f47b72f64305ed9e255e8b803cf69c7612a11abaaaaddf0860b35a6eb2f50"
+    },
+    {
+      "id": "vulnerable-typescript",
+      "repository": "ryanmcmorrowsnyk/vulnerable-typescript-app",
+      "commit": "7f8b240a2f02beba099da3632d1ba679ff8bc32f",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/vulnerable-typescript.json",
+      "sha256": "2cffe5c4b3584a83fb6f0841cfa118c0e825808908605d068e9bf9768d67e2a1"
+    },
+    {
+      "id": "microblog",
+      "repository": "miguelgrinberg/microblog",
+      "commit": "a975ef64864354867c88e0ed3a17ba7d17dca752",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/microblog.json",
+      "sha256": "382eb40f56a005f63b1bf4fd4e2efe998dcfc9a70d24b3c4ac965d9e12c3c2c1"
+    },
+    {
+      "id": "flask-security",
+      "repository": "pallets-eco/flask-security",
+      "commit": "5d47d697d6f0806d0fe58559fe61cd6fd8ae16ef",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/flask-security.json",
+      "sha256": "612dbbff256d5f6f3e354a700cc97b24e4e006783375e9615b6230355e8c2595"
+    },
+    {
+      "id": "starlette",
+      "repository": "encode/starlette",
+      "commit": "03f12b7fcf0a3e21a8da648ca0900c79472e9efe",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/starlette.json",
+      "sha256": "785dc176335e889d72e5cbd98871ccce0b623bb1a66eedcbe5c35ecbb80ca313"
+    },
+    {
+      "id": "full-stack-fastapi",
+      "repository": "fastapi/full-stack-fastapi-template",
+      "commit": "cb740b656d7a0a6c5e12c7bf8e50343ec94ee9c7",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/full-stack-fastapi.json",
+      "sha256": "c2da86f520bd7e34dfff83fb8b952b9970af38fb38ef852087e43e6462bbcbf1"
+    },
+    {
+      "id": "node-express-boilerplate",
+      "repository": "hagopj13/node-express-boilerplate",
+      "commit": "179ae84efec61b14206d0305d941daed6c6d07f9",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/node-express-boilerplate.json",
+      "sha256": "a8b883ef530843ff07cf78692d1a92fc0fa42da5a53f7adafd724c81f9fab542"
+    },
+    {
+      "id": "hackathon-starter",
+      "repository": "sahat/hackathon-starter",
+      "commit": "636440342a5b7b640d127dcde0c405c711c0ddaa",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/hackathon-starter.json",
+      "sha256": "a4573e38f7fb3fc65c6a19b353a3f04fc49f24292516e2b05f7aded85df39cc2"
+    },
+    {
+      "id": "realworld-express",
+      "repository": "gothinkster/node-express-realworld-example-app",
+      "commit": "30b68e1e881462b2f4164ea09ab4c4f5699c7b0b",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/realworld-express.json",
+      "sha256": "fb87e787640c1082f2cc0d8b2686ea1d5d0ae4998c84ddef7a107dd95948e62b"
+    },
+    {
+      "id": "express-session",
+      "repository": "expressjs/session",
+      "commit": "96ebea4b6cd805584fba04523773b1b918a836d7",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/express-session.json",
+      "sha256": "9b7ff5599ede753af553beb1ccfa6d60fb870cd996a4461d8d9def40251ef0b0"
+    },
+    {
+      "id": "fastify-secure-session",
+      "repository": "fastify/fastify-secure-session",
+      "commit": "06f4afb58d2a91e6350b71a6e491d4604333e6d4",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/fastify-secure-session.json",
+      "sha256": "ef7c9458375ca2a4cf0310e3ac60e0600a0753cf4d5a50c4a7d1f2aa8ab83fd1"
+    },
+    {
+      "id": "strapi",
+      "repository": "strapi/strapi",
+      "commit": "34fdea8fb4e11afc475a0ffdc14311cce09ddded",
+      "state": "COMPLETED",
+      "determinism": "PASSED",
+      "evidence": "validation/alpha12/corpus/strapi.json",
+      "sha256": "ef1a8c9ab64af705bff375a07971020f8d61a1bc9e7c6a4a57ce8e3394773104"
+    }
+  ]
+}

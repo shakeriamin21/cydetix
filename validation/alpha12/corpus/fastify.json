@@ -1,0 +1,209 @@
+{
+  "id": "fastify",
+  "repository": "fastify/fastify",
+  "commit": "d266f833f2bff34c6115c026e461b682e94d0b9c",
+  "language": "JavaScript; TypeScript",
+  "framework": "Fastify",
+  "classification": "ORDINARY",
+  "previousAlpha11Batch2": true,
+  "purpose": "Replay alpha.11 across all enabled rules and the full normalized report.",
+  "version": "0.6.0-alpha.12",
+  "enabledRuleIds": [
+    "AS-SESSION-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-AUTHZ-001",
+    "AS-TENANT-001",
+    "AS-AUTH-SESSION-001",
+    "AS-AUTH-SESSION-002",
+    "AS-AUTH-RESET-001",
+    "AS-AUTH-RESET-002",
+    "AS-AUTH-RESET-003",
+    "AS-AUTH-JWT-001",
+    "AS-AUTH-OAUTH-001",
+    "AS-AUTH-OAUTH-002",
+    "AS-SCA-001",
+    "AS-CI-001",
+    "AS-CI-002",
+    "AS-CI-003",
+    "AS-CI-004",
+    "AS-INJECTION-SQL-001",
+    "AS-INJECTION-CMD-001",
+    "AS-PATH-001",
+    "AS-SSRF-001",
+    "AS-XSS-001",
+    "AS-REDIRECT-001",
+    "AS-CSRF-001"
+  ],
+  "applicability": "Enabled rules are not all applicable. Framework detection, finding/UNKNOWN rule IDs and declared limitations describe the checked envelope.",
+  "detectedLanguages": [
+    "javascript",
+    "typescript"
+  ],
+  "detectedFrameworks": [],
+  "findingRuleIds": [],
+  "completeness": "TRUNCATED",
+  "determinism": "PASSED",
+  "normalizedReportSha256": [
+    "41ce6021d22bbed9bbc75b41c2239883eacacc3332306346ba7886294a1d2505",
+    "41ce6021d22bbed9bbc75b41c2239883eacacc3332306346ba7886294a1d2505"
+  ],
+  "sourceManifestSha256": "5137b4a65a426871b13ec58f72d5844401867fb41299c08089b2c1c01c6f0633",
+  "measurements": [
+    {
+      "totalScanMilliseconds": 8807.7989,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 469.3255999999999,
+        "parsing": 1486.9981,
+        "callGraph": 884.5041000000001,
+        "securityGraph": 511.3631999999998,
+        "authenticationGraph": 1.7960000000002765,
+        "invariantEvaluation": 539.7480000000005,
+        "applicationDataflow": 3280.6221,
+        "reportGeneration": 46.901200000000244
+      },
+      "representativeRssBytes": 698040320,
+      "processHighWaterRssBytes": 702726144,
+      "filesVisited": 393,
+      "filesExamined": 390,
+      "skippedEntries": 3,
+      "bytesExamined": 2969025,
+      "filesAnalyzed": 176,
+      "astNodesVisited": 367893,
+      "factsCreated": 0,
+      "pathsConsidered": 1988,
+      "iterations": 1,
+      "truncationEvents": 121,
+      "securityIdentityBounds": {
+        "status": "TRUNCATED",
+        "iterations": 8,
+        "factsCreated": 558,
+        "maxIterations": 8,
+        "maxFacts": 10000
+      },
+      "findings": 0,
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    },
+    {
+      "totalScanMilliseconds": 10121.7823,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 392.71179999999913,
+        "parsing": 1255.7829000000002,
+        "callGraph": 1015.2781000000014,
+        "securityGraph": 527.6057999999994,
+        "authenticationGraph": 0.6033000000024913,
+        "invariantEvaluation": 1000.9938000000002,
+        "applicationDataflow": 4102.502200000001,
+        "reportGeneration": 33.567299999998795
+      },
+      "representativeRssBytes": 697249792,
+      "processHighWaterRssBytes": 707481600,
+      "filesVisited": 393,
+      "filesExamined": 390,
+      "skippedEntries": 3,
+      "bytesExamined": 2969025,
+      "filesAnalyzed": 176,
+      "astNodesVisited": 367893,
+      "factsCreated": 0,
+      "pathsConsidered": 1988,
+      "iterations": 1,
+      "truncationEvents": 121,
+      "securityIdentityBounds": {
+        "status": "TRUNCATED",
+        "iterations": 8,
+        "factsCreated": 558,
+        "maxIterations": 8,
+        "maxFacts": 10000
+      },
+      "findings": 0,
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    }
+  ],
+  "findings": [],
+  "suppressedFindings": [],
+  "unknowns": {
+    "applicationDataflow": [],
+    "authorization": [],
+    "authentication": []
+  },
+  "resourceLimitEvents": {
+    "securityIdentity": {
+      "status": "TRUNCATED",
+      "iterations": 8,
+      "factsCreated": 558,
+      "maxIterations": 8,
+      "maxFacts": 10000
+    },
+    "applicationDataflow": 121,
+    "traversal": []
+  },
+  "engineCompleteness": [
+    {
+      "engine": "security-identity-propagation",
+      "status": "TRUNCATED",
+      "details": "8 iterations; 558 facts produced. Incomplete trust was discarded; dependent authorization and tenant proofs remain UNKNOWN."
+    },
+    {
+      "engine": "repository-discovery",
+      "status": "COMPLETE",
+      "details": "Repository traversal completed within configured bounds."
+    },
+    {
+      "engine": "syntax-parsing",
+      "status": "COMPLETE",
+      "details": "All supported source files parsed successfully."
+    },
+    {
+      "engine": "application-dataflow",
+      "status": "TRUNCATED",
+      "details": "1988 bounded path(s) considered; 121 truncation event(s)."
+    }
+  ],
+  "limitations": [
+    "Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.",
+    "Working-tree state was obtained with a five-second/one-MiB no-lock Git status probe; repository hooks/fsmonitor and submodule inspection were disabled.",
+    "Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.",
+    "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
+    "Git history was not analyzed; use cydetix secrets . --history.",
+    "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",
+    "Generated code, runtime configuration, and dependency function reachability were not analyzed.",
+    "Phase two projects statically resolved Express routes, identity provenance, Prisma resources, and authorization/tenant proof states.",
+    "Authentication Graph v2 projects adapter-guaranteed lifecycle operations, validation boundaries, trust transitions, revocation events, and invariant results.",
+    "Generated routes, dynamic middleware composition, unsupported ORM behavior, and runtime policy remain UNKNOWN.",
+    "The absence of a graph edge is not evidence that a security control is absent.",
+    "Cross-file call resolution is limited to repository-local relative ESM imports and statically named direct or namespace calls.",
+    "CommonJS require, tsconfig path aliases, package exports, re-exports, dependency injection, decorators, computed properties, and runtime dispatch remain UNKNOWN.",
+    "Express routes require literal paths and statically named handlers; inline and dynamically composed handlers remain UNKNOWN.",
+    "2086 call target(s) remained unresolved or dynamic.",
+    "Security identity propagation exhausted the eight-iteration or 10000-fact bound. Incomplete propagated trust was discarded; dependent authorization and tenant proofs remain UNKNOWN.",
+    "Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.",
+    "Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.",
+    "Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.",
+    "JavaScript/TypeScript propagation is bounded to direct assignments, aliases, object properties, templates, concatenation, resolved same-file calls, arguments, and returns.",
+    "Python propagation is bounded to parsed decorated routes and local assignments; cross-function and cross-file Python propagation is unsupported.",
+    "Unknown custom sanitizers and unresolved dynamic transformations produce UNKNOWN instead of an actionable finding.",
+    "No target code, package script, hook, framework CLI, test, build, or arbitrary interpreter was executed.",
+    "Phase 3 authentication proofs cover explicit TypeScript/JavaScript Express, express-session, Prisma authentication records, jsonwebtoken, jose, and oauth4webapi evidence only.",
+    "Library behavior is trusted only for the exact supported API surface; version-hidden or unsupported behavior remains UNKNOWN.",
+    "Application names alone never establish an authentication operation; adapters require protocol APIs, persistence operations, or resolved lifecycle evidence.",
+    "OAuth 2.1 remains an Internet-Draft and is not used as normative detector guidance."
+  ],
+  "adjudication": {
+    "state": "PENDING_MANUAL_REVIEW",
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null
+  }
+}

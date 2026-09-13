@@ -1,0 +1,4683 @@
+{
+  "id": "django",
+  "repository": "django/django",
+  "commit": "2b30f6255b5ef84afbd827993643d52ef2c0963a",
+  "language": "Python",
+  "framework": "Django",
+  "classification": "ORDINARY",
+  "previousAlpha11Batch2": false,
+  "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds.",
+  "version": "0.6.0-alpha.12",
+  "enabledRuleIds": [
+    "AS-SESSION-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-AUTHZ-001",
+    "AS-TENANT-001",
+    "AS-AUTH-SESSION-001",
+    "AS-AUTH-SESSION-002",
+    "AS-AUTH-RESET-001",
+    "AS-AUTH-RESET-002",
+    "AS-AUTH-RESET-003",
+    "AS-AUTH-JWT-001",
+    "AS-AUTH-OAUTH-001",
+    "AS-AUTH-OAUTH-002",
+    "AS-SCA-001",
+    "AS-CI-001",
+    "AS-CI-002",
+    "AS-CI-003",
+    "AS-CI-004",
+    "AS-INJECTION-SQL-001",
+    "AS-INJECTION-CMD-001",
+    "AS-PATH-001",
+    "AS-SSRF-001",
+    "AS-XSS-001",
+    "AS-REDIRECT-001",
+    "AS-CSRF-001"
+  ],
+  "applicability": "Enabled rules are not all applicable. Framework detection, finding/UNKNOWN rule IDs and declared limitations describe the checked envelope.",
+  "detectedLanguages": [
+    "javascript",
+    "python"
+  ],
+  "detectedFrameworks": [
+    "Django"
+  ],
+  "findingRuleIds": [
+    "AS-CI-001",
+    "AS-SESSION-001"
+  ],
+  "completeness": "TRUNCATED",
+  "determinism": "PASSED",
+  "normalizedReportSha256": [
+    "e00f246dbda60014ec9e9b1191d82c1dffedeeb0905b6db436b6a40bee97e8a6",
+    "e00f246dbda60014ec9e9b1191d82c1dffedeeb0905b6db436b6a40bee97e8a6"
+  ],
+  "sourceManifestSha256": "eb5fa588a48b20b1d396076a2b5994da712586de4c42d47d867b267f2efc51be",
+  "measurements": [
+    {
+      "totalScanMilliseconds": 29227.1668,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 16575.3186,
+        "parsing": 7205.138599999998,
+        "callGraph": 526.9013999999988,
+        "securityGraph": 289.09979999999996,
+        "authenticationGraph": 5.5627000000022235,
+        "invariantEvaluation": 453.8240000000005,
+        "applicationDataflow": 1582.9468000000015,
+        "reportGeneration": 62.481000000003405
+      },
+      "representativeRssBytes": 627728384,
+      "processHighWaterRssBytes": 634683392,
+      "filesVisited": 7092,
+      "filesExamined": 5709,
+      "skippedEntries": 1383,
+      "bytesExamined": 38178351,
+      "filesAnalyzed": 280,
+      "astNodesVisited": 3485422,
+      "factsCreated": 0,
+      "pathsConsidered": 179,
+      "iterations": 1,
+      "truncationEvents": 2699,
+      "securityIdentityBounds": null,
+      "findings": 61,
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    },
+    {
+      "totalScanMilliseconds": 20644.586599999995,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 8646.747999999996,
+        "parsing": 7599.849099999999,
+        "callGraph": 444.54619999999704,
+        "securityGraph": 270.0763999999981,
+        "authenticationGraph": 3.62329999999929,
+        "invariantEvaluation": 338.40290000000095,
+        "applicationDataflow": 1455.7271000000037,
+        "reportGeneration": 43.000999999996566
+      },
+      "representativeRssBytes": 1041252352,
+      "processHighWaterRssBytes": 1048186880,
+      "filesVisited": 7092,
+      "filesExamined": 5709,
+      "skippedEntries": 1383,
+      "bytesExamined": 38178351,
+      "filesAnalyzed": 280,
+      "astNodesVisited": 3485422,
+      "factsCreated": 0,
+      "pathsConsidered": 179,
+      "iterations": 1,
+      "truncationEvents": 2699,
+      "securityIdentityBounds": null,
+      "findings": 61,
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    }
+  ],
+  "findings": [
+    {
+      "fingerprint": "ea054c7d3f0a94343f1c1cfc194070d51640258bf6f529da5e1278f9723bbcf0",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/benchmark.yml",
+        "start": {
+          "line": 17,
+          "column": 14,
+          "offset": 333
+        },
+        "end": {
+          "line": 17,
+          "column": 33,
+          "offset": 352
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "7bac193eec7c2888529db8ef5776ef6fd99d33d4de0ca1291fb5d2032ad3bb62",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/benchmark.yml",
+        "start": {
+          "line": 31,
+          "column": 14,
+          "offset": 826
+        },
+        "end": {
+          "line": 31,
+          "column": 30,
+          "offset": 842
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/cache uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/cache@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "5ddfcf21b963df7f2bd25d4c149b5dc66767d4eb9908c76ee2a687e952d15800",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/check_commit_messages.yml",
+        "start": {
+          "line": 21,
+          "column": 14,
+          "offset": 499
+        },
+        "end": {
+          "line": 21,
+          "column": 33,
+          "offset": 518
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "- uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "a7e373fb2e630c3658fd1fb577856ad4a91026fff464b9e2154627dfd082d86e",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/check_commit_messages.yml",
+        "start": {
+          "line": 79,
+          "column": 14,
+          "offset": 2391
+        },
+        "end": {
+          "line": 79,
+          "column": 33,
+          "offset": 2410
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "- uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "238a82ef2cf5adc49090d1b14d4acac80b6e403c03571c6b46654f86053e6982",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/check_pr_quality.yml",
+        "start": {
+          "line": 24,
+          "column": 14,
+          "offset": 473
+        },
+        "end": {
+          "line": 24,
+          "column": 33,
+          "offset": 492
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "238f3742e4cd4ba781158cc0d961545fbbbaa8e8403ba99a09767461d95ad6da",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/check_pr_quality.yml",
+        "start": {
+          "line": 32,
+          "column": 14,
+          "offset": 859
+        },
+        "end": {
+          "line": 32,
+          "column": 37,
+          "offset": 882
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "8fdcef6904c3e6cf13e41face6b9c1d4d9e22b9eea616c3737481adedbf95931",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/check-migrations.yml",
+        "start": {
+          "line": 44,
+          "column": 14,
+          "offset": 868
+        },
+        "end": {
+          "line": 44,
+          "column": 33,
+          "offset": 887
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "30c93838adbb0707d12438bc299254081e24dd9812ba5c90baf44b75abd0eac8",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/check-migrations.yml",
+        "start": {
+          "line": 49,
+          "column": 14,
+          "offset": 982
+        },
+        "end": {
+          "line": 49,
+          "column": 37,
+          "offset": 1005
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "2cb84578693fff6911260b0750e72fce83e52c1028a4d0143fffe1d5a7e09cd2",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/coverage_comment.yml",
+        "start": {
+          "line": 27,
+          "column": 14,
+          "offset": 752
+        },
+        "end": {
+          "line": 27,
+          "column": 42,
+          "offset": 780
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/download-artifact uses tag reference v8; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/download-artifact@v8",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "787b4c9d29b33f10023749aa049d8dd7d6b3382bdc44d6f88c76848c8a2c3441",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/coverage_comment.yml",
+        "start": {
+          "line": 34,
+          "column": 14,
+          "offset": 988
+        },
+        "end": {
+          "line": 34,
+          "column": 38,
+          "offset": 1012
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/github-script uses tag reference v9; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/github-script@v9",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "df18c375a9a3a0601c111342995a29efe930df441a754dbb1b7e613e087206e6",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/coverage_tests.yml",
+        "start": {
+          "line": 38,
+          "column": 14,
+          "offset": 835
+        },
+        "end": {
+          "line": 38,
+          "column": 33,
+          "offset": 854
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "66aac8e0aba374bcfea07895c1ed179ac484ab63ebbd2aa91ef80847cbb7efe7",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/coverage_tests.yml",
+        "start": {
+          "line": 44,
+          "column": 14,
+          "offset": 974
+        },
+        "end": {
+          "line": 44,
+          "column": 37,
+          "offset": 997
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "d36ead494419d12ff48561975a221f2e3233fa89ee249f80556487f730e0e660",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/coverage_tests.yml",
+        "start": {
+          "line": 92,
+          "column": 14,
+          "offset": 2788
+        },
+        "end": {
+          "line": 92,
+          "column": 40,
+          "offset": 2814
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/upload-artifact uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/upload-artifact@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "f58c7c1eeed89388d23e0062a74627444fd7415b65dd25247b999e319d423b13",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/docs.yml",
+        "start": {
+          "line": 31,
+          "column": 14,
+          "offset": 491
+        },
+        "end": {
+          "line": 31,
+          "column": 33,
+          "offset": 510
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "176ced14686d712cea03fe6fb7cf1d30d7a0445ffdc71a8384948d7446d0815a",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/docs.yml",
+        "start": {
+          "line": 35,
+          "column": 14,
+          "offset": 604
+        },
+        "end": {
+          "line": 35,
+          "column": 37,
+          "offset": 627
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "0303a3397afb107b3b4f02ad223f79e5bf1106e4476937a71ce708f229fe4d46",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/labels.yml",
+        "start": {
+          "line": 26,
+          "column": 14,
+          "offset": 649
+        },
+        "end": {
+          "line": 26,
+          "column": 38,
+          "offset": 673
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/github-script uses tag reference v9; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/github-script@v9",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "5486555e96974e4533289c4544e3fab6db5d7702547e14039c09b0c5b04e2d2f",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/linters.yml",
+        "start": {
+          "line": 27,
+          "column": 14,
+          "offset": 397
+        },
+        "end": {
+          "line": 27,
+          "column": 33,
+          "offset": 416
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "45723a5aacafd59facce448d3bda621a0652a3933a994761b29f7a123ca1be7a",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/linters.yml",
+        "start": {
+          "line": 31,
+          "column": 14,
+          "offset": 510
+        },
+        "end": {
+          "line": 31,
+          "column": 37,
+          "offset": 533
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "d105aef8daf6f55a351c243f6f1a61f87adea82a28c7e0ba3b8bc588e89d6b35",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/linters.yml",
+        "start": {
+          "line": 47,
+          "column": 14,
+          "offset": 929
+        },
+        "end": {
+          "line": 47,
+          "column": 33,
+          "offset": 948
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "2fc723cf426a460c3f56fa984d30963219dc18ee0465dd95912ecc8b33542795",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/linters.yml",
+        "start": {
+          "line": 51,
+          "column": 14,
+          "offset": 1042
+        },
+        "end": {
+          "line": 51,
+          "column": 37,
+          "offset": 1065
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "427887cc648b83c97bfede20faee93bc500449046898657ccf1a38911670e5ab",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/linters.yml",
+        "start": {
+          "line": 67,
+          "column": 14,
+          "offset": 1493
+        },
+        "end": {
+          "line": 67,
+          "column": 33,
+          "offset": 1512
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "0172edfcea35c62ac255d2324939d858871a5a4f662164c4b1ca75cdaf4422bc",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/linters.yml",
+        "start": {
+          "line": 71,
+          "column": 14,
+          "offset": 1598
+        },
+        "end": {
+          "line": 71,
+          "column": 30,
+          "offset": 1614
+        }
+      },
+      "evidence": [
+        {
+          "message": "psf/black uses unknown reference stable; no authoritative SHA was invented.",
+          "excerpt": "uses: psf/black@stable",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "4c2b65a991bee543e0ecf9b70169b02b1710d58722729493fc83dfa9fdf2b1ef",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/linters.yml",
+        "start": {
+          "line": 78,
+          "column": 14,
+          "offset": 1725
+        },
+        "end": {
+          "line": 78,
+          "column": 33,
+          "offset": 1744
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "56815e5ad16ea546650b45e7c33d4048201266b545600fb7e233956f50e1887c",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/linters.yml",
+        "start": {
+          "line": 92,
+          "column": 14,
+          "offset": 2096
+        },
+        "end": {
+          "line": 92,
+          "column": 33,
+          "offset": 2115
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "5866921f945aa103de0ed9838d996fdd3b02442fbf3ca26ea989c8547919344e",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/linters.yml",
+        "start": {
+          "line": 96,
+          "column": 14,
+          "offset": 2210
+        },
+        "end": {
+          "line": 96,
+          "column": 35,
+          "offset": 2231
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-node uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-node@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "33c7bcadfec62751d0e57da57e3605b6c85591e957d25fb06941d7e4d65fb1f7",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/new_contributor_pr.yml",
+        "start": {
+          "line": 21,
+          "column": 14,
+          "offset": 435
+        },
+        "end": {
+          "line": 21,
+          "column": 42,
+          "offset": 463
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/first-interaction uses tag reference v1; no authoritative SHA was invented.",
+          "excerpt": "- uses: actions/first-interaction@v1",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "6e81f8fb559cf1efd5d3c41b8a617a66cec1b6beba84f88f2dc3d90014f86127",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/playwright.yml",
+        "start": {
+          "line": 24,
+          "column": 14,
+          "offset": 471
+        },
+        "end": {
+          "line": 24,
+          "column": 33,
+          "offset": 490
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "33c7942745c8f4c366b9a9508ad037529a1fa2bf65ebf64f5b2b00c5b7c28b12",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/playwright.yml",
+        "start": {
+          "line": 28,
+          "column": 14,
+          "offset": 584
+        },
+        "end": {
+          "line": 28,
+          "column": 37,
+          "offset": 607
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "007abc468d8e72dd97d6f4b77b199e9ee972afc20b4fb85aa231c56625bb7263",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/playwright.yml",
+        "start": {
+          "line": 68,
+          "column": 14,
+          "offset": 1980
+        },
+        "end": {
+          "line": 68,
+          "column": 33,
+          "offset": 1999
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "240fb7181355ea90395e71f44ad62dff15abeb667394576c47d0ba5941f85d25",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/playwright.yml",
+        "start": {
+          "line": 72,
+          "column": 14,
+          "offset": 2093
+        },
+        "end": {
+          "line": 72,
+          "column": 37,
+          "offset": 2116
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "22943a6e0fd820e987c5cc0e139fd44eb0b2049d546fcb57b9916f0a3767820d",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/postgis.yml",
+        "start": {
+          "line": 43,
+          "column": 14,
+          "offset": 1321
+        },
+        "end": {
+          "line": 43,
+          "column": 33,
+          "offset": 1340
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "b29e3c2900f23fd9d9447a2229a8ba4a9b76332a709dce373567a1bc9442c190",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/python_matrix.yml",
+        "start": {
+          "line": 26,
+          "column": 14,
+          "offset": 584
+        },
+        "end": {
+          "line": 26,
+          "column": 33,
+          "offset": 603
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "daa9bea370ca541754633499cd45504b7c4d2b0515ec60ad9419209f1e5beb07",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/python_matrix.yml",
+        "start": {
+          "line": 44,
+          "column": 14,
+          "offset": 1270
+        },
+        "end": {
+          "line": 44,
+          "column": 33,
+          "offset": 1289
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "723bff038c5b34fea24528c1b05a12bd92e0ca3d6d5b447e5308cc26389c82de",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/python_matrix.yml",
+        "start": {
+          "line": 48,
+          "column": 14,
+          "offset": 1412
+        },
+        "end": {
+          "line": 48,
+          "column": 37,
+          "offset": 1435
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "f3c2d42ed873dc520e6f3fb6dc7a037bb259be781efd4318223b894a329d7477",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/schedule_tests.yml",
+        "start": {
+          "line": 28,
+          "column": 14,
+          "offset": 510
+        },
+        "end": {
+          "line": 28,
+          "column": 33,
+          "offset": 529
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "11cde9992d00c9c7406c03a67752bbb415586d27e673017d6c1ea2ade8020cae",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/schedule_tests.yml",
+        "start": {
+          "line": 32,
+          "column": 14,
+          "offset": 623
+        },
+        "end": {
+          "line": 32,
+          "column": 37,
+          "offset": 646
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "17d4e132516861a4da73c3ff5f574af3cf85712bce95c4cf310894112e5063f3",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/schedule_tests.yml",
+        "start": {
+          "line": 49,
+          "column": 14,
+          "offset": 1230
+        },
+        "end": {
+          "line": 49,
+          "column": 33,
+          "offset": 1249
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "1cf9d0837eb977c870122747e09d84662bd825ac756a0ee99afc9f7c2ccdf868",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/schedule_tests.yml",
+        "start": {
+          "line": 53,
+          "column": 14,
+          "offset": 1343
+        },
+        "end": {
+          "line": 53,
+          "column": 37,
+          "offset": 1366
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "3765975febec5711afd123cb27116c6336668bdaf7aa256d8eae79fd304150e2",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/schedule_tests.yml",
+        "start": {
+          "line": 80,
+          "column": 14,
+          "offset": 2359
+        },
+        "end": {
+          "line": 80,
+          "column": 33,
+          "offset": 2378
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "40127fe6599935244ee46cc1614c7470d823d663cd22b9504ef20e506473f464",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/schedule_tests.yml",
+        "start": {
+          "line": 84,
+          "column": 14,
+          "offset": 2473
+        },
+        "end": {
+          "line": 84,
+          "column": 35,
+          "offset": 2494
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-node uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-node@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "dfc76372a82dcbc08726f4cf66facf10c6caa49c149f255798677ac6f65b2f47",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/schedule_tests.yml",
+        "start": {
+          "line": 100,
+          "column": 14,
+          "offset": 2961
+        },
+        "end": {
+          "line": 100,
+          "column": 33,
+          "offset": 2980
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "1c69901d5f73c5138b424111c7d984e18048204da6350e9911113fcd2609cf6d",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/schedule_tests.yml",
+        "start": {
+          "line": 104,
+          "column": 14,
+          "offset": 3074
+        },
+        "end": {
+          "line": 104,
+          "column": 37,
+          "offset": 3097
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "3c7e76ce419fca57493a5299cfe23bd7f22b63d099f9a028686d4e05b7aed136",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/schedule_tests.yml",
+        "start": {
+          "line": 143,
+          "column": 14,
+          "offset": 4416
+        },
+        "end": {
+          "line": 143,
+          "column": 33,
+          "offset": 4435
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "fbd00b0dac0b054c66f30505be7404c5033c584dda2b3606233a27c3be5512cc",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/schedule_tests.yml",
+        "start": {
+          "line": 147,
+          "column": 14,
+          "offset": 4529
+        },
+        "end": {
+          "line": 147,
+          "column": 37,
+          "offset": 4552
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "29b7ef0b84384aacd5fc01a94a43396c86253bf6117e235008f8ee847090368b",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/schedule_tests.yml",
+        "start": {
+          "line": 195,
+          "column": 14,
+          "offset": 6229
+        },
+        "end": {
+          "line": 195,
+          "column": 33,
+          "offset": 6248
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "7e470fb45d19dd7e80d1b98fe74db174b603155bf29e42ff232313ae2aeae4cd",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/schedule_tests.yml",
+        "start": {
+          "line": 199,
+          "column": 14,
+          "offset": 6342
+        },
+        "end": {
+          "line": 199,
+          "column": 37,
+          "offset": 6365
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "3d707a55beff6ef04faf8bbc8e58cd4ede977b74209971c83ae08e5a33a3da30",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/schedules.yml",
+        "start": {
+          "line": 25,
+          "column": 14,
+          "offset": 510
+        },
+        "end": {
+          "line": 25,
+          "column": 38,
+          "offset": 534
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/github-script uses tag reference v9; no authoritative SHA was invented.",
+          "excerpt": "- uses: actions/github-script@v9",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "b018bd62cf56bbff61e570a0223b87ceab204d0e16bb908427fdfa59177aa4a1",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/screenshots.yml",
+        "start": {
+          "line": 24,
+          "column": 14,
+          "offset": 499
+        },
+        "end": {
+          "line": 24,
+          "column": 33,
+          "offset": 518
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "54c535c770db25d8924c0efce4f9dbf7ed9a576368603bc13f8a8da8db72ad29",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/screenshots.yml",
+        "start": {
+          "line": 28,
+          "column": 14,
+          "offset": 612
+        },
+        "end": {
+          "line": 28,
+          "column": 37,
+          "offset": 635
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "df9aa88bbc85693b851d86e828eff51a70466ef25645d2e7bbf1f7ed9dcd8fc3",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/screenshots.yml",
+        "start": {
+          "line": 48,
+          "column": 14,
+          "offset": 1495
+        },
+        "end": {
+          "line": 48,
+          "column": 30,
+          "offset": 1511
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/cache uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/cache@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "93d1fc192c0fea2b743c886c16a4fc5c29a4dfc99b1842a529c227ace38b3c47",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/screenshots.yml",
+        "start": {
+          "line": 65,
+          "column": 14,
+          "offset": 2066
+        },
+        "end": {
+          "line": 65,
+          "column": 40,
+          "offset": 2092
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/upload-artifact uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/upload-artifact@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "d8da97148182a96ef0fcef603a7bb30b4095cd320c9944a4b4b0426965993f5e",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/tests.yml",
+        "start": {
+          "line": 31,
+          "column": 14,
+          "offset": 514
+        },
+        "end": {
+          "line": 31,
+          "column": 33,
+          "offset": 533
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "67561df59c79a03d1e74094212cb9695a395c802810eae6ad061888acecc135d",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/tests.yml",
+        "start": {
+          "line": 35,
+          "column": 14,
+          "offset": 627
+        },
+        "end": {
+          "line": 35,
+          "column": 37,
+          "offset": 650
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "a470a6799124f8f279e8a372d41c56495987fa800d48723989fd73ef2ace5f38",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/tests.yml",
+        "start": {
+          "line": 59,
+          "column": 14,
+          "offset": 1416
+        },
+        "end": {
+          "line": 59,
+          "column": 33,
+          "offset": 1435
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "b8a9ac75136b889974e56b12bcaad17522dd07716a512eca5354e136e330d20c",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/tests.yml",
+        "start": {
+          "line": 63,
+          "column": 14,
+          "offset": 1529
+        },
+        "end": {
+          "line": 63,
+          "column": 37,
+          "offset": 1552
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "1c87bd91e8a6ab8e581fa6da92363c2edd411bdba028a9a4b160d92497c39f2f",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/tests.yml",
+        "start": {
+          "line": 82,
+          "column": 14,
+          "offset": 2243
+        },
+        "end": {
+          "line": 82,
+          "column": 33,
+          "offset": 2262
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "fd14fb6ce895ec707a8e224f46da3e40a99d8d3d4220334f2d017ef9117e8fd7",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/tests.yml",
+        "start": {
+          "line": 86,
+          "column": 14,
+          "offset": 2357
+        },
+        "end": {
+          "line": 86,
+          "column": 35,
+          "offset": 2378
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-node uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-node@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "017f5a8667df8157972b5c413984f4dbe38c1aae78519adb3ddaad5094d281ba",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/tests.yml",
+        "start": {
+          "line": 102,
+          "column": 14,
+          "offset": 2830
+        },
+        "end": {
+          "line": 102,
+          "column": 33,
+          "offset": 2849
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "6e1fcc21d04e1533eb034f5a685d0b07889d59070ea0ad2e88460c40f29a4bea",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/tests.yml",
+        "start": {
+          "line": 106,
+          "column": 14,
+          "offset": 2943
+        },
+        "end": {
+          "line": 106,
+          "column": 37,
+          "offset": 2966
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v6; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v6",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "33d951203efbe9b41fe5bc2272222a1e537dd66d4be87d5026efea88fdd7d40b",
+      "ruleId": "AS-SESSION-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Session cookie protection is explicitly disabled",
+      "category": "session",
+      "affectedComponent": "Python session cookie configuration",
+      "location": {
+        "path": "tests/check_framework/test_security.py",
+        "start": {
+          "line": 55,
+          "column": 30,
+          "offset": 1896
+        },
+        "end": {
+          "line": 55,
+          "column": 35,
+          "offset": 1901
+        }
+      },
+      "evidence": [
+        {
+          "message": "SESSION_COOKIE_SECURE is explicitly False.",
+          "excerpt": "SESSION_COOKIE_SECURE=False,",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Authentication session cookies must be protected from cleartext transport and client-side script access.",
+      "attackPrerequisite": "An attacker can observe an insecure transport path or execute script in the cookie's origin.",
+      "impact": "A stolen session token can allow account impersonation until the session is revoked or expires.",
+      "standards": {
+        "cwe": [
+          "CWE-614",
+          "CWE-1004"
+        ],
+        "owaspTop10": [
+          "A07:2025"
+        ],
+        "asvs": [
+          "v5.0.0-3.3.1",
+          "v5.0.0-3.3.4"
+        ],
+        "nist": [
+          "NIST SP 800-63B-4 Section 5.1.1"
+        ]
+      },
+      "remediation": "Set Secure and HttpOnly for authentication cookies, verify SameSite and scope, and test the deployed HTTPS path.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "SAFE",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "b2771d60aa57818a4902a46e9ed503b99cb4e70706535a0198760095e6d6aeee",
+      "ruleId": "AS-SESSION-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Session cookie protection is explicitly disabled",
+      "category": "session",
+      "affectedComponent": "Python session cookie configuration",
+      "location": {
+        "path": "tests/check_framework/test_security.py",
+        "start": {
+          "line": 114,
+          "column": 32,
+          "offset": 4114
+        },
+        "end": {
+          "line": 114,
+          "column": 37,
+          "offset": 4119
+        }
+      },
+      "evidence": [
+        {
+          "message": "SESSION_COOKIE_HTTPONLY is explicitly False.",
+          "excerpt": "SESSION_COOKIE_HTTPONLY=False,",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Authentication session cookies must be protected from cleartext transport and client-side script access.",
+      "attackPrerequisite": "An attacker can observe an insecure transport path or execute script in the cookie's origin.",
+      "impact": "A stolen session token can allow account impersonation until the session is revoked or expires.",
+      "standards": {
+        "cwe": [
+          "CWE-614",
+          "CWE-1004"
+        ],
+        "owaspTop10": [
+          "A07:2025"
+        ],
+        "asvs": [
+          "v5.0.0-3.3.1",
+          "v5.0.0-3.3.4"
+        ],
+        "nist": [
+          "NIST SP 800-63B-4 Section 5.1.1"
+        ]
+      },
+      "remediation": "Set Secure and HttpOnly for authentication cookies, verify SameSite and scope, and test the deployed HTTPS path.",
+      "autofix": "SAFE",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "SAFE",
+        "requestedClass": "SAFE",
+        "finalClass": "SAFE",
+        "reasonCodes": [
+          "EXACT_LOCAL_TRANSFORM"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": true,
+          "boundedLocalBlastRadius": true,
+          "sourceHashVerified": true,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": true
+        },
+        "verificationStrength": "INVARIANT"
+      },
+      "fix": {
+        "path": "tests/check_framework/test_security.py",
+        "startOffset": 4114,
+        "endOffset": 4119,
+        "expectedTextSha256": "60a33e6cf5151f2d52eddae9685cfa270426aa89d8dbc7dfb854606f1d1a40fe",
+        "replacement": "True",
+        "description": "Enable HttpOnly for the session cookie."
+      },
+      "verificationStatus": "not_attempted"
+    }
+  ],
+  "suppressedFindings": [],
+  "unknowns": {
+    "applicationDataflow": [],
+    "authorization": [],
+    "authentication": []
+  },
+  "resourceLimitEvents": {
+    "securityIdentity": null,
+    "applicationDataflow": 2699,
+    "traversal": []
+  },
+  "engineCompleteness": [
+    {
+      "engine": "repository-discovery",
+      "status": "COMPLETE",
+      "details": "Repository traversal completed within configured bounds."
+    },
+    {
+      "engine": "syntax-parsing",
+      "status": "PARTIAL",
+      "details": "64 supported source file(s) failed parsing."
+    },
+    {
+      "engine": "application-dataflow",
+      "status": "TRUNCATED",
+      "details": "179 bounded path(s) considered; 2699 truncation event(s)."
+    }
+  ],
+  "limitations": [
+    "Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.",
+    "Working-tree state was obtained with a five-second/one-MiB no-lock Git status probe; repository hooks/fsmonitor and submodule inspection were disabled.",
+    "Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.",
+    "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
+    "Git history was not analyzed; use cydetix secrets . --history.",
+    "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",
+    "Generated code, runtime configuration, and dependency function reachability were not analyzed.",
+    "django/conf/global_settings.py: Python parse failed: syntax tree contains errors",
+    "django/db/backends/base/base.py: Python parse failed: syntax tree contains errors",
+    "django/db/backends/mysql/creation.py: Python parse failed: syntax tree contains errors",
+    "django/db/backends/oracle/base.py: Python parse failed: syntax tree contains errors",
+    "django/db/backends/sqlite3/introspection.py: Python parse failed: syntax tree contains errors",
+    "django/db/backends/utils.py: Python parse failed: syntax tree contains errors",
+    "django/db/migrations/autodetector.py: Python parse failed: syntax tree contains errors",
+    "django/db/migrations/operations/fields.py: Python parse failed: syntax tree contains errors",
+    "django/db/migrations/state.py: Python parse failed: syntax tree contains errors",
+    "django/db/models/query.py: Python parse failed: syntax tree contains errors",
+    "django/db/transaction.py: Python parse failed: syntax tree contains errors",
+    "django/template/context.py: Python parse failed: syntax tree contains errors",
+    "django/test/runner.py: Python parse failed: syntax tree contains errors",
+    "django/test/utils.py: Python parse failed: syntax tree contains errors",
+    "django/utils/autoreload.py: Python parse failed: syntax tree contains errors",
+    "django/utils/choices.py: Python parse failed: syntax tree contains errors",
+    "django/utils/inspect.py: Python parse failed: syntax tree contains errors",
+    "django/utils/json.py: Python parse failed: syntax tree contains errors",
+    "django/views/templates/i18n_catalog.js: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (1:1)",
+    "scripts/pr_quality/tests/test_check_pr.py: Python parse failed: syntax tree contains errors",
+    "44 additional parse failures omitted from this summary.",
+    "Phase two projects statically resolved Express routes, identity provenance, Prisma resources, and authorization/tenant proof states.",
+    "Authentication Graph v2 projects adapter-guaranteed lifecycle operations, validation boundaries, trust transitions, revocation events, and invariant results.",
+    "Generated routes, dynamic middleware composition, unsupported ORM behavior, and runtime policy remain UNKNOWN.",
+    "The absence of a graph edge is not evidence that a security control is absent.",
+    "Cross-file call resolution is limited to repository-local relative ESM imports and statically named direct or namespace calls.",
+    "CommonJS require, tsconfig path aliases, package exports, re-exports, dependency injection, decorators, computed properties, and runtime dispatch remain UNKNOWN.",
+    "Express routes require literal paths and statically named handlers; inline and dynamically composed handlers remain UNKNOWN.",
+    "2074 call target(s) remained unresolved or dynamic.",
+    "Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.",
+    "Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.",
+    "Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.",
+    "JavaScript/TypeScript propagation is bounded to direct assignments, aliases, object properties, templates, concatenation, resolved same-file calls, arguments, and returns.",
+    "Python propagation is bounded to parsed decorated routes and local assignments; cross-function and cross-file Python propagation is unsupported.",
+    "Unknown custom sanitizers and unresolved dynamic transformations produce UNKNOWN instead of an actionable finding.",
+    "No target code, package script, hook, framework CLI, test, build, or arbitrary interpreter was executed.",
+    "Phase 3 authentication proofs cover explicit TypeScript/JavaScript Express, express-session, Prisma authentication records, jsonwebtoken, jose, and oauth4webapi evidence only.",
+    "Library behavior is trusted only for the exact supported API surface; version-hidden or unsupported behavior remains UNKNOWN.",
+    "Application names alone never establish an authentication operation; adapters require protocol APIs, persistence operations, or resolved lifecycle evidence.",
+    "OAuth 2.1 remains an Internet-Draft and is not used as normative detector guidance."
+  ],
+  "adjudication": {
+    "state": "PENDING_MANUAL_REVIEW",
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null
+  }
+}

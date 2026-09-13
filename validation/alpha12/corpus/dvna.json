@@ -1,0 +1,382 @@
+{
+  "id": "dvna",
+  "repository": "appsecco/dvna",
+  "commit": "9ba473add536f66ac9007966acb2a775dd31277a",
+  "language": "JavaScript",
+  "framework": "Express; controllers",
+  "classification": "VULNERABLE",
+  "previousAlpha11Batch2": true,
+  "purpose": "Replay alpha.11 across all enabled rules and the full normalized report.",
+  "version": "0.6.0-alpha.12",
+  "enabledRuleIds": [
+    "AS-SESSION-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-AUTHZ-001",
+    "AS-TENANT-001",
+    "AS-AUTH-SESSION-001",
+    "AS-AUTH-SESSION-002",
+    "AS-AUTH-RESET-001",
+    "AS-AUTH-RESET-002",
+    "AS-AUTH-RESET-003",
+    "AS-AUTH-JWT-001",
+    "AS-AUTH-OAUTH-001",
+    "AS-AUTH-OAUTH-002",
+    "AS-SCA-001",
+    "AS-CI-001",
+    "AS-CI-002",
+    "AS-CI-003",
+    "AS-CI-004",
+    "AS-INJECTION-SQL-001",
+    "AS-INJECTION-CMD-001",
+    "AS-PATH-001",
+    "AS-SSRF-001",
+    "AS-XSS-001",
+    "AS-REDIRECT-001",
+    "AS-CSRF-001"
+  ],
+  "applicability": "Enabled rules are not all applicable. Framework detection, finding/UNKNOWN rule IDs and declared limitations describe the checked envelope.",
+  "detectedLanguages": [
+    "javascript"
+  ],
+  "detectedFrameworks": [
+    "Express"
+  ],
+  "findingRuleIds": [
+    "AS-SESSION-001"
+  ],
+  "completeness": "TRUNCATED",
+  "determinism": "PASSED",
+  "normalizedReportSha256": [
+    "a88618d9ef395425b8bdfd354f38f28468e6c69409bd22648898665ef5b3d868",
+    "a88618d9ef395425b8bdfd354f38f28468e6c69409bd22648898665ef5b3d868"
+  ],
+  "sourceManifestSha256": "8a77c00d8d5746b3f3309ecbe5ec084a77816c885003e9ea95f31063774efb4d",
+  "measurements": [
+    {
+      "totalScanMilliseconds": 1715.7823,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 326.8611000000001,
+        "parsing": 268.4664,
+        "callGraph": 154.50329999999985,
+        "securityGraph": 94.21209999999996,
+        "authenticationGraph": 3.0725000000002183,
+        "invariantEvaluation": 116.37009999999987,
+        "applicationDataflow": 412.98950000000013,
+        "reportGeneration": 45.839600000000246
+      },
+      "representativeRssBytes": 247398400,
+      "processHighWaterRssBytes": 248094720,
+      "filesVisited": 152,
+      "filesExamined": 128,
+      "skippedEntries": 24,
+      "bytesExamined": 913385,
+      "filesAnalyzed": 14,
+      "astNodesVisited": 43710,
+      "factsCreated": 0,
+      "pathsConsidered": 84,
+      "iterations": 1,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 1,
+      "unknown": {
+        "applicationDataflow": 12,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    },
+    {
+      "totalScanMilliseconds": 1731.5077,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 507.78290000000015,
+        "parsing": 288.7813000000001,
+        "callGraph": 156.93150000000014,
+        "securityGraph": 93.17779999999993,
+        "authenticationGraph": 1.0539000000003398,
+        "invariantEvaluation": 77.16550000000007,
+        "applicationDataflow": 380.6229000000003,
+        "reportGeneration": 11.01130000000012
+      },
+      "representativeRssBytes": 250880000,
+      "processHighWaterRssBytes": 251580416,
+      "filesVisited": 152,
+      "filesExamined": 128,
+      "skippedEntries": 24,
+      "bytesExamined": 913385,
+      "filesAnalyzed": 14,
+      "astNodesVisited": 43710,
+      "factsCreated": 0,
+      "pathsConsidered": 84,
+      "iterations": 1,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 1,
+      "unknown": {
+        "applicationDataflow": 12,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    }
+  ],
+  "findings": [
+    {
+      "fingerprint": "3934e563937408e23cf015634024b31918e1b7a331d7ac8e6ff8bdd06bec96b5",
+      "ruleId": "AS-SESSION-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Session cookie protection is explicitly disabled",
+      "category": "session",
+      "affectedComponent": "session cookie configuration",
+      "location": {
+        "path": "server.js",
+        "start": {
+          "line": 27,
+          "column": 20,
+          "offset": 732
+        },
+        "end": {
+          "line": 27,
+          "column": 25,
+          "offset": 737
+        }
+      },
+      "evidence": [
+        {
+          "message": "secure is explicitly false on an authentication or session cookie.",
+          "excerpt": "cookie: { secure: false }",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Authentication session cookies must be protected from cleartext transport and client-side script access.",
+      "attackPrerequisite": "An attacker can observe an insecure transport path or execute script in the cookie's origin.",
+      "impact": "A stolen session token can allow account impersonation until the session is revoked or expires.",
+      "standards": {
+        "cwe": [
+          "CWE-614",
+          "CWE-1004"
+        ],
+        "owaspTop10": [
+          "A07:2025"
+        ],
+        "asvs": [
+          "v5.0.0-3.3.1",
+          "v5.0.0-3.3.4"
+        ],
+        "nist": [
+          "NIST SP 800-63B-4 Section 5.1.1"
+        ]
+      },
+      "remediation": "Set Secure and HttpOnly for authentication cookies, verify SameSite and scope, and test the deployed HTTPS path.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "SAFE",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    }
+  ],
+  "suppressedFindings": [],
+  "unknowns": {
+    "applicationDataflow": [
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "routes/app.js",
+        "line": 50,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "routes/app.js",
+        "line": 52,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "routes/app.js",
+        "line": 54,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "routes/app.js",
+        "line": 56,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "routes/app.js",
+        "line": 58,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "routes/app.js",
+        "line": 60,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "routes/app.js",
+        "line": 62,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "routes/app.js",
+        "line": 64,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "routes/main.js",
+        "line": 51,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "routes/main.js",
+        "line": 57,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "routes/main.js",
+        "line": 63,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "routes/main.js",
+        "line": 65,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      }
+    ],
+    "authorization": [],
+    "authentication": []
+  },
+  "resourceLimitEvents": {
+    "securityIdentity": null,
+    "applicationDataflow": 0,
+    "traversal": [
+      {
+        "path": "docs/resources/appsecco.png",
+        "reason": "too_large"
+      }
+    ]
+  },
+  "engineCompleteness": [
+    {
+      "engine": "repository-discovery",
+      "status": "TRUNCATED",
+      "details": "One or more configured file, size, or depth bounds were reached."
+    },
+    {
+      "engine": "syntax-parsing",
+      "status": "COMPLETE",
+      "details": "All supported source files parsed successfully."
+    },
+    {
+      "engine": "application-dataflow",
+      "status": "PARTIAL",
+      "details": "84 bounded path(s) considered; 0 truncation event(s)."
+    }
+  ],
+  "limitations": [
+    "Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.",
+    "Working-tree state was obtained with a five-second/one-MiB no-lock Git status probe; repository hooks/fsmonitor and submodule inspection were disabled.",
+    "Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.",
+    "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
+    "Git history was not analyzed; use cydetix secrets . --history.",
+    "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",
+    "Generated code, runtime configuration, and dependency function reachability were not analyzed.",
+    "Phase two projects statically resolved Express routes, identity provenance, Prisma resources, and authorization/tenant proof states.",
+    "Authentication Graph v2 projects adapter-guaranteed lifecycle operations, validation boundaries, trust transitions, revocation events, and invariant results.",
+    "Generated routes, dynamic middleware composition, unsupported ORM behavior, and runtime policy remain UNKNOWN.",
+    "The absence of a graph edge is not evidence that a security control is absent.",
+    "Cross-file call resolution is limited to repository-local relative ESM imports and statically named direct or namespace calls.",
+    "CommonJS require, tsconfig path aliases, package exports, re-exports, dependency injection, decorators, computed properties, and runtime dispatch remain UNKNOWN.",
+    "Express routes require literal paths and statically named handlers; inline and dynamically composed handlers remain UNKNOWN.",
+    "483 call target(s) remained unresolved or dynamic.",
+    "Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.",
+    "Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.",
+    "Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.",
+    "JavaScript/TypeScript propagation is bounded to direct assignments, aliases, object properties, templates, concatenation, resolved same-file calls, arguments, and returns.",
+    "Python propagation is bounded to parsed decorated routes and local assignments; cross-function and cross-file Python propagation is unsupported.",
+    "Unknown custom sanitizers and unresolved dynamic transformations produce UNKNOWN instead of an actionable finding.",
+    "No target code, package script, hook, framework CLI, test, build, or arbitrary interpreter was executed.",
+    "Phase 3 authentication proofs cover explicit TypeScript/JavaScript Express, express-session, Prisma authentication records, jsonwebtoken, jose, and oauth4webapi evidence only.",
+    "Library behavior is trusted only for the exact supported API surface; version-hidden or unsupported behavior remains UNKNOWN.",
+    "Application names alone never establish an authentication operation; adapters require protocol APIs, persistence operations, or resolved lifecycle evidence.",
+    "OAuth 2.1 remains an Internet-Draft and is not used as normative detector guidance."
+  ],
+  "adjudication": {
+    "state": "PENDING_MANUAL_REVIEW",
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null
+  }
+}

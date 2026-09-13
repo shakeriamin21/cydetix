@@ -1,0 +1,907 @@
+{
+  "id": "hackathon-starter",
+  "repository": "sahat/hackathon-starter",
+  "commit": "636440342a5b7b640d127dcde0c405c711c0ddaa",
+  "language": "JavaScript",
+  "framework": "Express; Passport; Pug",
+  "classification": "ORDINARY",
+  "previousAlpha11Batch2": false,
+  "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds.",
+  "version": "0.6.0-alpha.12",
+  "enabledRuleIds": [
+    "AS-SESSION-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-AUTHZ-001",
+    "AS-TENANT-001",
+    "AS-AUTH-SESSION-001",
+    "AS-AUTH-SESSION-002",
+    "AS-AUTH-RESET-001",
+    "AS-AUTH-RESET-002",
+    "AS-AUTH-RESET-003",
+    "AS-AUTH-JWT-001",
+    "AS-AUTH-OAUTH-001",
+    "AS-AUTH-OAUTH-002",
+    "AS-SCA-001",
+    "AS-CI-001",
+    "AS-CI-002",
+    "AS-CI-003",
+    "AS-CI-004",
+    "AS-INJECTION-SQL-001",
+    "AS-INJECTION-CMD-001",
+    "AS-PATH-001",
+    "AS-SSRF-001",
+    "AS-XSS-001",
+    "AS-REDIRECT-001",
+    "AS-CSRF-001"
+  ],
+  "applicability": "Enabled rules are not all applicable. Framework detection, finding/UNKNOWN rule IDs and declared limitations describe the checked envelope.",
+  "detectedLanguages": [
+    "javascript"
+  ],
+  "detectedFrameworks": [
+    "Express"
+  ],
+  "findingRuleIds": [
+    "AS-CI-001"
+  ],
+  "completeness": "PARTIAL",
+  "determinism": "PASSED",
+  "normalizedReportSha256": [
+    "e3e34565b04f21ff102a8ca42ccc6c92afaa0b8b39feb9675a3a5ac6194a12d5",
+    "e3e34565b04f21ff102a8ca42ccc6c92afaa0b8b39feb9675a3a5ac6194a12d5"
+  ],
+  "sourceManifestSha256": "f4c35acf47908904ef76b05ba63c21e79f5b643d5dc7a0f078f4471d37a5e998",
+  "measurements": [
+    {
+      "totalScanMilliseconds": 3172.8466,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 615.2869,
+        "parsing": 395.8574000000001,
+        "callGraph": 244.10190000000011,
+        "securityGraph": 169.36820000000034,
+        "authenticationGraph": 3.2856000000001586,
+        "invariantEvaluation": 141.35919999999987,
+        "applicationDataflow": 706.3458,
+        "reportGeneration": 33.91940000000022
+      },
+      "representativeRssBytes": 302645248,
+      "processHighWaterRssBytes": 308150272,
+      "filesVisited": 172,
+      "filesExamined": 168,
+      "skippedEntries": 4,
+      "bytesExamined": 2320155,
+      "filesAnalyzed": 57,
+      "astNodesVisited": 78670,
+      "factsCreated": 0,
+      "pathsConsidered": 710,
+      "iterations": 1,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 6,
+      "unknown": {
+        "applicationDataflow": 31,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    },
+    {
+      "totalScanMilliseconds": 2332.3948,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 214.6895000000004,
+        "parsing": 253.4335000000001,
+        "callGraph": 208.92190000000028,
+        "securityGraph": 89.27580000000034,
+        "authenticationGraph": 1.7881999999999607,
+        "invariantEvaluation": 107.32629999999972,
+        "applicationDataflow": 648.4665999999997,
+        "reportGeneration": 22.599500000000262
+      },
+      "representativeRssBytes": 396972032,
+      "processHighWaterRssBytes": 402460672,
+      "filesVisited": 172,
+      "filesExamined": 168,
+      "skippedEntries": 4,
+      "bytesExamined": 2320155,
+      "filesAnalyzed": 57,
+      "astNodesVisited": 78670,
+      "factsCreated": 0,
+      "pathsConsidered": 710,
+      "iterations": 1,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 6,
+      "unknown": {
+        "applicationDataflow": 31,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    }
+  ],
+  "findings": [
+    {
+      "fingerprint": "0ad67339782ade4f146d83f9d93951a3ad371a6fcd32c5a31c5f53f6c213c2d5",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/build.yml",
+        "start": {
+          "line": 28,
+          "column": 14,
+          "offset": 534
+        },
+        "end": {
+          "line": 28,
+          "column": 33,
+          "offset": 553
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "- uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "675216cd53744d66146b8b2680fea444a727388507da73916994c692d2b2a71f",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/build.yml",
+        "start": {
+          "line": 30,
+          "column": 14,
+          "offset": 621
+        },
+        "end": {
+          "line": 30,
+          "column": 35,
+          "offset": 642
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-node uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-node@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "6eeeb1318a2c52e3a1d18ae58b7e81c7175576cf00145decae0d8932c9ca91ce",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/build.yml",
+        "start": {
+          "line": 51,
+          "column": 14,
+          "offset": 1561
+        },
+        "end": {
+          "line": 51,
+          "column": 40,
+          "offset": 1587
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/upload-artifact uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/upload-artifact@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "2687840ebc6ee5d2b8573cba4b3445aa9fe14fd643646d6c21924c270e2a3088",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/dependabot-automerge.yml",
+        "start": {
+          "line": 24,
+          "column": 14,
+          "offset": 521
+        },
+        "end": {
+          "line": 24,
+          "column": 33,
+          "offset": 540
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "c7c17f09d78440f5edbb02ffdeeac44c6e097a246c7efd50edae17e3322a2589",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/dependabot-automerge.yml",
+        "start": {
+          "line": 45,
+          "column": 14,
+          "offset": 1272
+        },
+        "end": {
+          "line": 45,
+          "column": 33,
+          "offset": 1291
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/checkout@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "a65772891997cabf1fbe9aaada58de230e966c6d5c62b970c567b597448df072",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/dependabot-automerge.yml",
+        "start": {
+          "line": 50,
+          "column": 14,
+          "offset": 1372
+        },
+        "end": {
+          "line": 50,
+          "column": 35,
+          "offset": 1393
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-node uses tag reference v7; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-node@v7",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    }
+  ],
+  "suppressedFindings": [],
+  "unknowns": {
+    "applicationDataflow": [
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 254,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 257,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 258,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 260,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 261,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 263,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 266,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 268,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 270,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 272,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 276,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 277,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 278,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 279,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 281,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 282,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 283,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 284,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 286,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 288,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 289,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 299,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 302,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 313,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 330,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 332,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 334,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 335,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 337,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app.js",
+        "line": 338,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "test/contact.test.js",
+        "line": 29,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "A state-changing Express route has an unresolved handler, so authentication and browser reachability are UNKNOWN."
+      }
+    ],
+    "authorization": [],
+    "authentication": []
+  },
+  "resourceLimitEvents": {
+    "securityIdentity": null,
+    "applicationDataflow": 0,
+    "traversal": []
+  },
+  "engineCompleteness": [
+    {
+      "engine": "repository-discovery",
+      "status": "COMPLETE",
+      "details": "Repository traversal completed within configured bounds."
+    },
+    {
+      "engine": "syntax-parsing",
+      "status": "COMPLETE",
+      "details": "All supported source files parsed successfully."
+    },
+    {
+      "engine": "application-dataflow",
+      "status": "PARTIAL",
+      "details": "710 bounded path(s) considered; 0 truncation event(s)."
+    }
+  ],
+  "limitations": [
+    "Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.",
+    "Working-tree state was obtained with a five-second/one-MiB no-lock Git status probe; repository hooks/fsmonitor and submodule inspection were disabled.",
+    "Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.",
+    "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
+    "Git history was not analyzed; use cydetix secrets . --history.",
+    "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",
+    "Generated code, runtime configuration, and dependency function reachability were not analyzed.",
+    "Phase two projects statically resolved Express routes, identity provenance, Prisma resources, and authorization/tenant proof states.",
+    "Authentication Graph v2 projects adapter-guaranteed lifecycle operations, validation boundaries, trust transitions, revocation events, and invariant results.",
+    "Generated routes, dynamic middleware composition, unsupported ORM behavior, and runtime policy remain UNKNOWN.",
+    "The absence of a graph edge is not evidence that a security control is absent.",
+    "Cross-file call resolution is limited to repository-local relative ESM imports and statically named direct or namespace calls.",
+    "CommonJS require, tsconfig path aliases, package exports, re-exports, dependency injection, decorators, computed properties, and runtime dispatch remain UNKNOWN.",
+    "Express routes require literal paths and statically named handlers; inline and dynamically composed handlers remain UNKNOWN.",
+    "568 call target(s) remained unresolved or dynamic.",
+    "Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.",
+    "Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.",
+    "Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.",
+    "JavaScript/TypeScript propagation is bounded to direct assignments, aliases, object properties, templates, concatenation, resolved same-file calls, arguments, and returns.",
+    "Python propagation is bounded to parsed decorated routes and local assignments; cross-function and cross-file Python propagation is unsupported.",
+    "Unknown custom sanitizers and unresolved dynamic transformations produce UNKNOWN instead of an actionable finding.",
+    "No target code, package script, hook, framework CLI, test, build, or arbitrary interpreter was executed.",
+    "Phase 3 authentication proofs cover explicit TypeScript/JavaScript Express, express-session, Prisma authentication records, jsonwebtoken, jose, and oauth4webapi evidence only.",
+    "Library behavior is trusted only for the exact supported API surface; version-hidden or unsupported behavior remains UNKNOWN.",
+    "Application names alone never establish an authentication operation; adapters require protocol APIs, persistence operations, or resolved lifecycle evidence.",
+    "OAuth 2.1 remains an Internet-Draft and is not used as normative detector guidance."
+  ],
+  "adjudication": {
+    "state": "PENDING_MANUAL_REVIEW",
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null
+  }
+}

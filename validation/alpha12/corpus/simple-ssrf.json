@@ -1,0 +1,329 @@
+{
+  "id": "simple-ssrf",
+  "repository": "vulnerable-apps/simple-ssrf",
+  "commit": "9fe0f47ca9bc69faf8454e96e0dcdf1400ce8a5a",
+  "language": "Python",
+  "framework": "Flask; requests",
+  "classification": "VULNERABLE",
+  "previousAlpha11Batch2": false,
+  "purpose": "Challenge admitted source/sink propagation and review unsupported composition.",
+  "version": "0.6.0-alpha.12",
+  "enabledRuleIds": [
+    "AS-SESSION-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-AUTHZ-001",
+    "AS-TENANT-001",
+    "AS-AUTH-SESSION-001",
+    "AS-AUTH-SESSION-002",
+    "AS-AUTH-RESET-001",
+    "AS-AUTH-RESET-002",
+    "AS-AUTH-RESET-003",
+    "AS-AUTH-JWT-001",
+    "AS-AUTH-OAUTH-001",
+    "AS-AUTH-OAUTH-002",
+    "AS-SCA-001",
+    "AS-CI-001",
+    "AS-CI-002",
+    "AS-CI-003",
+    "AS-CI-004",
+    "AS-INJECTION-SQL-001",
+    "AS-INJECTION-CMD-001",
+    "AS-PATH-001",
+    "AS-SSRF-001",
+    "AS-XSS-001",
+    "AS-REDIRECT-001",
+    "AS-CSRF-001"
+  ],
+  "applicability": "Enabled rules are not all applicable. Framework detection, finding/UNKNOWN rule IDs and declared limitations describe the checked envelope.",
+  "detectedLanguages": [
+    "python"
+  ],
+  "detectedFrameworks": [
+    "Flask"
+  ],
+  "findingRuleIds": [
+    "AS-SSRF-001"
+  ],
+  "completeness": "COMPLETE",
+  "determinism": "PASSED",
+  "normalizedReportSha256": [
+    "469d1367cefd151530bf9b00bcb485eb64d3dad43e5200c65493fb1f1799860c",
+    "469d1367cefd151530bf9b00bcb485eb64d3dad43e5200c65493fb1f1799860c"
+  ],
+  "sourceManifestSha256": "3046504aa4bcdc2ff0b551c95c764ce2e9c5fc436c5f58a097cae438c6a991ee",
+  "measurements": [
+    {
+      "totalScanMilliseconds": 169.25779999999997,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 107.55649999999991,
+        "parsing": 11.944999999999936,
+        "callGraph": 1.6467000000000098,
+        "securityGraph": 1.0801000000000158,
+        "authenticationGraph": 0.7344000000000506,
+        "invariantEvaluation": 5.701999999999998,
+        "applicationDataflow": 7.7087999999999965,
+        "reportGeneration": 14.97320000000002
+      },
+      "representativeRssBytes": 86491136,
+      "processHighWaterRssBytes": 87388160,
+      "filesVisited": 9,
+      "filesExamined": 8,
+      "skippedEntries": 1,
+      "bytesExamined": 5866,
+      "filesAnalyzed": 1,
+      "astNodesVisited": 324,
+      "factsCreated": 2,
+      "pathsConsidered": 5,
+      "iterations": 2,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 1,
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    },
+    {
+      "totalScanMilliseconds": 87.22739999999999,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 77.30499999999995,
+        "parsing": 3.583099999999945,
+        "callGraph": 0.11739999999997508,
+        "securityGraph": 0.15860000000009222,
+        "authenticationGraph": 0.05910000000005766,
+        "invariantEvaluation": 0.5728000000000293,
+        "applicationDataflow": 0.7144000000000688,
+        "reportGeneration": 2.4892999999999574
+      },
+      "representativeRssBytes": 88276992,
+      "processHighWaterRssBytes": 88281088,
+      "filesVisited": 9,
+      "filesExamined": 8,
+      "skippedEntries": 1,
+      "bytesExamined": 5866,
+      "filesAnalyzed": 1,
+      "astNodesVisited": 324,
+      "factsCreated": 2,
+      "pathsConsidered": 5,
+      "iterations": 2,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 1,
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    }
+  ],
+  "findings": [
+    {
+      "fingerprint": "65dbb98f07097870dab74948cf640ec16f9035b4da4ea8447ff5cb188dd696b1",
+      "ruleId": "AS-SSRF-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Untrusted input controls a server-side request destination",
+      "category": "ssrf",
+      "affectedComponent": "Python server-side HTTP client",
+      "location": {
+        "path": "api/app.py",
+        "start": {
+          "line": 47,
+          "column": 23,
+          "offset": 1218
+        },
+        "end": {
+          "line": 47,
+          "column": 51,
+          "offset": 1246
+        }
+      },
+      "evidence": [
+        {
+          "message": "Proven untrusted request data controls a server-side request destination.",
+          "excerpt": "response = requests.get(url, timeout=5)",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "UNTRUSTED_NETWORK_DESTINATION_MUST_NOT_CONTROL_SERVER_SIDE_REQUEST_TARGET_WITHOUT_ENFORCED_POLICY",
+      "attackPrerequisite": "An attacker can control the proven destination component of a server-side request.",
+      "impact": "The server may access internal services, cloud metadata, loopback listeners, or attacker-selected destinations using its network position.",
+      "standards": {
+        "cwe": [
+          "CWE-918"
+        ],
+        "owaspTop10": [
+          "A01:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.3.6",
+          "v5.0.0-15.3.2"
+        ],
+        "nist": []
+      },
+      "remediation": "Enforce an organization-defined normalized destination policy covering scheme and hostname, and review port, DNS resolution, redirect, and proxy behavior.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "proof": {
+        "schemaVersion": "1.0.0",
+        "source": {
+          "kind": "SOURCE",
+          "label": "request.args is untrusted Flask request input",
+          "location": {
+            "path": "api/app.py",
+            "line": 43,
+            "column": 4
+          }
+        },
+        "propagationPath": [
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to url",
+            "location": {
+              "path": "api/app.py",
+              "line": 43,
+              "column": 4
+            }
+          },
+          {
+            "kind": "PROPAGATION",
+            "label": "propagates through url",
+            "location": {
+              "path": "api/app.py",
+              "line": 47,
+              "column": 36
+            }
+          }
+        ],
+        "sink": {
+          "kind": "SINK",
+          "label": "Python server-side HTTP client",
+          "location": {
+            "path": "api/app.py",
+            "line": 47,
+            "column": 23
+          }
+        },
+        "securityControlEncountered": false,
+        "securityControlEvaluation": "ABSENT",
+        "reachability": "likely",
+        "invariant": "UNTRUSTED_NETWORK_DESTINATION_MUST_NOT_CONTROL_SERVER_SIDE_REQUEST_TARGET_WITHOUT_ENFORCED_POLICY",
+        "conclusion": "UNTRUSTED_NETWORK_DESTINATION_MUST_NOT_CONTROL_SERVER_SIDE_REQUEST_TARGET_WITHOUT_ENFORCED_POLICY is violated by a complete, reachable source-to-sink path.",
+        "proofState": "PROVEN_INSECURE",
+        "ruleId": "AS-SSRF-001",
+        "ruleVersion": "1.0.0",
+        "ruleMaturity": "PRODUCTION",
+        "cwe": [
+          "CWE-918"
+        ],
+        "asvs": [
+          "v5.0.0-1.3.6",
+          "v5.0.0-15.3.2"
+        ],
+        "owaspTop10": [
+          "A01:2025"
+        ],
+        "analysisLimitations": [
+          "Python proof is bounded to a parsed decorated route, local assignments, import-qualified sinks, and documented controls."
+        ]
+      },
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "AMBIGUOUS_SEMANTICS",
+          "BUSINESS_POLICY_REQUIRED",
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": false,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": false,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    }
+  ],
+  "suppressedFindings": [],
+  "unknowns": {
+    "applicationDataflow": [],
+    "authorization": [],
+    "authentication": []
+  },
+  "resourceLimitEvents": {
+    "securityIdentity": null,
+    "applicationDataflow": 0,
+    "traversal": []
+  },
+  "engineCompleteness": [
+    {
+      "engine": "repository-discovery",
+      "status": "COMPLETE",
+      "details": "Repository traversal completed within configured bounds."
+    },
+    {
+      "engine": "syntax-parsing",
+      "status": "COMPLETE",
+      "details": "All supported source files parsed successfully."
+    },
+    {
+      "engine": "application-dataflow",
+      "status": "COMPLETE",
+      "details": "5 bounded path(s) considered; 0 truncation event(s)."
+    }
+  ],
+  "limitations": [
+    "Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.",
+    "Working-tree state was obtained with a five-second/one-MiB no-lock Git status probe; repository hooks/fsmonitor and submodule inspection were disabled.",
+    "Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.",
+    "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
+    "Git history was not analyzed; use cydetix secrets . --history.",
+    "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",
+    "Generated code, runtime configuration, and dependency function reachability were not analyzed.",
+    "Phase two projects statically resolved Express routes, identity provenance, Prisma resources, and authorization/tenant proof states.",
+    "Authentication Graph v2 projects adapter-guaranteed lifecycle operations, validation boundaries, trust transitions, revocation events, and invariant results.",
+    "Generated routes, dynamic middleware composition, unsupported ORM behavior, and runtime policy remain UNKNOWN.",
+    "The absence of a graph edge is not evidence that a security control is absent.",
+    "Cross-file call resolution is limited to repository-local relative ESM imports and statically named direct or namespace calls.",
+    "CommonJS require, tsconfig path aliases, package exports, re-exports, dependency injection, decorators, computed properties, and runtime dispatch remain UNKNOWN.",
+    "Express routes require literal paths and statically named handlers; inline and dynamically composed handlers remain UNKNOWN.",
+    "Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.",
+    "Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.",
+    "Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.",
+    "JavaScript/TypeScript propagation is bounded to direct assignments, aliases, object properties, templates, concatenation, resolved same-file calls, arguments, and returns.",
+    "Python propagation is bounded to parsed decorated routes and local assignments; cross-function and cross-file Python propagation is unsupported.",
+    "Unknown custom sanitizers and unresolved dynamic transformations produce UNKNOWN instead of an actionable finding.",
+    "No target code, package script, hook, framework CLI, test, build, or arbitrary interpreter was executed.",
+    "Phase 3 authentication proofs cover explicit TypeScript/JavaScript Express, express-session, Prisma authentication records, jsonwebtoken, jose, and oauth4webapi evidence only.",
+    "Library behavior is trusted only for the exact supported API surface; version-hidden or unsupported behavior remains UNKNOWN.",
+    "Application names alone never establish an authentication operation; adapters require protocol APIs, persistence operations, or resolved lifecycle evidence.",
+    "OAuth 2.1 remains an Internet-Draft and is not used as normative detector guidance."
+  ],
+  "adjudication": {
+    "state": "PENDING_MANUAL_REVIEW",
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null
+  }
+}

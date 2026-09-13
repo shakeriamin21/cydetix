@@ -1,0 +1,1646 @@
+{
+  "id": "vikas-vulnerable-website",
+  "repository": "Vikas2171/vulnerable-website",
+  "commit": "1258fa3efac1547da5bb3c7e6ab8279f00e47206",
+  "language": "JavaScript",
+  "framework": "Express; express-session",
+  "classification": "VULNERABLE",
+  "previousAlpha11Batch2": true,
+  "purpose": "Replay alpha.11 across all enabled rules and the full normalized report.",
+  "version": "0.6.0-alpha.12",
+  "enabledRuleIds": [
+    "AS-SESSION-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-AUTHZ-001",
+    "AS-TENANT-001",
+    "AS-AUTH-SESSION-001",
+    "AS-AUTH-SESSION-002",
+    "AS-AUTH-RESET-001",
+    "AS-AUTH-RESET-002",
+    "AS-AUTH-RESET-003",
+    "AS-AUTH-JWT-001",
+    "AS-AUTH-OAUTH-001",
+    "AS-AUTH-OAUTH-002",
+    "AS-SCA-001",
+    "AS-CI-001",
+    "AS-CI-002",
+    "AS-CI-003",
+    "AS-CI-004",
+    "AS-INJECTION-SQL-001",
+    "AS-INJECTION-CMD-001",
+    "AS-PATH-001",
+    "AS-SSRF-001",
+    "AS-XSS-001",
+    "AS-REDIRECT-001",
+    "AS-CSRF-001"
+  ],
+  "applicability": "Enabled rules are not all applicable. Framework detection, finding/UNKNOWN rule IDs and declared limitations describe the checked envelope.",
+  "detectedLanguages": [
+    "javascript"
+  ],
+  "detectedFrameworks": [
+    "Express"
+  ],
+  "findingRuleIds": [
+    "AS-SESSION-001",
+    "AS-CSRF-001",
+    "AS-INJECTION-CMD-001",
+    "AS-XSS-001",
+    "AS-SSRF-001",
+    "AS-INJECTION-SQL-001"
+  ],
+  "completeness": "COMPLETE",
+  "determinism": "PASSED",
+  "normalizedReportSha256": [
+    "dab53f4eb5a4857bf8c6cc4437a5f60a455bec841efa2f01eaa436c22a269c03",
+    "dab53f4eb5a4857bf8c6cc4437a5f60a455bec841efa2f01eaa436c22a269c03"
+  ],
+  "sourceManifestSha256": "8f5e4a402add259aba00570ea6ab727d0fad59bd46914ef9e578f68308586961",
+  "measurements": [
+    {
+      "totalScanMilliseconds": 277.3962,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 121.06139999999994,
+        "parsing": 39.076599999999985,
+        "callGraph": 12.914800000000014,
+        "securityGraph": 2.7631999999999834,
+        "authenticationGraph": 1.6015999999999622,
+        "invariantEvaluation": 14.262099999999919,
+        "applicationDataflow": 41.06690000000003,
+        "reportGeneration": 19.844499999999925
+      },
+      "representativeRssBytes": 97091584,
+      "processHighWaterRssBytes": 99246080,
+      "filesVisited": 23,
+      "filesExamined": 15,
+      "skippedEntries": 8,
+      "bytesExamined": 52078,
+      "filesAnalyzed": 1,
+      "astNodesVisited": 959,
+      "factsCreated": 24,
+      "pathsConsidered": 96,
+      "iterations": 2,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 11,
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    },
+    {
+      "totalScanMilliseconds": 140.19870000000003,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 92.50819999999999,
+        "parsing": 10.610900000000015,
+        "callGraph": 3.290300000000002,
+        "securityGraph": 1.3141000000000531,
+        "authenticationGraph": 0.23430000000007567,
+        "invariantEvaluation": 2.614500000000021,
+        "applicationDataflow": 20.36110000000008,
+        "reportGeneration": 2.7327999999999975
+      },
+      "representativeRssBytes": 104108032,
+      "processHighWaterRssBytes": 105848832,
+      "filesVisited": 23,
+      "filesExamined": 15,
+      "skippedEntries": 8,
+      "bytesExamined": 52078,
+      "filesAnalyzed": 1,
+      "astNodesVisited": 959,
+      "factsCreated": 24,
+      "pathsConsidered": 96,
+      "iterations": 2,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 11,
+      "unknown": {
+        "applicationDataflow": 0,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 0
+      }
+    }
+  ],
+  "findings": [
+    {
+      "fingerprint": "74c321f467bc7e3d3831604462023142d2797355280a7a43dd5ca7a05096347b",
+      "ruleId": "AS-SESSION-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Session cookie protection is explicitly disabled",
+      "category": "session",
+      "affectedComponent": "session cookie configuration",
+      "location": {
+        "path": "server/server.js",
+        "start": {
+          "line": 28,
+          "column": 22,
+          "offset": 762
+        },
+        "end": {
+          "line": 28,
+          "column": 27,
+          "offset": 767
+        }
+      },
+      "evidence": [
+        {
+          "message": "secure is explicitly false on an authentication or session cookie.",
+          "excerpt": "cookie: { secure: false }",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Authentication session cookies must be protected from cleartext transport and client-side script access.",
+      "attackPrerequisite": "An attacker can observe an insecure transport path or execute script in the cookie's origin.",
+      "impact": "A stolen session token can allow account impersonation until the session is revoked or expires.",
+      "standards": {
+        "cwe": [
+          "CWE-614",
+          "CWE-1004"
+        ],
+        "owaspTop10": [
+          "A07:2025"
+        ],
+        "asvs": [
+          "v5.0.0-3.3.1",
+          "v5.0.0-3.3.4"
+        ],
+        "nist": [
+          "NIST SP 800-63B-4 Section 5.1.1"
+        ]
+      },
+      "remediation": "Set Secure and HttpOnly for authentication cookies, verify SameSite and scope, and test the deployed HTTPS path.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "SAFE",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "34a1773673b27b41042cc841d9d1de3577ca223ea2e66eb8164dbe74d9a2b8f8",
+      "ruleId": "AS-CSRF-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Ambiently authenticated state-changing route lacks a proven anti-CSRF control",
+      "category": "csrf",
+      "affectedComponent": "Express POST /command-injection-vulnerable",
+      "location": {
+        "path": "server/server.js",
+        "start": {
+          "line": 117,
+          "column": 0,
+          "offset": 3466
+        },
+        "end": {
+          "line": 145,
+          "column": 2,
+          "offset": 4667
+        }
+      },
+      "evidence": [
+        {
+          "message": "Proven POST /command-injection-vulnerable relies on ambient browser credentials without a supported route-bound anti-CSRF control.",
+          "excerpt": "app.post('/command-injection-vulnerable', (req, res) => {",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "AMBIENTLY_AUTHENTICATED_STATE_CHANGING_BROWSER_REQUESTS_MUST_PROVE_REQUEST_ORIGIN",
+      "attackPrerequisite": "A victim browser holds an ambient application credential and can be induced to send a cross-site request accepted by the state-changing route.",
+      "impact": "An attacker can cause unauthorized state changes using the victim's automatically attached credentials.",
+      "standards": {
+        "cwe": [
+          "CWE-352"
+        ],
+        "owaspTop10": [
+          "A01:2025"
+        ],
+        "asvs": [
+          "v5.0.0-3.5.1"
+        ],
+        "nist": []
+      },
+      "remediation": "Bind a framework-supported anti-CSRF token or exact request-origin control to the route architecture; do not rely on method choice or SameSite alone without reviewing browser semantics.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "proof": {
+        "schemaVersion": "1.0.0",
+        "source": {
+          "kind": "SOURCE",
+          "label": "Supported Express session/cookie authentication supplies an ambient browser credential",
+          "location": {
+            "path": "server/server.js",
+            "line": 79,
+            "column": 0
+          }
+        },
+        "propagationPath": [
+          {
+            "kind": "PROPAGATION",
+            "label": "Security IR binds ambient authentication to POST /command-injection-vulnerable",
+            "location": {
+              "path": "server/server.js",
+              "line": 117,
+              "column": 0
+            }
+          }
+        ],
+        "sink": {
+          "kind": "SINK",
+          "label": "state-changing Express POST route /command-injection-vulnerable",
+          "location": {
+            "path": "server/server.js",
+            "line": 117,
+            "column": 0
+          }
+        },
+        "securityControlEncountered": false,
+        "securityControlEvaluation": "ABSENT",
+        "reachability": "likely",
+        "invariant": "AMBIENTLY_AUTHENTICATED_STATE_CHANGING_BROWSER_REQUESTS_MUST_PROVE_REQUEST_ORIGIN",
+        "conclusion": "The supported state-changing route is reachable with ambient credentials and no supported request-origin control is bound to it.",
+        "proofState": "PROVEN_INSECURE",
+        "ruleId": "AS-CSRF-001",
+        "ruleVersion": "1.0.0",
+        "ruleMaturity": "PRODUCTION",
+        "cwe": [
+          "CWE-352"
+        ],
+        "asvs": [
+          "v5.0.0-3.5.1"
+        ],
+        "owaspTop10": [
+          "A01:2025"
+        ],
+        "analysisLimitations": [
+          "CSRF proof is bounded to literal Express routes, repository-local ESM middleware/handler resolution, supported ambient credential evidence, and explicit route-bound controls."
+        ]
+      },
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "AMBIGUOUS_SEMANTICS",
+          "ARCHITECTURE_CHANGE_REQUIRED",
+          "BUSINESS_POLICY_REQUIRED",
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": false,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": false,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "2ae0c983f95fde12fb5b90a6a82d40ad08a073a511c558255a98332c669b933a",
+      "ruleId": "AS-INJECTION-CMD-001",
+      "ruleVersion": "1.0.0",
+      "severity": "critical",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Untrusted input controls shell syntax",
+      "category": "injection",
+      "affectedComponent": "child_process.exec",
+      "location": {
+        "path": "server/server.js",
+        "start": {
+          "line": 120,
+          "column": 4,
+          "offset": 3617
+        },
+        "end": {
+          "line": 144,
+          "column": 6,
+          "offset": 4663
+        }
+      },
+      "evidence": [
+        {
+          "message": "Proven untrusted request data controls a shell command string or shell-enabled process invocation.",
+          "excerpt": "exec(command, (error, stdout, stderr) => {",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "UNTRUSTED_INPUT_MUST_NOT_CONTROL_SHELL_SYNTAX",
+      "attackPrerequisite": "An attacker can control the proven request value supplied to shell parsing.",
+      "impact": "Injected shell syntax can execute commands with the application's operating-system privileges.",
+      "standards": {
+        "cwe": [
+          "CWE-78",
+          "CWE-77",
+          "CWE-88"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.5"
+        ],
+        "nist": []
+      },
+      "remediation": "Remove shell interpretation and invoke an explicitly chosen executable with a validated argument array; review argument-level injection semantics separately.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "proof": {
+        "schemaVersion": "1.0.0",
+        "source": {
+          "kind": "SOURCE",
+          "label": "req.body.host is untrusted request input",
+          "location": {
+            "path": "server/server.js",
+            "line": 118,
+            "column": 22
+          }
+        },
+        "propagationPath": [
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to userInput",
+            "location": {
+              "path": "server/server.js",
+              "line": 118,
+              "column": 10
+            }
+          },
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to command",
+            "location": {
+              "path": "server/server.js",
+              "line": 119,
+              "column": 10
+            }
+          }
+        ],
+        "sink": {
+          "kind": "SINK",
+          "label": "child_process.exec",
+          "location": {
+            "path": "server/server.js",
+            "line": 120,
+            "column": 4
+          }
+        },
+        "securityControlEncountered": false,
+        "securityControlEvaluation": "ABSENT",
+        "reachability": "likely",
+        "invariant": "UNTRUSTED_INPUT_MUST_NOT_CONTROL_SHELL_SYNTAX",
+        "conclusion": "UNTRUSTED_INPUT_MUST_NOT_CONTROL_SHELL_SYNTAX is violated by a complete, reachable source-to-sink path.",
+        "proofState": "PROVEN_INSECURE",
+        "ruleId": "AS-INJECTION-CMD-001",
+        "ruleVersion": "1.0.0",
+        "ruleMaturity": "PRODUCTION",
+        "cwe": [
+          "CWE-78",
+          "CWE-77",
+          "CWE-88"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.5"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "analysisLimitations": [
+          "The proof is bounded to statically resolved repository-local propagation and the documented sink model."
+        ]
+      },
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "AMBIGUOUS_SEMANTICS",
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": false,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "dd5771a54c01e358c5409790b1d03f04b3394e6ee77c954704430161c6919e87",
+      "ruleId": "AS-XSS-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Untrusted input reaches a raw browser rendering context",
+      "category": "xss",
+      "affectedComponent": "express res.send (RAW_HTML) in anonymous",
+      "location": {
+        "path": "server/server.js",
+        "start": {
+          "line": 170,
+          "column": 4,
+          "offset": 5545
+        },
+        "end": {
+          "line": 170,
+          "column": 36,
+          "offset": 5577
+        }
+      },
+      "evidence": [
+        {
+          "message": "Proven untrusted input reaches a supported RAW_HTML browser rendering sink without a context-appropriate control.",
+          "excerpt": "res.send(vulnerableHtmlResponse);",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL",
+      "attackPrerequisite": "An attacker can control the proven input and cause the supported response or DOM rendering path to execute in a victim browser.",
+      "impact": "Attacker-controlled browser-interpreted content can execute script in the application's origin and act with the victim's privileges.",
+      "standards": {
+        "cwe": [
+          "CWE-79"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.1",
+          "v5.0.0-1.2.3"
+        ],
+        "nist": []
+      },
+      "remediation": "Use framework autoescaping or context-specific output encoding; where trusted rich HTML is required, use a reviewed HTML sanitizer and constrain URL and script contexts separately.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "proof": {
+        "schemaVersion": "1.0.0",
+        "source": {
+          "kind": "SOURCE",
+          "label": "req.query.search is untrusted request input",
+          "location": {
+            "path": "server/server.js",
+            "line": 148,
+            "column": 23
+          }
+        },
+        "propagationPath": [
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to searchTerm",
+            "location": {
+              "path": "server/server.js",
+              "line": 148,
+              "column": 10
+            }
+          },
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to vulnerableHtmlResponse",
+            "location": {
+              "path": "server/server.js",
+              "line": 149,
+              "column": 10
+            }
+          }
+        ],
+        "sink": {
+          "kind": "SINK",
+          "label": "express res.send (RAW_HTML) in anonymous",
+          "location": {
+            "path": "server/server.js",
+            "line": 170,
+            "column": 4
+          }
+        },
+        "securityControlEncountered": false,
+        "securityControlEvaluation": "ABSENT",
+        "reachability": "likely",
+        "invariant": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL",
+        "conclusion": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL is violated by a complete, reachable source-to-sink path.",
+        "proofState": "PROVEN_INSECURE",
+        "ruleId": "AS-XSS-001",
+        "ruleVersion": "1.0.0",
+        "ruleMaturity": "PRODUCTION",
+        "cwe": [
+          "CWE-79"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.1",
+          "v5.0.0-1.2.3"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "analysisLimitations": [
+          "The proof is bounded to statically resolved repository-local propagation and the documented sink model."
+        ]
+      },
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "AMBIGUOUS_SEMANTICS",
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": false,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "62d84ff2d31deae6891efa6a3aec20617d5a5df262640c346d57f81bdf9422d2",
+      "ruleId": "AS-XSS-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Untrusted input reaches a raw browser rendering context",
+      "category": "xss",
+      "affectedComponent": "express res.send (RAW_HTML) in anonymous",
+      "location": {
+        "path": "server/server.js",
+        "start": {
+          "line": 197,
+          "column": 4,
+          "offset": 6549
+        },
+        "end": {
+          "line": 197,
+          "column": 36,
+          "offset": 6581
+        }
+      },
+      "evidence": [
+        {
+          "message": "Proven untrusted input reaches a supported RAW_HTML browser rendering sink without a context-appropriate control.",
+          "excerpt": "res.send(vulnerableHtmlResponse);",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL",
+      "attackPrerequisite": "An attacker can control the proven input and cause the supported response or DOM rendering path to execute in a victim browser.",
+      "impact": "Attacker-controlled browser-interpreted content can execute script in the application's origin and act with the victim's privileges.",
+      "standards": {
+        "cwe": [
+          "CWE-79"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.1",
+          "v5.0.0-1.2.3"
+        ],
+        "nist": []
+      },
+      "remediation": "Use framework autoescaping or context-specific output encoding; where trusted rich HTML is required, use a reviewed HTML sanitizer and constrain URL and script contexts separately.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "proof": {
+        "schemaVersion": "1.0.0",
+        "source": {
+          "kind": "SOURCE",
+          "label": "req.body.comment is untrusted request input",
+          "location": {
+            "path": "server/server.js",
+            "line": 174,
+            "column": 20
+          }
+        },
+        "propagationPath": [
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to comment",
+            "location": {
+              "path": "server/server.js",
+              "line": 174,
+              "column": 10
+            }
+          },
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to vulnerableHtmlResponse",
+            "location": {
+              "path": "server/server.js",
+              "line": 175,
+              "column": 10
+            }
+          }
+        ],
+        "sink": {
+          "kind": "SINK",
+          "label": "express res.send (RAW_HTML) in anonymous",
+          "location": {
+            "path": "server/server.js",
+            "line": 197,
+            "column": 4
+          }
+        },
+        "securityControlEncountered": false,
+        "securityControlEvaluation": "ABSENT",
+        "reachability": "likely",
+        "invariant": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL",
+        "conclusion": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL is violated by a complete, reachable source-to-sink path.",
+        "proofState": "PROVEN_INSECURE",
+        "ruleId": "AS-XSS-001",
+        "ruleVersion": "1.0.0",
+        "ruleMaturity": "PRODUCTION",
+        "cwe": [
+          "CWE-79"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.1",
+          "v5.0.0-1.2.3"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "analysisLimitations": [
+          "The proof is bounded to statically resolved repository-local propagation and the documented sink model."
+        ]
+      },
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "AMBIGUOUS_SEMANTICS",
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": false,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "d6318e2099b037d5459d46b638bcff990e332a2435a77125850cef8f77323ce7",
+      "ruleId": "AS-XSS-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Untrusted input reaches a raw browser rendering context",
+      "category": "xss",
+      "affectedComponent": "express res.send (RAW_HTML) in anonymous",
+      "location": {
+        "path": "server/server.js",
+        "start": {
+          "line": 228,
+          "column": 4,
+          "offset": 7756
+        },
+        "end": {
+          "line": 228,
+          "column": 30,
+          "offset": 7782
+        }
+      },
+      "evidence": [
+        {
+          "message": "Proven untrusted input reaches a supported RAW_HTML browser rendering sink without a context-appropriate control.",
+          "excerpt": "res.send(confirmationHtml);",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL",
+      "attackPrerequisite": "An attacker can control the proven input and cause the supported response or DOM rendering path to execute in a victim browser.",
+      "impact": "Attacker-controlled browser-interpreted content can execute script in the application's origin and act with the victim's privileges.",
+      "standards": {
+        "cwe": [
+          "CWE-79"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.1",
+          "v5.0.0-1.2.3"
+        ],
+        "nist": []
+      },
+      "remediation": "Use framework autoescaping or context-specific output encoding; where trusted rich HTML is required, use a reviewed HTML sanitizer and constrain URL and script contexts separately.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "proof": {
+        "schemaVersion": "1.0.0",
+        "source": {
+          "kind": "SOURCE",
+          "label": "req.query.recipient is untrusted request input",
+          "location": {
+            "path": "server/server.js",
+            "line": 203,
+            "column": 22
+          }
+        },
+        "propagationPath": [
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to recipient",
+            "location": {
+              "path": "server/server.js",
+              "line": 203,
+              "column": 10
+            }
+          },
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to confirmationHtml",
+            "location": {
+              "path": "server/server.js",
+              "line": 204,
+              "column": 10
+            }
+          }
+        ],
+        "sink": {
+          "kind": "SINK",
+          "label": "express res.send (RAW_HTML) in anonymous",
+          "location": {
+            "path": "server/server.js",
+            "line": 228,
+            "column": 4
+          }
+        },
+        "securityControlEncountered": false,
+        "securityControlEvaluation": "ABSENT",
+        "reachability": "likely",
+        "invariant": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL",
+        "conclusion": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL is violated by a complete, reachable source-to-sink path.",
+        "proofState": "PROVEN_INSECURE",
+        "ruleId": "AS-XSS-001",
+        "ruleVersion": "1.0.0",
+        "ruleMaturity": "PRODUCTION",
+        "cwe": [
+          "CWE-79"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.1",
+          "v5.0.0-1.2.3"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "analysisLimitations": [
+          "The proof is bounded to statically resolved repository-local propagation and the documented sink model."
+        ]
+      },
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "AMBIGUOUS_SEMANTICS",
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": false,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "f1e78cce49932c4db32313d9cedb757f7890693b38d4b1917568f80925623f6e",
+      "ruleId": "AS-CSRF-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Ambiently authenticated state-changing route lacks a proven anti-CSRF control",
+      "category": "csrf",
+      "affectedComponent": "Express POST /csrf-post-action",
+      "location": {
+        "path": "server/server.js",
+        "start": {
+          "line": 231,
+          "column": 0,
+          "offset": 7789
+        },
+        "end": {
+          "line": 260,
+          "column": 2,
+          "offset": 8989
+        }
+      },
+      "evidence": [
+        {
+          "message": "Proven POST /csrf-post-action relies on ambient browser credentials without a supported route-bound anti-CSRF control.",
+          "excerpt": "app.post('/csrf-post-action', (req, res) => {",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "AMBIENTLY_AUTHENTICATED_STATE_CHANGING_BROWSER_REQUESTS_MUST_PROVE_REQUEST_ORIGIN",
+      "attackPrerequisite": "A victim browser holds an ambient application credential and can be induced to send a cross-site request accepted by the state-changing route.",
+      "impact": "An attacker can cause unauthorized state changes using the victim's automatically attached credentials.",
+      "standards": {
+        "cwe": [
+          "CWE-352"
+        ],
+        "owaspTop10": [
+          "A01:2025"
+        ],
+        "asvs": [
+          "v5.0.0-3.5.1"
+        ],
+        "nist": []
+      },
+      "remediation": "Bind a framework-supported anti-CSRF token or exact request-origin control to the route architecture; do not rely on method choice or SameSite alone without reviewing browser semantics.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "proof": {
+        "schemaVersion": "1.0.0",
+        "source": {
+          "kind": "SOURCE",
+          "label": "Supported Express session/cookie authentication supplies an ambient browser credential",
+          "location": {
+            "path": "server/server.js",
+            "line": 79,
+            "column": 0
+          }
+        },
+        "propagationPath": [
+          {
+            "kind": "PROPAGATION",
+            "label": "Security IR binds ambient authentication to POST /csrf-post-action",
+            "location": {
+              "path": "server/server.js",
+              "line": 231,
+              "column": 0
+            }
+          }
+        ],
+        "sink": {
+          "kind": "SINK",
+          "label": "state-changing Express POST route /csrf-post-action",
+          "location": {
+            "path": "server/server.js",
+            "line": 231,
+            "column": 0
+          }
+        },
+        "securityControlEncountered": false,
+        "securityControlEvaluation": "ABSENT",
+        "reachability": "likely",
+        "invariant": "AMBIENTLY_AUTHENTICATED_STATE_CHANGING_BROWSER_REQUESTS_MUST_PROVE_REQUEST_ORIGIN",
+        "conclusion": "The supported state-changing route is reachable with ambient credentials and no supported request-origin control is bound to it.",
+        "proofState": "PROVEN_INSECURE",
+        "ruleId": "AS-CSRF-001",
+        "ruleVersion": "1.0.0",
+        "ruleMaturity": "PRODUCTION",
+        "cwe": [
+          "CWE-352"
+        ],
+        "asvs": [
+          "v5.0.0-3.5.1"
+        ],
+        "owaspTop10": [
+          "A01:2025"
+        ],
+        "analysisLimitations": [
+          "CSRF proof is bounded to literal Express routes, repository-local ESM middleware/handler resolution, supported ambient credential evidence, and explicit route-bound controls."
+        ]
+      },
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "AMBIGUOUS_SEMANTICS",
+          "ARCHITECTURE_CHANGE_REQUIRED",
+          "BUSINESS_POLICY_REQUIRED",
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": false,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": false,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "11030b2628f717e0b8028e96ca7f71761a75f45ae9b67ea06ac64fc76d2c6554",
+      "ruleId": "AS-XSS-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Untrusted input reaches a raw browser rendering context",
+      "category": "xss",
+      "affectedComponent": "express res.send (RAW_HTML) in anonymous",
+      "location": {
+        "path": "server/server.js",
+        "start": {
+          "line": 259,
+          "column": 4,
+          "offset": 8959
+        },
+        "end": {
+          "line": 259,
+          "column": 30,
+          "offset": 8985
+        }
+      },
+      "evidence": [
+        {
+          "message": "Proven untrusted input reaches a supported RAW_HTML browser rendering sink without a context-appropriate control.",
+          "excerpt": "res.send(confirmationHtml);",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL",
+      "attackPrerequisite": "An attacker can control the proven input and cause the supported response or DOM rendering path to execute in a victim browser.",
+      "impact": "Attacker-controlled browser-interpreted content can execute script in the application's origin and act with the victim's privileges.",
+      "standards": {
+        "cwe": [
+          "CWE-79"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.1",
+          "v5.0.0-1.2.3"
+        ],
+        "nist": []
+      },
+      "remediation": "Use framework autoescaping or context-specific output encoding; where trusted rich HTML is required, use a reviewed HTML sanitizer and constrain URL and script contexts separately.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "proof": {
+        "schemaVersion": "1.0.0",
+        "source": {
+          "kind": "SOURCE",
+          "label": "req.body.recipient is untrusted request input",
+          "location": {
+            "path": "server/server.js",
+            "line": 234,
+            "column": 22
+          }
+        },
+        "propagationPath": [
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to recipient",
+            "location": {
+              "path": "server/server.js",
+              "line": 234,
+              "column": 10
+            }
+          },
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to confirmationHtml",
+            "location": {
+              "path": "server/server.js",
+              "line": 235,
+              "column": 10
+            }
+          }
+        ],
+        "sink": {
+          "kind": "SINK",
+          "label": "express res.send (RAW_HTML) in anonymous",
+          "location": {
+            "path": "server/server.js",
+            "line": 259,
+            "column": 4
+          }
+        },
+        "securityControlEncountered": false,
+        "securityControlEvaluation": "ABSENT",
+        "reachability": "likely",
+        "invariant": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL",
+        "conclusion": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL is violated by a complete, reachable source-to-sink path.",
+        "proofState": "PROVEN_INSECURE",
+        "ruleId": "AS-XSS-001",
+        "ruleVersion": "1.0.0",
+        "ruleMaturity": "PRODUCTION",
+        "cwe": [
+          "CWE-79"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.1",
+          "v5.0.0-1.2.3"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "analysisLimitations": [
+          "The proof is bounded to statically resolved repository-local propagation and the documented sink model."
+        ]
+      },
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "AMBIGUOUS_SEMANTICS",
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": false,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "06abde37f3e8ddba85c6dbead10a29554303f424dd05270056588d7f5c2e3404",
+      "ruleId": "AS-SSRF-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Untrusted input controls a server-side request destination",
+      "category": "ssrf",
+      "affectedComponent": "global fetch",
+      "location": {
+        "path": "server/server.js",
+        "start": {
+          "line": 267,
+          "column": 31,
+          "offset": 9167
+        },
+        "end": {
+          "line": 267,
+          "column": 41,
+          "offset": 9177
+        }
+      },
+      "evidence": [
+        {
+          "message": "Proven untrusted request data controls the destination of a recognized server-side HTTP request without an enforced destination policy.",
+          "excerpt": "const response = await fetch(url);",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "UNTRUSTED_NETWORK_DESTINATION_MUST_NOT_CONTROL_SERVER_SIDE_REQUEST_TARGET_WITHOUT_ENFORCED_POLICY",
+      "attackPrerequisite": "An attacker can control the proven destination component of a server-side request.",
+      "impact": "The server may access internal services, cloud metadata, loopback listeners, or attacker-selected destinations using its network position.",
+      "standards": {
+        "cwe": [
+          "CWE-918"
+        ],
+        "owaspTop10": [
+          "A01:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.3.6",
+          "v5.0.0-15.3.2"
+        ],
+        "nist": []
+      },
+      "remediation": "Enforce an organization-defined normalized destination policy covering scheme and hostname, and review port, DNS resolution, redirect, and proxy behavior.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "proof": {
+        "schemaVersion": "1.0.0",
+        "source": {
+          "kind": "SOURCE",
+          "label": "req.body.url is untrusted request input",
+          "location": {
+            "path": "server/server.js",
+            "line": 263,
+            "column": 16
+          }
+        },
+        "propagationPath": [
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to url",
+            "location": {
+              "path": "server/server.js",
+              "line": 263,
+              "column": 10
+            }
+          }
+        ],
+        "sink": {
+          "kind": "SINK",
+          "label": "global fetch",
+          "location": {
+            "path": "server/server.js",
+            "line": 267,
+            "column": 31
+          }
+        },
+        "securityControlEncountered": false,
+        "securityControlEvaluation": "ABSENT",
+        "reachability": "likely",
+        "invariant": "UNTRUSTED_NETWORK_DESTINATION_MUST_NOT_CONTROL_SERVER_SIDE_REQUEST_TARGET_WITHOUT_ENFORCED_POLICY",
+        "conclusion": "UNTRUSTED_NETWORK_DESTINATION_MUST_NOT_CONTROL_SERVER_SIDE_REQUEST_TARGET_WITHOUT_ENFORCED_POLICY is violated by a complete, reachable source-to-sink path.",
+        "proofState": "PROVEN_INSECURE",
+        "ruleId": "AS-SSRF-001",
+        "ruleVersion": "1.0.0",
+        "ruleMaturity": "PRODUCTION",
+        "cwe": [
+          "CWE-918"
+        ],
+        "asvs": [
+          "v5.0.0-1.3.6",
+          "v5.0.0-15.3.2"
+        ],
+        "owaspTop10": [
+          "A01:2025"
+        ],
+        "analysisLimitations": [
+          "The proof is bounded to statically resolved repository-local propagation and the documented sink model."
+        ]
+      },
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "AMBIGUOUS_SEMANTICS",
+          "BUSINESS_POLICY_REQUIRED",
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": false,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": false,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "b67c4811cdbd5cf08deab318c32197741cef0f249d13f42c61839e8df810935e",
+      "ruleId": "AS-XSS-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Untrusted input reaches a raw browser rendering context",
+      "category": "xss",
+      "affectedComponent": "express res.send (RAW_HTML) in anonymous",
+      "location": {
+        "path": "server/server.js",
+        "start": {
+          "line": 302,
+          "column": 4,
+          "offset": 10512
+        },
+        "end": {
+          "line": 302,
+          "column": 24,
+          "offset": 10532
+        }
+      },
+      "evidence": [
+        {
+          "message": "Proven untrusted input reaches a supported RAW_HTML browser rendering sink without a context-appropriate control.",
+          "excerpt": "res.send(resultHtml);",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL",
+      "attackPrerequisite": "An attacker can control the proven input and cause the supported response or DOM rendering path to execute in a victim browser.",
+      "impact": "Attacker-controlled browser-interpreted content can execute script in the application's origin and act with the victim's privileges.",
+      "standards": {
+        "cwe": [
+          "CWE-79"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.1",
+          "v5.0.0-1.2.3"
+        ],
+        "nist": []
+      },
+      "remediation": "Use framework autoescaping or context-specific output encoding; where trusted rich HTML is required, use a reviewed HTML sanitizer and constrain URL and script contexts separately.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "proof": {
+        "schemaVersion": "1.0.0",
+        "source": {
+          "kind": "SOURCE",
+          "label": "req.body.url is untrusted request input",
+          "location": {
+            "path": "server/server.js",
+            "line": 263,
+            "column": 16
+          }
+        },
+        "propagationPath": [
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to url",
+            "location": {
+              "path": "server/server.js",
+              "line": 263,
+              "column": 10
+            }
+          },
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to resultHtml",
+            "location": {
+              "path": "server/server.js",
+              "line": 273,
+              "column": 10
+            }
+          }
+        ],
+        "sink": {
+          "kind": "SINK",
+          "label": "express res.send (RAW_HTML) in anonymous",
+          "location": {
+            "path": "server/server.js",
+            "line": 302,
+            "column": 4
+          }
+        },
+        "securityControlEncountered": false,
+        "securityControlEvaluation": "ABSENT",
+        "reachability": "likely",
+        "invariant": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL",
+        "conclusion": "UNTRUSTED_BROWSER_CONTENT_MUST_NOT_REACH_RAW_RENDERING_WITHOUT_A_CONTEXT_APPROPRIATE_CONTROL is violated by a complete, reachable source-to-sink path.",
+        "proofState": "PROVEN_INSECURE",
+        "ruleId": "AS-XSS-001",
+        "ruleVersion": "1.0.0",
+        "ruleMaturity": "PRODUCTION",
+        "cwe": [
+          "CWE-79"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.1",
+          "v5.0.0-1.2.3"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "analysisLimitations": [
+          "The proof is bounded to statically resolved repository-local propagation and the documented sink model."
+        ]
+      },
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "AMBIGUOUS_SEMANTICS",
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": false,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "72ac35133951760fe3883a941b4769092591166202a43e8e8feffbbcfcbd3746",
+      "ruleId": "AS-INJECTION-SQL-001",
+      "ruleVersion": "1.0.0",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "Untrusted input controls SQL statement structure",
+      "category": "injection",
+      "affectedComponent": "mysql2.query",
+      "location": {
+        "path": "server/server.js",
+        "start": {
+          "line": 309,
+          "column": 4,
+          "offset": 10774
+        },
+        "end": {
+          "line": 344,
+          "column": 6,
+          "offset": 12198
+        }
+      },
+      "evidence": [
+        {
+          "message": "Proven untrusted request data controls SQL statement structure at a recognized database sink without separate parameterization.",
+          "excerpt": "db.query(query, (err, results) => {",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "UNTRUSTED_SQL_DATA_MUST_NOT_CONTROL_SQL_STRUCTURE",
+      "attackPrerequisite": "An attacker can control the proven request value reaching the database call.",
+      "impact": "Injected SQL structure can disclose, modify, or delete data and may bypass application authorization.",
+      "standards": {
+        "cwe": [
+          "CWE-89"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.4"
+        ],
+        "nist": []
+      },
+      "remediation": "Use the database library's parameterized query interface and separately constrain any dynamic identifiers to an explicit application-defined allowlist.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "proof": {
+        "schemaVersion": "1.0.0",
+        "source": {
+          "kind": "SOURCE",
+          "label": "req.body.username is untrusted request input",
+          "location": {
+            "path": "server/server.js",
+            "line": 306,
+            "column": 21
+          }
+        },
+        "propagationPath": [
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to username",
+            "location": {
+              "path": "server/server.js",
+              "line": 306,
+              "column": 10
+            }
+          },
+          {
+            "kind": "PROPAGATION",
+            "label": "assigned to query",
+            "location": {
+              "path": "server/server.js",
+              "line": 308,
+              "column": 10
+            }
+          }
+        ],
+        "sink": {
+          "kind": "SINK",
+          "label": "mysql2.query",
+          "location": {
+            "path": "server/server.js",
+            "line": 309,
+            "column": 4
+          }
+        },
+        "securityControlEncountered": false,
+        "securityControlEvaluation": "ABSENT",
+        "reachability": "likely",
+        "invariant": "UNTRUSTED_SQL_DATA_MUST_NOT_CONTROL_SQL_STRUCTURE",
+        "conclusion": "UNTRUSTED_SQL_DATA_MUST_NOT_CONTROL_SQL_STRUCTURE is violated by a complete, reachable source-to-sink path.",
+        "proofState": "PROVEN_INSECURE",
+        "ruleId": "AS-INJECTION-SQL-001",
+        "ruleVersion": "1.0.0",
+        "ruleMaturity": "PRODUCTION",
+        "cwe": [
+          "CWE-89"
+        ],
+        "asvs": [
+          "v5.0.0-1.2.4"
+        ],
+        "owaspTop10": [
+          "A05:2025"
+        ],
+        "analysisLimitations": [
+          "The proof is bounded to statically resolved repository-local propagation and the documented sink model."
+        ]
+      },
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "AMBIGUOUS_SEMANTICS",
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": false,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    }
+  ],
+  "suppressedFindings": [],
+  "unknowns": {
+    "applicationDataflow": [],
+    "authorization": [],
+    "authentication": []
+  },
+  "resourceLimitEvents": {
+    "securityIdentity": null,
+    "applicationDataflow": 0,
+    "traversal": []
+  },
+  "engineCompleteness": [
+    {
+      "engine": "repository-discovery",
+      "status": "COMPLETE",
+      "details": "Repository traversal completed within configured bounds."
+    },
+    {
+      "engine": "syntax-parsing",
+      "status": "COMPLETE",
+      "details": "All supported source files parsed successfully."
+    },
+    {
+      "engine": "application-dataflow",
+      "status": "COMPLETE",
+      "details": "96 bounded path(s) considered; 0 truncation event(s)."
+    }
+  ],
+  "limitations": [
+    "Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.",
+    "Working-tree state was obtained with a five-second/one-MiB no-lock Git status probe; repository hooks/fsmonitor and submodule inspection were disabled.",
+    "Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.",
+    "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
+    "Git history was not analyzed; use cydetix secrets . --history.",
+    "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",
+    "Generated code, runtime configuration, and dependency function reachability were not analyzed.",
+    "Phase two projects statically resolved Express routes, identity provenance, Prisma resources, and authorization/tenant proof states.",
+    "Authentication Graph v2 projects adapter-guaranteed lifecycle operations, validation boundaries, trust transitions, revocation events, and invariant results.",
+    "Generated routes, dynamic middleware composition, unsupported ORM behavior, and runtime policy remain UNKNOWN.",
+    "The absence of a graph edge is not evidence that a security control is absent.",
+    "Cross-file call resolution is limited to repository-local relative ESM imports and statically named direct or namespace calls.",
+    "CommonJS require, tsconfig path aliases, package exports, re-exports, dependency injection, decorators, computed properties, and runtime dispatch remain UNKNOWN.",
+    "Express routes require literal paths and statically named handlers; inline and dynamically composed handlers remain UNKNOWN.",
+    "Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.",
+    "Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.",
+    "Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.",
+    "JavaScript/TypeScript propagation is bounded to direct assignments, aliases, object properties, templates, concatenation, resolved same-file calls, arguments, and returns.",
+    "Python propagation is bounded to parsed decorated routes and local assignments; cross-function and cross-file Python propagation is unsupported.",
+    "Unknown custom sanitizers and unresolved dynamic transformations produce UNKNOWN instead of an actionable finding.",
+    "No target code, package script, hook, framework CLI, test, build, or arbitrary interpreter was executed.",
+    "Phase 3 authentication proofs cover explicit TypeScript/JavaScript Express, express-session, Prisma authentication records, jsonwebtoken, jose, and oauth4webapi evidence only.",
+    "Library behavior is trusted only for the exact supported API surface; version-hidden or unsupported behavior remains UNKNOWN.",
+    "Application names alone never establish an authentication operation; adapters require protocol APIs, persistence operations, or resolved lifecycle evidence.",
+    "OAuth 2.1 remains an Internet-Draft and is not used as normative detector guidance."
+  ],
+  "adjudication": {
+    "state": "PENDING_MANUAL_REVIEW",
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null
+  }
+}

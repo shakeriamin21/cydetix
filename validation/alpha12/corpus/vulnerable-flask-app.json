@@ -1,0 +1,595 @@
+{
+  "id": "vulnerable-flask-app",
+  "repository": "we45/Vulnerable-Flask-App",
+  "commit": "b6a4f97afd466e83e1f60781494252dec1c37039",
+  "language": "Python",
+  "framework": "Flask; Jinja",
+  "classification": "VULNERABLE",
+  "previousAlpha11Batch2": true,
+  "purpose": "Replay alpha.11 across all enabled rules and the full normalized report.",
+  "version": "0.6.0-alpha.12",
+  "enabledRuleIds": [
+    "AS-SESSION-001",
+    "AS-PASSWORD-001",
+    "AS-TOKEN-001",
+    "AS-SECRET-001",
+    "AS-CORS-001",
+    "AS-AUTHZ-001",
+    "AS-TENANT-001",
+    "AS-AUTH-SESSION-001",
+    "AS-AUTH-SESSION-002",
+    "AS-AUTH-RESET-001",
+    "AS-AUTH-RESET-002",
+    "AS-AUTH-RESET-003",
+    "AS-AUTH-JWT-001",
+    "AS-AUTH-OAUTH-001",
+    "AS-AUTH-OAUTH-002",
+    "AS-SCA-001",
+    "AS-CI-001",
+    "AS-CI-002",
+    "AS-CI-003",
+    "AS-CI-004",
+    "AS-INJECTION-SQL-001",
+    "AS-INJECTION-CMD-001",
+    "AS-PATH-001",
+    "AS-SSRF-001",
+    "AS-XSS-001",
+    "AS-REDIRECT-001",
+    "AS-CSRF-001"
+  ],
+  "applicability": "Enabled rules are not all applicable. Framework detection, finding/UNKNOWN rule IDs and declared limitations describe the checked envelope.",
+  "detectedLanguages": [
+    "javascript",
+    "python"
+  ],
+  "detectedFrameworks": [
+    "Flask"
+  ],
+  "findingRuleIds": [
+    "AS-CI-001",
+    "AS-PASSWORD-001"
+  ],
+  "completeness": "PARTIAL",
+  "determinism": "PASSED",
+  "normalizedReportSha256": [
+    "e9893518e6a52e3be19c2c7d4c42d8bf52d68f668812477cc0902739a3483d9f",
+    "e9893518e6a52e3be19c2c7d4c42d8bf52d68f668812477cc0902739a3483d9f"
+  ],
+  "sourceManifestSha256": "f75579ee87daf0cebb7b44cd1ad30238f761f498fca0d6f0d1ea142f9f10dfcd",
+  "measurements": [
+    {
+      "totalScanMilliseconds": 1673.2579,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 119.2999000000001,
+        "parsing": 321.02,
+        "callGraph": 172.11309999999992,
+        "securityGraph": 63.16470000000004,
+        "authenticationGraph": 1.0872999999996864,
+        "invariantEvaluation": 92.66769999999997,
+        "applicationDataflow": 600.7879,
+        "reportGeneration": 15.308300000000145
+      },
+      "representativeRssBytes": 246013952,
+      "processHighWaterRssBytes": 246022144,
+      "filesVisited": 20,
+      "filesExamined": 18,
+      "skippedEntries": 2,
+      "bytesExamined": 130353,
+      "filesAnalyzed": 4,
+      "astNodesVisited": 49304,
+      "factsCreated": 34,
+      "pathsConsidered": 91,
+      "iterations": 2,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 5,
+      "unknown": {
+        "applicationDataflow": 3,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 1
+      }
+    },
+    {
+      "totalScanMilliseconds": 1232.065,
+      "stagesMilliseconds": {
+        "repositoryDiscovery": 117.3155999999999,
+        "parsing": 213.81629999999996,
+        "callGraph": 121.39530000000013,
+        "securityGraph": 62.06829999999991,
+        "authenticationGraph": 0.22270000000025902,
+        "invariantEvaluation": 64.42930000000024,
+        "applicationDataflow": 416.01399999999967,
+        "reportGeneration": 4.649800000000141
+      },
+      "representativeRssBytes": 247664640,
+      "processHighWaterRssBytes": 250306560,
+      "filesVisited": 20,
+      "filesExamined": 18,
+      "skippedEntries": 2,
+      "bytesExamined": 130353,
+      "filesAnalyzed": 4,
+      "astNodesVisited": 49304,
+      "factsCreated": 34,
+      "pathsConsidered": 91,
+      "iterations": 2,
+      "truncationEvents": 0,
+      "securityIdentityBounds": null,
+      "findings": 5,
+      "unknown": {
+        "applicationDataflow": 3,
+        "authorization": 0,
+        "authentication": 0,
+        "findingProof": 1
+      }
+    }
+  ],
+  "findings": [
+    {
+      "fingerprint": "164be27d9af4b2528cce85189b13996baa00fcb542faa2c983e2dbef63a5513f",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/zap_test.yml",
+        "start": {
+          "line": 11,
+          "column": 14,
+          "offset": 124
+        },
+        "end": {
+          "line": 11,
+          "column": 33,
+          "offset": 143
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/checkout uses tag reference v2; no authoritative SHA was invented.",
+          "excerpt": "- uses: actions/checkout@v2",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "edc365cb50e9af446747afee29a723c940274a882c627a8485a6d419afd3d391",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/zap_test.yml",
+        "start": {
+          "line": 13,
+          "column": 14,
+          "offset": 192
+        },
+        "end": {
+          "line": 13,
+          "column": 37,
+          "offset": 215
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/setup-python uses tag reference v1; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/setup-python@v1",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "abc68ec56105291a3f650ea780394f98a253ce69a489454ca0ee2891567d3060",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/zap_test.yml",
+        "start": {
+          "line": 49,
+          "column": 14,
+          "offset": 1927
+        },
+        "end": {
+          "line": 49,
+          "column": 43,
+          "offset": 1956
+        }
+      },
+      "evidence": [
+        {
+          "message": "jakejarvis/wait-action uses branch reference master; no authoritative SHA was invented.",
+          "excerpt": "uses: jakejarvis/wait-action@master",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "6f9a71a920bc3d77b93aacdcaf77b6fdcaf327ae22c9a0ed70109bc1a28d9d05",
+      "ruleId": "AS-CI-001",
+      "ruleVersion": "1.0.0",
+      "severity": "medium",
+      "confidence": "high",
+      "reachability": "likely",
+      "title": "External GitHub Action is not pinned to a full commit SHA",
+      "category": "ci-cd",
+      "affectedComponent": "GitHub Actions workflow",
+      "location": {
+        "path": ".github/workflows/zap_test.yml",
+        "start": {
+          "line": 57,
+          "column": 14,
+          "offset": 2145
+        },
+        "end": {
+          "line": 57,
+          "column": 40,
+          "offset": 2171
+        }
+      },
+      "evidence": [
+        {
+          "message": "actions/upload-artifact uses tag reference v1; no authoritative SHA was invented.",
+          "excerpt": "uses: actions/upload-artifact@v1",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Third-party workflow code should be immutably identified before execution.",
+      "attackPrerequisite": "An attacker can move or compromise the referenced mutable upstream revision.",
+      "impact": "Changed third-party workflow code executes with the job's token, secrets, and runner access.",
+      "standards": {
+        "cwe": [
+          "CWE-829"
+        ],
+        "owaspTop10": [
+          "A03:2025"
+        ],
+        "asvs": [],
+        "nist": []
+      },
+      "remediation": "Resolve the intended release to an authoritative full commit SHA, review that revision, and keep a human-readable version comment.",
+      "autofix": "REVIEW_REQUIRED",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "PROVEN_INSECURE",
+      "analysisCompleteness": "COMPLETE",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "REVIEW_REQUIRED",
+        "requestedClass": "REVIEW_REQUIRED",
+        "finalClass": "REVIEW_REQUIRED",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    },
+    {
+      "fingerprint": "281816cc1d573f2111dc57927bcafa4039b4974d13c4d1957a84114f95f2d97e",
+      "ruleId": "AS-PASSWORD-001",
+      "ruleVersion": "1.0.1",
+      "severity": "high",
+      "confidence": "high",
+      "reachability": "unknown",
+      "title": "Fast hash used with password-adjacent input; storage purpose is unproven",
+      "category": "password-storage",
+      "affectedComponent": "password-adjacent hashing; storage purpose unresolved",
+      "location": {
+        "path": "app/app.py",
+        "start": {
+          "line": 141,
+          "column": 24,
+          "offset": 4308
+        },
+        "end": {
+          "line": 141,
+          "column": 45,
+          "offset": 4329
+        }
+      },
+      "evidence": [
+        {
+          "message": "hashlib.md5 is a fast hash used directly with password-adjacent input.",
+          "excerpt": "hash_pass = hashlib.md5(password).hexdigest()",
+          "redacted": false
+        },
+        {
+          "message": "The hash operation is observed, but persistence as a credential verifier is not established. Breach lookup, protocol use and password storage require different treatment.",
+          "excerpt": "Storage purpose and runtime reachability are UNKNOWN.",
+          "redacted": false
+        }
+      ],
+      "securityInvariant": "Stored passwords must use a salted, adaptive password hashing function with a work factor.",
+      "attackPrerequisite": "An attacker obtains the credential verifier database or stored hash values.",
+      "impact": "Fast offline guessing can recover user passwords and enable credential reuse attacks.",
+      "standards": {
+        "cwe": [
+          "CWE-916"
+        ],
+        "owaspTop10": [
+          "A04:2025",
+          "A07:2025"
+        ],
+        "asvs": [
+          "v5.0.0-11.4.2"
+        ],
+        "nist": [
+          "NIST SP 800-63B-4 Section 3.1.1.2"
+        ]
+      },
+      "remediation": "Trace whether the digest is stored or accepted as a credential verifier. If it is, plan an adaptive password-hash migration. Protocol or breach-lookup hashing must be reviewed for its actual purpose before changing algorithms.",
+      "autofix": "ARCHITECTURAL",
+      "ruleMaturity": "PRODUCTION",
+      "proofState": "UNKNOWN",
+      "analysisCompleteness": "PARTIAL",
+      "remediationAssessment": {
+        "schemaVersion": "1.0.0",
+        "ceiling": "ARCHITECTURAL",
+        "requestedClass": "ARCHITECTURAL",
+        "finalClass": "ARCHITECTURAL",
+        "reasonCodes": [
+          "DYNAMIC_EXPRESSION",
+          "MULTI_FILE_SEMANTIC_CHANGE",
+          "VERIFICATION_INSUFFICIENT"
+        ],
+        "safeConditions": {
+          "deterministicTransformation": false,
+          "boundedLocalBlastRadius": false,
+          "sourceHashVerified": false,
+          "noBusinessPolicyDecision": true,
+          "noAuthorizationPolicyInvention": true,
+          "noArchitectureChange": true,
+          "noSemanticAmbiguity": true,
+          "noUnknownSecurityDependency": true,
+          "independentInvariantVerification": false
+        },
+        "verificationStrength": "NONE"
+      },
+      "verificationStatus": "not_attempted"
+    }
+  ],
+  "suppressedFindings": [],
+  "unknowns": {
+    "applicationDataflow": [
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app/app.py",
+        "line": 135,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Authentication or ambient browser credential reliance is not proven for this state-changing Python route."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "app/app.py",
+        "line": 151,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Authentication or ambient browser credential reliance is not proven for this state-changing Python route."
+      },
+      {
+        "ruleId": "AS-XSS-001",
+        "path": "app/app.py",
+        "line": 185,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Python raw HTML rendering is reached through a transformation with UNKNOWN context-specific safety."
+      }
+    ],
+    "authorization": [],
+    "authentication": []
+  },
+  "resourceLimitEvents": {
+    "securityIdentity": null,
+    "applicationDataflow": 0,
+    "traversal": []
+  },
+  "engineCompleteness": [
+    {
+      "engine": "repository-discovery",
+      "status": "COMPLETE",
+      "details": "Repository traversal completed within configured bounds."
+    },
+    {
+      "engine": "syntax-parsing",
+      "status": "COMPLETE",
+      "details": "All supported source files parsed successfully."
+    },
+    {
+      "engine": "application-dataflow",
+      "status": "PARTIAL",
+      "details": "91 bounded path(s) considered; 0 truncation event(s)."
+    }
+  ],
+  "limitations": [
+    "Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.",
+    "Working-tree state was obtained with a five-second/one-MiB no-lock Git status probe; repository hooks/fsmonitor and submodule inspection were disabled.",
+    "Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.",
+    "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
+    "Git history was not analyzed; use cydetix secrets . --history.",
+    "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",
+    "Generated code, runtime configuration, and dependency function reachability were not analyzed.",
+    "Phase two projects statically resolved Express routes, identity provenance, Prisma resources, and authorization/tenant proof states.",
+    "Authentication Graph v2 projects adapter-guaranteed lifecycle operations, validation boundaries, trust transitions, revocation events, and invariant results.",
+    "Generated routes, dynamic middleware composition, unsupported ORM behavior, and runtime policy remain UNKNOWN.",
+    "The absence of a graph edge is not evidence that a security control is absent.",
+    "Cross-file call resolution is limited to repository-local relative ESM imports and statically named direct or namespace calls.",
+    "CommonJS require, tsconfig path aliases, package exports, re-exports, dependency injection, decorators, computed properties, and runtime dispatch remain UNKNOWN.",
+    "Express routes require literal paths and statically named handlers; inline and dynamically composed handlers remain UNKNOWN.",
+    "90 call target(s) remained unresolved or dynamic.",
+    "Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.",
+    "Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.",
+    "Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.",
+    "JavaScript/TypeScript propagation is bounded to direct assignments, aliases, object properties, templates, concatenation, resolved same-file calls, arguments, and returns.",
+    "Python propagation is bounded to parsed decorated routes and local assignments; cross-function and cross-file Python propagation is unsupported.",
+    "Unknown custom sanitizers and unresolved dynamic transformations produce UNKNOWN instead of an actionable finding.",
+    "No target code, package script, hook, framework CLI, test, build, or arbitrary interpreter was executed.",
+    "Phase 3 authentication proofs cover explicit TypeScript/JavaScript Express, express-session, Prisma authentication records, jsonwebtoken, jose, and oauth4webapi evidence only.",
+    "Library behavior is trusted only for the exact supported API surface; version-hidden or unsupported behavior remains UNKNOWN.",
+    "Application names alone never establish an authentication operation; adapters require protocol APIs, persistence operations, or resolved lifecycle evidence.",
+    "OAuth 2.1 remains an Internet-Draft and is not used as normative detector guidance."
+  ],
+  "adjudication": {
+    "state": "PENDING_MANUAL_REVIEW",
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null
+  }
+}
