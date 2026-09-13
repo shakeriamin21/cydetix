@@ -71,6 +71,39 @@
         "skipped": 0
       },
       "scope": "Successful full suite with the previous SARIF gate loaded at process startup. Does not cover the subsequent six new tests or strengthened SARIF diagnostic assertions. A new complete invocation is required and recorded in local-verification.json."
+    },
+    {
+      "id": "verify",
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274",
+      "command": [
+        "npm",
+        "run",
+        "verify:development"
+      ],
+      "startedAt": "2026-09-13T10:29:46.590Z",
+      "durationMilliseconds": 610767.6947,
+      "exitCode": 0,
+      "signal": null,
+      "outputLimited": false,
+      "state": "PASSED",
+      "stdoutSha256": "2d346510c385dccdf0c6ea2cbd427483d26dc8474b8617682d1a42d568ba1bfd",
+      "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "sandboxImage": "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
+      "tests": {
+        "passed": 455,
+        "failed": 0,
+        "total": 455,
+        "skipped": 0,
+        "files": 58,
+        "sandboxPassed": 13
+      },
+      "sarif": {
+        "originalValidFixturesPassed": 6,
+        "schemaNegativeExplicitlyRejected": true,
+        "semanticNegativeExplicitlyRejected": true
+      },
+      "scope": "Complete development verification includes the strengthened SARIF gate and six new regression tests. No limits, original tests or validation fixtures removed. The later readiness-generator edit only clarifies the source binding of the preserved detailed self-scan snapshot; final format/lint/schema/privacy checks cover generated evidence.",
+      "publicLog": "validation/alpha12/gates/verify.txt"
     }
   ]
 }

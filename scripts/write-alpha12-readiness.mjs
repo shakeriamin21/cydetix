@@ -315,10 +315,12 @@ pass, including future-commit rejection, tuple mismatch, malformed/overbroad pol
 content scanning and multiple offending commits. No ref, author metadata, ancestry, historical
 release tag or frozen publication approval list was changed.
 
-Self-scan: ${self.state}, ${self.findings.length} active and ${self.suppressedFindings.length}
-existing suppressed findings; overall completeness ${self.completeness}. This meets the configured
-active-finding gate, not a proof of repository security. Existing suppressions and engine limitations
-are visible in [self-scan evidence](../../validation/alpha12/self-scan.json), with corresponding
+The refreshed selfScan gate and preserved detailed snapshot both report ${self.state},
+${self.findings.length} active and ${self.suppressedFindings.length} existing suppressed findings.
+The detailed snapshot's overall completeness was ${self.completeness} at ${self.sourceCommit};
+the refreshed gate records the active-finding outcome, not a new complete proof report. Passing
+this gate is not proof of repository security. Existing suppressions and engine limitations
+are visible in [the preserved self-scan snapshot](../../validation/alpha12/self-scan.json), with corresponding
 [SARIF](../../validation/alpha12/self-scan.sarif.json) and
 [CycloneDX](../../validation/alpha12/cydetix.cdx.json).
 
