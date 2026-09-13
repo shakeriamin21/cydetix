@@ -186,6 +186,7 @@ export function buildSecurityIr(files, parsedByPath) {
     const modules = [];
     const symbols = [];
     const evidence = [];
+    const evidenceIds = new Set();
     const edges = [];
     const calls = [];
     const routes = [];
@@ -195,8 +196,9 @@ export function buildSecurityIr(files, parsedByPath) {
         if (sourceLocation === undefined)
             return undefined;
         const id = securityIrId("evidence", kind, file.relativePath, String(node.start ?? 0), message);
-        if (!evidence.some((item) => item.id === id)) {
+        if (!evidenceIds.has(id)) {
             evidence.push({ id, kind, location: sourceLocation, message });
+            evidenceIds.add(id);
         }
         return id;
     };

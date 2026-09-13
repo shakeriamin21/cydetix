@@ -264,6 +264,7 @@ export function buildSecurityIr(
   const modules: IrModule[] = [];
   const symbols: IrSymbol[] = [];
   const evidence: IrEvidence[] = [];
+  const evidenceIds = new Set<string>();
   const edges: IrEdge[] = [];
   const calls: IrCall[] = [];
   const routes: IrRoute[] = [];
@@ -278,8 +279,9 @@ export function buildSecurityIr(
     const sourceLocation = location(file, node);
     if (sourceLocation === undefined) return undefined;
     const id = securityIrId("evidence", kind, file.relativePath, String(node.start ?? 0), message);
-    if (!evidence.some((item) => item.id === id)) {
+    if (!evidenceIds.has(id)) {
       evidence.push({ id, kind, location: sourceLocation, message });
+      evidenceIds.add(id);
     }
     return id;
   };

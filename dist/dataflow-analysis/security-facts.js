@@ -73,6 +73,7 @@ export function enrichSecurityFacts(input, files, parsedByPath) {
     const directClassification = new Map();
     const identityByFunctionAndName = new Map();
     const enforcements = [...input.enforcements];
+    const boundState = { truncated: false, iterations: 0 };
     const recordIdentity = (functionSymbolId, name, classified, identityLocation, message, derivedFrom = []) => {
         const key = `${functionSymbolId}\u0000${name}`;
         const existing = (identityByFunctionAndName.get(key) ?? []).find((fact) => fact.trust === classified.trust &&
@@ -80,6 +81,10 @@ export function enrichSecurityFacts(input, files, parsedByPath) {
             fact.derivedFrom.join("\u0000") === derivedFrom.join("\u0000"));
         if (existing !== undefined)
             return existing;
+        if (identities.length >= 10_000) {
+            boundState.truncated = true;
+            return undefined;
+        }
         const evidenceId = addEvidence(evidence, evidenceIds, "identity-source", identityLocation, message);
         const fact = {
             id: securityIrId("identity", functionSymbolId, name, classified.source, classified.trust, ...derivedFrom),
@@ -121,7 +126,8 @@ export function enrichSecurityFacts(input, files, parsedByPath) {
         ...call,
         arguments: call.arguments.map((argument) => ({ ...argument, identityFactIds: [] })),
     }));
-    for (let iteration = 0; iteration < Math.max(1, input.symbols.length); iteration += 1) {
+    for (let iteration = 0; iteration < 8; iteration += 1) {
+        boundState.iterations = iteration + 1;
         let changed = false;
         const nextCalls = calls.map((call) => {
             const caller = symbolsById.get(call.callerSymbolId);
@@ -137,7 +143,8 @@ export function enrichSecurityFacts(input, files, parsedByPath) {
                 let facts = identityByFunctionAndName.get(`${caller.id}\u0000${argument.expression}`) ?? [];
                 if (direct !== undefined) {
                     const fact = recordIdentity(caller.id, argument.expression, direct, call.location, `${argument.expression} is classified as ${direct.trust} from ${direct.source}.`);
-                    facts = [...facts, fact];
+                    if (fact !== undefined)
+                        facts = [...facts, fact];
                 }
                 const ids = [...new Set(facts.map((fact) => fact.id))].sort();
                 if (ids.join("\u0000") !== argument.identityFactIds.join("\u0000"))
@@ -168,8 +175,21 @@ export function enrichSecurityFacts(input, files, parsedByPath) {
                     changed = true;
             }
         }
+        if (boundState.truncated)
+            break;
         if (!changed)
             break;
+        if (iteration === 7)
+            boundState.truncated = true;
+    }
+    // A prefix of a changing identity graph cannot justify a complete authorization proof.
+    // Keep source/call evidence and counters, but discard incomplete propagated trust facts.
+    if (boundState.truncated) {
+        identityByFunctionAndName.clear();
+        calls = calls.map((call) => ({
+            ...call,
+            arguments: call.arguments.map((argument) => ({ ...argument, identityFactIds: [] })),
+        }));
     }
     const resourceOperations = [];
     for (const candidate of analyzePrismaOperations(input, files, parsedByPath)) {
@@ -206,13 +226,31 @@ export function enrichSecurityFacts(input, files, parsedByPath) {
     return securityIrSchema.parse({
         ...input,
         calls,
-        identities: identities.sort((left, right) => left.id.localeCompare(right.id)),
+        identities: boundState.truncated
+            ? []
+            : identities.sort((left, right) => left.id.localeCompare(right.id)),
+        ...(boundState.truncated
+            ? {
+                propagationBounds: {
+                    status: "TRUNCATED",
+                    iterations: boundState.iterations,
+                    factsCreated: identities.length,
+                    maxIterations: 8,
+                    maxFacts: 10_000,
+                },
+            }
+            : {}),
         resourceOperations: resourceOperations.sort((left, right) => left.id.localeCompare(right.id)),
         enforcements: enforcements.sort((left, right) => left.id.localeCompare(right.id)),
         evidence: evidence.sort((left, right) => left.id.localeCompare(right.id)),
         edges: edges.sort((left, right) => `${left.from}:${left.kind}:${left.to}`.localeCompare(`${right.from}:${right.kind}:${right.to}`)),
         limitations: [
             ...input.limitations,
+            ...(boundState.truncated
+                ? [
+                    "Security identity propagation exhausted the eight-iteration or 10000-fact bound. Incomplete propagated trust was discarded; dependent authorization and tenant proofs remain UNKNOWN.",
+                ]
+                : []),
             "Authenticated Express identity is trusted only when a statically bound middleware proves credential verification and authenticated-context assignment.",
             "Identity propagation follows positional arguments across resolved calls only; aliases, mutation, closures, destructuring, and returned values remain UNKNOWN.",
             "Prisma analysis supports direct prisma.<model> operations with flat literal where selectors; nested, spread, relational, raw, and dynamically built queries remain UNKNOWN.",

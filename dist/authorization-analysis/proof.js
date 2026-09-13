@@ -143,11 +143,15 @@ export function buildAuthorizationProofs(ir) {
                 !/tenant/i.test(selector.field) &&
                 selector.trust === "attacker-controlled");
             const eligibleOperation = ["read-one", "update", "delete"].includes(resource.operation);
-            const state = provenSelector !== undefined
-                ? "PROVEN"
-                : eligibleOperation && attackerObjectSelector !== undefined && trustedSubjects.length > 0
-                    ? "VIOLATED"
-                    : "UNKNOWN";
+            const state = ir.propagationBounds?.status === "TRUNCATED"
+                ? "UNKNOWN"
+                : provenSelector !== undefined
+                    ? "PROVEN"
+                    : eligibleOperation &&
+                        attackerObjectSelector !== undefined &&
+                        trustedSubjects.length > 0
+                        ? "VIOLATED"
+                        : "UNKNOWN";
             const subject = (provenSelector?.identityFactId === undefined
                 ? undefined
                 : identityById.get(provenSelector.identityFactId)) ?? trustedSubjects[0];
@@ -181,12 +185,14 @@ export function buildAuthorizationProofs(ir) {
             const tenantSelectors = resource.selectors.filter((selector) => /^tenant(?:Id)?$/i.test(selector.field));
             const trustedTenantSelector = tenantSelectors.find((selector) => selector.trust === "trusted-authenticated");
             const attackerTenantSelector = tenantSelectors.find((selector) => selector.trust === "attacker-controlled");
-            const tenantState = trustedTenantSelector !== undefined
-                ? "PROVEN"
-                : trustedTenants.length > 0 &&
-                    (attackerTenantSelector !== undefined || tenantSelectors.length === 0)
-                    ? "VIOLATED"
-                    : "UNKNOWN";
+            const tenantState = ir.propagationBounds?.status === "TRUNCATED"
+                ? "UNKNOWN"
+                : trustedTenantSelector !== undefined
+                    ? "PROVEN"
+                    : trustedTenants.length > 0 &&
+                        (attackerTenantSelector !== undefined || tenantSelectors.length === 0)
+                        ? "VIOLATED"
+                        : "UNKNOWN";
             const tenantSubject = (trustedTenantSelector?.identityFactId === undefined
                 ? undefined
                 : identityById.get(trustedTenantSelector.identityFactId)) ?? trustedTenants[0];

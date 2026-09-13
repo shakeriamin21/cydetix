@@ -1407,6 +1407,13 @@ export declare const scanReportSchema: z.ZodObject<{
                 }, z.core.$strict>>;
                 limitations: z.ZodArray<z.ZodString>;
             }, z.core.$strict>>;
+            propagationBounds: z.ZodOptional<z.ZodObject<{
+                status: z.ZodLiteral<"TRUNCATED">;
+                iterations: z.ZodNumber;
+                factsCreated: z.ZodNumber;
+                maxIterations: z.ZodLiteral<8>;
+                maxFacts: z.ZodLiteral<10000>;
+            }, z.core.$strict>>;
             limitations: z.ZodArray<z.ZodString>;
         }, z.core.$strict>;
         authorizationProofs: z.ZodArray<z.ZodObject<{

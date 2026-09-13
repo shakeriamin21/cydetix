@@ -205,7 +205,9 @@ export async function scanRepository(options: ScanOptions): Promise<ScanReport> 
     ["too_large", "depth_limit", "file_limit"].includes(item.reason),
   );
   const overallCompleteness =
-    traversalTruncated || applicationDataflowResult.analysis.completeness === "TRUNCATED"
+    traversalTruncated ||
+    applicationDataflowResult.analysis.completeness === "TRUNCATED" ||
+    applicationSecurityIr.propagationBounds?.status === "TRUNCATED"
       ? "TRUNCATED"
       : parseFailures.length > 0 || applicationDataflowResult.analysis.completeness === "PARTIAL"
         ? "PARTIAL"
@@ -284,6 +286,15 @@ export async function scanRepository(options: ScanOptions): Promise<ScanReport> 
       ],
       enabledRuleIds: RULES.map((rule) => rule.id),
       analysisCompleteness: [
+        ...(applicationSecurityIr.propagationBounds === undefined
+          ? []
+          : [
+              {
+                engine: "security-identity-propagation",
+                status: "TRUNCATED" as const,
+                details: `${applicationSecurityIr.propagationBounds.iterations} iterations; ${applicationSecurityIr.propagationBounds.factsCreated} facts produced. Incomplete trust was discarded; dependent authorization and tenant proofs remain UNKNOWN.`,
+              },
+            ]),
         {
           engine: "repository-discovery",
           status: traversalTruncated ? "TRUNCATED" : "COMPLETE",

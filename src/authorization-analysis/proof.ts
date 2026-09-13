@@ -174,11 +174,15 @@ export function buildAuthorizationProofs(ir: SecurityIr): AuthorizationProof[] {
       );
       const eligibleOperation = ["read-one", "update", "delete"].includes(resource.operation);
       const state: AuthorizationProof["state"] =
-        provenSelector !== undefined
-          ? "PROVEN"
-          : eligibleOperation && attackerObjectSelector !== undefined && trustedSubjects.length > 0
-            ? "VIOLATED"
-            : "UNKNOWN";
+        ir.propagationBounds?.status === "TRUNCATED"
+          ? "UNKNOWN"
+          : provenSelector !== undefined
+            ? "PROVEN"
+            : eligibleOperation &&
+                attackerObjectSelector !== undefined &&
+                trustedSubjects.length > 0
+              ? "VIOLATED"
+              : "UNKNOWN";
       const subject =
         (provenSelector?.identityFactId === undefined
           ? undefined
@@ -234,12 +238,14 @@ export function buildAuthorizationProofs(ir: SecurityIr): AuthorizationProof[] {
         (selector) => selector.trust === "attacker-controlled",
       );
       const tenantState: AuthorizationProof["state"] =
-        trustedTenantSelector !== undefined
-          ? "PROVEN"
-          : trustedTenants.length > 0 &&
-              (attackerTenantSelector !== undefined || tenantSelectors.length === 0)
-            ? "VIOLATED"
-            : "UNKNOWN";
+        ir.propagationBounds?.status === "TRUNCATED"
+          ? "UNKNOWN"
+          : trustedTenantSelector !== undefined
+            ? "PROVEN"
+            : trustedTenants.length > 0 &&
+                (attackerTenantSelector !== undefined || tenantSelectors.length === 0)
+              ? "VIOLATED"
+              : "UNKNOWN";
       const tenantSubject =
         (trustedTenantSelector?.identityFactId === undefined
           ? undefined

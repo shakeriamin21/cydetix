@@ -210,6 +210,16 @@ export const securityIrSchema = z
     evidence: z.array(irEvidenceSchema),
     edges: z.array(irEdgeSchema),
     supplyChain: supplyChainIrSchema.optional(),
+    propagationBounds: z
+        .object({
+        status: z.literal("TRUNCATED"),
+        iterations: z.number().int().nonnegative(),
+        factsCreated: z.number().int().nonnegative(),
+        maxIterations: z.literal(8),
+        maxFacts: z.literal(10_000),
+    })
+        .strict()
+        .optional(),
     limitations: z.array(z.string().min(1)),
 })
     .strict();
