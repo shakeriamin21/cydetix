@@ -1,10 +1,10 @@
 {
   "schemaVersion": "1.0.0",
-  "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
-  "startedAt": "2026-09-13T08:13:00.407Z",
+  "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274",
+  "startedAt": "2026-09-13T10:30:09.663Z",
   "state": "PASSED",
-  "durationMilliseconds": 10094.477599999998,
-  "commitsScanned": 65,
+  "durationMilliseconds": 42382.975300000006,
+  "commitsScanned": 71,
   "command": [
     "docker",
     "run",
@@ -55,7 +55,7 @@
     "--timeout",
     "180"
   ],
-  "executionLog": "8:13AM INF 65 commits scanned.\n8:13AM INF scanned ~8124014 bytes (8.12 MB) in 9.68s\n8:13AM WRN leaks found: 23\n",
+  "executionLog": "10:30AM INF 71 commits scanned.\n10:30AM INF scanned ~9315138 bytes (9.32 MB) in 38.8s\n10:30AM WRN leaks found: 23\n",
   "review": {
     "schemaVersion": "1.0.0",
     "state": "PASS",

@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0.0",
-  "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
+  "sourceCommit": "703a89ca57fdcf5c16dd46231daf9c5c3b1326d8",
   "version": "0.6.0-alpha.12",
   "tests": {
-    "total": 449,
-    "passed": 449,
+    "total": 455,
+    "passed": 455,
     "failed": 0,
     "skipped": 0,
-    "sourceReportSha256": "8d99db94648636553a2438beefb26de97b1f67dedbc0f22943ef3c4784c0a92f",
+    "sourceReportSha256": "3d9a0c1a353e624a8d1bc1af3491da92fb07f1a7f88d286eb68ffc441fdd9e3d",
     "suites": [
       {
         "path": "tests/auth-graph/model.test.ts",
@@ -227,13 +227,6 @@
         "skipped": 0
       },
       {
-        "path": "tests/repository-discovery/git-metadata.test.ts",
-        "status": "passed",
-        "passed": 1,
-        "failed": 0,
-        "skipped": 0
-      },
-      {
         "path": "tests/rules/alpha12-password-purpose.test.ts",
         "status": "passed",
         "passed": 3,
@@ -269,9 +262,9 @@
         "skipped": 0
       },
       {
-        "path": "tests/security-ir/model.test.ts",
+        "path": "tests/repository-discovery/git-metadata.test.ts",
         "status": "passed",
-        "passed": 2,
+        "passed": 1,
         "failed": 0,
         "skipped": 0
       },
@@ -325,6 +318,13 @@
         "skipped": 0
       },
       {
+        "path": "tests/security-ir/model.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
         "path": "tests/supply-chain/phase4.test.ts",
         "status": "passed",
         "passed": 9,
@@ -335,6 +335,13 @@
         "path": "tests/supply-chain/provider-failures.test.ts",
         "status": "passed",
         "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/tenant-isolation/proof.test.ts",
+        "status": "passed",
+        "passed": 4,
         "failed": 0,
         "skipped": 0
       },
@@ -374,6 +381,13 @@
         "skipped": 0
       },
       {
+        "path": "tests/validation/official-sarif-schema.test.ts",
+        "status": "passed",
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
         "path": "tests/validation/public-contracts.test.ts",
         "status": "passed",
         "passed": 2,
@@ -400,28 +414,21 @@
         "passed": 8,
         "failed": 0,
         "skipped": 0
-      },
-      {
-        "path": "tests/tenant-isolation/proof.test.ts",
-        "status": "passed",
-        "passed": 4,
-        "failed": 0,
-        "skipped": 0
       }
     ]
   },
   "gates": [
     {
       "id": "audit",
-      "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274",
       "command": [
         "npm",
         "audit",
         "--json",
         "--audit-level=high"
       ],
-      "startedAt": "2026-09-13T09:46:25.926Z",
-      "durationMilliseconds": 2336.4273,
+      "startedAt": "2026-09-13T10:31:34.870Z",
+      "durationMilliseconds": 4171.6449999999995,
       "exitCode": 0,
       "signal": null,
       "outputLimited": false,
@@ -525,7 +532,7 @@
     },
     {
       "id": "history",
-      "sourceCommit": "74f67f89e25daa7779ca15382cde5669c6b3fe08",
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274",
       "command": [
         "npm",
         "run",
@@ -534,17 +541,17 @@
         "--enforce",
         "--all"
       ],
-      "startedAt": "2026-09-13T09:39:15.327Z",
-      "durationMilliseconds": 34255.9066,
+      "startedAt": "2026-09-13T10:30:11.242Z",
+      "durationMilliseconds": 53346.2313,
       "exitCode": 0,
       "signal": null,
       "outputLimited": false,
       "state": "PASSED",
-      "stdoutSha256": "107fc6754ef72b582111e8e2f4d3c7b776b4e6f6f55eaa9db626d56eb201a4ff",
+      "stdoutSha256": "620f88cf55aa9298748b2243711df6e3c08f9b4c304ccef02fb920b62cb83c38",
       "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "sandboxImage": null,
       "publicLog": "validation/alpha12/gates/history.txt",
-      "publicLogSha256": "107fc6754ef72b582111e8e2f4d3c7b776b4e6f6f55eaa9db626d56eb201a4ff",
+      "publicLogSha256": "620f88cf55aa9298748b2243711df6e3c08f9b4c304ccef02fb920b62cb83c38",
       "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
     },
     {
@@ -616,14 +623,14 @@
     },
     {
       "id": "osv",
-      "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274",
       "command": [
         "npm",
         "run",
         "validate:online-osv"
       ],
-      "startedAt": "2026-09-13T09:46:29.237Z",
-      "durationMilliseconds": 24520.3241,
+      "startedAt": "2026-09-13T10:31:34.889Z",
+      "durationMilliseconds": 23886.2613,
       "exitCode": 0,
       "signal": null,
       "outputLimited": false,
@@ -784,14 +791,14 @@
     },
     {
       "id": "selfScan",
-      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274",
       "command": [
         "npm",
         "run",
         "release:self-scan"
       ],
-      "startedAt": "2026-09-13T08:19:24.150Z",
-      "durationMilliseconds": 15970.7165,
+      "startedAt": "2026-09-13T10:30:11.257Z",
+      "durationMilliseconds": 46169.496999999996,
       "exitCode": 0,
       "signal": null,
       "outputLimited": false,
@@ -805,7 +812,7 @@
     },
     {
       "id": "tests",
-      "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274",
       "command": [
         "npm",
         "test",
@@ -813,8 +820,8 @@
         "--reporter=json",
         "--outputFile=.cydetix/alpha12/tests.json"
       ],
-      "startedAt": "2026-09-13T09:40:39.355Z",
-      "durationMilliseconds": 251079.0788,
+      "startedAt": "2026-09-13T10:31:08.338Z",
+      "durationMilliseconds": 235009.17549999998,
       "exitCode": 0,
       "signal": null,
       "outputLimited": false,
@@ -828,35 +835,35 @@
     },
     {
       "id": "verify",
-      "sourceCommit": "f5ebf910399aa4806831cecfe0a1bb88a8cbeffe",
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274",
       "command": [
         "npm",
         "run",
         "verify:development"
       ],
-      "startedAt": "2026-09-13T07:55:53.353Z",
-      "durationMilliseconds": 758479.6930000001,
+      "startedAt": "2026-09-13T10:29:46.590Z",
+      "durationMilliseconds": 610767.6947,
       "exitCode": 0,
       "signal": null,
       "outputLimited": false,
       "state": "PASSED",
-      "stdoutSha256": "63c8f9dea555a65dcf002ccddd2395f84c44a33c82423e43628c6bb1e99fbb73",
+      "stdoutSha256": "2d346510c385dccdf0c6ea2cbd427483d26dc8474b8617682d1a42d568ba1bfd",
       "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "sandboxImage": "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
       "publicLog": "validation/alpha12/gates/verify.txt",
-      "publicLogSha256": "0af9494f5dec6f38d911128dbf12622eb1e43928bbe6efe5a2dee4c730cd5a16",
+      "publicLogSha256": "8ca3b912bda1d7c58195978253a929ace6e0518985a8e583e115e6e1139fa36b",
       "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
     },
     {
       "id": "workflow",
-      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "sourceCommit": "c6173fda8f15a331561f2d43025b5ef6e7aa4e76",
       "command": [
         "npm",
         "run",
         "validate:workflow-security"
       ],
-      "startedAt": "2026-09-13T08:16:02.447Z",
-      "durationMilliseconds": 640.3462,
+      "startedAt": "2026-09-13T09:50:01.126Z",
+      "durationMilliseconds": 2446.802,
       "exitCode": 0,
       "signal": null,
       "outputLimited": false,

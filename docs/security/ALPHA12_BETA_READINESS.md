@@ -8,7 +8,7 @@ representative live-host coverage is partial, and repeated FastAPI tail measurem
 inconclusive. No optimization or security-engine change was made during blocker closure.
 
 Development version: `0.6.0-alpha.12`. Evidence assembly source:
-`0f3f8111ad0537e98dd8eff899b3407364482168`. Individual invocation commits are recorded in the
+`703a89ca57fdcf5c16dd46231daf9c5c3b1326d8`. Individual invocation commits are recorded in the
 machine evidence. Later documentation/evidence commits can change HEAD without changing the tested
 implementation; the development handoff gives the final HEAD. The immutable alpha.11 commit is
 `4e13b96cc3539e1b623a4c5a12f10a0954776253` and its annotated tag object is
@@ -229,7 +229,7 @@ fingerprint anchors and optional proof fields require explicit migration review 
 
 ## Local verification and supply chain
 
-Full tests: **449/449 passed**, 0 failed, 0 skipped. Docker: **13/13 passed**, 0 skipped. Baseline
+Full tests: **455/455 passed**, 0 failed, 0 skipped. Docker: **13/13 passed**, 0 skipped. Baseline
 was 374/374 with 13 Docker passes. No prior test was removed. The first final-suite attempt had four
 stale alpha.11 version assertions; these were updated to the intentional development version and
 rerun. Resource/security assertions were not relaxed. Detailed suites, commands, actual invocation
@@ -263,21 +263,21 @@ commits and sanitized logs are retained in
 | Supply-chain/control gate   | Result  | Invocation commit or scope     |
 | --------------------------- | ------- | ------------------------------ |
 | lockedInstallation          | PASSED  | `c4638767b817`                 |
-| npmAudit                    | PASSED  | `0f3f8111ad05`                 |
-| onlineOsv                   | PASSED  | `0f3f8111ad05`                 |
-| licenses                    | PASSED  | `7d0cb30c398d`                 |
-| privacy                     | PASSED  | `017c51664a8e`                 |
-| history                     | PASSED  | `74f67f89e25d`                 |
-| workflowSecurity            | PASSED  | `017c51664a8e`                 |
-| package                     | PASSED  | `f5ebf910399a`                 |
-| packedInstall               | PASSED  | `f5ebf910399a`                 |
+| npmAudit                    | PASSED  | `ac5ac499da35`                 |
+| onlineOsv                   | PASSED  | `ac5ac499da35`                 |
+| licenses                    | PASSED  | `ac5ac499da35`                 |
+| privacy                     | PASSED  | `ac5ac499da35`                 |
+| history                     | PASSED  | `ac5ac499da35`                 |
+| workflowSecurity            | PASSED  | `c6173fda8f15`                 |
+| package                     | PASSED  | `ac5ac499da35`                 |
+| packedInstall               | PASSED  | `ac5ac499da35`                 |
 | packedPlugin                | PASSED  | `9e7e3177ab74`                 |
-| selfScan                    | PASSED  | `017c51664a8e`                 |
-| cycloneDx                   | PASSED  | `f5ebf910399a`                 |
-| sarif                       | PASSED  | `f5ebf910399a`                 |
-| releaseControls             | PASSED  | `f5ebf910399a`                 |
-| gitleaks                    | PASSED  | `017c51664a8e`                 |
-| mandatorySandbox            | PASSED  | `0f3f8111ad05`                 |
+| selfScan                    | PASSED  | `ac5ac499da35`                 |
+| cycloneDx                   | PASSED  | `ac5ac499da35`                 |
+| sarif                       | PASSED  | `ac5ac499da35`                 |
+| releaseControls             | PASSED  | `ac5ac499da35`                 |
+| gitleaks                    | PASSED  | `ac5ac499da35`                 |
+| mandatorySandbox            | PASSED  | `ac5ac499da35`                 |
 | hostedCi                    | NOT_RUN | No alpha.12 hosted transaction |
 | codeql                      | NOT_RUN | No alpha.12 hosted transaction |
 | openssf                     | NOT_RUN | No alpha.12 hosted transaction |
@@ -287,19 +287,29 @@ commits and sanitized logs are retained in
 | protectedReleaseEnvironment | NOT_RUN | No alpha.12 hosted transaction |
 
 Locked installation uses npm ci --ignore-scripts. Online OSV checks lockfile package identities, not
-source content. CycloneDX and SARIF are validated separately from vulnerability proof. Independent
-Gitleaks scans complete --all history using its pinned image with no repository ignore bypass: 23
-findings match exact reviewed non-secret fingerprints, 0 unreviewed. Deterministic reachable-history
-and public privacy audits remain separate gates. The original 14 historical review entries remain
-byte-identical. Nine exact supplemental reviews cover deterministic authentication-operation/proof
-IDs in the new SARIF evidence; their generator and schema establish that these are analysis
-identifiers, not credentials. Supplemental reviews are hash-bound to the historical manifest and
-checked with the same field/fingerprint/match-digest rules. The all-refs author audit now PASSED
-across 68 commits. Its former email-hash deduplication hid eight additional commits: nine
-pre-existing remote refs share the public Dependabot bot identity (author name dependabot[bot],
-author-email SHA-256 bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6), with GitHub
-as committer. The exact committer-email digest is retained in each supplemental policy entry. The
-original reported ref was refs/remotes/origin/dependabot/npm_and_yarn/types/node-26.4.1 at
+source content. CycloneDX and SARIF are validated separately from vulnerability proof. SARIF gate
+hardening retains the exact OASIS Errata 01 draft-04 schema, fetched once with a pinned SHA-256, a
+20-second download timeout and a 131072-byte bound. The existing 210-second Multitool timeout and
+six positive fixtures remain. A negative control exposed Multitool 5.7.0 reporting schema errors
+with exit code zero; the gate now rejects reported errors as well as process failures, and requires
+explicit errors for deliberately invalid schema and semantic controls. This changes development
+validation only. It does not establish that a historical report was invalid, and no historical
+evidence was rewritten. See
+[validation hardening](../../validation/alpha12/closure/sarif-validation-hardening.json) and
+[retained verification attempts](../../validation/alpha12/closure/verification-attempts.json).
+Independent Gitleaks scans complete --all history using its pinned image with no repository ignore
+bypass: 23 findings match exact reviewed non-secret fingerprints, 0 unreviewed. Deterministic
+reachable-history and public privacy audits remain separate gates. The original 14 historical review
+entries remain byte-identical. Nine exact supplemental reviews cover deterministic
+authentication-operation/proof IDs in the new SARIF evidence; their generator and schema establish
+that these are analysis identifiers, not credentials. Supplemental reviews are hash-bound to the
+historical manifest and checked with the same field/fingerprint/match-digest rules. The all-refs
+author audit now PASSED across 72 commits. Its former email-hash deduplication hid eight additional
+commits: nine pre-existing remote refs share the public Dependabot bot identity (author name
+dependabot[bot], author-email SHA-256
+bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6), with GitHub as committer. The
+exact committer-email digest is retained in each supplemental policy entry. The original reported
+ref was refs/remotes/origin/dependabot/npm_and_yarn/types/node-26.4.1 at
 d8b3d5a10f4c878c413a388d6f640fa390cb4b5b. Every offending commit/ref is now explicitly reported.
 [The supplemental policy](../../validation/history-author-allowances.json) approves only nine exact
 immutable commit/author/committer tuples for public-email privacy. Future bot commits and differing
@@ -310,10 +320,13 @@ pass, including future-commit rejection, tuple mismatch, malformed/overbroad pol
 content scanning and multiple offending commits. No ref, author metadata, ancestry, historical
 release tag or frozen publication approval list was changed.
 
-Self-scan: PASSED, 0 active and 82 existing suppressed findings; overall completeness PARTIAL. This
-meets the configured active-finding gate, not a proof of repository security. Existing suppressions
-and engine limitations are visible in [self-scan evidence](../../validation/alpha12/self-scan.json),
-with corresponding [SARIF](../../validation/alpha12/self-scan.sarif.json) and
+The refreshed selfScan gate and preserved detailed snapshot both report PASSED, 0 active and 82
+existing suppressed findings. The detailed snapshot's overall completeness was PARTIAL at
+f2981a72055970010b775c4464a2df8c5871a83f; the refreshed gate records the active-finding outcome, not
+a new complete proof report. Passing this gate is not proof of repository security. Existing
+suppressions and engine limitations are visible in
+[the preserved self-scan snapshot](../../validation/alpha12/self-scan.json), with corresponding
+[SARIF](../../validation/alpha12/self-scan.sarif.json) and
 [CycloneDX](../../validation/alpha12/cydetix.cdx.json).
 
 Full-SHA Action pins, exact-commit hosted gates, protected release environment, OIDC-only Trusted
@@ -334,7 +347,7 @@ alpha.12 pass. The strict release verifier is intentionally not bypassed by deve
   leaves the original +20.6% p95 change within the descriptive paired-cluster interval. A controlled
   independent-host comparison remains necessary before accepting performance readiness.
 
-GitHub's exact-commit query at 0f3f8111ad0537e98dd8eff899b3407364482168 reports
+GitHub's exact-commit query at 703a89ca57fdcf5c16dd46231daf9c5c3b1326d8 reports
 EXACT_COMMIT_NOT_ON_REMOTE, with 0 workflow runs and 0 status contexts. A pending aggregate with
 zero contexts is not a running check. Local gates do not substitute for CI, CodeQL or OpenSSF.
 Closure is limited to local evidence; no push, dispatch, release preparation or publication was

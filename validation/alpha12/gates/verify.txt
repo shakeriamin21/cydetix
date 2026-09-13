@@ -29,12 +29,14 @@ Checked 21 versioned JSON schemas and 27 rule definitions.
 > cydetix@0.6.0-alpha.12 validate:sarif
 > node scripts/validate-sarif.mjs
 
-Microsoft SARIF Multitool validated phase-one in 66036 ms.
-Microsoft SARIF Multitool validated phase-two-code-flow in 32784 ms.
-Microsoft SARIF Multitool validated phase-three-authentication-code-flow in 100430 ms.
-Microsoft SARIF Multitool validated phase-four-workflow-code-flow in 108505 ms.
-Microsoft SARIF Multitool validated phase-four-secret-redaction in 17335 ms.
-Microsoft SARIF Multitool validated phase-four-dependency-code-flow in 12916 ms.
+Microsoft SARIF Multitool validated phase-one in 45575 ms.
+Microsoft SARIF Multitool validated phase-two-code-flow in 27216 ms.
+Microsoft SARIF Multitool validated phase-three-authentication-code-flow in 20224 ms.
+Microsoft SARIF Multitool validated phase-four-workflow-code-flow in 22635 ms.
+Microsoft SARIF Multitool validated phase-four-secret-redaction in 21396 ms.
+Microsoft SARIF Multitool validated phase-four-dependency-code-flow in 19723 ms.
+Microsoft SARIF Multitool explicitly rejected schema-negative.
+Microsoft SARIF Multitool explicitly rejected semantic-negative.
 Microsoft SARIF Multitool validated Phase 1-5 SARIF 2.1.0 output, including SAFE fixes, dependency/workflow code flows, and redacted secrets.
 
 > cydetix@0.6.0-alpha.12 validate:sbom
@@ -64,10 +66,10 @@ Done. You do not need to mention Cydetix. Just ask:
 
   "Check this project for security issues."
 
- Test Files  57 passed (57)
-      Tests  439 passed (439)
-   Start at  11:33:06
-   Duration  199.39s (transform 2.12s, setup 0ms, import 21.05s, tests 164.12s, environment 11ms)
+ Test Files  58 passed (58)
+      Tests  455 passed (455)
+   Start at  14:04:38
+   Duration  208.21s (transform 2.02s, setup 0ms, import 20.85s, tests 172.95s, environment 10ms)
 
 
 > cydetix@0.6.0-alpha.12 validate:remediation
@@ -118,7 +120,7 @@ Validated explicit-root Cydetix MCP initialize, exact-version startup, and three
 > cydetix@0.6.0-alpha.12 build
 > tsc -p tsconfig.build.json
 
-Development 0.6.0-alpha.12 is consistent; 18 historical evidence files and immutable alpha.11 identity preserved. Release readiness is not asserted.
+Development 0.6.0-alpha.12 is consistent; 19 historical evidence files and immutable alpha.11 identity preserved. Release readiness is not asserted.
 
 > cydetix@0.6.0-alpha.12 validate:package
 > npm run build && node scripts/validate-package.mjs
@@ -171,9 +173,9 @@ Packed install smoke passed for cydetix 0.6.0-alpha.12.
 {
   "schemaVersion": "1.0.0",
   "state": "PASS",
-  "filesReviewed": 995,
+  "filesReviewed": 1048,
   "scope": "TRACKED_AND_UNTRACKED_NOT_IGNORED",
-  "bytesReviewed": 6255176,
+  "bytesReviewed": 7431128,
   "issues": []
 }
 

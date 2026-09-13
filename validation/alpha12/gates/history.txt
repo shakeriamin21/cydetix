@@ -8,7 +8,7 @@
   "scope": {
     "mode": "ALL_REFS"
   },
-  "commitsReviewed": 68,
+  "commitsReviewed": 72,
   "issues": [],
   "authorAllowances": {
     "policy": "validation/history-author-allowances.json",

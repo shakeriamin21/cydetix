@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
+  "sourceCommit": "703a89ca57fdcf5c16dd46231daf9c5c3b1326d8",
   "version": "0.6.0-alpha.12",
   "startingCommit": "f16680007b835e7c6b4163ac9a3d5cc4eec27616",
   "sourceBinding": "Supplemental blocker-closure assembly. Every input retains its actual invocation/review source and SHA-256. No runtime engine, proof, bounds or remediation adapter changed during closure.",
@@ -27,12 +27,32 @@
     },
     {
       "path": "validation/alpha12/closure/hosted-checks.json",
-      "sha256": "29402454b1c98302a052beb385279d4832cb4ae511c8fc1e0c1f32723ec67195"
+      "sha256": "ee7b148ae9f0f208a20634241d18ae24bd21d84a0cb2992d40f486335920066c"
+    },
+    {
+      "path": "validation/alpha12/closure/independent-reconciliation-check.json",
+      "sha256": "7b7ca9842c88411bde009ca1b12dfb8eb020fdd22f6771b5189be38a40fea5f1"
+    },
+    {
+      "path": "validation/alpha12/closure/runtime-binding.json",
+      "sha256": "f884c7f07fe38d49c1f9723e8b6898e39281e7948ade95f77685d5f88c4c6bd4"
+    },
+    {
+      "path": "validation/alpha12/closure/evidence-validation.json",
+      "sha256": "e7d5c4b261c3f69064548b45c85d7e6f0e0f92bbd02177eb9b0a29b503301404"
+    },
+    {
+      "path": "validation/alpha12/closure/sarif-validation-hardening.json",
+      "sha256": "060cf2ac60cad491c56fd31dfeac881631b5f54fb59888395569d19cef77d613"
+    },
+    {
+      "path": "validation/alpha12/closure/verification-attempts.json",
+      "sha256": "574a733f99f3aa0d8e9e3217f06915c51a377dc1e5eb134eb997b2553a81410b"
     }
   ],
   "hosted": {
     "state": "NOT_RUN",
-    "checkedCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
+    "checkedCommit": "703a89ca57fdcf5c16dd46231daf9c5c3b1326d8",
     "conclusion": "EXACT_COMMIT_NOT_ON_REMOTE",
     "workflowRuns": 0,
     "statuses": 0,
@@ -1073,8 +1093,8 @@
   },
   "allRefs": {
     "state": "PASSED",
-    "sourceCommit": "74f67f89e25daa7779ca15382cde5669c6b3fe08",
-    "commitsReviewed": 68,
+    "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274",
+    "commitsReviewed": 72,
     "issues": [],
     "authorAllowances": {
       "policy": "validation/history-author-allowances.json",

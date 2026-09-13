@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0.0",
-  "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
+  "sourceCommit": "703a89ca57fdcf5c16dd46231daf9c5c3b1326d8",
   "sourceBinding": "Implementation and evidence-generation source at this commit. Individual corpus/performance/gate records bind their actual invocation commit. Later evidence-only commits may change HEAD; no historical release artifact is rewritten.",
   "version": "0.6.0-alpha.12",
   "baselineCommit": "4e13b96cc3539e1b623a4c5a12f10a0954776253",
   "baselineTagObject": "e692f1e23d58157a209f511adb6180d3f489a80c",
   "tests": {
-    "total": 449,
-    "passed": 449,
+    "total": 455,
+    "passed": 455,
     "failed": 0,
     "skipped": 0,
     "sandboxPassed": 13,
@@ -427,49 +427,49 @@
       "id": "npmAudit",
       "state": "PASSED",
       "evidence": "validation/alpha12/gates/audit.txt",
-      "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168"
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274"
     },
     {
       "id": "onlineOsv",
       "state": "PASSED",
       "evidence": "validation/alpha12/gates/osv.txt",
-      "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168"
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274"
     },
     {
       "id": "licenses",
       "state": "PASSED",
-      "evidence": "validation/alpha12/gates/licenses.txt",
-      "sourceCommit": "7d0cb30c398dda7b2ea5cccfff098c6f3d04f46b"
+      "evidence": "validation/alpha12/gates/verify.txt",
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274"
     },
     {
       "id": "privacy",
       "state": "PASSED",
-      "evidence": "validation/alpha12/gates/privacy.txt",
-      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e"
+      "evidence": "validation/alpha12/gates/verify.txt",
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274"
     },
     {
       "id": "history",
       "state": "PASSED",
       "evidence": "validation/alpha12/gates/history.txt",
-      "sourceCommit": "74f67f89e25daa7779ca15382cde5669c6b3fe08"
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274"
     },
     {
       "id": "workflowSecurity",
       "state": "PASSED",
       "evidence": "validation/alpha12/gates/workflow.txt",
-      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e"
+      "sourceCommit": "c6173fda8f15a331561f2d43025b5ef6e7aa4e76"
     },
     {
       "id": "package",
       "state": "PASSED",
       "evidence": "validation/alpha12/gates/verify.txt",
-      "sourceCommit": "f5ebf910399aa4806831cecfe0a1bb88a8cbeffe"
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274"
     },
     {
       "id": "packedInstall",
       "state": "PASSED",
       "evidence": "validation/alpha12/gates/verify.txt",
-      "sourceCommit": "f5ebf910399aa4806831cecfe0a1bb88a8cbeffe"
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274"
     },
     {
       "id": "packedPlugin",
@@ -481,37 +481,37 @@
       "id": "selfScan",
       "state": "PASSED",
       "evidence": "validation/alpha12/gates/selfScan.txt",
-      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e"
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274"
     },
     {
       "id": "cycloneDx",
       "state": "PASSED",
       "evidence": "verify:development log: official schema checks and unchanged strict workflow/publication controls. Static controls do not establish OIDC publication or hosted approvals.",
-      "sourceCommit": "f5ebf910399aa4806831cecfe0a1bb88a8cbeffe"
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274"
     },
     {
       "id": "sarif",
       "state": "PASSED",
       "evidence": "verify:development log: official schema checks and unchanged strict workflow/publication controls. Static controls do not establish OIDC publication or hosted approvals.",
-      "sourceCommit": "f5ebf910399aa4806831cecfe0a1bb88a8cbeffe"
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274"
     },
     {
       "id": "releaseControls",
       "state": "PASSED",
       "evidence": "verify:development log: official schema checks and unchanged strict workflow/publication controls. Static controls do not establish OIDC publication or hosted approvals.",
-      "sourceCommit": "f5ebf910399aa4806831cecfe0a1bb88a8cbeffe"
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274"
     },
     {
       "id": "gitleaks",
       "state": "PASSED",
       "evidence": "validation/alpha12/gitleaks-review.json; pinned Docker v8.30.1, network disabled, complete --all history, no repository ignore directives",
-      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e"
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274"
     },
     {
       "id": "mandatorySandbox",
       "state": "PASSED",
       "evidence": "13 mandatory Docker integration tests; image digest recorded in tests/verify gate records",
-      "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168"
+      "sourceCommit": "ac5ac499da356df08325aa1ab2aea70c3c03c274"
     },
     {
       "id": "hostedCi",
