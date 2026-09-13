@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0.0",
-  "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+  "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
   "version": "0.6.0-alpha.12",
   "tests": {
-    "total": 440,
-    "passed": 440,
+    "total": 449,
+    "passed": 449,
     "failed": 0,
     "skipped": 0,
-    "sourceReportSha256": "e5b5f8559abebd682e46257b82f323be8c679fd0a01c20f2cb412a225d7575e1",
+    "sourceReportSha256": "8d99db94648636553a2438beefb26de97b1f67dedbc0f22943ef3c4784c0a92f",
     "suites": [
       {
         "path": "tests/auth-graph/model.test.ts",
@@ -31,6 +31,13 @@
         "skipped": 0
       },
       {
+        "path": "tests/call-graph/builder.test.ts",
+        "status": "passed",
+        "passed": 2,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
         "path": "tests/cli/agent-subprocess.test.ts",
         "status": "passed",
         "passed": 3,
@@ -46,13 +53,6 @@
       },
       {
         "path": "tests/cli/trust.test.ts",
-        "status": "passed",
-        "passed": 2,
-        "failed": 0,
-        "skipped": 0
-      },
-      {
-        "path": "tests/call-graph/builder.test.ts",
         "status": "passed",
         "passed": 2,
         "failed": 0,
@@ -171,27 +171,6 @@
         "skipped": 0
       },
       {
-        "path": "tests/reporting/alpha12.test.ts",
-        "status": "passed",
-        "passed": 6,
-        "failed": 0,
-        "skipped": 0
-      },
-      {
-        "path": "tests/reporting/human.test.ts",
-        "status": "passed",
-        "passed": 1,
-        "failed": 0,
-        "skipped": 0
-      },
-      {
-        "path": "tests/reporting/sarif.test.ts",
-        "status": "passed",
-        "passed": 3,
-        "failed": 0,
-        "skipped": 0
-      },
-      {
         "path": "tests/remediation/assessment.test.ts",
         "status": "passed",
         "passed": 7,
@@ -223,6 +202,27 @@
         "path": "tests/remediation/transaction-safety.test.ts",
         "status": "passed",
         "passed": 8,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/reporting/alpha12.test.ts",
+        "status": "passed",
+        "passed": 6,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/reporting/human.test.ts",
+        "status": "passed",
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/reporting/sarif.test.ts",
+        "status": "passed",
+        "passed": 3,
         "failed": 0,
         "skipped": 0
       },
@@ -276,20 +276,6 @@
         "skipped": 0
       },
       {
-        "path": "tests/supply-chain/phase4.test.ts",
-        "status": "passed",
-        "passed": 9,
-        "failed": 0,
-        "skipped": 0
-      },
-      {
-        "path": "tests/supply-chain/provider-failures.test.ts",
-        "status": "passed",
-        "passed": 2,
-        "failed": 0,
-        "skipped": 0
-      },
-      {
         "path": "tests/security/boundary.test.ts",
         "status": "passed",
         "passed": 5,
@@ -313,7 +299,7 @@
       {
         "path": "tests/security/history-audit.test.ts",
         "status": "passed",
-        "passed": 5,
+        "passed": 14,
         "failed": 0,
         "skipped": 0
       },
@@ -339,9 +325,16 @@
         "skipped": 0
       },
       {
-        "path": "tests/tenant-isolation/proof.test.ts",
+        "path": "tests/supply-chain/phase4.test.ts",
         "status": "passed",
-        "passed": 4,
+        "passed": 9,
+        "failed": 0,
+        "skipped": 0
+      },
+      {
+        "path": "tests/supply-chain/provider-failures.test.ts",
+        "status": "passed",
+        "passed": 2,
         "failed": 0,
         "skipped": 0
       },
@@ -407,21 +400,28 @@
         "passed": 8,
         "failed": 0,
         "skipped": 0
+      },
+      {
+        "path": "tests/tenant-isolation/proof.test.ts",
+        "status": "passed",
+        "passed": 4,
+        "failed": 0,
+        "skipped": 0
       }
     ]
   },
   "gates": [
     {
       "id": "audit",
-      "sourceCommit": "65cf5f07a7cd37bfca7b0f07222863ded1dec606",
+      "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
       "command": [
         "npm",
         "audit",
         "--json",
         "--audit-level=high"
       ],
-      "startedAt": "2026-09-13T07:49:42.816Z",
-      "durationMilliseconds": 2974.9473,
+      "startedAt": "2026-09-13T09:46:25.926Z",
+      "durationMilliseconds": 2336.4273,
       "exitCode": 0,
       "signal": null,
       "outputLimited": false,
@@ -525,7 +525,7 @@
     },
     {
       "id": "history",
-      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "sourceCommit": "74f67f89e25daa7779ca15382cde5669c6b3fe08",
       "command": [
         "npm",
         "run",
@@ -534,17 +534,17 @@
         "--enforce",
         "--all"
       ],
-      "startedAt": "2026-09-13T08:18:18.420Z",
-      "durationMilliseconds": 34023.8856,
-      "exitCode": 1,
+      "startedAt": "2026-09-13T09:39:15.327Z",
+      "durationMilliseconds": 34255.9066,
+      "exitCode": 0,
       "signal": null,
       "outputLimited": false,
-      "state": "FAILED",
-      "stdoutSha256": "d7175c3ac9895d5d7e51f9fabcb6c6f1dbde4009e26b9ea97279ab53f42b6c9d",
+      "state": "PASSED",
+      "stdoutSha256": "107fc6754ef72b582111e8e2f4d3c7b776b4e6f6f55eaa9db626d56eb201a4ff",
       "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
       "sandboxImage": null,
       "publicLog": "validation/alpha12/gates/history.txt",
-      "publicLogSha256": "d7175c3ac9895d5d7e51f9fabcb6c6f1dbde4009e26b9ea97279ab53f42b6c9d",
+      "publicLogSha256": "107fc6754ef72b582111e8e2f4d3c7b776b4e6f6f55eaa9db626d56eb201a4ff",
       "logRedaction": "Only developer workspace/home/temp path prefixes replaced in the public log. Original stdout/stderr digests retained."
     },
     {
@@ -616,14 +616,14 @@
     },
     {
       "id": "osv",
-      "sourceCommit": "983173fdc9bef4732b3f20819f2d22066f292b8c",
+      "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
       "command": [
         "npm",
         "run",
         "validate:online-osv"
       ],
-      "startedAt": "2026-09-13T07:14:54.633Z",
-      "durationMilliseconds": 85877.30960000001,
+      "startedAt": "2026-09-13T09:46:29.237Z",
+      "durationMilliseconds": 24520.3241,
       "exitCode": 0,
       "signal": null,
       "outputLimited": false,
@@ -805,7 +805,7 @@
     },
     {
       "id": "tests",
-      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+      "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
       "command": [
         "npm",
         "test",
@@ -813,8 +813,8 @@
         "--reporter=json",
         "--outputFile=.cydetix/alpha12/tests.json"
       ],
-      "startedAt": "2026-09-13T08:15:25.303Z",
-      "durationMilliseconds": 204788.8584,
+      "startedAt": "2026-09-13T09:40:39.355Z",
+      "durationMilliseconds": 251079.0788,
       "exitCode": 0,
       "signal": null,
       "outputLimited": false,

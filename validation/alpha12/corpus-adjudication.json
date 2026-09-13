@@ -2,7 +2,7 @@
   "schemaVersion": "1.0.0",
   "sourceCommit": "1818a693ef3dd871b01b136af6696a13aa332693",
   "version": "0.6.0-alpha.12",
-  "reviewMethod": "Implementation-agent static source review and independent source-line checks; no target execution and no independent human audit. Emitted-finding review is separate from selective source inspection for missed supported patterns.",
+  "reviewMethod": "Implementation-time source review, subsequently reconciled with the independent fresh-context model review in validation/alpha12/closure/independent-corpus-review.json. No target execution, independent human audit or complete ground truth. The independent artifact pins the original adjudication and records disagreements; sourceCommit binds original scan invocation, not the later review.",
   "groundTruth": "INCOMPLETE",
   "recall": null,
   "accuracy": null,
@@ -50,7 +50,7 @@
         "src/db.py"
       ],
       "classification": "UNSUPPORTED_PATTERN",
-      "explanation": "Route path parameter is passed to an imported Python helper before SQL execution. Cross-file/function Python propagation is outside the declared envelope; this is not counted as a supported-pattern FN."
+      "explanation": "Route path parameter is passed to an imported Python helper before SQL execution. Cross-file/function Python propagation is outside the declared envelope. The same parameter reaches an implicit Flask HTML string return at src/flask_app.py:27-30; only explicit Python HTML call sinks are modeled. Both are unsupported omissions, not supported-pattern FNs."
     },
     {
       "repositoryId": "payatu-vuln-node",
@@ -59,7 +59,7 @@
         "controllers/vuln_controller.js"
       ],
       "classification": "UNSUPPORTED_PATTERN_AND_RESOURCE_BOUND",
-      "explanation": "CommonJS imported controllers, router.route chaining and custom authentication are outside supported cross-file ESM propagation; full scan also exhausts repository AST coverage."
+      "explanation": "CommonJS imported controllers, router.route chaining and custom authentication are outside supported cross-file ESM propagation. Actual truncation triggers are the eight-iteration identity bound (390 facts) and oversized vuln_react_app/package-lock.json. Application analysis reports zero truncation events; repository AST exhaustion was incorrectly attributed in the original adjudication."
     },
     {
       "repositoryId": "sirappsec-vuln-node",
@@ -67,7 +67,15 @@
         "src/router/routes/system.js"
       ],
       "classification": "UNSUPPORTED_PATTERN_AND_RESOURCE_BOUND",
-      "explanation": "Routes are constructed inside a CommonJS exported app factory with locally loaded sink aliases. Full scan exhausts repository AST coverage. These cases are not used to claim supported recall."
+      "explanation": "Routes are constructed inside a CommonJS exported app factory with locally loaded sink aliases. Actual truncation is three oversized vendor assets; application analysis reports zero truncation events. Repository AST exhaustion was incorrectly attributed in the original adjudication. These cases are not used to claim supported recall."
+    },
+    {
+      "repositoryId": "vikas-vulnerable-website",
+      "paths": [
+        "server/server.js"
+      ],
+      "classification": "UNSUPPORTED_PATTERN",
+      "explanation": "The request host also reaches HTML at lines 134/143 inside an anonymous exec callback. Callback reachability, closure taint and response binding are outside the current same-file direct-call envelope. The command-injection finding does not cover this separate XSS omission."
     },
     {
       "repositoryId": "vulnerable-typescript",
@@ -464,7 +472,16 @@
         277.3962,
         140.19870000000003
       ],
-      "unsupportedPatterns": [],
+      "unsupportedPatterns": [
+        {
+          "repositoryId": "vikas-vulnerable-website",
+          "paths": [
+            "server/server.js"
+          ],
+          "classification": "UNSUPPORTED_PATTERN",
+          "explanation": "The request host also reaches HTML at lines 134/143 inside an anonymous exec callback. Callback reachability, closure taint and response binding are outside the current same-file direct-call envelope. The command-injection finding does not cover this separate XSS omission."
+        }
+      ],
       "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
     },
     {
@@ -857,8 +874,8 @@
           "path": "app/services/report_service.py",
           "line": 179,
           "sourceFileSha256": "95846c7d626f7a0206423d037b6d59acd4e54809e3f06ac509a41863cd33b292",
-          "classification": "VALID_OBSERVATION_WITH_UNKNOWN_PURPOSE",
-          "rationale": "Hash operation is observed; storage purpose is outside the adapter's proof. Observation retained with ARCHITECTURAL ceiling and UNKNOWN conclusion."
+          "classification": "LEXICAL_NARRATIVE_ONLY_UNKNOWN",
+          "rationale": "Confirmed lexical observation noise: this is a descriptive quoted string, not an executed hashing expression. Existing engine UNKNOWN and ARCHITECTURAL ceiling remain conservative, but hash-operation wording overstates what was observed. Do not count this as an executed hash or a false insecure conclusion."
         }
       ],
       "unknown": {
@@ -1664,7 +1681,7 @@
             "src/db.py"
           ],
           "classification": "UNSUPPORTED_PATTERN",
-          "explanation": "Route path parameter is passed to an imported Python helper before SQL execution. Cross-file/function Python propagation is outside the declared envelope; this is not counted as a supported-pattern FN."
+          "explanation": "Route path parameter is passed to an imported Python helper before SQL execution. Cross-file/function Python propagation is outside the declared envelope. The same parameter reaches an implicit Flask HTML string return at src/flask_app.py:27-30; only explicit Python HTML call sinks are modeled. Both are unsupported omissions, not supported-pattern FNs."
         }
       ],
       "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
@@ -1715,7 +1732,7 @@
             "controllers/vuln_controller.js"
           ],
           "classification": "UNSUPPORTED_PATTERN_AND_RESOURCE_BOUND",
-          "explanation": "CommonJS imported controllers, router.route chaining and custom authentication are outside supported cross-file ESM propagation; full scan also exhausts repository AST coverage."
+          "explanation": "CommonJS imported controllers, router.route chaining and custom authentication are outside supported cross-file ESM propagation. Actual truncation triggers are the eight-iteration identity bound (390 facts) and oversized vuln_react_app/package-lock.json. Application analysis reports zero truncation events; repository AST exhaustion was incorrectly attributed in the original adjudication."
         }
       ],
       "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."
@@ -1807,7 +1824,7 @@
             "src/router/routes/system.js"
           ],
           "classification": "UNSUPPORTED_PATTERN_AND_RESOURCE_BOUND",
-          "explanation": "Routes are constructed inside a CommonJS exported app factory with locally loaded sink aliases. Full scan exhausts repository AST coverage. These cases are not used to claim supported recall."
+          "explanation": "Routes are constructed inside a CommonJS exported app factory with locally loaded sink aliases. Actual truncation is three oversized vendor assets; application analysis reports zero truncation events. Repository AST exhaustion was incorrectly attributed in the original adjudication. These cases are not used to claim supported recall."
         }
       ],
       "limitation": "No findings or COMPLETE means only the declared static envelope was processed. This is not whole-repository ground truth or a security guarantee."

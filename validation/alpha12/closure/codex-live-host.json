@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0.0",
+  "host": "codex",
+  "sourceCommit": "74f67f89e25daa7779ca15382cde5669c6b3fe08",
+  "version": "0.6.0-alpha.12",
+  "observedAt": "2026-09-13T09:36:27.518Z",
+  "durationMilliseconds": 51453,
+  "exitCode": 0,
+  "processError": null,
+  "initialized": {
+    "name": "Cydetix",
+    "version": "0.6.0-alpha.12"
+  },
+  "listedTools": [
+    "cydetix_scan",
+    "cydetix_fix",
+    "cydetix_explain"
+  ],
+  "calls": [
+    {
+      "name": "cydetix_scan",
+      "arguments": {
+        "path": "."
+      },
+      "error": null,
+      "resultPresent": true,
+      "resultSha256": "db6e18b98cfae2909120e9f0a22cfe82f44981e83d1d87b08b17f81c996232c5",
+      "proofStates": [
+        "UNKNOWN",
+        "PROVEN_INSECURE",
+        "NOT_APPLICABLE"
+      ]
+    },
+    {
+      "name": "cydetix_explain",
+      "arguments": {
+        "ruleId": "AS-SESSION-001"
+      },
+      "error": null,
+      "resultPresent": true,
+      "resultSha256": "f1c7ac2abe1498a9171713d3082dde23bd91dc9a5f1a8df6228646cbd0af2eb0",
+      "proofStates": []
+    },
+    {
+      "name": "cydetix_scan",
+      "arguments": {
+        "path": ".."
+      },
+      "error": {
+        "code": -32602,
+        "message": "MCP project path must stay within the configured project root."
+      },
+      "resultPresent": false,
+      "resultSha256": null,
+      "proofStates": []
+    }
+  ],
+  "fixtureUnchanged": true,
+  "runtimeSha256": "6a0e4aa5cefef180040d12af2b010f44ebb6a1e117829f2a5b4a3696f6f093cc",
+  "protocolSha256": "50af250b82bed49ae15822289a15ea5de72f859c65f501963507a284f8ca2582",
+  "stdoutSha256": "410d9116f163a9b6971a88e6092fc6f36acda2bb36b183ab12d1c549d8f9466c",
+  "stderrSha256": "1aa26269eb1cc57f86b235a03cda53c004edb5b1e9fc99d4da4f00843293d721",
+  "state": "LIVE_HOST_VALIDATED_WITH_LIMITATIONS",
+  "limitations": [
+    "Exact local development runtime, isolated synthetic fixture, scan/explain/plan/boundary scope only. No live source modification or sandbox remediation tested by the host.",
+    "A process launch or MCP initialization alone is not live-host validation. Host tool-call transcripts must demonstrate completed requests.",
+    "Raw host transcripts remain local to avoid publishing session identifiers or account data. Sanitized protocol call receipts and hashes are retained."
+  ],
+  "hostVersion": "codex-cli 0.154.0",
+  "transcriptReview": {
+    "hostToolTypes": [
+      "mcp_tool_call",
+      "agent_message",
+      "error"
+    ],
+    "nonMcpExecutionObserved": false,
+    "liveValidated": [
+      "scan",
+      "explain",
+      "path-escape rejection"
+    ],
+    "fixPlan": "BLOCKED_BY_HOST_APPROVAL_POLICY",
+    "mutation": "NOT_RUN",
+    "expectedRequests": 4,
+    "serverReceivedRequests": 3,
+    "hostRejectedRequests": 1,
+    "reason": "The actual host attempted cydetix_fix with apply=false, but its noninteractive never-approval policy rejected the call before sending it to MCP. No remediation plan was produced. No silent authority increase or retry with automatic fix approval was performed."
+  }
+}

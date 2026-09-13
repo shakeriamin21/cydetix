@@ -2,13 +2,13 @@
 
 **Verdict: ALPHA12_NOT_BETA_READY**
 
-Alpha.12 development hardens the existing product and retains evidence for review. Beta.1 is not yet
-justified: exact-commit hosted gates and live-host validation remain unrun, corpus review is not
-independently human-validated, and the large-target performance regression is unresolved. These are
-explicit blockers; local passing checks do not replace them.
+Alpha.12 blocker closure completed the independent fresh-context corpus review and corrected the
+all-refs privacy audit. Beta.1 is not yet justified: exact-commit hosted gates remain unrun,
+representative live-host coverage is partial, and repeated FastAPI tail measurements are
+inconclusive. No optimization or security-engine change was made during blocker closure.
 
 Development version: `0.6.0-alpha.12`. Evidence assembly source:
-`017c51664a8e596ab8d0f94cfe56a2618d18ec5e`. Individual invocation commits are recorded in the
+`0f3f8111ad0537e98dd8eff899b3407364482168`. Individual invocation commits are recorded in the
 machine evidence. Later documentation/evidence commits can change HEAD without changing the tested
 implementation; the development handoff gives the final HEAD. The immutable alpha.11 commit is
 `4e13b96cc3539e1b623a4c5a12f10a0954776253` and its annotated tag object is
@@ -80,20 +80,31 @@ composition, dynamic router composition, dependency injection, path aliases/barr
 template engines, encoded redirect policies and general Python cross-file propagation remain
 unsupported or UNKNOWN. npm package-lock v2/v3 remains the resolved dependency ecosystem.
 
-All 134 emitted observations have implementation-agent static review records; none is left without a
-recorded disposition. This is not independent human adjudication or complete ground truth. Three
-prior false insecure conclusions were reproduced twice with preserved alpha.11 and corrected:
-Flask-Security SHA-1 breach lookup (one) and placeholder private-key headers (two). No unresolved
-confirmed FP remains within that review. The correction retains 13 UNKNOWN findings: four hash
-observations and nine private-key marker observations. Test-cookie configurations and test keys are
-not described as demonstrated production compromises.
+All 134 emitted observations now have an independent fresh-context model review, with 81 reviewed
+source files compared to pinned Git objects (72 exact bytes, nine CRLF-only differences, no
+substantive differences). This is not human adjudication, third-party certification or complete
+ground truth. Three prior false insecure conclusions were reproduced twice with preserved alpha.11
+and corrected: Flask-Security SHA-1 breach lookup (one) and placeholder private-key headers (two).
+The independent review confirms those corrections and establishes no current false-insecure proof.
+One confirmed lexical false-positive observation remains: FastAPI lab report_service.py:179 contains
+a narrative string, not an executed hash. Its UNKNOWN state remains conservative, but hash-operation
+wording overstates the observation. The machine confirmedFP count includes this one noise
+observation. The 13 finding UNKNOWNs comprise four hash-like text observations and nine key markers.
+Test-cookie settings and test keys are not demonstrated production compromises. Four evidence
+disagreements were reconciled, including two incorrect truncation causes and ambiguous Flask sink
+wording. See [independent review](ALPHA12_INDEPENDENT_CORPUS_REVIEW.md) and
+[closure evidence](../../validation/alpha12/closure/blocker-closure.json).
 
 Supported-pattern FNs discovered: 0, only within the explicitly named selective source reviews. This
 is not a corpus-wide zero-FN assertion. The external request.query -> alias -> res.redirect flow in
 vulnerable-typescript provides a supported redirect example. Its SQL-looking console output has no
 SQL sink. Cross-file Python SQL and unsupported CommonJS application wiring are recorded as
 limitations rather than supported FNs or true negatives. Ground truth is INCOMPLETE; recall and
-generic accuracy are deliberately null.
+generic accuracy are deliberately null. The two independently examined extra omissions are
+unsupported implicit Flask HTML string returns and JavaScript anonymous callback/closure
+propagation. Python XSS supports the enumerated explicit HTML call sinks; the coverage table now
+states that existing boundary precisely. No detection coverage was removed to obtain this
+classification, and no deferred omission candidate remains.
 
 UNKNOWN totals are 234 overlapping proof instances: application dataflow 220, authorization 0,
 authentication 1, finding proof 13. The largest cause is 202 unresolved Express state-changing
@@ -103,6 +114,14 @@ Thirteen repositories are TRUNCATED, including cases with zero emitted UNKNOWN i
 not complete coverage. Strapi parser-scope and recursive identity failures and earlier Juice
 Shop/Strapi timeout runs remain development discoveries. Final Strapi scans completed in 91.45s and
 104.08s with explicit bounds evidence, rather than omitted targets or a clean-analysis claim.
+
+Every TRUNCATED repository has an observed resource trigger: 13/13. Overlapping trigger counts are
+identity iteration cap 6, application bounds 6, and file-size skips 8. Eight repositories have
+resource triggers without parser failure; five also have 149 failed supported-language files. None
+is TRUNCATED solely by parser or framework limitations. All six application-bound targets exceed
+200000 aggregate AST nodes, but per-event subtype/location was not serialized, so no finer
+AST/fact/path split is claimed. The independent report lists all 13 identities, triggers, skipped
+paths and co-occurring limitations.
 
 ## Performance and resource evidence
 
@@ -136,6 +155,18 @@ cost but does not establish causality or dismiss the regression. Performance is 
 a quiet independent-machine comparison; all slow samples are retained. See
 [assessment](../../validation/alpha12/performance-assessment.json).
 
+The blocker-closure repeat used four prespecified ABBA/BAAB/ABBA/BAAB rounds, eight paired process
+clusters, one warmup plus ten measured scans per process: 80 additional samples per version. Both
+version-specific normalized proof reports match their original digests in every sample. Repeated
+alpha.11 p50/p95: 5.290s / 9.684s; alpha.12: 4.948s / 8.140s. Pooled p95 ratio: 0.841; fixed-seed
+paired-cluster bootstrap descriptive 95% interval: 0.577 to 1.243. Alpha.12 p95 is slower in 1/4
+rounds. The original +20.6% change is not consistently reproduced, but remains inside the interval;
+neither repeatable regression nor non-inferiority is established. OS background load and thermal
+state remain uncontrolled on this single host. All samples, individual rounds, stage timings and
+methodology are retained in
+[repeated evidence](../../validation/alpha12/closure/fastapi-repeated.json). No analysis, bounds,
+coverage or sandbox constraints were weakened to improve timing.
+
 Existing application bounds remain 50,000 AST nodes/file, 200,000 repository AST nodes, 10,000
 facts, eight propagation iterations and 16 evidence steps. Identity propagation now explicitly uses
 10,000 identities/eight iterations rather than a symbol-count-scaled loop. Exhaustion clears
@@ -159,10 +190,22 @@ have configuration, adapter and direct subprocess tests. Each adapter verifies i
 and launches the shared exact version/root-bound definition. Regression coverage includes wrong
 runtime versions, hostile project text/lifecycle scripts/Makefiles, malformed requests, path
 escapes, symlinks, stale fingerprints, dirty files, interrupted transactions and unavailable sandbox
-providers. No host silently receives network, installation, elevation or mutation authority. Actual
-client UIs were not driven: liveHost is NOT_RUN for all eleven. The session's installed alpha.6 MCP
-bound to another root is excluded. See
+providers. No host silently receives network, installation, elevation or mutation authority. The
+actual Codex CLI 0.154.0 drove scan, explain and a rejected path escape against exact alpha.12; its
+noninteractive approval policy withheld fix planning before the request reached MCP. The isolated
+fixture remained byte-identical and hostile lifecycle/Makefile canaries were not executed. Host
+transcripts show no non-MCP execution. An initial model-network sandbox failure was retained
+separately before the explicitly approved network retry. Claude Code 2.1.197 initialized/listed MCP
+but returned Not logged in before any security-tool call, so its live validation remains NOT_RUN.
+Actual graphical UIs and live remediation transactions were not tested. The session-installed
+alpha.6 MCP is excluded. See
 [integration evidence](../../validation/alpha12/agent-integrations.json).
+
+| Client                                                                      | Configuration / adapter / subprocess | Live host                                              | Remaining scope                                            |
+| --------------------------------------------------------------------------- | ------------------------------------ | ------------------------------------------------------ | ---------------------------------------------------------- |
+| Codex                                                                       | PASSED / PASSED / PASSED             | LIVE_HOST_VALIDATED: scan, explain, boundary rejection | Fix plan BLOCKED by host approval policy; mutation NOT_RUN |
+| Claude                                                                      | PASSED / PASSED / PASSED             | NOT_RUN: login unavailable                             | Initialization/listing only                                |
+| Cursor, Gemini, Cline, Roo, Continue, Copilot, Goose, Windsurf, generic MCP | PASSED / PASSED / PASSED for each    | NOT_RUN                                                | No host session exercised                                  |
 
 Public MCP tools remain exactly cydetix_scan, cydetix_fix and cydetix_explain.
 
@@ -186,7 +229,7 @@ fingerprint anchors and optional proof fields require explicit migration review 
 
 ## Local verification and supply chain
 
-Full tests: **440/440 passed**, 0 failed, 0 skipped. Docker: **13/13 passed**, 0 skipped. Baseline
+Full tests: **449/449 passed**, 0 failed, 0 skipped. Docker: **13/13 passed**, 0 skipped. Baseline
 was 374/374 with 13 Docker passes. No prior test was removed. The first final-suite attempt had four
 stale alpha.11 version assertions; these were updated to the intentional development version and
 rerun. Resource/security assertions were not relaxed. Detailed suites, commands, actual invocation
@@ -200,7 +243,7 @@ commits and sanitized logs are retained in
 | batch2           | PASSED | [log](../../validation/alpha12/gates/batch2.txt)           |
 | externalNodeGoat | PASSED | [log](../../validation/alpha12/gates/externalNodeGoat.txt) |
 | externalPython   | PASSED | [log](../../validation/alpha12/gates/externalPython.txt)   |
-| history          | FAILED | [log](../../validation/alpha12/gates/history.txt)          |
+| history          | PASSED | [log](../../validation/alpha12/gates/history.txt)          |
 | historyHead      | PASSED | [log](../../validation/alpha12/gates/historyHead.txt)      |
 | install          | PASSED | [log](../../validation/alpha12/gates/install.txt)          |
 | licenses         | PASSED | [log](../../validation/alpha12/gates/licenses.txt)         |
@@ -220,11 +263,11 @@ commits and sanitized logs are retained in
 | Supply-chain/control gate   | Result  | Invocation commit or scope     |
 | --------------------------- | ------- | ------------------------------ |
 | lockedInstallation          | PASSED  | `c4638767b817`                 |
-| npmAudit                    | PASSED  | `65cf5f07a7cd`                 |
-| onlineOsv                   | PASSED  | `983173fdc9be`                 |
+| npmAudit                    | PASSED  | `0f3f8111ad05`                 |
+| onlineOsv                   | PASSED  | `0f3f8111ad05`                 |
 | licenses                    | PASSED  | `7d0cb30c398d`                 |
 | privacy                     | PASSED  | `017c51664a8e`                 |
-| history                     | FAILED  | `017c51664a8e`                 |
+| history                     | PASSED  | `74f67f89e25d`                 |
 | workflowSecurity            | PASSED  | `017c51664a8e`                 |
 | package                     | PASSED  | `f5ebf910399a`                 |
 | packedInstall               | PASSED  | `f5ebf910399a`                 |
@@ -234,7 +277,7 @@ commits and sanitized logs are retained in
 | sarif                       | PASSED  | `f5ebf910399a`                 |
 | releaseControls             | PASSED  | `f5ebf910399a`                 |
 | gitleaks                    | PASSED  | `017c51664a8e`                 |
-| mandatorySandbox            | PASSED  | `017c51664a8e`                 |
+| mandatorySandbox            | PASSED  | `0f3f8111ad05`                 |
 | hostedCi                    | NOT_RUN | No alpha.12 hosted transaction |
 | codeql                      | NOT_RUN | No alpha.12 hosted transaction |
 | openssf                     | NOT_RUN | No alpha.12 hosted transaction |
@@ -251,12 +294,21 @@ and public privacy audits remain separate gates. The original 14 historical revi
 byte-identical. Nine exact supplemental reviews cover deterministic authentication-operation/proof
 IDs in the new SARIF evidence; their generator and schema establish that these are analysis
 identifiers, not credentials. Supplemental reviews are hash-bound to the historical manifest and
-checked with the same field/fingerprint/match-digest rules. The all-refs author audit flags the
-public Dependabot noreply identity on the pre-existing remote branch commit
-d8b3d5a10f4c878c413a388d6f640fa390cb4b5b. This commit is outside HEAD ancestry. Its identity hash is
-not in the immutable publication configuration, so the all-refs gate remains FAILED; the separate
-HEAD-ancestry result is retained. No remote ref, author metadata or frozen release allowlist was
-changed to make this pass.
+checked with the same field/fingerprint/match-digest rules. The all-refs author audit now PASSED
+across 68 commits. Its former email-hash deduplication hid eight additional commits: nine
+pre-existing remote refs share the public Dependabot bot identity (author name dependabot[bot],
+author-email SHA-256 bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6), with GitHub
+as committer. The exact committer-email digest is retained in each supplemental policy entry. The
+original reported ref was refs/remotes/origin/dependabot/npm_and_yarn/types/node-26.4.1 at
+d8b3d5a10f4c878c413a388d6f640fa390cb4b5b. Every offending commit/ref is now explicitly reported.
+[The supplemental policy](../../validation/history-author-allowances.json) approves only nine exact
+immutable commit/author/committer tuples for public-email privacy. Future bot commits and differing
+identities still fail; forbidden-content scanning remains enforced. GitHub's public API also binds
+the original commit to Dependabot with verified GitHub signature status; the privacy policy itself
+does not assert bot authentication or approve dependency changes. Fourteen targeted audit tests
+pass, including future-commit rejection, tuple mismatch, malformed/overbroad policy rejection,
+content scanning and multiple offending commits. No ref, author metadata, ancestry, historical
+release tag or frozen publication approval list was changed.
 
 Self-scan: PASSED, 0 active and 82 existing suppressed findings; overall completeness PARTIAL. This
 meets the configured active-finding gate, not a proof of repository security. Existing suppressions
@@ -273,18 +325,19 @@ alpha.12 pass. The strict release verifier is intentionally not bypassed by deve
 
 ## Remaining beta blockers and decision
 
-- Exact-commit hosted CI, CodeQL and OpenSSF gates remain unrun; local results do not replace them.
-- Corpus ground truth remains incomplete and implementation-time adjudication has no independent
-  human review. Supported-pattern FN claims remain limited to named reviews.
-- Live-host validation has not been performed for the eleven supported client adapters;
-  configuration and direct subprocess coverage are established separately.
-- At least one controlled p50/p95 comparison needs review; measurements are descriptive and no
-  statistical equivalence is claimed.
-- All-refs history author audit flags a pre-existing Dependabot noreply identity outside HEAD
-  ancestry. Frozen publication approval metadata was preserved; the separate HEAD audit does not
-  replace this failed gate.
+- Exact development-commit hosted CI, CodeQL and OpenSSF remain NOT_RUN; GitHub has no observed
+  matching commit/workflow evidence.
+- Representative live-host coverage is partial: Codex scan/explain/boundary passed, noninteractive
+  fix planning was withheld by host approval policy, and Claude requires login. Other live hosts
+  remain NOT_RUN.
+- FastAPI tail performance remains inconclusive after 80 samples/version: high host variability
+  leaves the original +20.6% p95 change within the descriptive paired-cluster interval. A controlled
+  independent-host comparison remains necessary before accepting performance readiness.
 
-The next review must evaluate these blockers against the bounded framework envelope, obtain exact
-development-commit hosted results through a separately authorized workflow, and resolve or
-explicitly accept the observed performance limitation. This document does not authorize that
-workflow or a release. Final decision remains **ALPHA12_NOT_BETA_READY**.
+GitHub's exact-commit query at 0f3f8111ad0537e98dd8eff899b3407364482168 reports
+EXACT_COMMIT_NOT_ON_REMOTE, with 0 workflow runs and 0 status contexts. A pending aggregate with
+zero contexts is not a running check. Local gates do not substitute for CI, CodeQL or OpenSSF.
+Closure is limited to local evidence; no push, dispatch, release preparation or publication was
+performed. The known lexical observation noise, unsupported framework composition and incomplete
+corpus ground truth remain explicit limitations alongside the blockers above. Final decision remains
+**ALPHA12_NOT_BETA_READY**.

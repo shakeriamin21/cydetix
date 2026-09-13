@@ -1,0 +1,28 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "f16680007b835e7c6b4163ac9a3d5cc4eec27616",
+  "baselineCommit": "4e13b96cc3539e1b623a4c5a12f10a0954776253",
+  "target": {
+    "repository": "fastapi/fastapi",
+    "commit": "50113da16fec53b66b80d75e80a89296de4fa5a5"
+  },
+  "rounds": [
+    "ABBA",
+    "BAAB",
+    "ABBA",
+    "BAAB"
+  ],
+  "samplesPerBatch": 10,
+  "samplesPerVersion": 80,
+  "warmupsPerProcess": 1,
+  "method": "Four prespecified rounds, four separate processes per round, A=immutable alpha.11 runtime, B=current alpha.12. Same pinned clean checkout, fixed clock/offline options and 4096 MiB old-space bound. No target execution. No other controlled scans/tests/host launches during measurement. All samples retained. Existing original run is retained separately, not replaced.",
+  "statistics": "Nearest-rank empirical p50/p95. Pair adjacent A/B processes within each round; resample the eight paired process clusters together 10000 times with a fixed PRNG seed to estimate a descriptive 95% percentile interval for the pooled p95 ratio. This preserves within-process sample dependence but is limited to eight clusters on one machine. Report each round; non-rejection is not equivalence. Compare the original 1.206 ratio with the interval; no post-hoc sample deletion or analysis optimization.",
+  "environment": {
+    "platform": "win32",
+    "arch": "x64",
+    "node": "v24.15.0",
+    "cpu": "Intel(R) Core(TM) i5-10210U CPU @ 1.60GHz",
+    "logicalCpus": 8,
+    "memoryBytes": 8403935232
+  }
+}

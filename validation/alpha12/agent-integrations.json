@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+  "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
   "version": "0.6.0-alpha.12",
   "publicTools": [
     "cydetix_scan",
@@ -13,8 +13,8 @@
       "configuration": "PASSED",
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
-      "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "liveHost": "PASSED",
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. LIVE_HOST_VALIDATED only for scan, explain and path-escape rejection (codex-cli 0.154.0). Fix planning was BLOCKED by host noninteractive approval policy; no mutation tested. See closure/codex-live-host.json."
     },
     {
       "agent": "claude",
@@ -22,7 +22,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN: Claude Code 2.1.197 initialized/listed MCP but model request failed because login is unavailable. See closure/claude-live-host.json."
     },
     {
       "agent": "cursor",
@@ -30,7 +30,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "gemini",
@@ -38,7 +38,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "cline",
@@ -46,7 +46,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "roo",
@@ -54,7 +54,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "continue",
@@ -62,7 +62,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "copilot",
@@ -70,7 +70,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "goose",
@@ -78,7 +78,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "windsurf",
@@ -86,7 +86,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "generic-mcp",
@@ -94,7 +94,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     }
   ],
   "regressionSuites": [
@@ -211,5 +211,5 @@
       "skipped": 0
     }
   ],
-  "scope": "Configuration validation, adapter tests and direct subprocess/protocol tests. The session-installed alpha.6 MCP bound to a different root is excluded. Live-host validation is NOT_RUN for every client; no network or host installation is inferred."
+  "scope": "Configuration, adapter and subprocess tests for all eleven clients; live Codex scan/explain/boundary only. Fix-plan approval is blocked. Claude requires login; other hosts NOT_RUN. The session-installed alpha.6 MCP bound elsewhere is excluded. Host model network access was explicit; routine Cydetix analysis remained offline."
 }

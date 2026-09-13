@@ -16,6 +16,7 @@ const tests = await json(".cydetix/alpha12/tests.json");
 const corpus = await json("validation/alpha12/corpus-adjudication.json");
 const performance = await json("validation/alpha12/performance.json");
 const contracts = await json("validation/alpha12/public-contracts.json");
+const closure = await json("validation/alpha12/closure/blocker-closure.json");
 const sandbox = tests.testResults
   .filter((t) => t.name.includes("container-sandbox.integration"))
   .flatMap((t) => t.assertionResults);
@@ -113,13 +114,12 @@ const integration = [
   configuration: integrationPassed ? "PASSED" : "FAILED",
   adapterTests: integrationPassed ? "PASSED" : "FAILED",
   subprocess: integrationPassed ? "PASSED" : "FAILED",
-  liveHost: "NOT_RUN",
-  evidence:
-    "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven.",
+  liveHost: agent === "codex" ? "PASSED" : "NOT_RUN",
+  evidence: `tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. ${agent === "codex" ? "LIVE_HOST_VALIDATED only for scan, explain and path-escape rejection (codex-cli 0.154.0). Fix planning was BLOCKED by host noninteractive approval policy; no mutation tested. See closure/codex-live-host.json." : agent === "claude" ? "Live host NOT_RUN: Claude Code 2.1.197 initialized/listed MCP but model request failed because login is unavailable. See closure/claude-live-host.json." : "Live host NOT_RUN; no actual host session exercised."}`,
 }));
 await writeFile(
   "validation/alpha12/agent-integrations.json",
-  `${JSON.stringify({ schemaVersion: "1.0.0", sourceCommit, version: "0.6.0-alpha.12", publicTools: contracts.mcp.tools.map((t) => t.name), integrations: integration, regressionSuites: integrationFiles, scope: "Configuration validation, adapter tests and direct subprocess/protocol tests. The session-installed alpha.6 MCP bound to a different root is excluded. Live-host validation is NOT_RUN for every client; no network or host installation is inferred." }, null, 2)}\n`,
+  `${JSON.stringify({ schemaVersion: "1.0.0", sourceCommit, version: "0.6.0-alpha.12", publicTools: contracts.mcp.tools.map((t) => t.name), integrations: integration, regressionSuites: integrationFiles, scope: "Configuration, adapter and subprocess tests for all eleven clients; live Codex scan/explain/boundary only. Fix-plan approval is blocked. Claude requires login; other hosts NOT_RUN. The session-installed alpha.6 MCP bound elsewhere is excluded. Host model network access was explicit; routine Cydetix analysis remained offline." }, null, 2)}\n`,
 );
 const performanceState = performance.results.every(
   (r) =>
@@ -177,8 +177,7 @@ for (const id of ["hostedCi", "codeql", "openssf"])
   supplyChainGates.push({
     id,
     state: "NOT_RUN",
-    evidence:
-      "Exact development commit was not pushed or submitted to hosted workflows. Historical alpha.11 results do not satisfy this gate.",
+    evidence: `validation/alpha12/closure/hosted-checks.json: ${closure.hosted.conclusion}, ${closure.hosted.workflowRuns} workflow runs. Historical alpha.11 results do not satisfy this gate.`,
   });
 for (const id of [
   "provenanceAttestation",
@@ -192,15 +191,7 @@ for (const id of [
     evidence:
       "Release workflow/configuration preserved and locally audited. No release, publication, attestation or live release-environment transaction was attempted.",
   });
-const blockers = [
-  "Exact-commit hosted CI, CodeQL and OpenSSF gates remain unrun; local results do not replace them.",
-  "Corpus ground truth remains incomplete and implementation-time adjudication has no independent human review. Supported-pattern FN claims remain limited to named reviews.",
-  "Live-host validation has not been performed for the eleven supported client adapters; configuration and direct subprocess coverage are established separately.",
-];
-if (performanceState !== "PASSED")
-  blockers.push(
-    "At least one controlled p50/p95 comparison needs review; measurements are descriptive and no statistical equivalence is claimed.",
-  );
+const blockers = [...closure.blockers];
 for (const gate of gateRecords.filter((g) => g.state !== "PASSED"))
   blockers.push(
     gate.id === "history"
@@ -237,12 +228,15 @@ const report = validateBetaReadiness({
       determinism: r.determinism,
       evidence: r.evidence,
     })),
-    confirmedFP: corpus.totals.unresolvedConfirmedFalseInsecure,
+    confirmedFP:
+      corpus.totals.unresolvedConfirmedFalseInsecure +
+      closure.corpusReview.confirmedLexicalObservationNoise,
     supportedPatternFN: corpus.totals.supportedPatternFalseNegativesDiscovered,
     adjudicationScope: corpus.supportedPatternFnScope,
     unadjudicatedFindings: corpus.totals.unadjudicatedFindings,
     fpEvidence: [
       "validation/alpha12/baseline-evidence.json: three confirmed prior false insecure conclusions, retained as UNKNOWN in current corpus evidence",
+      "validation/alpha12/closure/independent-corpus-review.json: one confirmed narrative-string lexical false-positive observation remains UNKNOWN; no current false-insecure proof established. confirmedFP includes this observation noise.",
     ],
     fnEvidence: [
       "validation/alpha12/corpus-adjudication.json: explicit review scope and unsupported-case separation",
@@ -256,7 +250,8 @@ const report = validateBetaReadiness({
   },
   performance: {
     state: performanceState,
-    evidence: "validation/alpha12/performance.json",
+    evidence:
+      "validation/alpha12/performance.json; validation/alpha12/closure/fastapi-repeated.json (80 additional samples/version, paired-cluster interval)",
     measurements: performance.results.map((r) => ({
       target: r.id,
       size: r.size,
@@ -267,7 +262,11 @@ const report = validateBetaReadiness({
       candidateP95Milliseconds: r.variants.candidate.p95Milliseconds,
       semanticEquivalence: r.semanticEquivalence,
     })),
-    limitations: performance.limitations,
+    limitations: [
+      ...performance.limitations,
+      closure.fastapi.conclusion,
+      ...closure.fastapi.limitations,
+    ],
   },
   integrations: integration,
   publicContracts: {

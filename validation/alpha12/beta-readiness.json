@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0.0",
-  "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e",
+  "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
   "sourceBinding": "Implementation and evidence-generation source at this commit. Individual corpus/performance/gate records bind their actual invocation commit. Later evidence-only commits may change HEAD; no historical release artifact is rewritten.",
   "version": "0.6.0-alpha.12",
   "baselineCommit": "4e13b96cc3539e1b623a4c5a12f10a0954776253",
   "baselineTagObject": "e692f1e23d58157a209f511adb6180d3f489a80c",
   "tests": {
-    "total": 440,
-    "passed": 440,
+    "total": 449,
+    "passed": 449,
     "failed": 0,
     "skipped": 0,
     "sandboxPassed": 13,
@@ -230,12 +230,13 @@
         "evidence": "validation/alpha12/corpus/strapi.json"
       }
     ],
-    "confirmedFP": 0,
+    "confirmedFP": 1,
     "supportedPatternFN": 0,
     "adjudicationScope": "No supported-pattern FN was discovered in the explicitly reviewed local flow cases and selective source reviews listed here. Ground truth is incomplete; this is not a claim of zero corpus-wide false negatives, complete recall, or accuracy. Unsupported constructs, resource-bound omissions, missing password-purpose semantics and fixture-only observations are accounted separately.",
     "unadjudicatedFindings": 0,
     "fpEvidence": [
-      "validation/alpha12/baseline-evidence.json: three confirmed prior false insecure conclusions, retained as UNKNOWN in current corpus evidence"
+      "validation/alpha12/baseline-evidence.json: three confirmed prior false insecure conclusions, retained as UNKNOWN in current corpus evidence",
+      "validation/alpha12/closure/independent-corpus-review.json: one confirmed narrative-string lexical false-positive observation remains UNKNOWN; no current false-insecure proof established. confirmedFP includes this observation noise."
     ],
     "fnEvidence": [
       "validation/alpha12/corpus-adjudication.json: explicit review scope and unsupported-case separation"
@@ -261,7 +262,7 @@
   },
   "performance": {
     "state": "INCONCLUSIVE",
-    "evidence": "validation/alpha12/performance.json",
+    "evidence": "validation/alpha12/performance.json; validation/alpha12/closure/fastapi-repeated.json (80 additional samples/version, paired-cluster interval)",
     "measurements": [
       {
         "target": "express-session",
@@ -299,7 +300,11 @@
       "Representative RSS is sampled after each scan; maxRSS is the OS process high-water mark, shared across warmup and ten samples, not individual scan allocation.",
       "Three repository size classes are relative to this bounded analyzer; the large target exhausts repository AST coverage and is explicitly TRUNCATED in both versions.",
       "Two timed batches reduce order bias but do not provide independent machines or statistical significance.",
-      "Files visited counts examined files plus skipped entries; it does not count every OS directory operation."
+      "Files visited counts examined files plus skipped entries; it does not count every OS directory operation.",
+      "The original +20.6% p95 slowdown was not consistently reproduced, but the paired-cluster interval includes it and 1.0. Neither a repeated regression nor non-inferiority is established. No optimization or analysis change was made.",
+      "One Windows host with warm OS cache; uncontrolled user/OS background activity and thermal state remain possible influences.",
+      "Eight paired process clusters are a limited basis for tail inference. No cross-machine equivalence or arbitrary zero-regression guarantee is established.",
+      "The repository remains TRUNCATED in both versions; all original proof reports, bounds and counters must match before timing is accepted."
     ]
   },
   "integrations": [
@@ -308,8 +313,8 @@
       "configuration": "PASSED",
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
-      "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "liveHost": "PASSED",
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. LIVE_HOST_VALIDATED only for scan, explain and path-escape rejection (codex-cli 0.154.0). Fix planning was BLOCKED by host noninteractive approval policy; no mutation tested. See closure/codex-live-host.json."
     },
     {
       "agent": "claude",
@@ -317,7 +322,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN: Claude Code 2.1.197 initialized/listed MCP but model request failed because login is unavailable. See closure/claude-live-host.json."
     },
     {
       "agent": "cursor",
@@ -325,7 +330,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "gemini",
@@ -333,7 +338,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "cline",
@@ -341,7 +346,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "roo",
@@ -349,7 +354,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "continue",
@@ -357,7 +362,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "copilot",
@@ -365,7 +370,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "goose",
@@ -373,7 +378,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "windsurf",
@@ -381,7 +386,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     },
     {
       "agent": "generic-mcp",
@@ -389,7 +394,7 @@
       "adapterTests": "PASSED",
       "subprocess": "PASSED",
       "liveHost": "NOT_RUN",
-      "evidence": "tests/integrations/alpha12.test.ts: each adapter installs/verifies its own config and launches its shared exact runtime definition with correct and wrong versions. Existing adapter/hostile-path/MCP/transaction tests are in local-verification.json. No actual client host was driven."
+      "evidence": "tests/integrations/alpha12.test.ts: configuration/adapter/direct subprocess with correct and wrong versions. Live host NOT_RUN; no actual host session exercised."
     }
   ],
   "publicContracts": {
@@ -407,7 +412,8 @@
       "Babel scope failures are explicit file-local analysis limitations. Propagation iteration/evidence-path exhaustion is TRUNCATED with no actionable application-dataflow proof; numeric bounds are unchanged.",
       "Security identity propagation now enforces 10000 facts/eight iterations and discards incomplete propagated trust on exhaustion; optional securityIr.propagationBounds and TRUNCATED coverage retain counters while dependent authorization/tenant proofs remain UNKNOWN.",
       "Commander usage errors are printed once with unchanged exit 2; a missing scan directory retains scan-failure exit 3.",
-      "verify:development validates current versions and immutable historical evidence. Strict release gates remain unchanged and reject the unprepared development candidate."
+      "verify:development validates current versions and immutable historical evidence. Strict release gates remain unchanged and reject the unprepared development candidate.",
+      "Blocker closure: history audit now reports every offending commit instead of collapsing a shared email hash; adds exact commit/author/committer privacy allowances in validation/history-author-allowances.json. No future bot/domain/ref-pattern exemption or historical publication change. Python HTML sink documentation explicitly excludes existing unsupported implicit Flask returns and callback/closure flows; engine coverage unchanged."
     ]
   },
   "supplyChainGates": [
@@ -421,13 +427,13 @@
       "id": "npmAudit",
       "state": "PASSED",
       "evidence": "validation/alpha12/gates/audit.txt",
-      "sourceCommit": "65cf5f07a7cd37bfca7b0f07222863ded1dec606"
+      "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168"
     },
     {
       "id": "onlineOsv",
       "state": "PASSED",
       "evidence": "validation/alpha12/gates/osv.txt",
-      "sourceCommit": "983173fdc9bef4732b3f20819f2d22066f292b8c"
+      "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168"
     },
     {
       "id": "licenses",
@@ -443,9 +449,9 @@
     },
     {
       "id": "history",
-      "state": "FAILED",
+      "state": "PASSED",
       "evidence": "validation/alpha12/gates/history.txt",
-      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e"
+      "sourceCommit": "74f67f89e25daa7779ca15382cde5669c6b3fe08"
     },
     {
       "id": "workflowSecurity",
@@ -505,22 +511,22 @@
       "id": "mandatorySandbox",
       "state": "PASSED",
       "evidence": "13 mandatory Docker integration tests; image digest recorded in tests/verify gate records",
-      "sourceCommit": "017c51664a8e596ab8d0f94cfe56a2618d18ec5e"
+      "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168"
     },
     {
       "id": "hostedCi",
       "state": "NOT_RUN",
-      "evidence": "Exact development commit was not pushed or submitted to hosted workflows. Historical alpha.11 results do not satisfy this gate."
+      "evidence": "validation/alpha12/closure/hosted-checks.json: EXACT_COMMIT_NOT_ON_REMOTE, 0 workflow runs. Historical alpha.11 results do not satisfy this gate."
     },
     {
       "id": "codeql",
       "state": "NOT_RUN",
-      "evidence": "Exact development commit was not pushed or submitted to hosted workflows. Historical alpha.11 results do not satisfy this gate."
+      "evidence": "validation/alpha12/closure/hosted-checks.json: EXACT_COMMIT_NOT_ON_REMOTE, 0 workflow runs. Historical alpha.11 results do not satisfy this gate."
     },
     {
       "id": "openssf",
       "state": "NOT_RUN",
-      "evidence": "Exact development commit was not pushed or submitted to hosted workflows. Historical alpha.11 results do not satisfy this gate."
+      "evidence": "validation/alpha12/closure/hosted-checks.json: EXACT_COMMIT_NOT_ON_REMOTE, 0 workflow runs. Historical alpha.11 results do not satisfy this gate."
     },
     {
       "id": "provenanceAttestation",
@@ -545,11 +551,9 @@
   ],
   "remediationAuthority": "UNCHANGED_EXACT_HTTPONLY_SAFE_ONLY",
   "blockers": [
-    "Exact-commit hosted CI, CodeQL and OpenSSF gates remain unrun; local results do not replace them.",
-    "Corpus ground truth remains incomplete and implementation-time adjudication has no independent human review. Supported-pattern FN claims remain limited to named reviews.",
-    "Live-host validation has not been performed for the eleven supported client adapters; configuration and direct subprocess coverage are established separately.",
-    "At least one controlled p50/p95 comparison needs review; measurements are descriptive and no statistical equivalence is claimed.",
-    "All-refs history author audit flags a pre-existing Dependabot noreply identity outside HEAD ancestry. Frozen publication approval metadata was preserved; the separate HEAD audit does not replace this failed gate."
+    "Exact development-commit hosted CI, CodeQL and OpenSSF remain NOT_RUN; GitHub has no observed matching commit/workflow evidence.",
+    "Representative live-host coverage is partial: Codex scan/explain/boundary passed, noninteractive fix planning was withheld by host approval policy, and Claude requires login. Other live hosts remain NOT_RUN.",
+    "FastAPI tail performance remains inconclusive after 80 samples/version: high host variability leaves the original +20.6% p95 change within the descriptive paired-cluster interval. A controlled independent-host comparison remains necessary before accepting performance readiness."
   ],
   "verdict": "ALPHA12_NOT_BETA_READY"
 }

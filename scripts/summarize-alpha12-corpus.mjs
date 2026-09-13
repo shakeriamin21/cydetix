@@ -48,21 +48,28 @@ const unsupportedReviews = [
     paths: ["src/flask_app.py", "src/db.py"],
     classification: "UNSUPPORTED_PATTERN",
     explanation:
-      "Route path parameter is passed to an imported Python helper before SQL execution. Cross-file/function Python propagation is outside the declared envelope; this is not counted as a supported-pattern FN.",
+      "Route path parameter is passed to an imported Python helper before SQL execution. Cross-file/function Python propagation is outside the declared envelope. The same parameter reaches an implicit Flask HTML string return at src/flask_app.py:27-30; only explicit Python HTML call sinks are modeled. Both are unsupported omissions, not supported-pattern FNs.",
   },
   {
     repositoryId: "payatu-vuln-node",
     paths: ["routes/app.js", "controllers/vuln_controller.js"],
     classification: "UNSUPPORTED_PATTERN_AND_RESOURCE_BOUND",
     explanation:
-      "CommonJS imported controllers, router.route chaining and custom authentication are outside supported cross-file ESM propagation; full scan also exhausts repository AST coverage.",
+      "CommonJS imported controllers, router.route chaining and custom authentication are outside supported cross-file ESM propagation. Actual truncation triggers are the eight-iteration identity bound (390 facts) and oversized vuln_react_app/package-lock.json. Application analysis reports zero truncation events; repository AST exhaustion was incorrectly attributed in the original adjudication.",
   },
   {
     repositoryId: "sirappsec-vuln-node",
     paths: ["src/router/routes/system.js"],
     classification: "UNSUPPORTED_PATTERN_AND_RESOURCE_BOUND",
     explanation:
-      "Routes are constructed inside a CommonJS exported app factory with locally loaded sink aliases. Full scan exhausts repository AST coverage. These cases are not used to claim supported recall.",
+      "Routes are constructed inside a CommonJS exported app factory with locally loaded sink aliases. Actual truncation is three oversized vendor assets; application analysis reports zero truncation events. Repository AST exhaustion was incorrectly attributed in the original adjudication. These cases are not used to claim supported recall.",
+  },
+  {
+    repositoryId: "vikas-vulnerable-website",
+    paths: ["server/server.js"],
+    classification: "UNSUPPORTED_PATTERN",
+    explanation:
+      "The request host also reaches HTML at lines 134/143 inside an anonymous exec callback. Callback reachability, closure taint and response binding are outside the current same-file direct-call envelope. The command-injection finding does not cover this separate XSS omission.",
   },
   {
     repositoryId: "vulnerable-typescript",
@@ -124,6 +131,15 @@ for (const target of manifest.targets) {
         target.id === "flask-security"
           ? "Confirmed prior false insecure conclusion: SHA-1 prefix/suffix are used for a k-anonymous breach lookup in utils.py:1439-1468, not credential storage. Current proof is UNKNOWN."
           : "Hash operation is observed; storage purpose is outside the adapter's proof. Observation retained with ARCHITECTURAL ceiling and UNKNOWN conclusion.";
+      if (
+        target.id === "fastapi-appsec-lab" &&
+        finding.location.path === "app/services/report_service.py" &&
+        finding.location.start.line === 179
+      ) {
+        classification = "LEXICAL_NARRATIVE_ONLY_UNKNOWN";
+        rationale =
+          "Confirmed lexical observation noise: this is a descriptive quoted string, not an executed hashing expression. Existing engine UNKNOWN and ARCHITECTURAL ceiling remain conservative, but hash-operation wording overstates what was observed. Do not count this as an executed hash or a false insecure conclusion.";
+      }
     } else if (finding.ruleId === "AS-SECRET-001" && finding.proofState === "UNKNOWN") {
       classification =
         target.id === "vulnerable-typescript" ? "PLACEHOLDER_MARKER_UNKNOWN" : "KEY_MARKER_UNKNOWN";
@@ -181,7 +197,7 @@ const result = {
   sourceCommit: runs.sourceCommit,
   version: "0.6.0-alpha.12",
   reviewMethod:
-    "Implementation-agent static source review and independent source-line checks; no target execution and no independent human audit. Emitted-finding review is separate from selective source inspection for missed supported patterns.",
+    "Implementation-time source review, subsequently reconciled with the independent fresh-context model review in validation/alpha12/closure/independent-corpus-review.json. No target execution, independent human audit or complete ground truth. The independent artifact pins the original adjudication and records disagreements; sourceCommit binds original scan invocation, not the later review.",
   groundTruth: "INCOMPLETE",
   recall: null,
   accuracy: null,
@@ -224,7 +240,7 @@ const table = repositories
   .join("\n");
 await writeFile(
   "docs/security/ALPHA12_CORPUS.md",
-  `# Alpha.12 pinned corpus evidence\n\nThirty immutable repositories expand the eleven-target alpha.11 Batch 2 corpus. Every target completed two full-report deterministic offline scans. Full findings, UNKNOWN records, engine completeness, limits and metrics are in validation/alpha12/corpus; source reviews are in corpus-adjudication.json. Acquisition alone uses Git network access; analysis never installs dependencies or executes target code.\n\n| Repository | Immutable commit | Findings | UNKNOWN instances | Completeness | Scan seconds (pair) |\n| --- | --- | ---: | ---: | --- | --- |\n${table}\n\nUNKNOWN counts sum independent engines plus finding proof and can refer to the same code. They are not unique vulnerabilities. All ${totals.findings} emitted observations have implementation-time review records; ${totals.unadjudicatedFindings} remain unadjudicated. There is no independent human review or complete ground truth. Three false insecure conclusions were found and corrected to retained UNKNOWN observations: Flask-Security breach lookup (one) and placeholder key headers (two). Test-cookie settings and test keys are explicitly distinguished from deployed vulnerabilities.\n\nNo supported-pattern FN was discovered within the listed selective source reviews. No corpus-wide recall or accuracy is reported. CommonJS controller/factory composition, cross-file Python helpers, unsupported scopes and resource-bounded omissions remain separate limitations. The external redirect at vulnerable-typescript src/server.ts:239 establishes request.query -> alias -> res.redirect without destination policy in the reviewed source.\n\n${totals.resourceBoundRepositories} repositories have TRUNCATED overall analysis. The Strapi parser and recursive identity issues, and Juice Shop/Strapi processing costs, were discovered by unsuccessful exploratory runs retained as development discoveries rather than discarded targets. Numeric AST/application bounds remain intact; security identity propagation now explicitly enforces eight iterations/10000 facts and discards incomplete trust. Corpus timing pairs are descriptive; controlled twenty-sample comparisons are recorded separately in performance.json.\n\nThe full-report replay normalizes only documented UUID/time/root metadata. It compares findings, proofs, uncertainty, limits and fingerprints, not merely counts. Raw source is not redistributed; durable records include immutable source identities, source-file hashes for adjudications and normalized report digests.\n`,
+  `# Alpha.12 pinned corpus evidence\n\nThirty immutable repositories expand the eleven-target alpha.11 Batch 2 corpus. Every target completed two full-report deterministic offline scans. Full findings, UNKNOWN records, engine completeness, limits and metrics are in validation/alpha12/corpus; source reviews are in corpus-adjudication.json. Acquisition alone uses Git network access; analysis never installs dependencies or executes target code.\n\n| Repository | Immutable commit | Findings | UNKNOWN instances | Completeness | Scan seconds (pair) |\n| --- | --- | ---: | ---: | --- | --- |\n${table}\n\nUNKNOWN counts sum independent engines plus finding proof and can refer to the same code. They are not unique vulnerabilities. All ${totals.findings} emitted observations have implementation-time review records; ${totals.unadjudicatedFindings} remain unadjudicated. A fresh-context independent model reviewer rechecked all anchors and selective source scopes; this is not human review or complete ground truth. See ALPHA12_INDEPENDENT_CORPUS_REVIEW.md and validation/alpha12/closure/independent-corpus-review.json. The primary ledger reconciles four documented disagreements, including two incorrect truncation causes, one narrative-only hash observation and under-specified Flask sink wording. Three false insecure conclusions were found and corrected to retained UNKNOWN observations: Flask-Security breach lookup (one) and placeholder key headers (two). Test-cookie settings and test keys are explicitly distinguished from deployed vulnerabilities.\n\nNo supported-pattern FN was discovered within the listed selective source reviews. No corpus-wide recall or accuracy is reported. CommonJS controller/factory composition, cross-file Python helpers, unsupported scopes and resource-bounded omissions remain separate limitations. The external redirect at vulnerable-typescript src/server.ts:239 establishes request.query -> alias -> res.redirect without destination policy in the reviewed source.\n\n${totals.resourceBoundRepositories} repositories have TRUNCATED overall analysis. The Strapi parser and recursive identity issues, and Juice Shop/Strapi processing costs, were discovered by unsuccessful exploratory runs retained as development discoveries rather than discarded targets. Numeric AST/application bounds remain intact; security identity propagation now explicitly enforces eight iterations/10000 facts and discards incomplete trust. Corpus timing pairs are descriptive; controlled twenty-sample comparisons are recorded separately in performance.json.\n\nThe full-report replay normalizes only documented UUID/time/root metadata. It compares findings, proofs, uncertainty, limits and fingerprints, not merely counts. Raw source is not redistributed; durable records include immutable source identities, source-file hashes for adjudications and normalized report digests.\n`,
 );
 process.stdout.write(
   `${repositories.length} deterministic pairs; ${totals.findings} observations; ${totals.unadjudicatedFindings} unadjudicated; ${JSON.stringify(totals.unknown)}\n`,

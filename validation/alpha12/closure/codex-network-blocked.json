@@ -1,0 +1,32 @@
+{
+  "schemaVersion": "1.0.0",
+  "host": "codex",
+  "sourceCommit": "74f67f89e25daa7779ca15382cde5669c6b3fe08",
+  "version": "0.6.0-alpha.12",
+  "observedAt": "2026-09-13T09:32:21.557Z",
+  "durationMilliseconds": 180083,
+  "exitCode": null,
+  "processError": "ETIMEDOUT",
+  "initialized": {
+    "name": "Cydetix",
+    "version": "0.6.0-alpha.12"
+  },
+  "listedTools": [
+    "cydetix_scan",
+    "cydetix_fix",
+    "cydetix_explain"
+  ],
+  "calls": [],
+  "fixtureUnchanged": true,
+  "runtimeSha256": "6a0e4aa5cefef180040d12af2b010f44ebb6a1e117829f2a5b4a3696f6f093cc",
+  "protocolSha256": "618d97026f513ae8fa9cf1824cae91f01e8a4e07e523df8390b0683e4dde32bb",
+  "stdoutSha256": "e10f04654c52a76478ec6d42c3751ceacca18b3f8ba5361d99a9c4cadbff6cfd",
+  "stderrSha256": "76819f641fbf71aa04aa1170e923d64262362ff1ba328d5739ba8c3cc83911f1",
+  "state": "NOT_RUN",
+  "limitations": [
+    "Exact local development runtime, isolated synthetic fixture, scan/explain/plan/boundary scope only. No live source modification or sandbox remediation tested by the host.",
+    "A process launch or MCP initialization alone is not live-host validation. Host tool-call transcripts must demonstrate completed requests.",
+    "Raw host transcripts remain local to avoid publishing session identifiers or account data. Sanitized protocol call receipts and hashes are retained."
+  ],
+  "blocker": "Initial sandbox attempt could initialize/list MCP but model API sockets were denied (Windows 10013), then timed out; no tool calls completed. Retried through approved network access and retained this failed attempt separately."
+}

@@ -41,7 +41,11 @@ dependencies or executes target code.
 
 UNKNOWN counts sum independent engines plus finding proof and can refer to the same code. They are
 not unique vulnerabilities. All 134 emitted observations have implementation-time review records; 0
-remain unadjudicated. There is no independent human review or complete ground truth. Three false
+remain unadjudicated. A fresh-context independent model reviewer rechecked all anchors and selective
+source scopes; this is not human review or complete ground truth. See
+ALPHA12_INDEPENDENT_CORPUS_REVIEW.md and validation/alpha12/closure/independent-corpus-review.json.
+The primary ledger reconciles four documented disagreements, including two incorrect truncation
+causes, one narrative-only hash observation and under-specified Flask sink wording. Three false
 insecure conclusions were found and corrected to retained UNKNOWN observations: Flask-Security
 breach lookup (one) and placeholder key headers (two). Test-cookie settings and test keys are
 explicitly distinguished from deployed vulnerabilities.

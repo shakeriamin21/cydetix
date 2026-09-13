@@ -4,17 +4,54 @@
 
 {
   "schemaVersion": "1.0.0",
-  "state": "FAIL",
+  "state": "PASS",
   "scope": {
     "mode": "ALL_REFS"
   },
-  "commitsReviewed": 66,
-  "issues": [
-    {
-      "code": "UNAPPROVED_AUTHOR_EMAIL",
-      "commit": "d8b3d5a10f4c878c413a388d6f640fa390cb4b5b",
-      "fingerprint": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6"
-    }
-  ],
+  "commitsReviewed": 68,
+  "issues": [],
+  "authorAllowances": {
+    "policy": "validation/history-author-allowances.json",
+    "policySha256": "0d31d714d52ce917ebe50f08d9768fa69a4380b02056ac9a8a3fa3ed6d15d14c",
+    "applied": [
+      {
+        "commit": "0da7d9ecea688821a7ffeeda8ee4491e1068937f",
+        "observedRef": "refs/remotes/origin/dependabot/github_actions/github/codeql-action/analyze-4.37.9"
+      },
+      {
+        "commit": "0f6ca0ad029c74f11ea82175d7ade6d1e4b1645e",
+        "observedRef": "refs/remotes/origin/dependabot/github_actions/github/codeql-action/upload-sarif-4.37.9"
+      },
+      {
+        "commit": "2dc2ffc4f4c01b33335b6c0816ec691905be3dab",
+        "observedRef": "refs/remotes/origin/dependabot/github_actions/ossf/scorecard-action-2.4.4"
+      },
+      {
+        "commit": "38baee9853937d63cafe02c94206e0a4c8f427dc",
+        "observedRef": "refs/remotes/origin/dependabot/github_actions/actions/download-artifact-8.0.1"
+      },
+      {
+        "commit": "80c7d0aeb29a26e37f0d8e408a1c6b9aaafc6bfa",
+        "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/vitest-5.0.0"
+      },
+      {
+        "commit": "ad687cd15966bf5d077fac3e881b3b40448c7edf",
+        "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/typescript-eslint-8.69.0"
+      },
+      {
+        "commit": "bb4e1f588d5d10c5f41df4c5e8518caa2ae8e557",
+        "observedRef": "refs/remotes/origin/dependabot/github_actions/github/codeql-action/init-4.37.9"
+      },
+      {
+        "commit": "c8bf4fbda3268d0e3de74590e428ca1926c3ae12",
+        "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/typescript-7.0.2"
+      },
+      {
+        "commit": "d8b3d5a10f4c878c413a388d6f640fa390cb4b5b",
+        "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/types/node-26.4.1"
+      }
+    ],
+    "scope": "Exact immutable commit and author/committer tuple only; privacy approval does not authenticate a bot, approve code, or exclude content from scanning."
+  },
   "note": "This deterministic privacy audit complements, but does not replace, an independent secret scanner."
 }

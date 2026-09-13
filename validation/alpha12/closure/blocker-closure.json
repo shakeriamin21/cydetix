@@ -1,0 +1,1213 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
+  "version": "0.6.0-alpha.12",
+  "startingCommit": "f16680007b835e7c6b4163ac9a3d5cc4eec27616",
+  "sourceBinding": "Supplemental blocker-closure assembly. Every input retains its actual invocation/review source and SHA-256. No runtime engine, proof, bounds or remediation adapter changed during closure.",
+  "evidence": [
+    {
+      "path": "validation/alpha12/closure/independent-corpus-review.json",
+      "sha256": "7dc620af07ea4d168f9ab2bda1508d4e041ad315f5756d97ca1f208b87349026"
+    },
+    {
+      "path": "validation/alpha12/closure/fastapi-plan.json",
+      "sha256": "9a256875668c8744158df6d3d750f0418208643d64e452e0797c12ac96f632f6"
+    },
+    {
+      "path": "validation/alpha12/closure/fastapi-repeated.json",
+      "sha256": "fd7e1483ee5f2215b1fe429d14774ed3673f27dba7a5e1457de72a847a2e2b60"
+    },
+    {
+      "path": "validation/alpha12/closure/codex-live-host.json",
+      "sha256": "d0e05a9fd851f93935d7c28649f7e5caad26fb067f0da33497bcd33da7ccefbf"
+    },
+    {
+      "path": "validation/alpha12/closure/claude-live-host.json",
+      "sha256": "4b23f6d5daa65ec15e2af816c16503d8059af9cb8e7f59665b313db81cdc0591"
+    },
+    {
+      "path": "validation/alpha12/closure/hosted-checks.json",
+      "sha256": "29402454b1c98302a052beb385279d4832cb4ae511c8fc1e0c1f32723ec67195"
+    }
+  ],
+  "hosted": {
+    "state": "NOT_RUN",
+    "checkedCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
+    "conclusion": "EXACT_COMMIT_NOT_ON_REMOTE",
+    "workflowRuns": 0,
+    "statuses": 0,
+    "limitation": "No exact-commit CI, CodeQL or OpenSSF success exists in the observed public API evidence. No push or dispatch was performed. A pending combined status with zero contexts is not a running or passing check."
+  },
+  "corpusReview": {
+    "state": "CLOSED_WITH_LIMITATIONS",
+    "reviewer": "Independent fresh-context model, not human/third-party certification",
+    "corrections": [
+      {
+        "id": "IR-CORPUS-001",
+        "state": "RECONCILED",
+        "evidence": "corpus-adjudication.json payatu: identity iteration and file-size bounds, no application truncation"
+      },
+      {
+        "id": "IR-CORPUS-002",
+        "state": "RECONCILED",
+        "evidence": "corpus-adjudication.json SirAppSec: three oversized assets, no application truncation"
+      },
+      {
+        "id": "IR-CORPUS-003",
+        "state": "RECONCILED",
+        "evidence": "corpus-adjudication.json FastAPI lab report_service.py:179 classified LEXICAL_NARRATIVE_ONLY_UNKNOWN; runtime wording noise remains a documented limitation"
+      },
+      {
+        "id": "IR-CORPUS-004",
+        "state": "RECONCILED",
+        "evidence": "docs/security/RULE_COVERAGE.md explicitly lists Python HTML call sinks and excludes implicit Flask returns/callback closure propagation"
+      }
+    ],
+    "repositories": 30,
+    "findingsReviewed": 134,
+    "unknownReviewed": 234,
+    "supportedPatternFN": 0,
+    "confirmedHistoricalFalseInsecureCorrections": 3,
+    "currentFalseInsecureConclusions": 0,
+    "confirmedLexicalObservationNoise": 1,
+    "unsupportedOmissionsReviewed": 2,
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null,
+    "limitation": "Zero supported-pattern FNs applies only to named selective reviews. One Python narrative string remains an UNKNOWN lexical false-positive observation with overstated hash-operation wording; it is not an insecure proof."
+  },
+  "truncated": {
+    "total": 13,
+    "resourceTriggered": 13,
+    "triggerRepositoryCounts": {
+      "identityIteration": 6,
+      "applicationBounds": 6,
+      "fileSize": 8
+    },
+    "parserCooccurrenceRepositories": 5,
+    "parserFailedFiles": 149,
+    "resourceOnlyRepositories": 8,
+    "resourceWithParserRepositories": 5,
+    "solelyParserTriggered": 0,
+    "solelyFrameworkTriggered": 0,
+    "repositories": [
+      {
+        "id": "nodegoat",
+        "repository": "OWASP/NodeGoat",
+        "commit": "c5cb68a7084e4ae7dcc60e6a98768720a81841e8",
+        "actualTriggers": [
+          {
+            "category": "RESOURCE",
+            "engine": "security-identity-propagation",
+            "trigger": "ITERATION_CAP",
+            "iterations": 8,
+            "maxIterations": 8,
+            "factsCreated": 304,
+            "maxFacts": 10000,
+            "factCapObserved": false,
+            "effect": "Incomplete propagated trust discarded according to report; no successful authorization proof inferred."
+          }
+        ],
+        "cooccurringLimitations": {
+          "parser": {
+            "category": "PARSER",
+            "status": "COMPLETE",
+            "totalFailedFiles": 0,
+            "reportedDiagnostics": [],
+            "causesOverallTruncated": false,
+            "assessment": "Parser failures contribute PARTIAL coverage, not a resource TRUNCATED trigger. The bounded diagnostic summary can omit individual paths; no omitted root causes were invented."
+          },
+          "framework": {
+            "category": "FRAMEWORK",
+            "corpusLabel": "Express; CommonJS",
+            "detectedFrameworks": [
+              "Express"
+            ],
+            "reportedReducedCoverage": [],
+            "causesOverallTruncated": false,
+            "assessment": "Framework labels/detection do not establish adapter support. CommonJS factories/controllers, unsupported Python cross-function flows and runtime composition remain limitations separate from resource triggers."
+          }
+        },
+        "exhaustivePerEventAttribution": false
+      },
+      {
+        "id": "dvna",
+        "repository": "appsecco/dvna",
+        "commit": "9ba473add536f66ac9007966acb2a775dd31277a",
+        "actualTriggers": [
+          {
+            "category": "RESOURCE",
+            "engine": "repository-discovery",
+            "trigger": "FILE_SIZE_BOUND",
+            "skippedEntries": [
+              {
+                "path": "docs/resources/appsecco.png",
+                "reason": "too_large",
+                "actualFileBytes": 1409684
+              }
+            ],
+            "effect": "Named source or non-source files were skipped; a skipped media file does not prove application AST omission."
+          }
+        ],
+        "cooccurringLimitations": {
+          "parser": {
+            "category": "PARSER",
+            "status": "COMPLETE",
+            "totalFailedFiles": 0,
+            "reportedDiagnostics": [],
+            "causesOverallTruncated": false,
+            "assessment": "Parser failures contribute PARTIAL coverage, not a resource TRUNCATED trigger. The bounded diagnostic summary can omit individual paths; no omitted root causes were invented."
+          },
+          "framework": {
+            "category": "FRAMEWORK",
+            "corpusLabel": "Express; controllers",
+            "detectedFrameworks": [
+              "Express"
+            ],
+            "reportedReducedCoverage": [],
+            "causesOverallTruncated": false,
+            "assessment": "Framework labels/detection do not establish adapter support. CommonJS factories/controllers, unsupported Python cross-function flows and runtime composition remain limitations separate from resource triggers."
+          }
+        },
+        "exhaustivePerEventAttribution": false
+      },
+      {
+        "id": "fastify",
+        "repository": "fastify/fastify",
+        "commit": "d266f833f2bff34c6115c026e461b682e94d0b9c",
+        "actualTriggers": [
+          {
+            "category": "RESOURCE",
+            "engine": "security-identity-propagation",
+            "trigger": "ITERATION_CAP",
+            "iterations": 8,
+            "maxIterations": 8,
+            "factsCreated": 558,
+            "maxFacts": 10000,
+            "factCapObserved": false,
+            "effect": "Incomplete propagated trust discarded according to report; no successful authorization proof inferred."
+          },
+          {
+            "category": "RESOURCE",
+            "engine": "application-dataflow",
+            "trigger": "APPLICATION_BOUND_EVENTS",
+            "eventCount": 121,
+            "astNodesVisited": 367893,
+            "repositoryAstBudgetReference": 200000,
+            "repositoryAstBudgetEvidence": "200000 budget supplied by coordinating implementation agent; aggregate AST count independently verified in normalized report.",
+            "aggregateExceedsRepositoryAstBudget": true,
+            "perEventSubtype": "NOT_SERIALIZED",
+            "limitation": "Repository AST exhaustion is consistent with the reported bound and observed aggregate. Exact attribution of each event to repository AST, per-file AST, facts or paths cannot be reconstructed from this report alone."
+          }
+        ],
+        "cooccurringLimitations": {
+          "parser": {
+            "category": "PARSER",
+            "status": "COMPLETE",
+            "totalFailedFiles": 0,
+            "reportedDiagnostics": [],
+            "causesOverallTruncated": false,
+            "assessment": "Parser failures contribute PARTIAL coverage, not a resource TRUNCATED trigger. The bounded diagnostic summary can omit individual paths; no omitted root causes were invented."
+          },
+          "framework": {
+            "category": "FRAMEWORK",
+            "corpusLabel": "Fastify",
+            "detectedFrameworks": [],
+            "reportedReducedCoverage": [],
+            "causesOverallTruncated": false,
+            "assessment": "Framework labels/detection do not establish adapter support. CommonJS factories/controllers, unsupported Python cross-function flows and runtime composition remain limitations separate from resource triggers."
+          }
+        },
+        "exhaustivePerEventAttribution": false
+      },
+      {
+        "id": "juice-shop",
+        "repository": "juice-shop/juice-shop",
+        "commit": "1618a611b173b4bf114028e6e02549950606e29d",
+        "actualTriggers": [
+          {
+            "category": "RESOURCE",
+            "engine": "security-identity-propagation",
+            "trigger": "ITERATION_CAP",
+            "iterations": 8,
+            "maxIterations": 8,
+            "factsCreated": 1193,
+            "maxFacts": 10000,
+            "factCapObserved": false,
+            "effect": "Incomplete propagated trust discarded according to report; no successful authorization proof inferred."
+          },
+          {
+            "category": "RESOURCE",
+            "engine": "application-dataflow",
+            "trigger": "APPLICATION_BOUND_EVENTS",
+            "eventCount": 274,
+            "astNodesVisited": 455124,
+            "repositoryAstBudgetReference": 200000,
+            "repositoryAstBudgetEvidence": "200000 budget supplied by coordinating implementation agent; aggregate AST count independently verified in normalized report.",
+            "aggregateExceedsRepositoryAstBudget": true,
+            "perEventSubtype": "NOT_SERIALIZED",
+            "limitation": "Repository AST exhaustion is consistent with the reported bound and observed aggregate. Exact attribution of each event to repository AST, per-file AST, facts or paths cannot be reconstructed from this report alone."
+          },
+          {
+            "category": "RESOURCE",
+            "engine": "repository-discovery",
+            "trigger": "FILE_SIZE_BOUND",
+            "skippedEntries": [
+              {
+                "path": "frontend/src/assets/public/videos/owasp_promo.mp4",
+                "reason": "too_large",
+                "actualFileBytes": 2232676
+              },
+              {
+                "path": "screenshots/slideshow.gif",
+                "reason": "too_large",
+                "actualFileBytes": 3740605
+              }
+            ],
+            "effect": "Named source or non-source files were skipped; a skipped media file does not prove application AST omission."
+          }
+        ],
+        "cooccurringLimitations": {
+          "parser": {
+            "category": "PARSER",
+            "status": "PARTIAL",
+            "totalFailedFiles": 40,
+            "reportedDiagnostics": [
+              "data/static/codefixes/chatbotPromptInjectionChallenge_1.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (11:4)",
+              "data/static/codefixes/chatbotPromptInjectionChallenge_2_correct.ts: JavaScript/TypeScript parse failed: SyntaxError: Missing semicolon. (15:18)",
+              "data/static/codefixes/chatbotPromptInjectionChallenge_3.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (15:4)",
+              "data/static/codefixes/chatbotPromptInjectionChallenge_4.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (16:4)",
+              "data/static/codefixes/localXssChallenge_1.ts: JavaScript/TypeScript parse failed: SyntaxError: Missing semicolon. (1:14)",
+              "data/static/codefixes/localXssChallenge_2_correct.ts: JavaScript/TypeScript parse failed: SyntaxError: Missing semicolon. (1:14)",
+              "data/static/codefixes/localXssChallenge_3.ts: JavaScript/TypeScript parse failed: SyntaxError: Missing semicolon. (1:14)",
+              "data/static/codefixes/localXssChallenge_4.ts: JavaScript/TypeScript parse failed: SyntaxError: Missing semicolon. (1:14)",
+              "data/static/codefixes/loginAdminChallenge_1.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (39:3)",
+              "data/static/codefixes/loginAdminChallenge_2.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (37:3)",
+              "data/static/codefixes/loginAdminChallenge_3.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (37:3)",
+              "data/static/codefixes/loginAdminChallenge_4_correct.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (37:3)",
+              "data/static/codefixes/loginBenderChallenge_1.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (39:3)",
+              "data/static/codefixes/loginBenderChallenge_2_correct.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (37:3)",
+              "data/static/codefixes/loginBenderChallenge_3.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (37:3)",
+              "data/static/codefixes/loginBenderChallenge_4.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (36:3)",
+              "data/static/codefixes/loginJimChallenge_1_correct.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (37:3)",
+              "data/static/codefixes/loginJimChallenge_2.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (36:3)",
+              "data/static/codefixes/loginJimChallenge_3.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (37:3)",
+              "data/static/codefixes/loginJimChallenge_4.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (39:3)",
+              "20 additional parse failures omitted from this summary."
+            ],
+            "causesOverallTruncated": false,
+            "assessment": "Parser failures contribute PARTIAL coverage, not a resource TRUNCATED trigger. The bounded diagnostic summary can omit individual paths; no omitted root causes were invented."
+          },
+          "framework": {
+            "category": "FRAMEWORK",
+            "corpusLabel": "Express; Angular",
+            "detectedFrameworks": [
+              "Express"
+            ],
+            "reportedReducedCoverage": [],
+            "causesOverallTruncated": false,
+            "assessment": "Framework labels/detection do not establish adapter support. CommonJS factories/controllers, unsupported Python cross-function flows and runtime composition remain limitations separate from resource triggers."
+          }
+        },
+        "exhaustivePerEventAttribution": false
+      },
+      {
+        "id": "axios",
+        "repository": "axios/axios",
+        "commit": "18e7dfedf30c96e58652887f930642ae82e0130c",
+        "actualTriggers": [
+          {
+            "category": "RESOURCE",
+            "engine": "security-identity-propagation",
+            "trigger": "ITERATION_CAP",
+            "iterations": 8,
+            "maxIterations": 8,
+            "factsCreated": 413,
+            "maxFacts": 10000,
+            "factCapObserved": false,
+            "effect": "Incomplete propagated trust discarded according to report; no successful authorization proof inferred."
+          }
+        ],
+        "cooccurringLimitations": {
+          "parser": {
+            "category": "PARSER",
+            "status": "COMPLETE",
+            "totalFailedFiles": 0,
+            "reportedDiagnostics": [],
+            "causesOverallTruncated": false,
+            "assessment": "Parser failures contribute PARTIAL coverage, not a resource TRUNCATED trigger. The bounded diagnostic summary can omit individual paths; no omitted root causes were invented."
+          },
+          "framework": {
+            "category": "FRAMEWORK",
+            "corpusLabel": "HTTP client library",
+            "detectedFrameworks": [
+              "Express"
+            ],
+            "reportedReducedCoverage": [],
+            "causesOverallTruncated": false,
+            "assessment": "Framework labels/detection do not establish adapter support. CommonJS factories/controllers, unsupported Python cross-function flows and runtime composition remain limitations separate from resource triggers."
+          }
+        },
+        "exhaustivePerEventAttribution": false
+      },
+      {
+        "id": "django",
+        "repository": "django/django",
+        "commit": "2b30f6255b5ef84afbd827993643d52ef2c0963a",
+        "actualTriggers": [
+          {
+            "category": "RESOURCE",
+            "engine": "application-dataflow",
+            "trigger": "APPLICATION_BOUND_EVENTS",
+            "eventCount": 2699,
+            "astNodesVisited": 3485422,
+            "repositoryAstBudgetReference": 200000,
+            "repositoryAstBudgetEvidence": "200000 budget supplied by coordinating implementation agent; aggregate AST count independently verified in normalized report.",
+            "aggregateExceedsRepositoryAstBudget": true,
+            "perEventSubtype": "NOT_SERIALIZED",
+            "limitation": "Repository AST exhaustion is consistent with the reported bound and observed aggregate. Exact attribution of each event to repository AST, per-file AST, facts or paths cannot be reconstructed from this report alone."
+          }
+        ],
+        "cooccurringLimitations": {
+          "parser": {
+            "category": "PARSER",
+            "status": "PARTIAL",
+            "totalFailedFiles": 64,
+            "reportedDiagnostics": [
+              "django/conf/global_settings.py: Python parse failed: syntax tree contains errors",
+              "django/db/backends/base/base.py: Python parse failed: syntax tree contains errors",
+              "django/db/backends/mysql/creation.py: Python parse failed: syntax tree contains errors",
+              "django/db/backends/oracle/base.py: Python parse failed: syntax tree contains errors",
+              "django/db/backends/sqlite3/introspection.py: Python parse failed: syntax tree contains errors",
+              "django/db/backends/utils.py: Python parse failed: syntax tree contains errors",
+              "django/db/migrations/autodetector.py: Python parse failed: syntax tree contains errors",
+              "django/db/migrations/operations/fields.py: Python parse failed: syntax tree contains errors",
+              "django/db/migrations/state.py: Python parse failed: syntax tree contains errors",
+              "django/db/models/query.py: Python parse failed: syntax tree contains errors",
+              "django/db/transaction.py: Python parse failed: syntax tree contains errors",
+              "django/template/context.py: Python parse failed: syntax tree contains errors",
+              "django/test/runner.py: Python parse failed: syntax tree contains errors",
+              "django/test/utils.py: Python parse failed: syntax tree contains errors",
+              "django/utils/autoreload.py: Python parse failed: syntax tree contains errors",
+              "django/utils/choices.py: Python parse failed: syntax tree contains errors",
+              "django/utils/inspect.py: Python parse failed: syntax tree contains errors",
+              "django/utils/json.py: Python parse failed: syntax tree contains errors",
+              "django/views/templates/i18n_catalog.js: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (1:1)",
+              "scripts/pr_quality/tests/test_check_pr.py: Python parse failed: syntax tree contains errors",
+              "44 additional parse failures omitted from this summary."
+            ],
+            "causesOverallTruncated": false,
+            "assessment": "Parser failures contribute PARTIAL coverage, not a resource TRUNCATED trigger. The bounded diagnostic summary can omit individual paths; no omitted root causes were invented."
+          },
+          "framework": {
+            "category": "FRAMEWORK",
+            "corpusLabel": "Django",
+            "detectedFrameworks": [
+              "Django"
+            ],
+            "reportedReducedCoverage": [],
+            "causesOverallTruncated": false,
+            "assessment": "Framework labels/detection do not establish adapter support. CommonJS factories/controllers, unsupported Python cross-function flows and runtime composition remain limitations separate from resource triggers."
+          }
+        },
+        "exhaustivePerEventAttribution": false
+      },
+      {
+        "id": "fastapi",
+        "repository": "fastapi/fastapi",
+        "commit": "50113da16fec53b66b80d75e80a89296de4fa5a5",
+        "actualTriggers": [
+          {
+            "category": "RESOURCE",
+            "engine": "application-dataflow",
+            "trigger": "APPLICATION_BOUND_EVENTS",
+            "eventCount": 544,
+            "astNodesVisited": 579574,
+            "repositoryAstBudgetReference": 200000,
+            "repositoryAstBudgetEvidence": "200000 budget supplied by coordinating implementation agent; aggregate AST count independently verified in normalized report.",
+            "aggregateExceedsRepositoryAstBudget": true,
+            "perEventSubtype": "NOT_SERIALIZED",
+            "limitation": "Repository AST exhaustion is consistent with the reported bound and observed aggregate. Exact attribution of each event to repository AST, per-file AST, facts or paths cannot be reconstructed from this report alone."
+          },
+          {
+            "category": "RESOURCE",
+            "engine": "repository-discovery",
+            "trigger": "FILE_SIZE_BOUND",
+            "skippedEntries": [
+              {
+                "path": "docs/en/docs/img/deployment/https/https03.drawio.svg",
+                "reason": "too_large",
+                "actualFileBytes": 1230733
+              }
+            ],
+            "effect": "Named source or non-source files were skipped; a skipped media file does not prove application AST omission."
+          }
+        ],
+        "cooccurringLimitations": {
+          "parser": {
+            "category": "PARSER",
+            "status": "PARTIAL",
+            "totalFailedFiles": 8,
+            "reportedDiagnostics": [
+              "docs_src/app_testing/tutorial004_py310.py: Python parse failed: syntax tree contains errors",
+              "docs_src/events/tutorial003_py310.py: Python parse failed: syntax tree contains errors",
+              "scripts/tests/test_translation_fixer/conftest.py: Python parse failed: syntax tree contains errors",
+              "tests/test_dependency_models.py: Python parse failed: syntax tree contains errors",
+              "tests/test_dependency_yield_scope.py: Python parse failed: syntax tree contains errors",
+              "tests/test_router_events.py: Python parse failed: syntax tree contains errors",
+              "tests/test_tutorial/test_security/test_tutorial005.py: Python parse failed: syntax tree contains errors",
+              "tests/test_tutorial/test_websockets/test_tutorial003.py: Python parse failed: syntax tree contains errors"
+            ],
+            "causesOverallTruncated": false,
+            "assessment": "Parser failures contribute PARTIAL coverage, not a resource TRUNCATED trigger. The bounded diagnostic summary can omit individual paths; no omitted root causes were invented."
+          },
+          "framework": {
+            "category": "FRAMEWORK",
+            "corpusLabel": "FastAPI",
+            "detectedFrameworks": [
+              "FastAPI",
+              "Flask"
+            ],
+            "reportedReducedCoverage": [],
+            "causesOverallTruncated": false,
+            "assessment": "Framework labels/detection do not establish adapter support. CommonJS factories/controllers, unsupported Python cross-function flows and runtime composition remain limitations separate from resource triggers."
+          }
+        },
+        "exhaustivePerEventAttribution": false
+      },
+      {
+        "id": "payatu-vuln-node",
+        "repository": "payatu/vuln-nodejs-app",
+        "commit": "bc3c90920ba4e1c668d954e5027d9ca814d2d5c6",
+        "actualTriggers": [
+          {
+            "category": "RESOURCE",
+            "engine": "security-identity-propagation",
+            "trigger": "ITERATION_CAP",
+            "iterations": 8,
+            "maxIterations": 8,
+            "factsCreated": 390,
+            "maxFacts": 10000,
+            "factCapObserved": false,
+            "effect": "Incomplete propagated trust discarded according to report; no successful authorization proof inferred."
+          },
+          {
+            "category": "RESOURCE",
+            "engine": "repository-discovery",
+            "trigger": "FILE_SIZE_BOUND",
+            "skippedEntries": [
+              {
+                "path": "vuln_react_app/package-lock.json",
+                "reason": "too_large",
+                "actualFileBytes": 1114943
+              }
+            ],
+            "effect": "Named source or non-source files were skipped; a skipped media file does not prove application AST omission."
+          }
+        ],
+        "cooccurringLimitations": {
+          "parser": {
+            "category": "PARSER",
+            "status": "COMPLETE",
+            "totalFailedFiles": 0,
+            "reportedDiagnostics": [],
+            "causesOverallTruncated": false,
+            "assessment": "Parser failures contribute PARTIAL coverage, not a resource TRUNCATED trigger. The bounded diagnostic summary can omit individual paths; no omitted root causes were invented."
+          },
+          "framework": {
+            "category": "FRAMEWORK",
+            "corpusLabel": "Express; CommonJS",
+            "detectedFrameworks": [
+              "Express",
+              "React"
+            ],
+            "reportedReducedCoverage": [
+              "Reduced coverage: no framework-specific rules support React."
+            ],
+            "causesOverallTruncated": false,
+            "assessment": "Framework labels/detection do not establish adapter support. CommonJS factories/controllers, unsupported Python cross-function flows and runtime composition remain limitations separate from resource triggers."
+          }
+        },
+        "exhaustivePerEventAttribution": false
+      },
+      {
+        "id": "sirappsec-vuln-node",
+        "repository": "SirAppSec/vuln-node.js-express.js-app",
+        "commit": "b977c7407f328da929577745ad509639e26c428a",
+        "actualTriggers": [
+          {
+            "category": "RESOURCE",
+            "engine": "repository-discovery",
+            "trigger": "FILE_SIZE_BOUND",
+            "skippedEntries": [
+              {
+                "path": "src/public/vendor/fonts/boxicons/boxicons.svg",
+                "reason": "too_large",
+                "actualFileBytes": 1125137
+              },
+              {
+                "path": "src/public/vendor/libs/apex-charts/apexcharts.js",
+                "reason": "too_large",
+                "actualFileBytes": 1251181
+              },
+              {
+                "path": "src/public/vendor/libs/highlight/highlight.js",
+                "reason": "too_large",
+                "actualFileBytes": 2964849
+              }
+            ],
+            "effect": "Named source or non-source files were skipped; a skipped media file does not prove application AST omission."
+          }
+        ],
+        "cooccurringLimitations": {
+          "parser": {
+            "category": "PARSER",
+            "status": "COMPLETE",
+            "totalFailedFiles": 0,
+            "reportedDiagnostics": [],
+            "causesOverallTruncated": false,
+            "assessment": "Parser failures contribute PARTIAL coverage, not a resource TRUNCATED trigger. The bounded diagnostic summary can omit individual paths; no omitted root causes were invented."
+          },
+          "framework": {
+            "category": "FRAMEWORK",
+            "corpusLabel": "Express",
+            "detectedFrameworks": [
+              "Express"
+            ],
+            "reportedReducedCoverage": [],
+            "causesOverallTruncated": false,
+            "assessment": "Framework labels/detection do not establish adapter support. CommonJS factories/controllers, unsupported Python cross-function flows and runtime composition remain limitations separate from resource triggers."
+          }
+        },
+        "exhaustivePerEventAttribution": false
+      },
+      {
+        "id": "vulnerable-typescript",
+        "repository": "ryanmcmorrowsnyk/vulnerable-typescript-app",
+        "commit": "7f8b240a2f02beba099da3632d1ba679ff8bc32f",
+        "actualTriggers": [
+          {
+            "category": "RESOURCE",
+            "engine": "repository-discovery",
+            "trigger": "FILE_SIZE_BOUND",
+            "skippedEntries": [
+              {
+                "path": "package-lock.json",
+                "reason": "too_large",
+                "actualFileBytes": 1148904
+              }
+            ],
+            "effect": "Named source or non-source files were skipped; a skipped media file does not prove application AST omission."
+          }
+        ],
+        "cooccurringLimitations": {
+          "parser": {
+            "category": "PARSER",
+            "status": "COMPLETE",
+            "totalFailedFiles": 0,
+            "reportedDiagnostics": [],
+            "causesOverallTruncated": false,
+            "assessment": "Parser failures contribute PARTIAL coverage, not a resource TRUNCATED trigger. The bounded diagnostic summary can omit individual paths; no omitted root causes were invented."
+          },
+          "framework": {
+            "category": "FRAMEWORK",
+            "corpusLabel": "Express",
+            "detectedFrameworks": [
+              "Express"
+            ],
+            "reportedReducedCoverage": [],
+            "causesOverallTruncated": false,
+            "assessment": "Framework labels/detection do not establish adapter support. CommonJS factories/controllers, unsupported Python cross-function flows and runtime composition remain limitations separate from resource triggers."
+          }
+        },
+        "exhaustivePerEventAttribution": false
+      },
+      {
+        "id": "flask-security",
+        "repository": "pallets-eco/flask-security",
+        "commit": "5d47d697d6f0806d0fe58559fe61cd6fd8ae16ef",
+        "actualTriggers": [
+          {
+            "category": "RESOURCE",
+            "engine": "application-dataflow",
+            "trigger": "APPLICATION_BOUND_EVENTS",
+            "eventCount": 5,
+            "astNodesVisited": 251873,
+            "repositoryAstBudgetReference": 200000,
+            "repositoryAstBudgetEvidence": "200000 budget supplied by coordinating implementation agent; aggregate AST count independently verified in normalized report.",
+            "aggregateExceedsRepositoryAstBudget": true,
+            "perEventSubtype": "NOT_SERIALIZED",
+            "limitation": "Repository AST exhaustion is consistent with the reported bound and observed aggregate. Exact attribution of each event to repository AST, per-file AST, facts or paths cannot be reconstructed from this report alone."
+          }
+        ],
+        "cooccurringLimitations": {
+          "parser": {
+            "category": "PARSER",
+            "status": "COMPLETE",
+            "totalFailedFiles": 0,
+            "reportedDiagnostics": [],
+            "causesOverallTruncated": false,
+            "assessment": "Parser failures contribute PARTIAL coverage, not a resource TRUNCATED trigger. The bounded diagnostic summary can omit individual paths; no omitted root causes were invented."
+          },
+          "framework": {
+            "category": "FRAMEWORK",
+            "corpusLabel": "Flask; Flask-Security",
+            "detectedFrameworks": [
+              "Flask"
+            ],
+            "reportedReducedCoverage": [],
+            "causesOverallTruncated": false,
+            "assessment": "Framework labels/detection do not establish adapter support. CommonJS factories/controllers, unsupported Python cross-function flows and runtime composition remain limitations separate from resource triggers."
+          }
+        },
+        "exhaustivePerEventAttribution": false
+      },
+      {
+        "id": "starlette",
+        "repository": "encode/starlette",
+        "commit": "03f12b7fcf0a3e21a8da648ca0900c79472e9efe",
+        "actualTriggers": [
+          {
+            "category": "RESOURCE",
+            "engine": "repository-discovery",
+            "trigger": "FILE_SIZE_BOUND",
+            "skippedEntries": [
+              {
+                "path": "docs/img/gh-actions-fail-test.png",
+                "reason": "too_large",
+                "actualFileBytes": 1336330
+              }
+            ],
+            "effect": "Named source or non-source files were skipped; a skipped media file does not prove application AST omission."
+          }
+        ],
+        "cooccurringLimitations": {
+          "parser": {
+            "category": "PARSER",
+            "status": "PARTIAL",
+            "totalFailedFiles": 6,
+            "reportedDiagnostics": [
+              "tests/conftest.py: Python parse failed: syntax tree contains errors",
+              "tests/test_applications.py: Python parse failed: syntax tree contains errors",
+              "tests/test_convertors.py: Python parse failed: syntax tree contains errors",
+              "tests/test_formparsers.py: Python parse failed: syntax tree contains errors",
+              "tests/test_routing.py: Python parse failed: syntax tree contains errors",
+              "tests/test_testclient.py: Python parse failed: syntax tree contains errors"
+            ],
+            "causesOverallTruncated": false,
+            "assessment": "Parser failures contribute PARTIAL coverage, not a resource TRUNCATED trigger. The bounded diagnostic summary can omit individual paths; no omitted root causes were invented."
+          },
+          "framework": {
+            "category": "FRAMEWORK",
+            "corpusLabel": "Starlette",
+            "detectedFrameworks": [],
+            "reportedReducedCoverage": [],
+            "causesOverallTruncated": false,
+            "assessment": "Framework labels/detection do not establish adapter support. CommonJS factories/controllers, unsupported Python cross-function flows and runtime composition remain limitations separate from resource triggers."
+          }
+        },
+        "exhaustivePerEventAttribution": false
+      },
+      {
+        "id": "strapi",
+        "repository": "strapi/strapi",
+        "commit": "34fdea8fb4e11afc475a0ffdc14311cce09ddded",
+        "actualTriggers": [
+          {
+            "category": "RESOURCE",
+            "engine": "security-identity-propagation",
+            "trigger": "ITERATION_CAP",
+            "iterations": 8,
+            "maxIterations": 8,
+            "factsCreated": 9172,
+            "maxFacts": 10000,
+            "factCapObserved": false,
+            "effect": "Incomplete propagated trust discarded according to report; no successful authorization proof inferred."
+          },
+          {
+            "category": "RESOURCE",
+            "engine": "application-dataflow",
+            "trigger": "APPLICATION_BOUND_EVENTS",
+            "eventCount": 4553,
+            "astNodesVisited": 2527328,
+            "repositoryAstBudgetReference": 200000,
+            "repositoryAstBudgetEvidence": "200000 budget supplied by coordinating implementation agent; aggregate AST count independently verified in normalized report.",
+            "aggregateExceedsRepositoryAstBudget": true,
+            "perEventSubtype": "NOT_SERIALIZED",
+            "limitation": "Repository AST exhaustion is consistent with the reported bound and observed aggregate. Exact attribution of each event to repository AST, per-file AST, facts or paths cannot be reconstructed from this report alone."
+          },
+          {
+            "category": "RESOURCE",
+            "engine": "repository-discovery",
+            "trigger": "FILE_SIZE_BOUND",
+            "skippedEntries": [
+              {
+                "path": ".yarn/releases/yarn-4.12.0.cjs",
+                "reason": "too_large",
+                "actualFileBytes": 2992863
+              },
+              {
+                "path": "docs/static/img/database/reordering-algo-2.png",
+                "reason": "too_large",
+                "actualFileBytes": 1407594
+              },
+              {
+                "path": "examples/getstarted/data/uploads/coffee-art.jpg",
+                "reason": "too_large",
+                "actualFileBytes": 1171420
+              },
+              {
+                "path": "examples/getstarted/data/uploads/coffee-beans.jpg",
+                "reason": "too_large",
+                "actualFileBytes": 2821666
+              },
+              {
+                "path": "examples/getstarted/data/uploads/coffee-shadow.jpg",
+                "reason": "too_large",
+                "actualFileBytes": 1864994
+              },
+              {
+                "path": "packages/cli/create-strapi-app/templates/example-js/data/uploads/coffee-art.jpg",
+                "reason": "too_large",
+                "actualFileBytes": 1171420
+              },
+              {
+                "path": "packages/cli/create-strapi-app/templates/example-js/data/uploads/coffee-beans.jpg",
+                "reason": "too_large",
+                "actualFileBytes": 2821666
+              },
+              {
+                "path": "packages/cli/create-strapi-app/templates/example-js/data/uploads/coffee-shadow.jpg",
+                "reason": "too_large",
+                "actualFileBytes": 1864994
+              },
+              {
+                "path": "public/assets/admin-demo.gif",
+                "reason": "too_large",
+                "actualFileBytes": 3586791
+              },
+              {
+                "path": "templates/website/data/uploads/user.png",
+                "reason": "too_large",
+                "actualFileBytes": 1229382
+              },
+              {
+                "path": "tests/cli/tests/strapi/strapi/__snapshots__/openapi-generate.test.cli.ts.snap",
+                "reason": "too_large",
+                "actualFileBytes": 1148925
+              },
+              {
+                "path": "tests/e2e/data/with-admin/assets/uploads/ted_lasso_profile_f4262e821d.jpeg",
+                "reason": "too_large",
+                "actualFileBytes": 5258947
+              },
+              {
+                "path": "yarn.lock",
+                "reason": "too_large",
+                "actualFileBytes": 1140016
+              }
+            ],
+            "effect": "Named source or non-source files were skipped; a skipped media file does not prove application AST omission."
+          }
+        ],
+        "cooccurringLimitations": {
+          "parser": {
+            "category": "PARSER",
+            "status": "PARTIAL",
+            "totalFailedFiles": 31,
+            "reportedDiagnostics": [
+              "examples/complex/scripts/bench-hook.ts: JavaScript/TypeScript parse failed: SyntaxError: 'return' outside of function. (39:2)",
+              "packages/core/admin/admin/src/core/store/hooks.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (12:66)",
+              "packages/core/admin/admin/src/hooks/usePersistentState.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (16:62)",
+              "packages/core/admin/admin/src/hooks/usePrev.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (3:53)",
+              "packages/core/admin/admin/src/hooks/useQueryParams.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (61:48)",
+              "packages/core/admin/admin/src/pages/Auth/components/ResetPassword.tsx: JavaScript/TypeScript scope analysis failed: TypeError: Duplicate declaration \"ResetPassword\"",
+              "packages/core/admin/admin/src/pages/Settings/pages/Roles/utils/createArrayOfValues.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (4:71)",
+              "packages/core/admin/admin/src/utils/arrays.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (23:19)",
+              "packages/core/admin/admin/src/utils/getFetchClient.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (483:11)",
+              "packages/core/content-manager/admin/src/hooks/usePrev.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (3:53)",
+              "packages/core/content-type-builder/admin/src/components/DataManager/undoRedo.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (44:41)",
+              "packages/core/core/src/migrations/database/5.0.0-discard-drafts.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (919:42)",
+              "packages/core/core/src/services/document-service/utils/__tests__/ordered-parallel.test.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (3:30)",
+              "packages/core/core/src/services/mcp/utils/withTimeout.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (10:15)",
+              "packages/core/core/src/services/server/__tests__/koa.test.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (25:91)",
+              "packages/core/data-transfer/src/__tests__/test-utils.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (10:37)",
+              "packages/core/data-transfer/src/engine/index.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (227:74)",
+              "packages/core/data-transfer/src/utils/stream.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (12:25)",
+              "packages/core/strapi/src/node/develop.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (15:37)",
+              "packages/core/types/src/modules/__tests__/mcp-capability-results.test.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token `>`. Did you mean `&gt;` or `{'>'}`? (147:40)",
+              "11 additional parse failures omitted from this summary."
+            ],
+            "causesOverallTruncated": false,
+            "assessment": "Parser failures contribute PARTIAL coverage, not a resource TRUNCATED trigger. The bounded diagnostic summary can omit individual paths; no omitted root causes were invented."
+          },
+          "framework": {
+            "category": "FRAMEWORK",
+            "corpusLabel": "Strapi; Koa; React",
+            "detectedFrameworks": [
+              "React"
+            ],
+            "reportedReducedCoverage": [
+              "Reduced coverage: no framework-specific rules support React."
+            ],
+            "causesOverallTruncated": false,
+            "assessment": "Framework labels/detection do not establish adapter support. CommonJS factories/controllers, unsupported Python cross-function flows and runtime composition remain limitations separate from resource triggers."
+          }
+        },
+        "exhaustivePerEventAttribution": false
+      }
+    ],
+    "limitation": "Trigger counts overlap. Parser failures contribute PARTIAL coverage and framework limits remain separate. All six application-bound repos exceed 200000 aggregate AST nodes, but per-event subtype/location was not serialized; no exact AST/file/fact/path split is invented."
+  },
+  "liveHosts": {
+    "state": "PARTIALLY_CLOSED",
+    "codex": {
+      "state": "LIVE_HOST_VALIDATED_WITH_LIMITATIONS",
+      "hostVersion": "codex-cli 0.154.0",
+      "capabilities": [
+        "scan",
+        "explain",
+        "path-escape rejection"
+      ],
+      "fixPlan": "BLOCKED_BY_HOST_APPROVAL_POLICY",
+      "fixtureUnchanged": true
+    },
+    "claude": {
+      "state": "NOT_RUN",
+      "hostVersion": "Claude Code 2.1.197",
+      "reason": "Host initialized/listed exact alpha.12 MCP but model request returned Not logged in. No security tool call ran; authentication is required for live-host validation."
+    },
+    "otherHosts": "NOT_RUN; existing per-adapter configuration and subprocess tests remain separately validated",
+    "limitation": "Representative Codex CLI scan/explain/boundary behavior is live validated. Interactive fix-plan approval and another authenticated representative host remain unestablished. No host UI or live remediation transaction is claimed."
+  },
+  "fastapi": {
+    "state": "INCONCLUSIVE",
+    "samplesPerVersion": 80,
+    "p50Ratio": 0.9352625077884185,
+    "p95Ratio": 0.8405342633610247,
+    "baseline": {
+      "samples": 80,
+      "p50Milliseconds": 5290.065900000001,
+      "p95Milliseconds": 9683.725999999999,
+      "stagesP50Milliseconds": {
+        "repositoryDiscovery": 3733.7778000000035,
+        "parsing": 1045.7265000000043,
+        "callGraph": 20.576599999998507,
+        "securityGraph": 13.221999999994296,
+        "authenticationGraph": 0.8493000000016764,
+        "invariantEvaluation": 27.859199999998964,
+        "applicationDataflow": 77.94809999999416,
+        "reportGeneration": 5.8673000000053435
+      }
+    },
+    "candidate": {
+      "samples": 80,
+      "p50Milliseconds": 4947.600299999998,
+      "p95Milliseconds": 8139.503500000001,
+      "stagesP50Milliseconds": {
+        "repositoryDiscovery": 3463.0111000000034,
+        "parsing": 987.5861000000004,
+        "callGraph": 8.916500000006636,
+        "securityGraph": 7.001899999995658,
+        "authenticationGraph": 0.8455999999987398,
+        "invariantEvaluation": 14.785499999998137,
+        "applicationDataflow": 69.97010000000228,
+        "reportGeneration": 5.85570000000007
+      }
+    },
+    "originalP95Ratio": 1.2061436710199573,
+    "pairedClusterP95RatioInterval95": [
+      0.5769683484672783,
+      1.243266799380509
+    ],
+    "slowerRounds": 1,
+    "rounds": [
+      {
+        "round": 1,
+        "order": "ABBA",
+        "baseline": {
+          "samples": 20,
+          "p50Milliseconds": 5455.573699999999,
+          "p95Milliseconds": 8145.436299999998,
+          "stagesP50Milliseconds": {
+            "repositoryDiscovery": 3904.5859999999993,
+            "parsing": 1062.0588000000007,
+            "callGraph": 22.182400000005146,
+            "securityGraph": 12.833599999999933,
+            "authenticationGraph": 0.8625000000029104,
+            "invariantEvaluation": 31.188899999997375,
+            "applicationDataflow": 78.4256000000023,
+            "reportGeneration": 6.039700000001176
+          }
+        },
+        "candidate": {
+          "samples": 20,
+          "p50Milliseconds": 5208.078100000006,
+          "p95Milliseconds": 9101.642100000005,
+          "stagesP50Milliseconds": {
+            "repositoryDiscovery": 3788.0930999999982,
+            "parsing": 1019.857799999998,
+            "callGraph": 9.689600000005157,
+            "securityGraph": 7.341699999997218,
+            "authenticationGraph": 0.9153999999980442,
+            "invariantEvaluation": 15.093799999995099,
+            "applicationDataflow": 78.71850000000086,
+            "reportGeneration": 6.29309999999532
+          }
+        },
+        "p95Ratio": 1.1173916000055157
+      },
+      {
+        "round": 2,
+        "order": "BAAB",
+        "baseline": {
+          "samples": 20,
+          "p50Milliseconds": 6302.5242,
+          "p95Milliseconds": 12416.018000000004,
+          "stagesP50Milliseconds": {
+            "repositoryDiscovery": 4358.576100000002,
+            "parsing": 1144.134,
+            "callGraph": 22.547599999998056,
+            "securityGraph": 15.286900000006426,
+            "authenticationGraph": 0.8523000000022876,
+            "invariantEvaluation": 28.53460000000632,
+            "applicationDataflow": 82.64109999999346,
+            "reportGeneration": 6.082799999996496
+          }
+        },
+        "candidate": {
+          "samples": 20,
+          "p50Milliseconds": 5344.787899999999,
+          "p95Milliseconds": 7100.650900000001,
+          "stagesP50Milliseconds": {
+            "repositoryDiscovery": 3988.929799999998,
+            "parsing": 1012.4570999999996,
+            "callGraph": 8.870499999997264,
+            "securityGraph": 6.898000000001048,
+            "authenticationGraph": 0.8866999999991094,
+            "invariantEvaluation": 14.867700000002515,
+            "applicationDataflow": 72.5547000000006,
+            "reportGeneration": 6.184299999998984
+          }
+        },
+        "p95Ratio": 0.5718943786969379
+      },
+      {
+        "round": 3,
+        "order": "ABBA",
+        "baseline": {
+          "samples": 20,
+          "p50Milliseconds": 4879.224400000001,
+          "p95Milliseconds": 5924.665699999998,
+          "stagesP50Milliseconds": {
+            "repositoryDiscovery": 3351.0687000000034,
+            "parsing": 994.0877,
+            "callGraph": 18.288500000002387,
+            "securityGraph": 12.730999999999767,
+            "authenticationGraph": 0.8428999999996449,
+            "invariantEvaluation": 26.182600000000093,
+            "applicationDataflow": 67.3173999999999,
+            "reportGeneration": 5.686999999998079
+          }
+        },
+        "candidate": {
+          "samples": 20,
+          "p50Milliseconds": 4702.7163999999975,
+          "p95Milliseconds": 5630.4123,
+          "stagesP50Milliseconds": {
+            "repositoryDiscovery": 3339.6623,
+            "parsing": 954.8525999999983,
+            "callGraph": 8.778700000000754,
+            "securityGraph": 6.8136000000013155,
+            "authenticationGraph": 0.8194999999977881,
+            "invariantEvaluation": 14.451000000000931,
+            "applicationDataflow": 68.73180000000139,
+            "reportGeneration": 5.582600000001548
+          }
+        },
+        "p95Ratio": 0.9503341766608033
+      },
+      {
+        "round": 4,
+        "order": "BAAB",
+        "baseline": {
+          "samples": 20,
+          "p50Milliseconds": 4980.9481000000005,
+          "p95Milliseconds": 7741.264199999998,
+          "stagesP50Milliseconds": {
+            "repositoryDiscovery": 3582.0248999999994,
+            "parsing": 988.8891999999996,
+            "callGraph": 18.786200000000463,
+            "securityGraph": 12.01090000000113,
+            "authenticationGraph": 0.8283999999985099,
+            "invariantEvaluation": 25.727999999999156,
+            "applicationDataflow": 70.19830000000002,
+            "reportGeneration": 5.456899999997404
+          }
+        },
+        "candidate": {
+          "samples": 20,
+          "p50Milliseconds": 4501.438699999999,
+          "p95Milliseconds": 5311.2553,
+          "stagesP50Milliseconds": {
+            "repositoryDiscovery": 3184.499799999998,
+            "parsing": 951.2439000000013,
+            "callGraph": 8.415899999999965,
+            "securityGraph": 6.598099999999249,
+            "authenticationGraph": 0.7864000000008673,
+            "invariantEvaluation": 13.76820000000589,
+            "applicationDataflow": 65.1948999999986,
+            "reportGeneration": 5.4262999999991735
+          }
+        },
+        "p95Ratio": 0.6860966326404415
+      }
+    ],
+    "semanticEquivalenceToOriginalPerVersion": "PASSED",
+    "conclusion": "The original +20.6% p95 slowdown was not consistently reproduced, but the paired-cluster interval includes it and 1.0. Neither a repeated regression nor non-inferiority is established. No optimization or analysis change was made.",
+    "limitations": [
+      "One Windows host with warm OS cache; uncontrolled user/OS background activity and thermal state remain possible influences.",
+      "Eight paired process clusters are a limited basis for tail inference. No cross-machine equivalence or arbitrary zero-regression guarantee is established.",
+      "The repository remains TRUNCATED in both versions; all original proof reports, bounds and counters must match before timing is accepted."
+    ]
+  },
+  "allRefs": {
+    "state": "PASSED",
+    "sourceCommit": "74f67f89e25daa7779ca15382cde5669c6b3fe08",
+    "commitsReviewed": 68,
+    "issues": [],
+    "authorAllowances": {
+      "policy": "validation/history-author-allowances.json",
+      "policySha256": "0d31d714d52ce917ebe50f08d9768fa69a4380b02056ac9a8a3fa3ed6d15d14c",
+      "applied": [
+        {
+          "commit": "0da7d9ecea688821a7ffeeda8ee4491e1068937f",
+          "observedRef": "refs/remotes/origin/dependabot/github_actions/github/codeql-action/analyze-4.37.9"
+        },
+        {
+          "commit": "0f6ca0ad029c74f11ea82175d7ade6d1e4b1645e",
+          "observedRef": "refs/remotes/origin/dependabot/github_actions/github/codeql-action/upload-sarif-4.37.9"
+        },
+        {
+          "commit": "2dc2ffc4f4c01b33335b6c0816ec691905be3dab",
+          "observedRef": "refs/remotes/origin/dependabot/github_actions/ossf/scorecard-action-2.4.4"
+        },
+        {
+          "commit": "38baee9853937d63cafe02c94206e0a4c8f427dc",
+          "observedRef": "refs/remotes/origin/dependabot/github_actions/actions/download-artifact-8.0.1"
+        },
+        {
+          "commit": "80c7d0aeb29a26e37f0d8e408a1c6b9aaafc6bfa",
+          "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/vitest-5.0.0"
+        },
+        {
+          "commit": "ad687cd15966bf5d077fac3e881b3b40448c7edf",
+          "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/typescript-eslint-8.69.0"
+        },
+        {
+          "commit": "bb4e1f588d5d10c5f41df4c5e8518caa2ae8e557",
+          "observedRef": "refs/remotes/origin/dependabot/github_actions/github/codeql-action/init-4.37.9"
+        },
+        {
+          "commit": "c8bf4fbda3268d0e3de74590e428ca1926c3ae12",
+          "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/typescript-7.0.2"
+        },
+        {
+          "commit": "d8b3d5a10f4c878c413a388d6f640fa390cb4b5b",
+          "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/types/node-26.4.1"
+        }
+      ],
+      "scope": "Exact immutable commit and author/committer tuple only; privacy approval does not authenticate a bot, approve code, or exclude content from scanning."
+    },
+    "identities": [
+      {
+        "commit": "0da7d9ecea688821a7ffeeda8ee4491e1068937f",
+        "authorName": "dependabot[bot]",
+        "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+        "committerName": "GitHub",
+        "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+        "observedRef": "refs/remotes/origin/dependabot/github_actions/github/codeql-action/analyze-4.37.9",
+        "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+      },
+      {
+        "commit": "0f6ca0ad029c74f11ea82175d7ade6d1e4b1645e",
+        "authorName": "dependabot[bot]",
+        "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+        "committerName": "GitHub",
+        "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+        "observedRef": "refs/remotes/origin/dependabot/github_actions/github/codeql-action/upload-sarif-4.37.9",
+        "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+      },
+      {
+        "commit": "2dc2ffc4f4c01b33335b6c0816ec691905be3dab",
+        "authorName": "dependabot[bot]",
+        "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+        "committerName": "GitHub",
+        "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+        "observedRef": "refs/remotes/origin/dependabot/github_actions/ossf/scorecard-action-2.4.4",
+        "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+      },
+      {
+        "commit": "38baee9853937d63cafe02c94206e0a4c8f427dc",
+        "authorName": "dependabot[bot]",
+        "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+        "committerName": "GitHub",
+        "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+        "observedRef": "refs/remotes/origin/dependabot/github_actions/actions/download-artifact-8.0.1",
+        "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+      },
+      {
+        "commit": "80c7d0aeb29a26e37f0d8e408a1c6b9aaafc6bfa",
+        "authorName": "dependabot[bot]",
+        "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+        "committerName": "GitHub",
+        "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+        "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/vitest-5.0.0",
+        "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+      },
+      {
+        "commit": "ad687cd15966bf5d077fac3e881b3b40448c7edf",
+        "authorName": "dependabot[bot]",
+        "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+        "committerName": "GitHub",
+        "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+        "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/typescript-eslint-8.69.0",
+        "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+      },
+      {
+        "commit": "bb4e1f588d5d10c5f41df4c5e8518caa2ae8e557",
+        "authorName": "dependabot[bot]",
+        "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+        "committerName": "GitHub",
+        "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+        "observedRef": "refs/remotes/origin/dependabot/github_actions/github/codeql-action/init-4.37.9",
+        "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+      },
+      {
+        "commit": "c8bf4fbda3268d0e3de74590e428ca1926c3ae12",
+        "authorName": "dependabot[bot]",
+        "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+        "committerName": "GitHub",
+        "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+        "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/typescript-7.0.2",
+        "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+      },
+      {
+        "commit": "d8b3d5a10f4c878c413a388d6f640fa390cb4b5b",
+        "authorName": "dependabot[bot]",
+        "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+        "committerName": "GitHub",
+        "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+        "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/types/node-26.4.1",
+        "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+      }
+    ],
+    "reason": "Nine pre-existing remote commits share one public Dependabot identity. The old audit deduplicated issues by email hash and hid eight commits. It now reports each commit. Each allowance is an exact immutable author/committer tuple; future bot commits still fail. No ref/history/release configuration changed."
+  },
+  "blockers": [
+    "Exact development-commit hosted CI, CodeQL and OpenSSF remain NOT_RUN; GitHub has no observed matching commit/workflow evidence.",
+    "Representative live-host coverage is partial: Codex scan/explain/boundary passed, noninteractive fix planning was withheld by host approval policy, and Claude requires login. Other live hosts remain NOT_RUN.",
+    "FastAPI tail performance remains inconclusive after 80 samples/version: high host variability leaves the original +20.6% p95 change within the descriptive paired-cluster interval. A controlled independent-host comparison remains necessary before accepting performance readiness."
+  ],
+  "verdict": "ALPHA12_NOT_BETA_READY"
+}

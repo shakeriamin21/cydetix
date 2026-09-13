@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0.0",
+  "host": "claude",
+  "sourceCommit": "74f67f89e25daa7779ca15382cde5669c6b3fe08",
+  "version": "0.6.0-alpha.12",
+  "observedAt": "2026-09-13T09:36:51.584Z",
+  "durationMilliseconds": 2788,
+  "exitCode": 1,
+  "processError": null,
+  "initialized": {
+    "name": "Cydetix",
+    "version": "0.6.0-alpha.12"
+  },
+  "listedTools": [
+    "cydetix_scan",
+    "cydetix_fix",
+    "cydetix_explain"
+  ],
+  "calls": [],
+  "fixtureUnchanged": true,
+  "runtimeSha256": "6a0e4aa5cefef180040d12af2b010f44ebb6a1e117829f2a5b4a3696f6f093cc",
+  "protocolSha256": "71f210411be8e91acbd12ad215bff4ea27eca62ec256aa319f3ef82c915bb2ae",
+  "stdoutSha256": "6b4bc6edcd5d66f4a384b545d66db245a77381e1e41b8aaec6916fa83f3c946f",
+  "stderrSha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "state": "NOT_RUN",
+  "limitations": [
+    "Exact local development runtime, isolated synthetic fixture, scan/explain/plan/boundary scope only. No live source modification or sandbox remediation tested by the host.",
+    "A process launch or MCP initialization alone is not live-host validation. Host tool-call transcripts must demonstrate completed requests.",
+    "Raw host transcripts remain local to avoid publishing session identifiers or account data. Sanitized protocol call receipts and hashes are retained."
+  ],
+  "hostVersion": "Claude Code 2.1.197",
+  "blocker": "Host initialized/listed exact alpha.12 MCP but model request returned Not logged in. No security tool call ran; authentication is required for live-host validation."
+}

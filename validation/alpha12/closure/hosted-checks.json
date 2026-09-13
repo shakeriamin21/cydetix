@@ -1,0 +1,60 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
+  "repository": "shakeriamin21/cydetix",
+  "observedAt": "2026-09-13T09:44:40.901Z",
+  "method": "Unauthenticated, read-only GitHub REST requests. No dispatch, push or release action.",
+  "results": {
+    "repository": {
+      "url": "https://api.github.com/repos/shakeriamin21/cydetix",
+      "status": 200,
+      "pagination": null,
+      "fullName": "shakeriamin21/cydetix",
+      "defaultBranch": "main"
+    },
+    "commit": {
+      "url": "https://api.github.com/repos/shakeriamin21/cydetix/commits/0f3f8111ad0537e98dd8eff899b3407364482168",
+      "status": 422,
+      "pagination": null,
+      "message": "No commit found for SHA: 0f3f8111ad0537e98dd8eff899b3407364482168"
+    },
+    "status": {
+      "url": "https://api.github.com/repos/shakeriamin21/cydetix/commits/0f3f8111ad0537e98dd8eff899b3407364482168/status",
+      "status": 200,
+      "pagination": null,
+      "state": "pending",
+      "totalCount": 0,
+      "statuses": []
+    },
+    "checkRuns": {
+      "url": "https://api.github.com/repos/shakeriamin21/cydetix/commits/0f3f8111ad0537e98dd8eff899b3407364482168/check-runs?per_page=100",
+      "status": 422,
+      "pagination": null,
+      "message": "No commit found for SHA: 0f3f8111ad0537e98dd8eff899b3407364482168"
+    },
+    "workflowRuns": {
+      "url": "https://api.github.com/repos/shakeriamin21/cydetix/actions/runs?head_sha=0f3f8111ad0537e98dd8eff899b3407364482168&per_page=100",
+      "status": 200,
+      "pagination": null,
+      "totalCount": 0,
+      "runs": []
+    },
+    "offendingCommit": {
+      "url": "https://github.com/shakeriamin21/cydetix/commit/d8b3d5a10f4c878c413a388d6f640fa390cb4b5b",
+      "status": 200,
+      "pagination": null,
+      "sha": "d8b3d5a10f4c878c413a388d6f640fa390cb4b5b",
+      "authorLogin": "dependabot[bot]",
+      "committerLogin": "web-flow",
+      "verification": {
+        "verified": true,
+        "reason": "valid"
+      }
+    }
+  },
+  "conclusion": "EXACT_COMMIT_NOT_ON_REMOTE",
+  "limitations": [
+    "HTTP errors and authentication failures are not passing checks. Pagination, if present, prevents a complete check inventory.",
+    "Local passing gates and historical release checks do not establish exact-commit hosted validation."
+  ]
+}
