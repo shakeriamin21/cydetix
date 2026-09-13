@@ -180,6 +180,17 @@ describe("CLI smoke contract", () => {
     expect(result.stderr).toContain("Unknown rule");
   });
 
+  it("prints missing-argument guidance once and distinguishes scan failure from usage", () => {
+    const usage = runCli("explain");
+    expect(usage.status).toBe(2);
+    expect(usage.stderr.match(/missing required argument/gu)).toHaveLength(1);
+    expect(usage.stderr).toContain("Usage: cydetix explain");
+    const failure = runCli("scan", path.join(CLI_HOME, "absent-project"));
+    expect(failure.status).toBe(3);
+    expect(failure.stderr).toContain("Cannot inspect target path");
+    expect(failure.stdout).toBe("");
+  });
+
   it("renders the authentication architecture and invariant counts", () => {
     const result = runCli("auth", "fixtures/phase3/reset-unknown", "--format", "text");
     expect(result.status).toBe(0);

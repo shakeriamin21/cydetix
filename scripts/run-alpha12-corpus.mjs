@@ -103,6 +103,7 @@ if (process.argv[2] === "--worker") {
       skippedEntries: report.manifest.skipped.length,
       bytesExamined: report.manifest.bytesExamined,
       ...metrics,
+      securityIdentityBounds: report.securityAnalysis.securityIr.propagationBounds ?? null,
       findings: report.findings.length,
       unknown,
     });
@@ -144,6 +145,7 @@ if (process.argv[2] === "--worker") {
       ),
     },
     resourceLimitEvents: {
+      securityIdentity: analysis.securityIr.propagationBounds ?? null,
       applicationDataflow: analysis.applicationDataflow?.metrics.truncationEvents ?? 0,
       traversal: first.manifest.skipped.filter((item) =>
         ["too_large", "depth_limit", "file_limit"].includes(item.reason),

@@ -45,6 +45,20 @@ claim that beta has shipped or that the analysis covers arbitrary applications.
 - Parser-accepted trees that Babel cannot scope now produce explicit file-local limitations.
   Exhausted propagation iterations and evidence paths produce TRUNCATED and withhold actionable
   application-dataflow proof. All existing numeric bounds remain unchanged.
+- `AS-SECRET-001@1.0.1` retains private-key header observations as UNKNOWN in working-tree and
+  history findings. Two placeholder headers in the expanded corpus demonstrated that the lexical
+  detector cannot establish credential material from a header. Other credential patterns retain
+  their existing proof semantics; private-key remediation guidance is conditional on reviewing the
+  payload and deployment. No secret is sent to a provider for validation.
+- Security identity propagation now enforces the same 10,000-fact/eight-iteration policy used by
+  bounded application analysis. Previously its iteration count scaled with the number of symbols,
+  allowing recursive derived identities to prevent a practical fixed point. Exhaustion discards
+  incomplete propagated trust, forces dependent authorization/tenant proofs to UNKNOWN and adds
+  optional `securityIr.propagationBounds` evidence plus a TRUNCATED engine status. This is an
+  additive schema correction with an intentional conservative change in conclusions on exhausted
+  graphs.
+- Commander usage errors are printed once, with their usage guidance and unchanged exit code 2. A
+  missing scan directory remains a scan failure (3), distinct from a malformed command (2).
 - `verify:development` runs the existing local verification steps with an explicit development
   version/historical-evidence check. `verify`, publication checks and the release workflow retain
   their strict release requirements. Development validation rejects release-tag contexts.

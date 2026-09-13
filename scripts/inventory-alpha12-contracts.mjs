@@ -179,7 +179,10 @@ const inventory = {
     "Human finding counts no longer deduplicate distinct evidence. UNKNOWN means proof uncertainty rather than unknown reachability; both remain visible independently.",
     "SARIF property bags additionally retain full finding proof and UNKNOWN instances. Scan/remediation schema versions are unchanged.",
     "AS-PASSWORD-001@1.0.1 preserves the observed hash signal but reports UNKNOWN for unestablished credential-storage purpose and runtime reachability; high confidence in a hash operation does not prove insecure password storage.",
+    "AS-SECRET-001@1.0.1 preserves private-key header observations as UNKNOWN for working-tree and history findings; marker-only matching does not prove key material or a deployed credential. Other credential patterns retain their existing proof semantics and every remediation ceiling remains unchanged.",
     "Babel scope failures are explicit file-local analysis limitations. Propagation iteration/evidence-path exhaustion is TRUNCATED with no actionable application-dataflow proof; numeric bounds are unchanged.",
+    "Security identity propagation now enforces 10000 facts/eight iterations and discards incomplete propagated trust on exhaustion; optional securityIr.propagationBounds and TRUNCATED coverage retain counters while dependent authorization/tenant proofs remain UNKNOWN.",
+    "Commander usage errors are printed once with unchanged exit 2; a missing scan directory retains scan-failure exit 3.",
     "verify:development validates current versions and immutable historical evidence. Strict release gates remain unchanged and reject the unprepared development candidate.",
   ],
 };

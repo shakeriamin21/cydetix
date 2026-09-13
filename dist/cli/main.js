@@ -666,7 +666,7 @@ async function main() {
         if (error instanceof CommanderError) {
             if (error.code === "commander.helpDisplayed" || error.code === "commander.version")
                 return;
-            process.stderr.write(`${terminalSafe(error.message)}\n`);
+            // Commander already printed its actionable error and usage before exitOverride threw.
             process.exitCode = EXIT.usage;
             return;
         }

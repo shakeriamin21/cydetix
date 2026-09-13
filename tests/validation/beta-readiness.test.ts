@@ -1,6 +1,12 @@
 import { describe, expect, it } from "vitest";
 import { validateBetaReadiness, type BetaReadiness } from "../../src/validation/beta-readiness.js";
 
+function first<T>(values: readonly T[]): T {
+  const value = values[0];
+  if (value === undefined) throw new Error("Synthetic fixture is incomplete");
+  return value;
+}
+
 function passing(): BetaReadiness {
   const evidence = "synthetic validator fixture; not project evidence";
   return {
@@ -141,25 +147,25 @@ describe("beta readiness evidence gates", () => {
     [
       "single scan",
       (r: BetaReadiness) => {
-        r.corpus.identities[0]!.scansCompleted = 1;
+        first(r.corpus.identities).scansCompleted = 1;
       },
     ],
     [
       "nondeterminism",
       (r: BetaReadiness) => {
-        r.corpus.identities[0]!.determinism = "FAILED";
+        first(r.corpus.identities).determinism = "FAILED";
       },
     ],
     [
       "missing p95",
       (r: BetaReadiness) => {
-        r.performance.measurements[0]!.baselineP95Milliseconds = null;
+        first(r.performance.measurements).baselineP95Milliseconds = null;
       },
     ],
     [
       "unsupported integration claim",
       (r: BetaReadiness) => {
-        r.integrations[0]!.subprocess = "NOT_RUN";
+        first(r.integrations).subprocess = "NOT_RUN";
       },
     ],
     [
@@ -176,7 +182,7 @@ describe("beta readiness evidence gates", () => {
   it("accepts an honest negative verdict with incomplete gates and rejects invented accuracy", () => {
     const report = passing();
     report.verdict = "ALPHA12_NOT_BETA_READY";
-    report.supplyChainGates[0]!.state = "NOT_RUN";
+    first(report.supplyChainGates).state = "NOT_RUN";
     report.blockers = ["Required gate not run"];
     expect(validateBetaReadiness(report).verdict).toBe("ALPHA12_NOT_BETA_READY");
     expect(() =>
@@ -189,7 +195,7 @@ describe("beta readiness evidence gates", () => {
     report.tests.passed--;
     expect(() => validateBetaReadiness(report)).toThrow("accounting");
     report.tests.passed++;
-    report.supplyChainGates.push(report.supplyChainGates[0]!);
+    report.supplyChainGates.push(first(report.supplyChainGates));
     expect(() => validateBetaReadiness(report)).toThrow("Duplicate");
   });
 });

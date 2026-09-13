@@ -489,7 +489,7 @@
       },
       {
         "id": "AS-SECRET-001",
-        "version": "1.0.0",
+        "version": "1.0.1",
         "ceiling": "ARCHITECTURAL"
       },
       {
@@ -677,12 +677,12 @@
     },
     {
       "path": "schemas/scan-report.schema.json",
-      "sha256": "77a8bc4fac7ac96afe3a64fddb0d67fd52762b342239152fe9661ac8cda993c8",
+      "sha256": "d87dda764d0d3a16fdf2e284c75d7152b1e300e92941854be1981b3019d715bf",
       "classification": "PUBLIC_STABLE_CANDIDATE"
     },
     {
       "path": "schemas/security-ir.schema.json",
-      "sha256": "153668e0ab346b8bb8c400f2f9c29f6b0ff8c222a8d5a76805893f3909f0b7c1",
+      "sha256": "8f4315e8358c478871aae80783473b4a067385c91ae9446e4848705ae843a83f",
       "classification": "PUBLIC_EXPERIMENTAL"
     },
     {
@@ -779,7 +779,10 @@
     "Human finding counts no longer deduplicate distinct evidence. UNKNOWN means proof uncertainty rather than unknown reachability; both remain visible independently.",
     "SARIF property bags additionally retain full finding proof and UNKNOWN instances. Scan/remediation schema versions are unchanged.",
     "AS-PASSWORD-001@1.0.1 preserves the observed hash signal but reports UNKNOWN for unestablished credential-storage purpose and runtime reachability; high confidence in a hash operation does not prove insecure password storage.",
+    "AS-SECRET-001@1.0.1 preserves private-key header observations as UNKNOWN for working-tree and history findings; marker-only matching does not prove key material or a deployed credential. Other credential patterns retain their existing proof semantics and every remediation ceiling remains unchanged.",
     "Babel scope failures are explicit file-local analysis limitations. Propagation iteration/evidence-path exhaustion is TRUNCATED with no actionable application-dataflow proof; numeric bounds are unchanged.",
+    "Security identity propagation now enforces 10000 facts/eight iterations and discards incomplete propagated trust on exhaustion; optional securityIr.propagationBounds and TRUNCATED coverage retain counters while dependent authorization/tenant proofs remain UNKNOWN.",
+    "Commander usage errors are printed once with unchanged exit 2; a missing scan directory retains scan-failure exit 3.",
     "verify:development validates current versions and immutable historical evidence. Strict release gates remain unchanged and reject the unprepared development candidate."
   ]
 }

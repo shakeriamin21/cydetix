@@ -1,15 +1,15 @@
 import { readFile } from "node:fs/promises";
 import { performance } from "node:perf_hooks";
-import { createBoundary } from "../.cydetix/alpha12/baseline/dist/repository-discovery/boundary.js";
-import { loadConfig } from "../.cydetix/alpha12/baseline/dist/repository-discovery/config.js";
-import { traverseRepository } from "../.cydetix/alpha12/baseline/dist/repository-discovery/traverse.js";
-import {
-  parseSource,
-  isParseFailure,
-} from "../.cydetix/alpha12/baseline/dist/ast-analysis/parser.js";
-import { buildSecurityIr } from "../.cydetix/alpha12/baseline/dist/call-graph/builder.js";
-import { enrichSecurityFacts } from "../.cydetix/alpha12/baseline/dist/dataflow-analysis/security-facts.js";
-import { buildAuthorizationProofs } from "../.cydetix/alpha12/baseline/dist/authorization-analysis/proof.js";
+import { URL } from "node:url";
+const runtime = process.argv[3] === "candidate" ? "../dist" : "../.cydetix/alpha12/baseline/dist";
+const fromRuntime = (suffix) => import(new URL(`${runtime}/${suffix}.js`, import.meta.url));
+const { createBoundary } = await fromRuntime("repository-discovery/boundary");
+const { loadConfig } = await fromRuntime("repository-discovery/config");
+const { traverseRepository } = await fromRuntime("repository-discovery/traverse");
+const { parseSource, isParseFailure } = await fromRuntime("ast-analysis/parser");
+const { buildSecurityIr } = await fromRuntime("call-graph/builder");
+const { enrichSecurityFacts } = await fromRuntime("dataflow-analysis/security-facts");
+const { buildAuthorizationProofs } = await fromRuntime("authorization-analysis/proof");
 
 // Diagnostic only: times existing stages without modifying the preserved baseline runtime.
 const locations = JSON.parse(await readFile(".cydetix/alpha12/corpus-paths.json", "utf8"));
