@@ -59,6 +59,7 @@ function runAudit(repository: string, arguments_: string[]) {
       scope: { mode: string; requestedRef?: string; resolvedCommit?: string };
       commitsReviewed: number;
       issues: Array<{ code: string; commit?: string; fingerprint?: string }>;
+      authorAllowances?: { applied: Array<{ commit: string; observedRef: string }> };
     },
   };
 }
@@ -107,7 +108,111 @@ async function commitAs(
   return git(repository, ["rev-parse", "HEAD"]);
 }
 
+async function writeAllowance(repository: string, commit: string, changes = {}) {
+  const entry = {
+    commit,
+    authorName: "dependabot[bot]",
+    authorEmailSha256: createHash("sha256").update(unapprovedEmail).digest("hex"),
+    committerName: "dependabot[bot]",
+    committerEmailSha256: createHash("sha256").update(unapprovedEmail).digest("hex"),
+    observedRef: "refs/heads/main",
+    reason: "Explicit privacy approval of this immutable synthetic test commit only.",
+    ...changes,
+  };
+  await mkdir(path.join(repository, "validation"), { recursive: true });
+  await writeFile(
+    path.join(repository, "validation/history-author-allowances.json"),
+    JSON.stringify({ schemaVersion: "1.0.0", entries: [entry] }),
+  );
+  return entry;
+}
+
 describe("release Git-history privacy scope", () => {
+  it("applies an exact immutable identity allowance deterministically and rejects future bot commits", async () => {
+    const repository = await createRepository();
+    const commit = await commitAs(
+      repository,
+      "main",
+      unapprovedEmail,
+      "bot.txt",
+      "dependency update\n",
+    );
+    await writeAllowance(repository, commit);
+    const first = runAudit(repository, ["--enforce", "--all"]);
+    expect(first.status).toBe(0);
+    expect(first.stdout).toBe(runAudit(repository, ["--enforce", "--all"]).stdout);
+    expect(first.report.authorAllowances?.applied).toEqual([
+      { commit, observedRef: "refs/heads/main" },
+    ]);
+    const future = await commitAs(
+      repository,
+      "main",
+      unapprovedEmail,
+      "future.txt",
+      "next update\n",
+    );
+    const result = runAudit(repository, ["--enforce", "--all"]);
+    expect(result.status).toBe(1);
+    expect(result.report.issues).toContainEqual(
+      expect.objectContaining({ code: "UNAPPROVED_AUTHOR_EMAIL", commit: future }),
+    );
+    expect(result.stdout).not.toContain(unapprovedEmail);
+  });
+
+  it.each([
+    { commit: "0".repeat(40) },
+    { authorName: "another-bot" },
+    { authorEmailSha256: "0".repeat(64) },
+    { committerName: "another-committer" },
+    { committerEmailSha256: "0".repeat(64) },
+  ])("withholds an allowance when an immutable identity field differs: %j", async (changes) => {
+    const repository = await createRepository();
+    const commit = await commitAs(repository, "main", unapprovedEmail, "bot.txt", "update\n");
+    await writeAllowance(repository, commit, changes);
+    const result = runAudit(repository, ["--enforce", "--all"]);
+    expect(result.status).toBe(1);
+    expect(result.report.issues).toContainEqual(
+      expect.objectContaining({ code: "UNAPPROVED_AUTHOR_EMAIL", commit }),
+    );
+  });
+
+  it("rejects malformed, duplicate and overbroad allowance policies", async () => {
+    const repository = await createRepository();
+    const entry = await writeAllowance(repository, git(repository, ["rev-parse", "HEAD"]));
+    for (const value of [
+      "{",
+      JSON.stringify({ schemaVersion: "1.0.0", entries: [entry, entry] }),
+      JSON.stringify({ schemaVersion: "1.0.0", entries: [{ ...entry, authorEmailSha256: "*" }] }),
+      JSON.stringify({ schemaVersion: "1.0.0", entries: [entry], allowBots: true }),
+      JSON.stringify({ schemaVersion: "1.0.0", entries: [{ ...entry, allowFutureCommits: true }] }),
+    ]) {
+      await writeFile(path.join(repository, "validation/history-author-allowances.json"), value);
+      const result = runAudit(repository, ["--enforce", "--all"]);
+      expect(result.status).toBe(1);
+      expect(result.report.issues).toEqual([{ code: "INVALID_AUTHOR_ALLOWANCES" }]);
+    }
+  });
+
+  it("still scans forbidden content in a privacy-approved machine commit", async () => {
+    const repository = await createRepository();
+    const commit = await commitAs(
+      repository,
+      "main",
+      unapprovedEmail,
+      "bot.txt",
+      ["Z:", "private-workspace-sentinel"].join("\\"),
+    );
+    await writeAllowance(repository, commit);
+    const result = runAudit(repository, ["--enforce", "--all"]);
+    expect(result.status).toBe(1);
+    expect(result.report.issues).toContainEqual(
+      expect.objectContaining({ code: "LOCAL_WORKSPACE_PATH", commit }),
+    );
+    expect(result.report.issues.some((issue) => issue.code === "UNAPPROVED_AUTHOR_EMAIL")).toBe(
+      false,
+    );
+  });
+
   it("passes approved release ancestry while an unapproved side branch remains unreachable", async () => {
     const repository = await createRepository();
     const releaseCommit = git(repository, ["rev-parse", "main"]);

@@ -116,15 +116,76 @@ function resolveScope(options) {
 function parseMetadata(source) {
   const metadata = new Map();
   for (const row of source.split("\n").filter(Boolean)) {
-    const separator = row.indexOf("\0");
-    if (separator !== 40) throw new HistoryAuditError("INVALID_AUTHOR_METADATA");
-    const commit = row.slice(0, separator);
-    const email = row.slice(separator + 1);
+    const fields = row.split("\0");
+    if (fields.length !== 5) throw new HistoryAuditError("INVALID_AUTHOR_METADATA");
+    const [commit, authorName, email, committerName, committerEmail] = fields;
     if (!/^[a-f0-9]{40}$/u.test(commit) || metadata.has(commit))
       throw new HistoryAuditError("INVALID_AUTHOR_METADATA");
-    metadata.set(commit, email);
+    metadata.set(commit, { authorName, email, committerName, committerEmail });
   }
   return metadata;
+}
+
+const fingerprint = (value) => createHash("sha256").update(value).digest("hex");
+const allowancePath = "validation/history-author-allowances.json";
+
+async function loadAuthorAllowances() {
+  let source;
+  try {
+    source = await readFile(path.join(root, allowancePath), "utf8");
+  } catch (error) {
+    if (error.code === "ENOENT") return { entries: [] };
+    throw new HistoryAuditError("INVALID_AUTHOR_ALLOWANCES");
+  }
+  try {
+    const policy = JSON.parse(source);
+    const exactKeys = (value, keys) =>
+      value !== null &&
+      typeof value === "object" &&
+      !Array.isArray(value) &&
+      Object.keys(value).sort().join("|") === [...keys].sort().join("|");
+    if (
+      !exactKeys(policy, ["schemaVersion", "entries"]) ||
+      policy.schemaVersion !== "1.0.0" ||
+      !Array.isArray(policy.entries) ||
+      policy.entries.length > 100
+    )
+      throw new Error("Invalid policy");
+    const commits = new Set();
+    for (const entry of policy.entries) {
+      if (
+        !exactKeys(entry, [
+          "commit",
+          "authorName",
+          "authorEmailSha256",
+          "committerName",
+          "committerEmailSha256",
+          "observedRef",
+          "reason",
+        ]) ||
+        !/^[a-f0-9]{40}$/u.test(entry.commit) ||
+        commits.has(entry.commit) ||
+        !/^[a-f0-9]{64}$/u.test(entry.authorEmailSha256) ||
+        !/^[a-f0-9]{64}$/u.test(entry.committerEmailSha256) ||
+        ![entry.authorName, entry.committerName, entry.observedRef, entry.reason].every(
+          (value) =>
+            typeof value === "string" &&
+            value.length > 0 &&
+            value.length <= 2000 &&
+            ![...value].some((character) => {
+              const code = character.codePointAt(0);
+              return code < 0x20 || code === 0x7f;
+            }),
+        ) ||
+        !entry.observedRef.startsWith("refs/")
+      )
+        throw new Error("Invalid entry");
+      commits.add(entry.commit);
+    }
+    return { entries: policy.entries, sha256: fingerprint(source) };
+  } catch {
+    throw new HistoryAuditError("INVALID_AUTHOR_ALLOWANCES");
+  }
 }
 
 async function audit() {
@@ -134,26 +195,43 @@ async function audit() {
     await readFile(path.join(root, "release", "publication-config.json"), "utf8"),
   );
   const approvedEmailHashes = new Set(publication.approvedHistoryAuthorEmailSha256 ?? []);
+  const allowances = await loadAuthorAllowances();
+  const appliedAllowances = [];
   const commits = git(["rev-list", ...scope.revisionArguments])
     .trim()
     .split("\n")
     .filter(Boolean)
     .sort();
   const metadata = parseMetadata(
-    git(["log", "--format=%H%x00%ae", ...(options.auditAll ? ["--all"] : scope.revisionArguments)]),
+    git([
+      "log",
+      "--format=%H%x00%an%x00%ae%x00%cn%x00%ce",
+      ...(options.auditAll ? ["--all"] : scope.revisionArguments),
+    ]),
   );
   const issues = [];
   if (commits.length === 0) issues.push({ code: "NO_PUBLIC_COMMITS" });
   for (const commit of commits) {
-    const email = metadata.get(commit);
-    if (email === undefined) {
+    const identity = metadata.get(commit);
+    if (identity === undefined) {
       issues.push({ code: "MISSING_AUTHOR_METADATA", commit });
       continue;
     }
+    const { email, authorName, committerName, committerEmail } = identity;
     if (email.endsWith(".invalid") || email.endsWith(".example")) continue;
-    const fingerprint = createHash("sha256").update(email).digest("hex");
-    if (!approvedEmailHashes.has(fingerprint))
-      issues.push({ code: "UNAPPROVED_AUTHOR_EMAIL", commit, fingerprint });
+    const emailFingerprint = fingerprint(email);
+    if (!approvedEmailHashes.has(emailFingerprint)) {
+      const allowance = allowances.entries.find(
+        (entry) =>
+          entry.commit === commit &&
+          entry.authorName === authorName &&
+          entry.authorEmailSha256 === emailFingerprint &&
+          entry.committerName === committerName &&
+          entry.committerEmailSha256 === fingerprint(committerEmail),
+      );
+      if (allowance) appliedAllowances.push({ commit, observedRef: allowance.observedRef });
+      else issues.push({ code: "UNAPPROVED_AUTHOR_EMAIL", commit, fingerprint: emailFingerprint });
+    }
   }
 
   const forbiddenNeedles = [
@@ -199,6 +277,13 @@ async function audit() {
     scope: scope.output,
     commitsReviewed: commits.length,
     issues: uniqueIssues,
+    authorAllowances: {
+      policy: allowances.sha256 ? allowancePath : null,
+      policySha256: allowances.sha256 ?? null,
+      applied: appliedAllowances,
+      scope:
+        "Exact immutable commit and author/committer tuple only; privacy approval does not authenticate a bot, approve code, or exclude content from scanning.",
+    },
     note,
   };
   process.stdout.write(`${JSON.stringify(result, null, 2)}\n`);

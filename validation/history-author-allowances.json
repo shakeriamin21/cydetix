@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "entries": [
+    {
+      "commit": "d8b3d5a10f4c878c413a388d6f640fa390cb4b5b",
+      "authorName": "dependabot[bot]",
+      "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+      "committerName": "GitHub",
+      "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+      "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/types/node-26.4.1",
+      "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this existing dependency-update commit only. The commit predates this development branch and is outside its ancestry. This privacy allowance neither establishes cryptographic bot authenticity nor approves dependency changes; every content check remains enforced. No future commit, other identity, domain, branch pattern, historical release artifact, or tag is exempted."
+    }
+  ]
+}
