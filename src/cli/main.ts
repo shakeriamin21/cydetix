@@ -37,7 +37,7 @@ import {
 import { renderSarif } from "../reporting/sarif.js";
 import { renderHuman, renderRemediationHuman } from "../reporting/human.js";
 import { terminalSafe } from "../reporting/terminal.js";
-import { renderText } from "../reporting/text.js";
+import { renderRule, renderText } from "../reporting/text.js";
 import { renderSupplyChainText } from "../reporting/supply-chain.js";
 import { renderRemediationText } from "../reporting/remediation.js";
 import { generateCycloneDxSbom } from "../supply-chain/sbom.js";
@@ -349,6 +349,14 @@ export function buildProgram(): Command {
         if (options.verify && !report.verified) process.exitCode = EXIT.verificationFailure;
       },
     );
+
+  program
+    .command("status")
+    .description("Show AI integration status without changing configuration (setup --status)")
+    .option("--project <path>", "project root for project-scoped integrations", ".")
+    .action(async (options: { project: string }) => {
+      await runSetup({ projectRoot: options.project, status: true });
+    });
 
   program
     .command("scan")
@@ -665,10 +673,17 @@ export function buildProgram(): Command {
     .command("explain")
     .argument("<rule-id>", "rule identifier, for example AS-SESSION-001")
     .description("Explain a rule and its evidence requirements")
-    .action((ruleId: string) => {
+    .option("--format <format>", "output format", graphFormat, "text")
+    .action((ruleId: string, options: { format: GraphOutputFormat }) => {
       const rule = RULE_BY_ID.get(ruleId);
-      if (rule === undefined) throw new CydetixError(`Unknown rule: ${ruleId}`, EXIT.usage);
-      process.stdout.write(`${JSON.stringify(rule, null, 2)}\n`);
+      if (rule === undefined)
+        throw new CydetixError(
+          `Unknown rule: ${ruleId}. Run cydetix rules to list supported rule IDs.`,
+          EXIT.usage,
+        );
+      process.stdout.write(
+        options.format === "json" ? `${JSON.stringify(rule, null, 2)}\n` : renderRule(rule),
+      );
     });
 
   program

@@ -4,10 +4,10 @@ Development target: `0.6.0-alpha.12`. This is final alpha hardening, not release
 
 ## A12.1: verified starting point
 
-The clean starting checkout is `4e13b96cc3539e1b623a4c5a12f10a0954776253`.
-The immutable alpha.11 annotated tag object is `e692f1e23d58157a209f511adb6180d3f489a80c`.
-Neither historical tags nor historical release evidence may change. No publication, push, release
-tag, or GitHub release is part of this work.
+The clean starting checkout is `4e13b96cc3539e1b623a4c5a12f10a0954776253`. The immutable alpha.11
+annotated tag object is `e692f1e23d58157a209f511adb6180d3f489a80c`. Neither historical tags nor
+historical release evidence may change. No publication, push, release tag, or GitHub release is part
+of this work.
 
 Architecture inspection covered discovery/boundary, parsing, Security IR, proof engines, bounded
 application dataflow, finding construction, remediation assessment/transactions, reporting, CLI,
@@ -32,11 +32,11 @@ boundaries remain authoritative. No vulnerability family or SAFE adapter is plan
   be explicit without relaxing the release path.
 - Existing benchmarks use local fixture thresholds and do not compare alpha.12 with the identical
   alpha.11 source on small/medium/large pinned real-world targets.
-- Public schemas exist, but beta stability classifications and intentional correction notes need
-  an explicit inventory and compatibility tests.
-- Agent adapters and many hostile-path/transaction tests exist. Configuration, subprocess tests,
-  and actual live hosts need separate evidence. The session's installed MCP runtime is alpha.6 and
-  bound to another project; its results are excluded from alpha.12 evidence.
+- Public schemas exist, but beta stability classifications and intentional correction notes need an
+  explicit inventory and compatibility tests.
+- Agent adapters and many hostile-path/transaction tests exist. Configuration, subprocess tests, and
+  actual live hosts need separate evidence. The session's installed MCP runtime is alpha.6 and bound
+  to another project; its results are excluded from alpha.12 evidence.
 
 ## Implementation sequence
 

@@ -133,6 +133,9 @@ function sarifResult(finding: Finding): unknown {
       proofState: finding.proofState,
       analysisCompleteness: finding.analysisCompleteness,
       remediationAssessment: finding.remediationAssessment,
+      proof: finding.proof,
+      impact: finding.impact,
+      remediation: finding.remediation,
     },
   };
 }
@@ -178,6 +181,19 @@ export function toSarif(report: ScanReport): SarifLog {
               configurationFingerprint: report.reproducibility?.configurationFingerprint,
               suppressionFingerprint: report.reproducibility?.suppressionFingerprint,
               analysisCompleteness: report.reproducibility?.analysisCompleteness,
+              engineCompleteness: report.coverage.analysisCompleteness,
+              applicationDataflowUnknowns:
+                report.securityAnalysis.applicationDataflow?.unknowns ?? [],
+              authorizationUnknowns: report.securityAnalysis.authorizationProofs.filter(
+                (item) => item.state === "UNKNOWN",
+              ),
+              authenticationUnknowns: (
+                report.securityAnalysis.authenticationAnalysis?.results ?? []
+              ).filter(
+                (item) =>
+                  item.applicability === "UNKNOWN" ||
+                  (item.applicability === "APPLICABLE" && item.conclusion === "UNKNOWN"),
+              ),
             },
           },
         ],

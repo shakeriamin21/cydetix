@@ -108,6 +108,19 @@ describe("CLI smoke contract", () => {
     expect(result.stdout).not.toContain("[Y/n]");
   });
 
+  it("provides a read-only status alias and readable explanations with explicit JSON", () => {
+    const status = runCli("status");
+    expect(status.status).toBe(0);
+    expect(status.stdout).toContain("No configuration changes were made.");
+    const human = runCli("explain", "AS-SESSION-001");
+    expect(human.status).toBe(0);
+    expect(human.stdout).toContain("Evidence required:");
+    expect(human.stdout).toContain("Maximum remediation authority: SAFE");
+    const json = runCli("explain", "AS-SESSION-001", "--format", "json");
+    expect(json.status).toBe(0);
+    expect((JSON.parse(json.stdout) as { id: string }).id).toBe("AS-SESSION-001");
+  });
+
   it("accepts explicit automatic setup selection without prompting or mutation", () => {
     const root = temporaryDirectorySync("cydetix-cli-auto-");
     const project = path.join(root, "Project With Spaces");

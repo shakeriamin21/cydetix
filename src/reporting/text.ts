@@ -1,7 +1,52 @@
-import type { Finding, ScanReport } from "../core/schema.js";
+import type { Finding, RuleDefinition, ScanReport } from "../core/schema.js";
+import { RULE_BY_ID } from "../rule-engine/catalogue.js";
 import { terminalSafe } from "./terminal.js";
+import { renderUncertainty } from "./uncertainty.js";
+
+export function renderRule(rule: RuleDefinition): string {
+  return (
+    [
+      `${rule.id}@${rule.version}: ${rule.title}`,
+      rule.description,
+      `Evidence required: ${rule.evidenceRequirements.join(" ")}`,
+      `Invariant: ${rule.securityInvariant}`,
+      `Impact: ${rule.impact}`,
+      `Confidence: ${rule.confidence}; ${rule.confidenceModel ?? "based on the declared evidence requirements"}`,
+      `Reachability scope: ${rule.reachabilityAssessment}`,
+      "Proof: a rule description is not a finding or proof about your repository.",
+      `Maximum remediation authority: ${rule.maxRemediationClass ?? rule.autofix}`,
+      `Next: ${rule.remediation}`,
+      `Verification: ${rule.verificationStrategy ?? "Rescan and review the invariant."}`,
+      `Limitations: ${(rule.limitations ?? []).join(" ")}`,
+    ]
+      .map(terminalSafe)
+      .join("\n") + "\n"
+  );
+}
+
+export function remediationExplanation(finding: Finding): string {
+  if (finding.autofix === "SAFE")
+    return `SAFE: ${finding.fix?.description ?? "Only the admitted exact local transformation is permitted."} Verify the source hash, parse the changed file, rescan and independently verify the invariant; failed verification triggers rollback. No target command runs without separate authorization.`;
+  if (finding.autofix === "ARCHITECTURAL")
+    return "ARCHITECTURAL: a local deterministic patch cannot establish the required system or lifecycle invariant. Review the design and migration, implement it explicitly, then verify the invariant.";
+  return "REVIEW_REQUIRED: Cydetix has no independently verifiable SAFE transformation for this finding. Review the control semantics and application policy before modifying code, then rescan.";
+}
 
 export function renderFinding(finding: Finding): string {
+  const rule = RULE_BY_ID.get(finding.ruleId);
+  const limitations = [
+    ...new Set([
+      ...(finding.proof?.analysisLimitations ?? []),
+      ...(rule?.limitations ?? []),
+      ...(finding.reachability === "confirmed"
+        ? []
+        : [rule?.reachabilityAssessment ?? "Runtime reachability is not confirmed."]),
+    ]),
+  ];
+  const proofPath =
+    finding.proof === undefined
+      ? []
+      : [finding.proof.source, ...finding.proof.propagationPath, finding.proof.sink];
   const mapping = [
     ...finding.standards.cwe,
     ...finding.standards.owaspTop10,
@@ -16,10 +61,27 @@ export function renderFinding(finding: Finding): string {
     `  Confidence: ${finding.confidence}  Reachability: ${finding.reachability}`,
     `  Proof: ${finding.proofState ?? "UNAVAILABLE"}  Analysis: ${finding.analysisCompleteness ?? "UNAVAILABLE"}  Maturity: ${finding.ruleMaturity ?? "PRODUCTION"}`,
     `  Evidence: ${terminalSafe(finding.evidence[0]?.message ?? "(none)")}`,
+    ...finding.evidence.slice(1).map((evidence) => `  Evidence: ${terminalSafe(evidence.message)}`),
+    ...(finding.proof === undefined
+      ? []
+      : [
+          `  Control: ${finding.proof.securityControlEvaluation}`,
+          ...proofPath
+            .slice(0, 16)
+            .map(
+              (step) =>
+                `    ${step.kind} ${terminalSafe(step.location.path)}:${step.location.line}: ${terminalSafe(step.label)}`,
+            ),
+          ...(proofPath.length > 16 ? ["    Additional steps retained in JSON proof."] : []),
+        ]),
     `  Invariant: ${terminalSafe(finding.securityInvariant)}`,
     `  Impact: ${terminalSafe(finding.impact)}`,
     `  Remediation: ${terminalSafe(finding.remediation)}`,
     `  Autofix: ${finding.autofix}`,
+    `  Maximum remediation authority: ${finding.remediationAssessment?.ceiling ?? rule?.maxRemediationClass ?? finding.autofix}; permitted for this finding: ${finding.autofix}`,
+    `  ${terminalSafe(remediationExplanation(finding))}`,
+    `  Verification: ${finding.verificationStatus} (separate from proof and confidence)`,
+    `  Not established: ${terminalSafe(limitations.join(" ") || "Whole-program security and deployed runtime behavior.")}`,
     ...(finding.remediationAssessment === undefined
       ? []
       : [
@@ -38,6 +100,7 @@ export function renderText(report: ScanReport): string {
     `Findings: ${summary.critical} critical, ${summary.high} high, ${summary.medium} medium, ${summary.low} low, ${summary.info} info (${summary.suppressed} suppressed)`,
     "",
     "COVERAGE",
+    ...renderUncertainty(report).map((line) => `  ${line}`),
     `  Files examined: ${report.manifest.filesExamined} (${report.manifest.bytesExamined} bytes)`,
     `  Files/directories skipped: ${report.manifest.skipped.length}`,
     `  Languages: ${report.manifest.languages.map(terminalSafe).join(", ") || "none detected"}`,

@@ -4,7 +4,7 @@ import { scanRepository } from "../../src/core/engine.js";
 import { renderHuman } from "../../src/reporting/human.js";
 
 describe("concise human report", () => {
-  it("deduplicates repeated rule/location headlines without changing the report", async () => {
+  it("retains distinct evidence at a shared rule/location and shows source locations", async () => {
     const report = await scanRepository({
       path: "fixtures/typescript/vulnerable",
       now: new Date("2026-09-06T00:00:00.000Z"),
@@ -18,8 +18,11 @@ describe("concise human report", () => {
     expect(output).toMatch(/FIX NOW\s+\d+/u);
     expect(output).toMatch(/REVIEW\s+\d+/u);
     expect(output).toMatch(/UNKNOWN\s+\d+/u);
-    expect(output.match(/Session cookie protection is explicitly disabled/gu)).toHaveLength(1);
-    expect(output).not.toContain("src/server.ts:");
+    expect(output.match(/Session cookie protection is explicitly disabled/gu)).toHaveLength(
+      matchingFindings.length,
+    );
+    expect(output).toContain("Location:");
+    expect(output).toContain("Maximum remediation authority:");
     expect(report.findings).toHaveLength(6);
   });
 });

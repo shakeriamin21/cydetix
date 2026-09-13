@@ -1,18 +1,23 @@
 import { lstat, realpath } from "node:fs/promises";
-import { createInterface } from "node:readline";
 import { PRODUCT } from "../core/brand.js";
 import { scanRepository } from "../core/engine.js";
 import { RULE_BY_ID } from "../rule-engine/catalogue.js";
 import { runRemediation } from "../remediation/fix.js";
 import { renderHuman, renderRemediationHuman } from "../reporting/human.js";
 import { terminalSafe } from "../reporting/terminal.js";
+import { renderFinding, renderRule } from "../reporting/text.js";
 import { createBoundary, dangerousRepositoryPath, isWithinRoot, resolveInside, } from "../repository-discovery/boundary.js";
 const MAX_REQUEST_CHARACTERS = 1_048_576;
 function isJsonRpcRequest(value) {
     if (typeof value !== "object" || value === null || Array.isArray(value))
         return false;
     const candidate = value;
-    return candidate.jsonrpc === "2.0" && typeof candidate.method === "string";
+    return (candidate.jsonrpc === "2.0" &&
+        typeof candidate.method === "string" &&
+        (candidate.id === undefined ||
+            candidate.id === null ||
+            typeof candidate.id === "string" ||
+            (typeof candidate.id === "number" && Number.isFinite(candidate.id))));
 }
 const SCAN_DESCRIPTION = "Use when the user asks to check, audit, review, or harden project security, vulnerabilities, authentication, authorization, sessions, JWT, OAuth, secrets, dependencies, supply chain, or CI/CD. This deterministic scan is read-only, offline by default, returns a structured report, leaves the repository unmodified, and stays inside the configured trusted project root.";
 const FIX_DESCRIPTION = "Use only when the user explicitly asks to fix, remediate, repair, or resolve security findings. Plan remediation first. Mutation requires explicit user intent plus apply=true and confirmedUserIntent. Only SAFE changes may autoapply; REVIEW_REQUIRED needs human review and ARCHITECTURAL never autoapplies. Omit apply or set it false for a zero-write plan.";
@@ -128,7 +133,25 @@ function toolResult(text, structuredContent) {
     };
 }
 async function callTool(context, name, rawArguments) {
+    const tool = CYDETIX_MCP_TOOLS.find((candidate) => candidate.name === name);
+    if (tool === undefined)
+        throw new Error(`Unknown tool: ${name}`);
+    if (rawArguments !== undefined &&
+        (typeof rawArguments !== "object" || rawArguments === null || Array.isArray(rawArguments)))
+        throw new Error("Tool arguments must be an object matching the tool input schema.");
     const arguments_ = parameters(rawArguments);
+    const properties = tool.inputSchema.properties;
+    for (const [key, value] of Object.entries(arguments_)) {
+        if (!Object.hasOwn(properties, key))
+            throw new Error(`Unknown argument for ${name}: ${key}`);
+        const property = properties[key];
+        if (property === undefined || typeof value !== property.type)
+            throw new Error(`Argument ${key} must have type ${property?.type ?? "declared by the tool schema"}.`);
+        if (property.enum !== undefined && !property.enum.includes(value))
+            throw new Error(`Argument ${key} must use a value declared by the tool schema.`);
+        if (property.type === "string")
+            optionalString(value, key);
+    }
     if (name === "cydetix_scan") {
         const report = await scanRepository({ path: await targetFrom(context, arguments_) });
         return toolResult(renderHuman(report), { report });
@@ -155,15 +178,15 @@ async function callTool(context, name, rawArguments) {
             const rule = RULE_BY_ID.get(ruleId);
             if (rule === undefined)
                 throw new Error(`Unknown rule: ${ruleId}`);
-            return toolResult(`${rule.id}: ${rule.title}\n${rule.description}\n`, { rule });
+            return toolResult(renderRule(rule), { rule });
         }
         if (fingerprint === undefined)
             throw new Error("ruleId or finding is required.");
         const report = await scanRepository({ path: await targetFrom(context, arguments_) });
         const finding = [...report.findings, ...report.suppressedFindings].find((candidate) => candidate.fingerprint === fingerprint);
         if (finding === undefined)
-            throw new Error("Finding fingerprint was not produced by this scan.");
-        return toolResult(`${finding.ruleId}: ${finding.title}\n${finding.evidence[0]?.message ?? "No evidence message."}\n`, { finding });
+            throw new Error("Finding fingerprint was not produced by this scan. Rescan the same project and use a current fingerprint; do not reuse stale evidence.");
+        return toolResult(`${renderFinding(finding)}\n`, { finding });
     }
     throw new Error(`Unknown tool: ${name}`);
 }
@@ -174,6 +197,8 @@ function failure(id, code, message) {
     return { jsonrpc: "2.0", id, error: { code, message: terminalSafe(message) } };
 }
 export async function handleMcpRequest(request, context) {
+    if (!isJsonRpcRequest(request))
+        return failure(null, -32_600, "Invalid request.");
     if (request.id === undefined)
         return undefined;
     const id = request.id;
@@ -221,14 +246,14 @@ export async function runMcpServer(options = {}) {
     process.env.CYDETIX_MCP = "1";
     process.env.CYDETIX_AGENT_SUBPROCESS = "1";
     const context = await createMcpServerContext(options);
-    const input = createInterface({ input: process.stdin, crlfDelay: Infinity, terminal: false });
-    for await (const line of input) {
-        if (line.trim() === "")
-            continue;
-        if (line.length > MAX_REQUEST_CHARACTERS) {
-            process.stdout.write(`${JSON.stringify(failure(null, -32_600, "Request is too large."))}\n`);
+    process.stdin.setEncoding("utf8");
+    for await (const line of boundedMcpLines(process.stdin)) {
+        if (line === null) {
+            process.stdout.write(`${JSON.stringify(failure(null, -32_600, "Request is too large. Send a request within the 1048576-character bound."))}\n`);
             continue;
         }
+        if (line.trim() === "")
+            continue;
         let parsed;
         try {
             parsed = JSON.parse(line);
@@ -246,5 +271,33 @@ export async function runMcpServer(options = {}) {
         if (result !== undefined)
             process.stdout.write(`${JSON.stringify(result)}\n`);
     }
+}
+/** Cap retained request text while streaming, including a line that never terminates. */
+export async function* boundedMcpLines(input) {
+    let retained = "";
+    let oversized = false;
+    for await (const chunk of input) {
+        let start = 0;
+        while (start < chunk.length) {
+            const newline = chunk.indexOf("\n", start);
+            const end = newline === -1 ? chunk.length : newline;
+            if (!oversized) {
+                if (retained.length + end - start > MAX_REQUEST_CHARACTERS) {
+                    retained = "";
+                    oversized = true;
+                }
+                else
+                    retained += chunk.slice(start, end);
+            }
+            if (newline === -1)
+                break;
+            yield oversized ? null : retained;
+            retained = "";
+            oversized = false;
+            start = newline + 1;
+        }
+    }
+    if (oversized || retained !== "")
+        yield oversized ? null : retained;
 }
 //# sourceMappingURL=server.js.map

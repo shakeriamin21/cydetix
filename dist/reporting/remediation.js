@@ -14,7 +14,7 @@ export function renderRemediationText(report) {
         `Residual findings: ${report.summary.residualFindings}`,
     ];
     for (const plan of report.plans) {
-        lines.push("", `${plan.ruleId} ${plan.classification} ${plan.state}`, `Finding: ${plan.findingFingerprint}`, `Invariant: ${terminalSafe(plan.expectedSecurityInvariant)}`, `Files: ${plan.affectedFiles.map(terminalSafe).join(", ")}`);
+        lines.push("", `${plan.ruleId} ${plan.classification} ${plan.state}`, `Finding: ${plan.findingFingerprint}`, `Invariant: ${terminalSafe(plan.expectedSecurityInvariant)}`, `Files: ${plan.affectedFiles.map(terminalSafe).join(", ")}`, `Authority: ${plan.classification === "SAFE" ? "Only the exact planned transform may apply after precondition checks." : plan.classification === "REVIEW_REQUIRED" ? "Automatic modification withheld: application policy or control semantics require review." : "A local deterministic patch cannot establish this system or lifecycle invariant; review the architecture."}`, `Preconditions: ${plan.preconditions.map(terminalSafe).join(" ")}`, `Verification: ${plan.verificationStrategy.stages.join(", ")}; scope ${plan.verificationStrategy.scope}; external commands authorized: ${plan.verificationStrategy.externalCommandsAuthorized}`, `Rollback: ${terminalSafe(plan.rollbackStrategy)}`);
         for (const transformation of plan.transformations) {
             lines.push(`Transformation: ${terminalSafe(transformation.description)}`);
             if (transformation.unifiedDiff !== undefined)
@@ -25,6 +25,8 @@ export function renderRemediationText(report) {
     }
     for (const transaction of report.transactions) {
         lines.push("", `TRANSACTION ${transaction.transactionId}`, `Final state: ${transaction.finalState}`);
+        for (const verification of transaction.verificationResults)
+            lines.push(`Verification ${verification.stage}: ${verification.status}. ${terminalSafe(verification.message)}`);
         for (const transition of transaction.findingStateTransitions)
             lines.push(`${transition.invariant}: ${transition.before} -> ${transition.after} (${transition.result})`);
     }

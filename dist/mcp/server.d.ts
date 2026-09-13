@@ -40,5 +40,7 @@ export declare function handleMcpRequest(request: JsonRpcRequest, context: McpSe
 export declare function assertRequiredVersion(requiredVersion: string | undefined): void;
 export declare function createMcpServerContext(options?: McpServerOptions): Promise<McpServerContext>;
 export declare function runMcpServer(options?: McpServerOptions): Promise<void>;
+/** Cap retained request text while streaming, including a line that never terminates. */
+export declare function boundedMcpLines(input: AsyncIterable<string>): AsyncGenerator<string | null>;
 export {};
 //# sourceMappingURL=server.d.ts.map

@@ -22,7 +22,7 @@ import { renderAuthenticationGraphText, renderAuthenticationText, } from "../rep
 import { renderSarif } from "../reporting/sarif.js";
 import { renderHuman, renderRemediationHuman } from "../reporting/human.js";
 import { terminalSafe } from "../reporting/terminal.js";
-import { renderText } from "../reporting/text.js";
+import { renderRule, renderText } from "../reporting/text.js";
 import { renderSupplyChainText } from "../reporting/supply-chain.js";
 import { renderRemediationText } from "../reporting/remediation.js";
 import { generateCycloneDxSbom } from "../supply-chain/sbom.js";
@@ -267,6 +267,13 @@ export function buildProgram() {
             process.exitCode = EXIT.verificationFailure;
     });
     program
+        .command("status")
+        .description("Show AI integration status without changing configuration (setup --status)")
+        .option("--project <path>", "project root for project-scoped integrations", ".")
+        .action(async (options) => {
+        await runSetup({ projectRoot: options.project, status: true });
+    });
+    program
         .command("scan")
         .argument("[path]", "repository root", ".")
         .description("Run a read-only deterministic security scan")
@@ -505,11 +512,12 @@ export function buildProgram() {
         .command("explain")
         .argument("<rule-id>", "rule identifier, for example AS-SESSION-001")
         .description("Explain a rule and its evidence requirements")
-        .action((ruleId) => {
+        .option("--format <format>", "output format", graphFormat, "text")
+        .action((ruleId, options) => {
         const rule = RULE_BY_ID.get(ruleId);
         if (rule === undefined)
-            throw new CydetixError(`Unknown rule: ${ruleId}`, EXIT.usage);
-        process.stdout.write(`${JSON.stringify(rule, null, 2)}\n`);
+            throw new CydetixError(`Unknown rule: ${ruleId}. Run cydetix rules to list supported rule IDs.`, EXIT.usage);
+        process.stdout.write(options.format === "json" ? `${JSON.stringify(rule, null, 2)}\n` : renderRule(rule));
     });
     program
         .command("rules")

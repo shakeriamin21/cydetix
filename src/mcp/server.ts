@@ -1,5 +1,4 @@
 import { lstat, realpath } from "node:fs/promises";
-import { createInterface } from "node:readline";
 
 import { PRODUCT } from "../core/brand.js";
 import { scanRepository } from "../core/engine.js";
@@ -7,6 +6,7 @@ import { RULE_BY_ID } from "../rule-engine/catalogue.js";
 import { runRemediation } from "../remediation/fix.js";
 import { renderHuman, renderRemediationHuman } from "../reporting/human.js";
 import { terminalSafe } from "../reporting/terminal.js";
+import { renderFinding, renderRule } from "../reporting/text.js";
 import {
   createBoundary,
   dangerousRepositoryPath,
@@ -44,8 +44,19 @@ interface JsonRpcResponse {
 
 function isJsonRpcRequest(value: unknown): value is JsonRpcRequest {
   if (typeof value !== "object" || value === null || Array.isArray(value)) return false;
-  const candidate = value as { readonly jsonrpc?: unknown; readonly method?: unknown };
-  return candidate.jsonrpc === "2.0" && typeof candidate.method === "string";
+  const candidate = value as {
+    readonly jsonrpc?: unknown;
+    readonly method?: unknown;
+    readonly id?: unknown;
+  };
+  return (
+    candidate.jsonrpc === "2.0" &&
+    typeof candidate.method === "string" &&
+    (candidate.id === undefined ||
+      candidate.id === null ||
+      typeof candidate.id === "string" ||
+      (typeof candidate.id === "number" && Number.isFinite(candidate.id)))
+  );
 }
 
 interface ToolDefinition {
@@ -193,7 +204,29 @@ async function callTool(
   name: string,
   rawArguments: unknown,
 ): Promise<Record<string, unknown>> {
+  const tool = CYDETIX_MCP_TOOLS.find((candidate) => candidate.name === name);
+  if (tool === undefined) throw new Error(`Unknown tool: ${name}`);
+  if (
+    rawArguments !== undefined &&
+    (typeof rawArguments !== "object" || rawArguments === null || Array.isArray(rawArguments))
+  )
+    throw new Error("Tool arguments must be an object matching the tool input schema.");
   const arguments_ = parameters(rawArguments);
+  const properties = tool.inputSchema.properties as Record<
+    string,
+    { type: string; enum?: unknown[] }
+  >;
+  for (const [key, value] of Object.entries(arguments_)) {
+    if (!Object.hasOwn(properties, key)) throw new Error(`Unknown argument for ${name}: ${key}`);
+    const property = properties[key];
+    if (property === undefined || typeof value !== property.type)
+      throw new Error(
+        `Argument ${key} must have type ${property?.type ?? "declared by the tool schema"}.`,
+      );
+    if (property.enum !== undefined && !property.enum.includes(value))
+      throw new Error(`Argument ${key} must use a value declared by the tool schema.`);
+    if (property.type === "string") optionalString(value, key);
+  }
   if (name === "cydetix_scan") {
     const report = await scanRepository({ path: await targetFrom(context, arguments_) });
     return toolResult(renderHuman(report), { report });
@@ -221,7 +254,7 @@ async function callTool(
     if (ruleId !== undefined) {
       const rule = RULE_BY_ID.get(ruleId);
       if (rule === undefined) throw new Error(`Unknown rule: ${ruleId}`);
-      return toolResult(`${rule.id}: ${rule.title}\n${rule.description}\n`, { rule });
+      return toolResult(renderRule(rule), { rule });
     }
     if (fingerprint === undefined) throw new Error("ruleId or finding is required.");
     const report = await scanRepository({ path: await targetFrom(context, arguments_) });
@@ -229,11 +262,10 @@ async function callTool(
       (candidate) => candidate.fingerprint === fingerprint,
     );
     if (finding === undefined)
-      throw new Error("Finding fingerprint was not produced by this scan.");
-    return toolResult(
-      `${finding.ruleId}: ${finding.title}\n${finding.evidence[0]?.message ?? "No evidence message."}\n`,
-      { finding },
-    );
+      throw new Error(
+        "Finding fingerprint was not produced by this scan. Rescan the same project and use a current fingerprint; do not reuse stale evidence.",
+      );
+    return toolResult(`${renderFinding(finding)}\n`, { finding });
   }
   throw new Error(`Unknown tool: ${name}`);
 }
@@ -250,6 +282,7 @@ export async function handleMcpRequest(
   request: JsonRpcRequest,
   context: McpServerContext,
 ): Promise<JsonRpcResponse | undefined> {
+  if (!isJsonRpcRequest(request)) return failure(null, -32_600, "Invalid request.");
   if (request.id === undefined) return undefined;
   const id = request.id;
   try {
@@ -299,13 +332,15 @@ export async function runMcpServer(options: McpServerOptions = {}): Promise<void
   process.env.CYDETIX_MCP = "1";
   process.env.CYDETIX_AGENT_SUBPROCESS = "1";
   const context = await createMcpServerContext(options);
-  const input = createInterface({ input: process.stdin, crlfDelay: Infinity, terminal: false });
-  for await (const line of input) {
-    if (line.trim() === "") continue;
-    if (line.length > MAX_REQUEST_CHARACTERS) {
-      process.stdout.write(`${JSON.stringify(failure(null, -32_600, "Request is too large."))}\n`);
+  process.stdin.setEncoding("utf8");
+  for await (const line of boundedMcpLines(process.stdin as AsyncIterable<string>)) {
+    if (line === null) {
+      process.stdout.write(
+        `${JSON.stringify(failure(null, -32_600, "Request is too large. Send a request within the 1048576-character bound."))}\n`,
+      );
       continue;
     }
+    if (line.trim() === "") continue;
     let parsed: unknown;
     try {
       parsed = JSON.parse(line) as unknown;
@@ -321,4 +356,31 @@ export async function runMcpServer(options: McpServerOptions = {}): Promise<void
     const result = await handleMcpRequest(request, context);
     if (result !== undefined) process.stdout.write(`${JSON.stringify(result)}\n`);
   }
+}
+
+/** Cap retained request text while streaming, including a line that never terminates. */
+export async function* boundedMcpLines(
+  input: AsyncIterable<string>,
+): AsyncGenerator<string | null> {
+  let retained = "";
+  let oversized = false;
+  for await (const chunk of input) {
+    let start = 0;
+    while (start < chunk.length) {
+      const newline = chunk.indexOf("\n", start);
+      const end = newline === -1 ? chunk.length : newline;
+      if (!oversized) {
+        if (retained.length + end - start > MAX_REQUEST_CHARACTERS) {
+          retained = "";
+          oversized = true;
+        } else retained += chunk.slice(start, end);
+      }
+      if (newline === -1) break;
+      yield oversized ? null : retained;
+      retained = "";
+      oversized = false;
+      start = newline + 1;
+    }
+  }
+  if (oversized || retained !== "") yield oversized ? null : retained;
 }
