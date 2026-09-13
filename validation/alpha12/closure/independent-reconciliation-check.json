@@ -1,0 +1,321 @@
+{
+  "schemaVersion": "1.0.0",
+  "reviewId": "alpha12-independent-reconciliation-check-c6173fda",
+  "reviewedCommit": "c6173fda8f15a331561f2d43025b5ef6e7aa4e76",
+  "status": "PASS",
+  "reviewer": {
+    "type": "INDEPENDENT_FRESH_CONTEXT_MODEL_REVIEWER",
+    "identity": "Codex task /root/independent_corpus_review",
+    "humanReview": false,
+    "thirdPartyCertification": false
+  },
+  "method": "BOUNDED_READ_ONLY_ARTIFACT_RECONCILIATION",
+  "scope": {
+    "primaryCorrections": [
+      "IR-CORPUS-001",
+      "IR-CORPUS-002",
+      "IR-CORPUS-003",
+      "IR-CORPUS-004"
+    ],
+    "closureSections": [
+      "corpusReview",
+      "truncated"
+    ],
+    "targetSourceRereviewed": false,
+    "testsExecuted": false,
+    "scansExecuted": false,
+    "targetCodeExecuted": false,
+    "runtimeEdited": false,
+    "originalIndependentArtifactsEdited": false,
+    "onlyWrittenArtifact": "validation/alpha12/closure/independent-reconciliation-check.json"
+  },
+  "inputs": [
+    {
+      "name": "adjudication",
+      "path": "validation/alpha12/corpus-adjudication.json",
+      "reviewedCommit": "c6173fda8f15a331561f2d43025b5ef6e7aa4e76",
+      "sha256": "c847fa77123e906508bf6669b891c380cb2ba47bef9434518de1bf055430b66b",
+      "workingTreeMatchesPinnedBytes": true
+    },
+    {
+      "name": "coverage",
+      "path": "docs/security/RULE_COVERAGE.md",
+      "reviewedCommit": "c6173fda8f15a331561f2d43025b5ef6e7aa4e76",
+      "sha256": "a555482965699e8c0551d3bae64de817d127a280b881d018fe6d5a842c243872",
+      "workingTreeMatchesPinnedBytes": true
+    },
+    {
+      "name": "closure",
+      "path": "validation/alpha12/closure/blocker-closure.json",
+      "reviewedCommit": "c6173fda8f15a331561f2d43025b5ef6e7aa4e76",
+      "sha256": "2101f7966b5142c0c4663bd4a4c560c5226c5814058f0c1200a64663609836d9",
+      "workingTreeMatchesPinnedBytes": true
+    },
+    {
+      "name": "independent",
+      "path": "validation/alpha12/closure/independent-corpus-review.json",
+      "reviewedCommit": "c6173fda8f15a331561f2d43025b5ef6e7aa4e76",
+      "sha256": "7dc620af07ea4d168f9ab2bda1508d4e041ad315f5756d97ca1f208b87349026",
+      "workingTreeMatchesPinnedBytes": true
+    }
+  ],
+  "declaredHistoricalSourceBindings": {
+    "adjudicationSourceCommit": "1818a693ef3dd871b01b136af6696a13aa332693",
+    "closureAssemblySourceCommit": "0f3f8111ad0537e98dd8eff899b3407364482168",
+    "independentReviewOriginalAdjudicationSha256": "69a2150ff99d83ccd7b7a73377fb36e6c237ad4637da79541e4583c577e53cca"
+  },
+  "checks": [
+    {
+      "id": "INPUT_BINDING",
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "validation/alpha12/corpus-adjudication.json",
+          "sha256": "c847fa77123e906508bf6669b891c380cb2ba47bef9434518de1bf055430b66b"
+        },
+        {
+          "path": "docs/security/RULE_COVERAGE.md",
+          "sha256": "a555482965699e8c0551d3bae64de817d127a280b881d018fe6d5a842c243872"
+        },
+        {
+          "path": "validation/alpha12/closure/blocker-closure.json",
+          "sha256": "2101f7966b5142c0c4663bd4a4c560c5226c5814058f0c1200a64663609836d9"
+        },
+        {
+          "path": "validation/alpha12/closure/independent-corpus-review.json",
+          "sha256": "7dc620af07ea4d168f9ab2bda1508d4e041ad315f5756d97ca1f208b87349026"
+        }
+      ],
+      "assessment": "All four working inputs match exact committed bytes. Blocker closure binds the unchanged independent machine review by its correct digest."
+    },
+    {
+      "id": "IR-CORPUS-001",
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "validation/alpha12/corpus-adjudication.json",
+          "jsonPointer": "/unsupportedReviews",
+          "repositoryId": "payatu-vuln-node",
+          "observed": "CommonJS imported controllers, router.route chaining and custom authentication are outside supported cross-file ESM propagation. Actual truncation triggers are the eight-iteration identity bound (390 facts) and oversized vuln_react_app/package-lock.json. Application analysis reports zero truncation events; repository AST exhaustion was incorrectly attributed in the original adjudication."
+        },
+        {
+          "path": "validation/alpha12/corpus-adjudication.json",
+          "jsonPointer": "/repositories",
+          "repositoryId": "payatu-vuln-node",
+          "resourceLimitEvents": {
+            "securityIdentity": {
+              "status": "TRUNCATED",
+              "iterations": 8,
+              "factsCreated": 390,
+              "maxIterations": 8,
+              "maxFacts": 10000
+            },
+            "applicationDataflow": 0,
+            "traversal": [
+              {
+                "path": "vuln_react_app/package-lock.json",
+                "reason": "too_large"
+              }
+            ]
+          }
+        }
+      ],
+      "assessment": "Primary top-level and per-repository adjudication now identify identity iteration and oversized-lockfile triggers, and explicitly retract application AST exhaustion."
+    },
+    {
+      "id": "IR-CORPUS-002",
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "validation/alpha12/corpus-adjudication.json",
+          "jsonPointer": "/unsupportedReviews",
+          "repositoryId": "sirappsec-vuln-node",
+          "observed": "Routes are constructed inside a CommonJS exported app factory with locally loaded sink aliases. Actual truncation is three oversized vendor assets; application analysis reports zero truncation events. Repository AST exhaustion was incorrectly attributed in the original adjudication. These cases are not used to claim supported recall."
+        },
+        {
+          "path": "validation/alpha12/corpus-adjudication.json",
+          "jsonPointer": "/repositories",
+          "repositoryId": "sirappsec-vuln-node",
+          "resourceLimitEvents": {
+            "securityIdentity": null,
+            "applicationDataflow": 0,
+            "traversal": [
+              {
+                "path": "src/public/vendor/fonts/boxicons/boxicons.svg",
+                "reason": "too_large"
+              },
+              {
+                "path": "src/public/vendor/libs/apex-charts/apexcharts.js",
+                "reason": "too_large"
+              },
+              {
+                "path": "src/public/vendor/libs/highlight/highlight.js",
+                "reason": "too_large"
+              }
+            ]
+          }
+        }
+      ],
+      "assessment": "Primary top-level and per-repository adjudication identify three file-size skips and retract application AST exhaustion."
+    },
+    {
+      "id": "IR-CORPUS-003",
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "validation/alpha12/corpus-adjudication.json",
+          "repositoryId": "fastapi-appsec-lab",
+          "fingerprint": "3ce201e780808377b797db2935014c5ab6bb5f094f95ebabfcb0c8f5f37fc801",
+          "sourcePath": "app/services/report_service.py",
+          "line": 179,
+          "classification": "LEXICAL_NARRATIVE_ONLY_UNKNOWN",
+          "rationale": "Confirmed lexical observation noise: this is a descriptive quoted string, not an executed hashing expression. Existing engine UNKNOWN and ARCHITECTURAL ceiling remain conservative, but hash-operation wording overstates what was observed. Do not count this as an executed hash or a false insecure conclusion."
+        }
+      ],
+      "assessment": "Exactly one narrative-only UNKNOWN observation is classified as lexical noise. It is not counted as executed hashing or an insecure proof; unchanged engine wording remains explicitly documented."
+    },
+    {
+      "id": "IR-CORPUS-004",
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "docs/security/RULE_COVERAGE.md",
+          "line": 18,
+          "observed": "| `AS-XSS-001@1.0.0`      | JS/TS Express, Fastify, Next server routes, React raw HTML, browser DOM; Python Flask/Jinja/MarkupSafe/FastAPI HTML responses | Supported request fields, FastAPI route parameters, browser location search/hash | Explicit HTML responses, host-element `dangerouslySetInnerHTML`, resolved DOM `innerHTML`, Flask `Response`/`make_response`/`render_template_string`, MarkupSafe `Markup`, FastAPI `HTMLResponse` | Context-matched supported HTML encoding/sanitization and safe framework construction                          | Implicit Flask string returns, callback/closure propagation, CSS/event-handler contexts, arbitrary template engines, stored-data provenance, cross-file flow, runtime sanitizer configuration | `REVIEW_REQUIRED` |"
+        }
+      ],
+      "assessment": "Public coverage now enumerates the implemented Python HTML call sinks and explicitly excludes implicit Flask string returns and callback/closure propagation."
+    },
+    {
+      "id": "UNSUPPORTED_OMISSIONS",
+      "status": "PASS",
+      "evidence": [
+        {
+          "id": "FN-DEFERRED-01",
+          "repositoryId": "flask-sqlinjection",
+          "classification": "UNSUPPORTED_IMPLICIT_FLASK_RETURN_SINK",
+          "disposition": "FINALIZED_STATIC_NOT_SUPPORTED_PATTERN_FN"
+        },
+        {
+          "id": "FN-DEFERRED-02",
+          "repositoryId": "vikas-vulnerable-website",
+          "classification": "UNSUPPORTED_JS_CALLBACK_CLOSURE_PROPAGATION",
+          "disposition": "FINALIZED_STATIC_NOT_SUPPORTED_PATTERN_FN"
+        }
+      ],
+      "assessment": "The two previously deferred XSS omission candidates are finalized as unsupported patterns. This count is not a count of every unsupported construct elsewhere in the corpus."
+    },
+    {
+      "id": "CORPUS_CLOSURE_SCOPE_AND_COUNTS",
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "validation/alpha12/closure/blocker-closure.json",
+          "jsonPointer": "/corpusReview",
+          "observed": {
+            "state": "CLOSED_WITH_LIMITATIONS",
+            "reviewer": "Independent fresh-context model, not human/third-party certification",
+            "corrections": [
+              {
+                "id": "IR-CORPUS-001",
+                "state": "RECONCILED",
+                "evidence": "corpus-adjudication.json payatu: identity iteration and file-size bounds, no application truncation"
+              },
+              {
+                "id": "IR-CORPUS-002",
+                "state": "RECONCILED",
+                "evidence": "corpus-adjudication.json SirAppSec: three oversized assets, no application truncation"
+              },
+              {
+                "id": "IR-CORPUS-003",
+                "state": "RECONCILED",
+                "evidence": "corpus-adjudication.json FastAPI lab report_service.py:179 classified LEXICAL_NARRATIVE_ONLY_UNKNOWN; runtime wording noise remains a documented limitation"
+              },
+              {
+                "id": "IR-CORPUS-004",
+                "state": "RECONCILED",
+                "evidence": "docs/security/RULE_COVERAGE.md explicitly lists Python HTML call sinks and excludes implicit Flask returns/callback closure propagation"
+              }
+            ],
+            "repositories": 30,
+            "findingsReviewed": 134,
+            "unknownReviewed": 234,
+            "supportedPatternFN": 0,
+            "confirmedHistoricalFalseInsecureCorrections": 3,
+            "currentFalseInsecureConclusions": 0,
+            "confirmedLexicalObservationNoise": 1,
+            "unsupportedOmissionsReviewed": 2,
+            "groundTruth": "INCOMPLETE",
+            "recall": null,
+            "accuracy": null,
+            "limitation": "Zero supported-pattern FNs applies only to named selective reviews. One Python narrative string remains an UNKNOWN lexical false-positive observation with overstated hash-operation wording; it is not an insecure proof."
+          }
+        },
+        {
+          "path": "validation/alpha12/closure/independent-corpus-review.json",
+          "jsonPointer": "/totals",
+          "observed": {
+            "repositories": 30,
+            "emittedFindings": 134,
+            "supportedFlowStaticReviews": 21,
+            "mutableActionPolicyObservations": 93,
+            "explicitConfigurationObservations": 4,
+            "testConfigurationObservations": 3,
+            "retainedUnknownFindingProofs": 13,
+            "lexicalNarrativeOnlyObservations": 1,
+            "applicationUnknownRecords": 220,
+            "authorizationUnknownRecords": 0,
+            "authenticationUnknownRecords": 1,
+            "unknownRecordsIncludingFindingProof": 234,
+            "truncatedRepositories": 13,
+            "confirmedHistoricalFalseInsecureCorrections": 3,
+            "currentReviewedFalseInsecureConclusionsEstablished": 0,
+            "confirmedSupportedPatternFalseNegativesDiscovered": 0,
+            "deferredOmissionCandidates": 0,
+            "finalizedUnsupportedOmissionCandidates": 2
+          }
+        }
+      ],
+      "assessment": "Closure accurately states a bounded fresh-context model review: 30 repository identities, 134 findings and 234 overlapping UNKNOWN receipts; one lexical UNKNOWN noise observation; no supported-pattern FN established in named selective scopes; three historical false-insecure corrections; two unsupported omission candidates."
+    },
+    {
+      "id": "TRUNCATED_DISTRIBUTION",
+      "status": "PASS",
+      "evidence": [
+        {
+          "path": "validation/alpha12/closure/blocker-closure.json",
+          "jsonPointer": "/truncated",
+          "computedFromIndependentReview": {
+            "total": 13,
+            "resourceTriggered": 13,
+            "triggerRepositoryCounts": {
+              "identityIteration": 6,
+              "applicationBounds": 6,
+              "fileSize": 8
+            },
+            "parserCooccurrenceRepositories": 5,
+            "parserFailedFiles": 149,
+            "resourceOnlyRepositories": 8,
+            "resourceWithParserRepositories": 5,
+            "solelyParserTriggered": 0,
+            "solelyFrameworkTriggered": 0
+          },
+          "detailMismatches": [],
+          "reportedLimitation": "Trigger counts overlap. Parser failures contribute PARTIAL coverage and framework limits remain separate. All six application-bound repos exceed 200000 aggregate AST nodes, but per-event subtype/location was not serialized; no exact AST/file/fact/path split is invented."
+        }
+      ],
+      "assessment": "All 13 TRUNCATED repository identities and resource-trigger details match the independent review. Counts overlap: six identity-iteration, six application-bound and eight file-size repositories. Five also have 149 reported parser failures; parser/framework limitations are not sole TRUNCATED triggers."
+    }
+  ],
+  "limitations": [
+    "This receipt verifies reconciliation at the named immutable commit only; later edits require their own evidence.",
+    "PASS closes only the four independent corpus documentation/adjudication reconciliation issues. It does not establish beta readiness or validate hosted checks, live-host behavior, performance, all-refs privacy or release state.",
+    "No target source, scanner runtime or test behavior was re-evaluated; source conclusions and adapter exclusions are inherited from the explicitly cited independent review.",
+    "The 234 UNKNOWN receipts include 13 overlapping finding-proof records. The 202 unresolved-handler cases had route-anchor review, not full handler/browser lifecycle validation.",
+    "Zero supported-pattern false negatives is scoped to the named selective reviews; corpus ground truth is incomplete and no recall or accuracy is inferred.",
+    "One retained UNKNOWN narrative observation has overstated engine wording; the reconciliation documents this limitation rather than claiming a runtime fix.",
+    "Resource trigger counts overlap. Individual application truncation event subtypes/locations were not serialized, and no exact event split is inferred.",
+    "Original independent review artifacts retain their historical reconciliation-needed decision; this separate receipt records subsequent satisfaction of those four evidence requirements without rewriting history."
+  ],
+  "conclusion": "IR-CORPUS-001 through IR-CORPUS-004 are reconciled at the reviewed commit. The corpusReview CLOSED_WITH_LIMITATIONS state and all requested counts/distributions are supported within the stated review scope."
+}

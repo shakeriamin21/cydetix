@@ -1,0 +1,14 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "c6173fda8f15a331561f2d43025b5ef6e7aa4e76",
+  "state": "PASSED",
+  "checks": [
+    "Original independent-review input digest matches immutable starting-HEAD adjudication",
+    "All 30 public corpus and private normalized-report hashes match review receipts",
+    "134 per-finding and 234 UNKNOWN receipts accounted",
+    "Both 80-sample vectors reproduce serialized nearest-rank p50/p95",
+    "One version-specific normalized digest per version across all repeated batches",
+    "Descriptive interval contains 1.0 and original p95 ratio, consistent with INCONCLUSIVE"
+  ],
+  "scope": "Mechanical evidence-integrity checks, not additional source adjudication or a new corpus scan."
+}

@@ -185,6 +185,7 @@ const inventory = {
     "Security identity propagation now enforces 10000 facts/eight iterations and discards incomplete propagated trust on exhaustion; optional securityIr.propagationBounds and TRUNCATED coverage retain counters while dependent authorization/tenant proofs remain UNKNOWN.",
     "Commander usage errors are printed once with unchanged exit 2; a missing scan directory retains scan-failure exit 3.",
     "verify:development validates current versions and immutable historical evidence. Strict release gates remain unchanged and reject the unprepared development candidate.",
+    "Blocker closure: history audit now reports every offending commit instead of collapsing a shared email hash; adds exact commit/author/committer privacy allowances in validation/history-author-allowances.json. No future bot/domain/ref-pattern exemption or historical publication change. Python HTML sink documentation explicitly excludes existing unsupported implicit Flask returns and callback/closure flows; engine coverage unchanged.",
   ],
 };
 const output = `${JSON.stringify(inventory, null, 2)}\n`;

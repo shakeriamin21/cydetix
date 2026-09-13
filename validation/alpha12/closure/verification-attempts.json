@@ -1,0 +1,31 @@
+{
+  "schemaVersion": "1.0.0",
+  "attempts": [
+    {
+      "id": "verify",
+      "sourceCommit": "c6173fda8f15a331561f2d43025b5ef6e7aa4e76",
+      "command": [
+        "npm",
+        "run",
+        "verify:development"
+      ],
+      "startedAt": "2026-09-13T09:49:08.451Z",
+      "durationMilliseconds": 549212.9476,
+      "exitCode": 1,
+      "signal": null,
+      "outputLimited": false,
+      "state": "FAILED",
+      "stdoutSha256": "30faa85c9eb3abf0bb5b8f4afe13c37ee934e735ee254d6fcdfa533b087d321f",
+      "stderrSha256": "98cd37f94f2e058fee3bd98255580d4c435c9a6dbced98aefee17ac97ecdf53c",
+      "sandboxImage": "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
+      "tests": {
+        "passed": 448,
+        "failed": 1,
+        "total": 449,
+        "skipped": 0
+      },
+      "failure": "tests/validation/public-contracts.test.ts rejected drift between reviewed public-contracts.json intentionalChanges and its generator. The engine/CLI schemas were unchanged; explanatory inventory text was added without synchronizing generator source.",
+      "correction": "Synchronize the same intentional-change description in inventory-alpha12-contracts.mjs, preserving the strict inventory comparison. Rerun affected tests and complete verification."
+    }
+  ]
+}

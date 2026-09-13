@@ -6,6 +6,8 @@ const json = async (file) => JSON.parse(await readFile(file, "utf8"));
 const digest = (value) => createHash("sha256").update(value).digest("hex");
 const base = "validation/alpha12/closure/";
 const review = await json(`${base}independent-corpus-review.json`);
+const reconciliation = await json(`${base}independent-reconciliation-check.json`);
+if (reconciliation.status !== "PASS") throw new Error("Independent reconciliation did not pass");
 const adjudication = await json("validation/alpha12/corpus-adjudication.json");
 const repeated = await json(`${base}fastapi-repeated.json`);
 const codex = await json(`${base}codex-live-host.json`);
@@ -71,6 +73,9 @@ const evidenceFiles = [
   "codex-live-host.json",
   "claude-live-host.json",
   "hosted-checks.json",
+  "independent-reconciliation-check.json",
+  "runtime-binding.json",
+  "evidence-validation.json",
 ];
 const evidence = await Promise.all(
   evidenceFiles.map(async (file) => ({

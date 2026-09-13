@@ -1,0 +1,40 @@
+{
+  "schemaVersion": "1.0.0",
+  "startingCommit": "f16680007b835e7c6b4163ac9a3d5cc4eec27616",
+  "sourceCommit": "c6173fda8f15a331561f2d43025b5ef6e7aa4e76",
+  "version": "0.6.0-alpha.12",
+  "state": "UNCHANGED",
+  "bindings": [
+    {
+      "path": "src",
+      "startingGitObject": "f2b19b273136f43f86927486a8dfdeb97345e522",
+      "currentGitObject": "f2b19b273136f43f86927486a8dfdeb97345e522"
+    },
+    {
+      "path": "dist",
+      "startingGitObject": "fbe2ee2be4fb102e2294352afd4a793beb3e590a",
+      "currentGitObject": "fbe2ee2be4fb102e2294352afd4a793beb3e590a"
+    },
+    {
+      "path": "rules",
+      "startingGitObject": "29e314e1ca341082486dc5b8b6be78966ec09320",
+      "currentGitObject": "29e314e1ca341082486dc5b8b6be78966ec09320"
+    },
+    {
+      "path": "schemas",
+      "startingGitObject": "7f2cd13447aa4663c103d7d3f924fc60a9f1a85f",
+      "currentGitObject": "7f2cd13447aa4663c103d7d3f924fc60a9f1a85f"
+    },
+    {
+      "path": "package.json",
+      "startingGitObject": "027c9075fd27e94dde4452eb6699e097aa55e464",
+      "currentGitObject": "027c9075fd27e94dde4452eb6699e097aa55e464"
+    },
+    {
+      "path": "package-lock.json",
+      "startingGitObject": "0705ec2e9c90ad4cd3d61d9d4681405728546d4d",
+      "currentGitObject": "0705ec2e9c90ad4cd3d61d9d4681405728546d4d"
+    }
+  ],
+  "scope": "Runtime engine, generated distribution, rules, schemas and dependency manifests are byte-identical Git objects. Blocker closure changes only audit/evidence tooling, tests and documentation; existing corpus/runtime measurements remain source-bound evidence."
+}
