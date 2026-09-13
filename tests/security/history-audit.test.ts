@@ -262,6 +262,20 @@ describe("release Git-history privacy scope", () => {
     );
   });
 
+  it("reports every unapproved commit even when the identity is shared", async () => {
+    const repository = await createRepository();
+    const first = await commitAs(repository, "main", unapprovedEmail, "first.txt", "first\n");
+    const second = await commitAs(repository, "main", unapprovedEmail, "second.txt", "second\n");
+    const result = runAudit(repository, ["--enforce", "--all"]);
+    expect(result.status).toBe(1);
+    expect(
+      result.report.issues
+        .filter((issue) => issue.code === "UNAPPROVED_AUTHOR_EMAIL")
+        .map((issue) => issue.commit)
+        .sort(),
+    ).toEqual([first, second].sort());
+  });
+
   it("fails once an unapproved side branch is merged into release ancestry", async () => {
     const repository = await createRepository();
     git(repository, ["switch", "-c", "dependency-update"]);

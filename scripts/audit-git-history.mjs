@@ -266,7 +266,7 @@ async function audit() {
   const uniqueIssues = [
     ...new Map(
       issues.map((issue) => [
-        `${issue.code}:${issue.path ?? issue.fingerprint ?? issue.commit}`,
+        `${issue.code}:${issue.path ?? `${issue.commit}:${issue.fingerprint ?? ""}`}`,
         issue,
       ]),
     ).values(),

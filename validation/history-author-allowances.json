@@ -2,13 +2,85 @@
   "schemaVersion": "1.0.0",
   "entries": [
     {
+      "commit": "0da7d9ecea688821a7ffeeda8ee4491e1068937f",
+      "authorName": "dependabot[bot]",
+      "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+      "committerName": "GitHub",
+      "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+      "observedRef": "refs/remotes/origin/dependabot/github_actions/github/codeql-action/analyze-4.37.9",
+      "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+    },
+    {
+      "commit": "0f6ca0ad029c74f11ea82175d7ade6d1e4b1645e",
+      "authorName": "dependabot[bot]",
+      "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+      "committerName": "GitHub",
+      "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+      "observedRef": "refs/remotes/origin/dependabot/github_actions/github/codeql-action/upload-sarif-4.37.9",
+      "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+    },
+    {
+      "commit": "2dc2ffc4f4c01b33335b6c0816ec691905be3dab",
+      "authorName": "dependabot[bot]",
+      "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+      "committerName": "GitHub",
+      "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+      "observedRef": "refs/remotes/origin/dependabot/github_actions/ossf/scorecard-action-2.4.4",
+      "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+    },
+    {
+      "commit": "38baee9853937d63cafe02c94206e0a4c8f427dc",
+      "authorName": "dependabot[bot]",
+      "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+      "committerName": "GitHub",
+      "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+      "observedRef": "refs/remotes/origin/dependabot/github_actions/actions/download-artifact-8.0.1",
+      "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+    },
+    {
+      "commit": "80c7d0aeb29a26e37f0d8e408a1c6b9aaafc6bfa",
+      "authorName": "dependabot[bot]",
+      "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+      "committerName": "GitHub",
+      "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+      "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/vitest-5.0.0",
+      "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+    },
+    {
+      "commit": "ad687cd15966bf5d077fac3e881b3b40448c7edf",
+      "authorName": "dependabot[bot]",
+      "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+      "committerName": "GitHub",
+      "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+      "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/typescript-eslint-8.69.0",
+      "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+    },
+    {
+      "commit": "bb4e1f588d5d10c5f41df4c5e8518caa2ae8e557",
+      "authorName": "dependabot[bot]",
+      "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+      "committerName": "GitHub",
+      "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+      "observedRef": "refs/remotes/origin/dependabot/github_actions/github/codeql-action/init-4.37.9",
+      "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+    },
+    {
+      "commit": "c8bf4fbda3268d0e3de74590e428ca1926c3ae12",
+      "authorName": "dependabot[bot]",
+      "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+      "committerName": "GitHub",
+      "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+      "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/typescript-7.0.2",
+      "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+    },
+    {
       "commit": "d8b3d5a10f4c878c413a388d6f640fa390cb4b5b",
       "authorName": "dependabot[bot]",
       "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
       "committerName": "GitHub",
       "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
       "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/types/node-26.4.1",
-      "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this existing dependency-update commit only. The commit predates this development branch and is outside its ancestry. This privacy allowance neither establishes cryptographic bot authenticity nor approves dependency changes; every content check remains enforced. No future commit, other identity, domain, branch pattern, historical release artifact, or tag is exempted."
+      "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
     }
   ]
 }
