@@ -185,7 +185,12 @@ if (process.argv[2] === "--worker") {
       const failure = {
         ...target,
         state: "FAILED",
-        error: child.error?.message ?? child.stderr,
+        error:
+          child.error?.code ??
+          child.stderr
+            .split("\n")
+            .find((line) => /^(?:TypeError|SyntaxError|Error):/u.test(line)) ??
+          "CHILD_SCAN_FAILED",
         limitation: "Harness failed; no clean/secure conclusion or recall is inferred.",
         determinism: "NOT_ESTABLISHED",
       };

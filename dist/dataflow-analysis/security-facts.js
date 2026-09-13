@@ -32,10 +32,12 @@ function combineTrust(facts) {
     const unique = new Set(facts.map((fact) => fact.trust));
     return unique.size === 1 ? (facts[0]?.trust ?? "unknown") : "unknown";
 }
-function addEvidence(evidence, kind, location, message) {
+function addEvidence(evidence, knownIds, kind, location, message) {
     const id = securityIrId("evidence", kind, location.path, String(location.start.offset), message);
-    if (!evidence.some((item) => item.id === id))
+    if (!knownIds.has(id)) {
+        knownIds.add(id);
         evidence.push({ id, kind, location, message });
+    }
     return id;
 }
 export function enrichSecurityFacts(input, files, parsedByPath) {
@@ -64,8 +66,11 @@ export function enrichSecurityFacts(input, files, parsedByPath) {
         }
     }
     const evidence = [...input.evidence];
+    const evidenceIds = new Set(evidence.map((item) => item.id));
     const edges = [...input.edges];
     const identities = [];
+    const identitiesById = new Map();
+    const directClassification = new Map();
     const identityByFunctionAndName = new Map();
     const enforcements = [...input.enforcements];
     const recordIdentity = (functionSymbolId, name, classified, identityLocation, message, derivedFrom = []) => {
@@ -75,7 +80,7 @@ export function enrichSecurityFacts(input, files, parsedByPath) {
             fact.derivedFrom.join("\u0000") === derivedFrom.join("\u0000"));
         if (existing !== undefined)
             return existing;
-        const evidenceId = addEvidence(evidence, "identity-source", identityLocation, message);
+        const evidenceId = addEvidence(evidence, evidenceIds, "identity-source", identityLocation, message);
         const fact = {
             id: securityIrId("identity", functionSymbolId, name, classified.source, classified.trust, ...derivedFrom),
             symbolId: functionSymbolId,
@@ -87,13 +92,15 @@ export function enrichSecurityFacts(input, files, parsedByPath) {
             evidenceIds: [evidenceId],
         };
         identities.push(fact);
+        if (!identitiesById.has(fact.id))
+            identitiesById.set(fact.id, fact);
         const grouped = identityByFunctionAndName.get(key) ?? [];
         grouped.push(fact);
         identityByFunctionAndName.set(key, grouped);
         return fact;
     };
     for (const proof of authProofs) {
-        const evidenceId = addEvidence(evidence, "identity-source", proof.location, proof.message);
+        const evidenceId = addEvidence(evidence, evidenceIds, "identity-source", proof.location, proof.message);
         const enforcementId = securityIrId("enforcement", proof.routeId, proof.middlewareSymbolId, "authentication");
         enforcements.push({
             id: enforcementId,
@@ -123,7 +130,10 @@ export function enrichSecurityFacts(input, files, parsedByPath) {
             const requestName = caller.parameterNames[0] ?? "req";
             const authenticated = authenticatedHandlers.has(caller.id);
             const nextArguments = call.arguments.map((argument) => {
-                const direct = classifyRequestExpression(argument.expression, requestName, authenticated);
+                const classificationKey = `${caller.id}\u0000${argument.expression}`;
+                if (!directClassification.has(classificationKey))
+                    directClassification.set(classificationKey, classifyRequestExpression(argument.expression, requestName, authenticated));
+                const direct = directClassification.get(classificationKey);
                 let facts = identityByFunctionAndName.get(`${caller.id}\u0000${argument.expression}`) ?? [];
                 if (direct !== undefined) {
                     const fact = recordIdentity(caller.id, argument.expression, direct, call.location, `${argument.expression} is classified as ${direct.trust} from ${direct.source}.`);
@@ -148,7 +158,7 @@ export function enrichSecurityFacts(input, files, parsedByPath) {
                 if (parameterName === undefined || argument.identityFactIds.length === 0)
                     continue;
                 const sources = argument.identityFactIds
-                    .map((id) => identities.find((fact) => fact.id === id))
+                    .map((id) => identitiesById.get(id))
                     .filter((fact) => fact !== undefined);
                 if (sources.length === 0)
                     continue;
@@ -163,7 +173,7 @@ export function enrichSecurityFacts(input, files, parsedByPath) {
     }
     const resourceOperations = [];
     for (const candidate of analyzePrismaOperations(input, files, parsedByPath)) {
-        const evidenceId = addEvidence(evidence, "resource-access", candidate.location, candidate.message);
+        const evidenceId = addEvidence(evidence, evidenceIds, "resource-access", candidate.location, candidate.message);
         const operationId = securityIrId("resource", candidate.location.path, String(candidate.startOffset), candidate.resourceType, candidate.operation);
         const selectors = candidate.selectors.map((selector) => {
             const facts = identityByFunctionAndName.get(`${candidate.functionSymbolId}\u0000${selector.expression}`) ?? [];

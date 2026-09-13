@@ -1,17 +1,13 @@
 import traverse from "@babel/traverse";
+import { sourcePoint } from "../ast-analysis/source-location.js";
 import { stableFingerprint } from "../core/hash.js";
-function point(text, offset) {
-    const safeOffset = Math.max(0, Math.min(offset, text.length));
-    const lines = text.slice(0, safeOffset).split("\n");
-    return { line: lines.length, column: lines.at(-1)?.length ?? 0, offset: safeOffset };
-}
 function location(file, node) {
     if (typeof node.start !== "number" || typeof node.end !== "number")
         return undefined;
     return {
         path: file.relativePath,
-        start: point(file.text, node.start),
-        end: point(file.text, node.end),
+        start: sourcePoint(file, node.start),
+        end: sourcePoint(file, node.end),
     };
 }
 function sourceText(file, node) {

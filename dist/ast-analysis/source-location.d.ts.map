@@ -1,0 +1,1 @@
+{"version":3,"file":"source-location.d.ts","sourceRoot":"","sources":["../../src/ast-analysis/source-location.ts"],"names":[],"mappings":"AAAA,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,qCAAqC,CAAC;AACtE,OAAO,KAAK,EAAE,UAAU,EAAE,MAAM,yBAAyB,CAAC;AAI1D,iGAAiG;AACjG,wBAAgB,WAAW,CAAC,IAAI,EAAE,IAAI,CAAC,UAAU,EAAE,MAAM,CAAC,EAAE,MAAM,EAAE,MAAM,GAAG,UAAU,CAAC,OAAO,CAAC,CAuB/F"}

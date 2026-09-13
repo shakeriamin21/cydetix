@@ -1,4 +1,5 @@
 import { parse, type ParseResult } from "@babel/parser";
+import traverse from "@babel/traverse";
 import { parser as pythonParser } from "@lezer/python";
 import type { Tree } from "@lezer/common";
 
@@ -15,20 +16,26 @@ export interface ParseFailure {
 
 export function parseSource(file: SourceFile): ParsedSource | ParseFailure | undefined {
   if (file.language === "javascript" || file.language === "typescript") {
+    let stage = "parse";
     try {
+      const ast = parse(file.text, {
+        sourceType: "unambiguous",
+        sourceFilename: file.relativePath,
+        errorRecovery: false,
+        plugins: ["jsx", "typescript", "decorators-legacy"],
+      });
+      // Babel may accept TypeScript type/value declarations that its scope builder cannot model.
+      // Admit only trees usable by all downstream semantic traversals; failures stay file-local.
+      stage = "scope analysis";
+      traverse(ast, {});
       return {
         language: file.language,
-        ast: parse(file.text, {
-          sourceType: "unambiguous",
-          sourceFilename: file.relativePath,
-          errorRecovery: false,
-          plugins: ["jsx", "typescript", "decorators-legacy"],
-        }),
+        ast,
       };
     } catch (error) {
       return {
         path: file.relativePath,
-        message: `JavaScript/TypeScript parse failed: ${String(error)}`,
+        message: `JavaScript/TypeScript ${stage} failed: ${String(error)}`,
       };
     }
   }

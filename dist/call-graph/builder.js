@@ -1,5 +1,6 @@
 import path from "node:path";
 import traverse from "@babel/traverse";
+import { sourcePoint } from "../ast-analysis/source-location.js";
 import { securityIrId, securityIrSchema, } from "../security-ir/model.js";
 const SOURCE_EXTENSIONS = [".ts", ".tsx", ".mts", ".cts", ".js", ".jsx", ".mjs", ".cjs"];
 const HTTP_METHODS = new Map([
@@ -9,19 +10,13 @@ const HTTP_METHODS = new Map([
     ["patch", "PATCH"],
     ["delete", "DELETE"],
 ]);
-function point(text, offset) {
-    const safeOffset = Math.max(0, Math.min(offset, text.length));
-    const prefix = text.slice(0, safeOffset);
-    const lines = prefix.split("\n");
-    return { line: lines.length, column: lines.at(-1)?.length ?? 0, offset: safeOffset };
-}
 function location(file, node) {
     if (typeof node.start !== "number" || typeof node.end !== "number")
         return undefined;
     return {
         path: file.relativePath,
-        start: point(file.text, node.start),
-        end: point(file.text, node.end),
+        start: sourcePoint(file, node.start),
+        end: sourcePoint(file, node.end),
     };
 }
 function sourceText(file, node) {

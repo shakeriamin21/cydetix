@@ -4,6 +4,7 @@ import traverse, { type NodePath } from "@babel/traverse";
 import type { CallExpression, Expression, Identifier, ImportDeclaration, Node } from "@babel/types";
 
 import type { ParsedSource } from "../ast-analysis/parser.js";
+import { sourcePoint } from "../ast-analysis/source-location.js";
 import type { SourceFile } from "../repository-discovery/traverse.js";
 import {
   securityIrId,
@@ -49,19 +50,12 @@ const HTTP_METHODS: ReadonlyMap<string, IrRoute["method"]> = new Map([
   ["delete", "DELETE"],
 ] as const);
 
-function point(text: string, offset: number): IrLocation["start"] {
-  const safeOffset = Math.max(0, Math.min(offset, text.length));
-  const prefix = text.slice(0, safeOffset);
-  const lines = prefix.split("\n");
-  return { line: lines.length, column: lines.at(-1)?.length ?? 0, offset: safeOffset };
-}
-
 function location(file: SourceFile, node: Node): IrLocation | undefined {
   if (typeof node.start !== "number" || typeof node.end !== "number") return undefined;
   return {
     path: file.relativePath,
-    start: point(file.text, node.start),
-    end: point(file.text, node.end),
+    start: sourcePoint(file, node.start),
+    end: sourcePoint(file, node.end),
   };
 }
 

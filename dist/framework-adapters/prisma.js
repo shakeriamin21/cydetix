@@ -1,5 +1,6 @@
 import traverse from "@babel/traverse";
 import { objectProperty, propertyExpression } from "../ast-analysis/babel-utils.js";
+import { sourcePoint } from "../ast-analysis/source-location.js";
 const OPERATIONS = {
     findUnique: "read-one",
     findFirst: "read-one",
@@ -8,18 +9,13 @@ const OPERATIONS = {
     update: "update",
     delete: "delete",
 };
-function point(text, offset) {
-    const safeOffset = Math.max(0, Math.min(offset, text.length));
-    const lines = text.slice(0, safeOffset).split("\n");
-    return { line: lines.length, column: lines.at(-1)?.length ?? 0, offset: safeOffset };
-}
 function location(file, node) {
     if (typeof node.start !== "number" || typeof node.end !== "number")
         return undefined;
     return {
         path: file.relativePath,
-        start: point(file.text, node.start),
-        end: point(file.text, node.end),
+        start: sourcePoint(file, node.start),
+        end: sourcePoint(file, node.end),
     };
 }
 function sourceText(file, node) {
@@ -89,11 +85,11 @@ function selectors(file, object) {
 function inspectCall(callPath, file, ir) {
     const target = prismaTarget(callPath.node);
     const operation = target === undefined ? undefined : OPERATIONS[target.method];
+    if (target === undefined || operation === undefined)
+        return undefined;
     const sourceLocation = location(file, callPath.node);
     const containing = containingFunctionSymbol(ir, file.relativePath, callPath.node);
-    if (target === undefined ||
-        operation === undefined ||
-        sourceLocation === undefined ||
+    if (sourceLocation === undefined ||
         containing === undefined ||
         typeof callPath.node.start !== "number") {
         return undefined;

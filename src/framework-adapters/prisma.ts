@@ -3,6 +3,7 @@ import type { CallExpression, Node, ObjectExpression } from "@babel/types";
 
 import { objectProperty, propertyExpression } from "../ast-analysis/babel-utils.js";
 import type { ParsedSource } from "../ast-analysis/parser.js";
+import { sourcePoint } from "../ast-analysis/source-location.js";
 import type { SourceFile } from "../repository-discovery/traverse.js";
 import type { IrLocation, ResourceOperation, SecurityIr } from "../security-ir/model.js";
 
@@ -30,18 +31,12 @@ const OPERATIONS: Readonly<Record<string, ResourceOperation["operation"]>> = {
   delete: "delete",
 };
 
-function point(text: string, offset: number): IrLocation["start"] {
-  const safeOffset = Math.max(0, Math.min(offset, text.length));
-  const lines = text.slice(0, safeOffset).split("\n");
-  return { line: lines.length, column: lines.at(-1)?.length ?? 0, offset: safeOffset };
-}
-
 function location(file: SourceFile, node: Node): IrLocation | undefined {
   if (typeof node.start !== "number" || typeof node.end !== "number") return undefined;
   return {
     path: file.relativePath,
-    start: point(file.text, node.start),
-    end: point(file.text, node.end),
+    start: sourcePoint(file, node.start),
+    end: sourcePoint(file, node.end),
   };
 }
 
@@ -136,11 +131,10 @@ function inspectCall(
 ): PrismaOperationCandidate | undefined {
   const target = prismaTarget(callPath.node);
   const operation = target === undefined ? undefined : OPERATIONS[target.method];
+  if (target === undefined || operation === undefined) return undefined;
   const sourceLocation = location(file, callPath.node);
   const containing = containingFunctionSymbol(ir, file.relativePath, callPath.node);
   if (
-    target === undefined ||
-    operation === undefined ||
     sourceLocation === undefined ||
     containing === undefined ||
     typeof callPath.node.start !== "number"
