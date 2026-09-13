@@ -14,7 +14,7 @@ const sourceCommit = spawnSync("git", ["rev-parse", "HEAD"], {
 const targets = [
   { id: "express-session", size: "small" },
   { id: "express", size: "medium" },
-  { id: "fastify", size: "large" },
+  { id: "fastapi", size: "large" },
 ];
 const percentile = (values, fraction) =>
   [...values].sort((a, b) => a - b)[Math.ceil(values.length * fraction) - 1];
