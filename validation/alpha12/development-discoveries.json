@@ -1,0 +1,44 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "f2981a72055970010b775c4464a2df8c5871a83f",
+  "discoveries": [
+    {
+      "id": "stale-version-assertions",
+      "state": "CORRECTED",
+      "evidence": {
+        "id": "verify",
+        "sourceCommit": "65cf5f07a7cd37bfca7b0f07222863ded1dec606",
+        "command": [
+          "npm",
+          "run",
+          "verify:development"
+        ],
+        "startedAt": "2026-09-13T07:45:13.341Z",
+        "durationMilliseconds": 371124.451,
+        "exitCode": 1,
+        "signal": null,
+        "outputLimited": false,
+        "state": "FAILED",
+        "stdoutSha256": "328e447234ffa70233510ce41e775caff4e88584f30f1d52f745618b8de9497e",
+        "stderrSha256": "48937881a9383fd20579c888f3023d74c08c1c418f07d4130ff804a8d32b21da",
+        "sandboxImage": "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b"
+      },
+      "details": "First full development verification passed 434 tests and failed four tests with hardcoded alpha.11 runtime expectations. Expectations now bind alpha.12; no security assertion was relaxed."
+    },
+    {
+      "id": "gitleaks-zero-commits",
+      "state": "CORRECTED",
+      "details": "Docker Git refused the ownership of /repo, Gitleaks logged 0 commits scanned and emitted an empty report with exit 0. Original validator accepted that array. Validator now requires all immutable reviewed fingerprints; empty, subset and missing-one reports fail. Correctly bound pinned Docker scan traversed 61 commits and found the same 14 reviewed non-secret findings. Counts at that invocation predate later evidence commits."
+    },
+    {
+      "id": "all-refs-author-approval",
+      "state": "REMAINS_FAILED",
+      "commit": "d8b3d5a10f4c878c413a388d6f640fa390cb4b5b",
+      "ref": "refs/remotes/origin/dependabot/npm_and_yarn/types/node-26.4.1",
+      "authorFingerprint": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+      "authorClass": "PUBLIC_DEPENDABOT_GITHUB_NOREPLY",
+      "reachableFromDevelopmentHead": false,
+      "details": "Pre-existing remote branch identity is absent from frozen publication approval metadata. No identity allowlist, author, commit or ref was modified. A separate HEAD audit passes and does not replace ALL_REFS."
+    }
+  ]
+}

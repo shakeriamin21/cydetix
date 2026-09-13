@@ -153,7 +153,8 @@ for (const id of ["cycloneDx", "sarif", "releaseControls"])
       "verify:development log: official schema checks and unchanged strict workflow/publication controls. Static controls do not establish OIDC publication or hosted approvals.",
     sourceCommit: getGate("verify").sourceCommit,
   });
-const gitleaks = await json(".cydetix/evidence/gitleaks-review.json");
+const gitleaksExecution = await json("validation/alpha12/gitleaks-execution.json");
+const gitleaks = gitleaksExecution.review;
 await writeFile(
   "validation/alpha12/gitleaks-review.json",
   `${JSON.stringify(gitleaks, null, 2)}\n`,
@@ -163,7 +164,7 @@ supplyChainGates.push({
   state: gitleaks.state === "PASS" ? "PASSED" : "FAILED",
   evidence:
     "validation/alpha12/gitleaks-review.json; pinned Docker v8.30.1, network disabled, complete --all history, no repository ignore directives",
-  sourceCommit,
+  sourceCommit: gitleaksExecution.sourceCommit,
 });
 supplyChainGates.push({
   id: "mandatorySandbox",

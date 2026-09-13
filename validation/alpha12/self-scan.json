@@ -1,0 +1,1427 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "f2981a72055970010b775c4464a2df8c5871a83f",
+  "version": "0.6.0-alpha.12",
+  "state": "PASSED",
+  "scope": "Existing active-finding release gate, not a claim of repository security. Full configured scan includes deliberate fixtures; existing suppressions and limits remain active.",
+  "filesExamined": 618,
+  "bytesExamined": 3800749,
+  "findings": [],
+  "suppressedFindings": [
+    {
+      "ruleId": "AS-SESSION-001",
+      "fingerprint": "831b1218dc033265616ad05f0c6ee26108ef16735474b61aebe139109e85641e",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SESSION-001",
+        "findingFingerprint": "831b1218dc033265616ad05f0c6ee26108ef16735474b61aebe139109e85641e",
+        "scope": "fixtures",
+        "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-INJECTION-CMD-001",
+      "fingerprint": "20b80e81c750b74880c4cde478d7804b4276ec8899ab52d3452a42c14db09586",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-INJECTION-CMD-001",
+        "findingFingerprint": "20b80e81c750b74880c4cde478d7804b4276ec8899ab52d3452a42c14db09586",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 command injection admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-INJECTION-CMD-001",
+      "fingerprint": "b3962779b26e704ce16017494d00624a14ca50e6b1d03b4df896908e85468231",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-INJECTION-CMD-001",
+        "findingFingerprint": "b3962779b26e704ce16017494d00624a14ca50e6b1d03b4df896908e85468231",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 command injection admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-INJECTION-CMD-001",
+      "fingerprint": "ffdcf29457a366ca4915618bf6fe98f1e58c8d9a56893a9b30d9caf5003645b2",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-INJECTION-CMD-001",
+        "findingFingerprint": "ffdcf29457a366ca4915618bf6fe98f1e58c8d9a56893a9b30d9caf5003645b2",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 command injection admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-INJECTION-CMD-001",
+      "fingerprint": "9441b384cb2a2b6f48bf5344eabbf8c5f8803b6320f3fc5263c555922d12e736",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-INJECTION-CMD-001",
+        "findingFingerprint": "9441b384cb2a2b6f48bf5344eabbf8c5f8803b6320f3fc5263c555922d12e736",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 command injection admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-INJECTION-CMD-001",
+      "fingerprint": "2d61dd8f0ee1e006e7ced38f9609eb8eb6f0fa21a0531a888699e219d6c13446",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-INJECTION-CMD-001",
+        "findingFingerprint": "2d61dd8f0ee1e006e7ced38f9609eb8eb6f0fa21a0531a888699e219d6c13446",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 command injection admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-INJECTION-CMD-001",
+      "fingerprint": "e100ce43a23a7cb563870b7d711d4f793320539ddf072eb610ebceb3e6b45e8f",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-INJECTION-CMD-001",
+        "findingFingerprint": "e100ce43a23a7cb563870b7d711d4f793320539ddf072eb610ebceb3e6b45e8f",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 command injection admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-INJECTION-CMD-001",
+      "fingerprint": "0900712381f92d3b1d47443b275eea949e91b318558566c8c26ae894eb899b57",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-INJECTION-CMD-001",
+        "findingFingerprint": "0900712381f92d3b1d47443b275eea949e91b318558566c8c26ae894eb899b57",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 command injection admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-XSS-001",
+      "fingerprint": "68426b6c8016b3d22dd1efa90c3a2d709a60c43893c19a1983f715ddedbb8f3a",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-XSS-001",
+        "findingFingerprint": "68426b6c8016b3d22dd1efa90c3a2d709a60c43893c19a1983f715ddedbb8f3a",
+        "scope": "fixtures/batch1/path/adversarial/noise.ts",
+        "reason": "Exact incidental XSS path in an intentionally adversarial Batch 1 parser fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-PATH-001",
+      "fingerprint": "8d56049485ba1dcfbbad1c4b3ef7c6a5934b433e3797679ff22202c87d499c9c",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-PATH-001",
+        "findingFingerprint": "8d56049485ba1dcfbbad1c4b3ef7c6a5934b433e3797679ff22202c87d499c9c",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 path traversal admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-PATH-001",
+      "fingerprint": "451c462040df2aa7f1e34c039e396aa917b7d72bed83c5d3710704816b6692de",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-PATH-001",
+        "findingFingerprint": "451c462040df2aa7f1e34c039e396aa917b7d72bed83c5d3710704816b6692de",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 path traversal admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-PATH-001",
+      "fingerprint": "ef673e8dab7c04076e5fcd3eaecb01e9cb124e0ea85cb5001902ba6a133d3896",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-PATH-001",
+        "findingFingerprint": "ef673e8dab7c04076e5fcd3eaecb01e9cb124e0ea85cb5001902ba6a133d3896",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 path traversal admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-PATH-001",
+      "fingerprint": "d31dec3c23693d21bf73958cd3582acc4da4b4341c2f847c122c6a3bf95c9dce",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-PATH-001",
+        "findingFingerprint": "d31dec3c23693d21bf73958cd3582acc4da4b4341c2f847c122c6a3bf95c9dce",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 path traversal admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-PATH-001",
+      "fingerprint": "9a91792ef47ba4507baf9242ec96d2bb2cc479b79f240470d02df56a55247c40",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-PATH-001",
+        "findingFingerprint": "9a91792ef47ba4507baf9242ec96d2bb2cc479b79f240470d02df56a55247c40",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 path traversal admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-PATH-001",
+      "fingerprint": "a94258ceef574d0d485c9305b640c84bd6ee540616f1fb8f74f302dac15e21d8",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-PATH-001",
+        "findingFingerprint": "a94258ceef574d0d485c9305b640c84bd6ee540616f1fb8f74f302dac15e21d8",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 path traversal admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-PATH-001",
+      "fingerprint": "254d9884b6572a7be12c9f4e4997ef0618cf192e803eb7d2c14c5745dacd1bfd",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-PATH-001",
+        "findingFingerprint": "254d9884b6572a7be12c9f4e4997ef0618cf192e803eb7d2c14c5745dacd1bfd",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 path traversal admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-INJECTION-SQL-001",
+      "fingerprint": "ecce91cc73e86dfaf12b9ce47eb245e1730beb9712a33b5ec06ca23264967d56",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-INJECTION-SQL-001",
+        "findingFingerprint": "ecce91cc73e86dfaf12b9ce47eb245e1730beb9712a33b5ec06ca23264967d56",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 SQL injection admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-INJECTION-SQL-001",
+      "fingerprint": "1da22f2285e5522005aabcbc922c2a9f2c91ae5421f7567547723102c69dd43c",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-INJECTION-SQL-001",
+        "findingFingerprint": "1da22f2285e5522005aabcbc922c2a9f2c91ae5421f7567547723102c69dd43c",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 SQL injection admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-INJECTION-SQL-001",
+      "fingerprint": "1af00b67736eb358627ad7a7e8b0d050511996c1d6a9e46f75ed5d2ef7436203",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-INJECTION-SQL-001",
+        "findingFingerprint": "1af00b67736eb358627ad7a7e8b0d050511996c1d6a9e46f75ed5d2ef7436203",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 SQL injection admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-INJECTION-SQL-001",
+      "fingerprint": "c3cf47cca168e8ffa287fbe3f9cd608899e8ff40230c14e05eca3c0a9da59c2e",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-INJECTION-SQL-001",
+        "findingFingerprint": "c3cf47cca168e8ffa287fbe3f9cd608899e8ff40230c14e05eca3c0a9da59c2e",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 SQL injection admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-INJECTION-SQL-001",
+      "fingerprint": "5fe5dabe0eb8b0c6f95e67db25e8e079c901997086f780738898f78542125649",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-INJECTION-SQL-001",
+        "findingFingerprint": "5fe5dabe0eb8b0c6f95e67db25e8e079c901997086f780738898f78542125649",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 SQL injection admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-INJECTION-SQL-001",
+      "fingerprint": "abf304e90b3b5f64e737fac6d75e923d2715ac6c4eff8b265006d40ad741753e",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-INJECTION-SQL-001",
+        "findingFingerprint": "abf304e90b3b5f64e737fac6d75e923d2715ac6c4eff8b265006d40ad741753e",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 SQL injection admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-XSS-001",
+      "fingerprint": "c22c69ed9f9444dc7accd890d3585809f2c044dc01009a07e7496cd4178f9c0d",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-XSS-001",
+        "findingFingerprint": "c22c69ed9f9444dc7accd890d3585809f2c044dc01009a07e7496cd4178f9c0d",
+        "scope": "fixtures/batch1/ssrf/adversarial/noise.ts",
+        "reason": "Exact incidental XSS path in an intentionally adversarial Batch 1 parser fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-SSRF-001",
+      "fingerprint": "200bd4b6715bd7136292e5183242dc232f81241d80850f40d9cbbe05169104c4",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SSRF-001",
+        "findingFingerprint": "200bd4b6715bd7136292e5183242dc232f81241d80850f40d9cbbe05169104c4",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 SSRF admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-SSRF-001",
+      "fingerprint": "201e2370e998976255e9e3102e52b92f46a97df32126e28d5eb19f7cb8252f02",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SSRF-001",
+        "findingFingerprint": "201e2370e998976255e9e3102e52b92f46a97df32126e28d5eb19f7cb8252f02",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 SSRF admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-SSRF-001",
+      "fingerprint": "8bc85957239dbe1d2322f58ee58f40c1a93d6e45668e0ef225b15f681ef7b9e4",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SSRF-001",
+        "findingFingerprint": "8bc85957239dbe1d2322f58ee58f40c1a93d6e45668e0ef225b15f681ef7b9e4",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 SSRF admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-SSRF-001",
+      "fingerprint": "80d0563d010836a550dd7bb0c6cf93341cdb5eb7faeb09a73996ecb621c3dacf",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SSRF-001",
+        "findingFingerprint": "80d0563d010836a550dd7bb0c6cf93341cdb5eb7faeb09a73996ecb621c3dacf",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 SSRF admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-SSRF-001",
+      "fingerprint": "4a900fdfca524bd09e8f6ef4a9dc708cac9b94113ac594a6101cba2692e197d2",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SSRF-001",
+        "findingFingerprint": "4a900fdfca524bd09e8f6ef4a9dc708cac9b94113ac594a6101cba2692e197d2",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 SSRF admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-SSRF-001",
+      "fingerprint": "973f63905945e23683dfde54bb204e2a9a03a8fb2fbaa61400ef362de8192f81",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SSRF-001",
+        "findingFingerprint": "973f63905945e23683dfde54bb204e2a9a03a8fb2fbaa61400ef362de8192f81",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 SSRF admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-SSRF-001",
+      "fingerprint": "10f90cdebfb341090573d11b51b7c318b4976395eaf14ff01401b341946f6fd7",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SSRF-001",
+        "findingFingerprint": "10f90cdebfb341090573d11b51b7c318b4976395eaf14ff01401b341946f6fd7",
+        "scope": "fixtures/batch1",
+        "reason": "Deliberately vulnerable Batch 1 SSRF admission corpus with negative and adversarial counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-11",
+        "expires": "2027-09-11"
+      }
+    },
+    {
+      "ruleId": "AS-CSRF-001",
+      "fingerprint": "fa9d8632f47f0b6387785140a11a2fbebc874da7b28f1a6b7724c343e7016ac4",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-CSRF-001",
+        "findingFingerprint": "fa9d8632f47f0b6387785140a11a2fbebc874da7b28f1a6b7724c343e7016ac4",
+        "scope": "fixtures/batch2/csrf/positive/flask-login.py",
+        "reason": "Exact deliberately vulnerable CSRF admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-CSRF-001",
+      "fingerprint": "53ee5115ccf3e034fbefec85667d57949f6ec3a3e3ab653bd1f8403a99dea6d5",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-CSRF-001",
+        "findingFingerprint": "53ee5115ccf3e034fbefec85667d57949f6ec3a3e3ab653bd1f8403a99dea6d5",
+        "scope": "fixtures/batch2/csrf/positive/flask-session.py",
+        "reason": "Exact deliberately vulnerable CSRF admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-CSRF-001",
+      "fingerprint": "086732714e0468d83f0cc2b4b7742d2cc4de749584b7faab9ebd66ee9cb877a1",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-CSRF-001",
+        "findingFingerprint": "086732714e0468d83f0cc2b4b7742d2cc4de749584b7faab9ebd66ee9cb877a1",
+        "scope": "fixtures/batch2/csrf/positive/global-session.ts",
+        "reason": "Exact deliberately vulnerable CSRF admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-CSRF-001",
+      "fingerprint": "15c72bff23099b94030feca53468aaefc63741a2893287d3b803e9338a1b74af",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-CSRF-001",
+        "findingFingerprint": "15c72bff23099b94030feca53468aaefc63741a2893287d3b803e9338a1b74af",
+        "scope": "fixtures/batch2/csrf/positive/routes.ts",
+        "reason": "Exact deliberately vulnerable CSRF admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-REDIRECT-001",
+      "fingerprint": "0fec62c7dda09b800e3ad590e74bf1c83df4d61f03ee97bf084c53c536fe8988",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-REDIRECT-001",
+        "findingFingerprint": "0fec62c7dda09b800e3ad590e74bf1c83df4d61f03ee97bf084c53c536fe8988",
+        "scope": "fixtures/batch2/redirect/adversarial/non-dominating-check.ts",
+        "reason": "Exact deliberately vulnerable Open Redirect adversarial fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-REDIRECT-001",
+      "fingerprint": "e85856d910b21065cc644c7657d390899b4238883152cf4b34ae3654587fc311",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-REDIRECT-001",
+        "findingFingerprint": "e85856d910b21065cc644c7657d390899b4238883152cf4b34ae3654587fc311",
+        "scope": "fixtures/batch2/redirect/adversarial/protocol-relative.ts",
+        "reason": "Exact deliberately vulnerable Open Redirect adversarial fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-REDIRECT-001",
+      "fingerprint": "31fa8fda6a6eaef394da7a2e028f7a4028eb2d1085c367d00cc50aff8f17f766",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-REDIRECT-001",
+        "findingFingerprint": "31fa8fda6a6eaef394da7a2e028f7a4028eb2d1085c367d00cc50aff8f17f766",
+        "scope": "fixtures/batch2/redirect/positive/express-status.ts",
+        "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-REDIRECT-001",
+      "fingerprint": "3c958bdef0d933132a090a385ae070ccb5e9c08019d45822f55c05d1089e9d46",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-REDIRECT-001",
+        "findingFingerprint": "3c958bdef0d933132a090a385ae070ccb5e9c08019d45822f55c05d1089e9d46",
+        "scope": "fixtures/batch2/redirect/positive/express.ts",
+        "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-REDIRECT-001",
+      "fingerprint": "282ea39b6fc3252ff93d8b064d7a49d771a5ddeb21eba1efde61ab52b507ec08",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-REDIRECT-001",
+        "findingFingerprint": "282ea39b6fc3252ff93d8b064d7a49d771a5ddeb21eba1efde61ab52b507ec08",
+        "scope": "fixtures/batch2/redirect/positive/fastify.ts",
+        "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-REDIRECT-001",
+      "fingerprint": "fd8ae40d52bce5f5b9d80cb37d2d51312c16df0eed11e670104392b6ef584110",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-REDIRECT-001",
+        "findingFingerprint": "fd8ae40d52bce5f5b9d80cb37d2d51312c16df0eed11e670104392b6ef584110",
+        "scope": "fixtures/batch2/redirect/positive/flask.py",
+        "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-REDIRECT-001",
+      "fingerprint": "542e4182c34d0e72978bfb9dba3238f1b0e3340a83107f8b6a9310c202c6a963",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-REDIRECT-001",
+        "findingFingerprint": "542e4182c34d0e72978bfb9dba3238f1b0e3340a83107f8b6a9310c202c6a963",
+        "scope": "fixtures/batch2/redirect/positive/naive-prefix.ts",
+        "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-REDIRECT-001",
+      "fingerprint": "8e94107e85712349ae6ab0a1d72fc89dafd24a71344873a80a04ab84b894c217",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-REDIRECT-001",
+        "findingFingerprint": "8e94107e85712349ae6ab0a1d72fc89dafd24a71344873a80a04ab84b894c217",
+        "scope": "fixtures/batch2/redirect/positive/next-navigation.ts",
+        "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-REDIRECT-001",
+      "fingerprint": "cc4d4d8cd38861e8a34f9b9304439f9b7913bc61f8704a89eb5714468b31cd57",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-REDIRECT-001",
+        "findingFingerprint": "cc4d4d8cd38861e8a34f9b9304439f9b7913bc61f8704a89eb5714468b31cd57",
+        "scope": "fixtures/batch2/redirect/positive/next.ts",
+        "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-REDIRECT-001",
+      "fingerprint": "a3ae2be60b15069a495ed67983294b799f1433e95c615f6dc48b83304656ed9f",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-REDIRECT-001",
+        "findingFingerprint": "a3ae2be60b15069a495ed67983294b799f1433e95c615f6dc48b83304656ed9f",
+        "scope": "fixtures/batch2/redirect/positive/starlette.py",
+        "reason": "Exact deliberately vulnerable Open Redirect admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-XSS-001",
+      "fingerprint": "f091341028f161103321154658d0e8f2d2fd8fdbb8af8bc72a4526295db104f4",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-XSS-001",
+        "findingFingerprint": "f091341028f161103321154658d0e8f2d2fd8fdbb8af8bc72a4526295db104f4",
+        "scope": "fixtures/batch2/xss/adversarial/wrong-context.ts",
+        "reason": "Exact deliberately vulnerable wrong-context XSS adversarial fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-XSS-001",
+      "fingerprint": "85708fda081131189a3790fece154bd6e7fdb2cb7a60fc661818a96019725a97",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-XSS-001",
+        "findingFingerprint": "85708fda081131189a3790fece154bd6e7fdb2cb7a60fc661818a96019725a97",
+        "scope": "fixtures/batch2/xss/positive/dom.ts",
+        "reason": "Exact deliberately vulnerable XSS admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-XSS-001",
+      "fingerprint": "f8d49a57787dd5d9e4f2328a348a5bd8e5479cc41a4d59f6a9b6d5bace45a581",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-XSS-001",
+        "findingFingerprint": "f8d49a57787dd5d9e4f2328a348a5bd8e5479cc41a4d59f6a9b6d5bace45a581",
+        "scope": "fixtures/batch2/xss/positive/express-script.ts",
+        "reason": "Exact deliberately vulnerable XSS admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-XSS-001",
+      "fingerprint": "2f9a21940820a3b85785b458f06c3f9440bde38517559214f0eff205d8df159b",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-XSS-001",
+        "findingFingerprint": "2f9a21940820a3b85785b458f06c3f9440bde38517559214f0eff205d8df159b",
+        "scope": "fixtures/batch2/xss/positive/express.ts",
+        "reason": "Exact deliberately vulnerable XSS admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-XSS-001",
+      "fingerprint": "3581fb9f5b540213f16cd58ef72d24864c57562ea192ff5ff8f50be27de6519a",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-XSS-001",
+        "findingFingerprint": "3581fb9f5b540213f16cd58ef72d24864c57562ea192ff5ff8f50be27de6519a",
+        "scope": "fixtures/batch2/xss/positive/fastapi.py",
+        "reason": "Exact deliberately vulnerable XSS admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-XSS-001",
+      "fingerprint": "c00ce76bb97e0a0f8a71c19e2bac5c834f731758f706684208abdaf327121dc1",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-XSS-001",
+        "findingFingerprint": "c00ce76bb97e0a0f8a71c19e2bac5c834f731758f706684208abdaf327121dc1",
+        "scope": "fixtures/batch2/xss/positive/fastify.ts",
+        "reason": "Exact deliberately vulnerable XSS admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-XSS-001",
+      "fingerprint": "9027fd0bf1c90437fba63dd316ca334b1bd5677a7ae4c0d3f60ae31e7b0c732e",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-XSS-001",
+        "findingFingerprint": "9027fd0bf1c90437fba63dd316ca334b1bd5677a7ae4c0d3f60ae31e7b0c732e",
+        "scope": "fixtures/batch2/xss/positive/flask-response.py",
+        "reason": "Exact deliberately vulnerable XSS admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-XSS-001",
+      "fingerprint": "79e12a543facad823b1546b0cdb046a841efc26c5b4c43c9cd5d6f8bb0244d6d",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-XSS-001",
+        "findingFingerprint": "79e12a543facad823b1546b0cdb046a841efc26c5b4c43c9cd5d6f8bb0244d6d",
+        "scope": "fixtures/batch2/xss/positive/flask.py",
+        "reason": "Exact deliberately vulnerable XSS admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-XSS-001",
+      "fingerprint": "51282dc677cc3f46546db42cd8fce6682f5c1a9ad2bc88ce532cb1aa7374ae2f",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-XSS-001",
+        "findingFingerprint": "51282dc677cc3f46546db42cd8fce6682f5c1a9ad2bc88ce532cb1aa7374ae2f",
+        "scope": "fixtures/batch2/xss/positive/nested-call.ts",
+        "reason": "Exact deliberately vulnerable XSS admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-XSS-001",
+      "fingerprint": "88a656e91d922a77e1c363f7359ac9c0157dfbb6e625a119485203bc392f1262",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-XSS-001",
+        "findingFingerprint": "88a656e91d922a77e1c363f7359ac9c0157dfbb6e625a119485203bc392f1262",
+        "scope": "fixtures/batch2/xss/positive/react.tsx",
+        "reason": "Exact deliberately vulnerable XSS admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-XSS-001",
+      "fingerprint": "947d8af4f5190c44161192213a2fba3825fc397c2313057b3ebe99df6848553c",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-XSS-001",
+        "findingFingerprint": "947d8af4f5190c44161192213a2fba3825fc397c2313057b3ebe99df6848553c",
+        "scope": "fixtures/batch2/xss/positive/url-context.ts",
+        "reason": "Exact deliberately vulnerable XSS admission fixture",
+        "owner": "security-maintainers",
+        "created": "2026-09-12",
+        "expires": "2027-09-12"
+      }
+    },
+    {
+      "ruleId": "AS-AUTHZ-001",
+      "fingerprint": "475f3547f8c94792a714a0d967fe0a7c5400b1247b426d8290d78418a519a9cc",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-AUTHZ-001",
+        "findingFingerprint": "475f3547f8c94792a714a0d967fe0a7c5400b1247b426d8290d78418a519a9cc",
+        "scope": "fixtures/phase2",
+        "reason": "Deliberately vulnerable cross-file authorization corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-01",
+        "expires": "2027-09-01"
+      }
+    },
+    {
+      "ruleId": "AS-TENANT-001",
+      "fingerprint": "d5a870fc8419a15ba4793d3c4f7c91d97c65568faf5877b56580b15d0c2af27c",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-TENANT-001",
+        "findingFingerprint": "d5a870fc8419a15ba4793d3c4f7c91d97c65568faf5877b56580b15d0c2af27c",
+        "scope": "fixtures/phase2",
+        "reason": "Deliberately vulnerable tenant-isolation corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-09-01",
+        "expires": "2027-09-01"
+      }
+    },
+    {
+      "ruleId": "AS-AUTH-JWT-001",
+      "fingerprint": "53c077cf3b3f347cb32fe1beaa6854c323368c30777bbe3a2f22314e65500937",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-AUTH-JWT-001",
+        "findingFingerprint": "53c077cf3b3f347cb32fe1beaa6854c323368c30777bbe3a2f22314e65500937",
+        "scope": "fixtures/phase3",
+        "reason": "Deliberately decoded-but-unverified JWT corpus with a verified counterpart",
+        "owner": "security-maintainers",
+        "created": "2026-09-02",
+        "expires": "2027-09-02"
+      }
+    },
+    {
+      "ruleId": "AS-AUTH-SESSION-002",
+      "fingerprint": "69dd9839a4764b99c60d6345eceaa5005b6bbb329a198d4b2b215fd5dcca10aa",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-AUTH-SESSION-002",
+        "findingFingerprint": "69dd9839a4764b99c60d6345eceaa5005b6bbb329a198d4b2b215fd5dcca10aa",
+        "scope": "fixtures/phase3",
+        "reason": "Deliberately incomplete logout corpus with a secure revocation counterpart",
+        "owner": "security-maintainers",
+        "created": "2026-09-02",
+        "expires": "2027-09-02"
+      }
+    },
+    {
+      "ruleId": "AS-AUTH-OAUTH-001",
+      "fingerprint": "65545a7a5ed9374903ecf8197ddc58e3ef24ed05195ee6f8b163ea49b3320188",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-AUTH-OAUTH-001",
+        "findingFingerprint": "65545a7a5ed9374903ecf8197ddc58e3ef24ed05195ee6f8b163ea49b3320188",
+        "scope": "fixtures/phase3",
+        "reason": "Deliberately broken OAuth state corpus with a secure counterpart",
+        "owner": "security-maintainers",
+        "created": "2026-09-02",
+        "expires": "2027-09-02"
+      }
+    },
+    {
+      "ruleId": "AS-AUTH-OAUTH-002",
+      "fingerprint": "5c81a102cb40e0ea80c42b9d9270390cd50d3dd428a746dc16b9383474b6a695",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-AUTH-OAUTH-002",
+        "findingFingerprint": "5c81a102cb40e0ea80c42b9d9270390cd50d3dd428a746dc16b9383474b6a695",
+        "scope": "fixtures/phase3",
+        "reason": "Deliberately missing applicable PKCE corpus with a secure counterpart",
+        "owner": "security-maintainers",
+        "created": "2026-09-02",
+        "expires": "2027-09-02"
+      }
+    },
+    {
+      "ruleId": "AS-AUTH-RESET-001",
+      "fingerprint": "bde0c0a224ea1673b500118157c917337180122614aa1bb16c980427d6a27e85",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-AUTH-RESET-001",
+        "findingFingerprint": "bde0c0a224ea1673b500118157c917337180122614aa1bb16c980427d6a27e85",
+        "scope": "fixtures/phase3",
+        "reason": "Deliberately persistent-session reset corpus with a secure counterpart",
+        "owner": "security-maintainers",
+        "created": "2026-09-02",
+        "expires": "2027-09-02"
+      }
+    },
+    {
+      "ruleId": "AS-AUTH-RESET-002",
+      "fingerprint": "95aec0ec4904304232da40e5a4a798adb1b41849f3c389fdce009c5b7157d489",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-AUTH-RESET-002",
+        "findingFingerprint": "95aec0ec4904304232da40e5a4a798adb1b41849f3c389fdce009c5b7157d489",
+        "scope": "fixtures/phase3",
+        "reason": "Deliberately reusable reset-credential corpus with a secure counterpart",
+        "owner": "security-maintainers",
+        "created": "2026-09-02",
+        "expires": "2027-09-02"
+      }
+    },
+    {
+      "ruleId": "AS-AUTH-RESET-003",
+      "fingerprint": "95e3721301365fe8362be526bf5f125544e821ef7e485db091254b5c4bb486ae",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-AUTH-RESET-003",
+        "findingFingerprint": "95e3721301365fe8362be526bf5f125544e821ef7e485db091254b5c4bb486ae",
+        "scope": "fixtures/phase3",
+        "reason": "Deliberately weak reset-credential corpus with a secure counterpart",
+        "owner": "security-maintainers",
+        "created": "2026-09-02",
+        "expires": "2027-09-02"
+      }
+    },
+    {
+      "ruleId": "AS-AUTH-SESSION-001",
+      "fingerprint": "c45eb91157e979cfe9774b594e261104de03afdb6fccd5cdb04e3eaf4eac6a79",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-AUTH-SESSION-001",
+        "findingFingerprint": "c45eb91157e979cfe9774b594e261104de03afdb6fccd5cdb04e3eaf4eac6a79",
+        "scope": "fixtures/phase3",
+        "reason": "Deliberately vulnerable session-fixation corpus with a secure counterpart",
+        "owner": "security-maintainers",
+        "created": "2026-09-02",
+        "expires": "2027-09-02"
+      }
+    },
+    {
+      "ruleId": "AS-SECRET-001",
+      "fingerprint": "c295494ce0ff7cd892f12f48ee6094631356705d5834ad658a447c1bac8b1fb2",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SECRET-001",
+        "findingFingerprint": "c295494ce0ff7cd892f12f48ee6094631356705d5834ad658a447c1bac8b1fb2",
+        "scope": "fixtures",
+        "reason": "Synthetic non-working credential literals used to prove redaction",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-SESSION-001",
+      "fingerprint": "566327a29ad05fe70e517266e52017181e1defc8b207bac28c459811884eaac8",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SESSION-001",
+        "findingFingerprint": "566327a29ad05fe70e517266e52017181e1defc8b207bac28c459811884eaac8",
+        "scope": "fixtures",
+        "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-SESSION-001",
+      "fingerprint": "54649fbde1c5b4bd7edd91706279e54a3b37f4da82dc181c99e28b302c9bc822",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SESSION-001",
+        "findingFingerprint": "54649fbde1c5b4bd7edd91706279e54a3b37f4da82dc181c99e28b302c9bc822",
+        "scope": "fixtures",
+        "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-SESSION-001",
+      "fingerprint": "8b0f2992c34d7729296350e271e823c7fa369ff0b88937bca40fba06c5b5154d",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SESSION-001",
+        "findingFingerprint": "8b0f2992c34d7729296350e271e823c7fa369ff0b88937bca40fba06c5b5154d",
+        "scope": "fixtures",
+        "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-SESSION-001",
+      "fingerprint": "ebc62f582cf3a56b2a9d199fd09daec0136d33a2ed0476107fc2ce9a8ef00324",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SESSION-001",
+        "findingFingerprint": "ebc62f582cf3a56b2a9d199fd09daec0136d33a2ed0476107fc2ce9a8ef00324",
+        "scope": "fixtures",
+        "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-SESSION-001",
+      "fingerprint": "1eae897241a70336f06fa63dbfc204cc43c6ce64f78c8e8de8c0e7dbfc18276c",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SESSION-001",
+        "findingFingerprint": "1eae897241a70336f06fa63dbfc204cc43c6ce64f78c8e8de8c0e7dbfc18276c",
+        "scope": "fixtures",
+        "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-SECRET-001",
+      "fingerprint": "e4949d529f28ddda3b719d5161ae196cf9786e4b1b28b70bf93d67a4cec40761",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SECRET-001",
+        "findingFingerprint": "e4949d529f28ddda3b719d5161ae196cf9786e4b1b28b70bf93d67a4cec40761",
+        "scope": "fixtures",
+        "reason": "Synthetic non-working credential literals used to prove redaction",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-CORS-001",
+      "fingerprint": "d4080b42252cd6991a92a7e091dc4b4497a440e48c7726e7eae9aa6082760c16",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-CORS-001",
+        "findingFingerprint": "d4080b42252cd6991a92a7e091dc4b4497a440e48c7726e7eae9aa6082760c16",
+        "scope": "fixtures",
+        "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-PASSWORD-001",
+      "fingerprint": "c9269fe25b5b53fd65cfde4bf3056f8cf1d4db86bc953b107ca7af1760f4f96a",
+      "proofState": "UNKNOWN",
+      "suppression": {
+        "rule": "AS-PASSWORD-001",
+        "findingFingerprint": "c9269fe25b5b53fd65cfde4bf3056f8cf1d4db86bc953b107ca7af1760f4f96a",
+        "scope": "fixtures",
+        "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-TOKEN-001",
+      "fingerprint": "013d71cacb0d973deb34af11877c96e7491f77a82efe75bf88a4dc8b16eef5ec",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-TOKEN-001",
+        "findingFingerprint": "013d71cacb0d973deb34af11877c96e7491f77a82efe75bf88a4dc8b16eef5ec",
+        "scope": "fixtures",
+        "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-SECRET-001",
+      "fingerprint": "c8b4818b4644258519d265dd2a00d4bb3b072715942d6be486341fb32db66795",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SECRET-001",
+        "findingFingerprint": "c8b4818b4644258519d265dd2a00d4bb3b072715942d6be486341fb32db66795",
+        "scope": "fixtures",
+        "reason": "Synthetic non-working credential literals used to prove redaction",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-CORS-001",
+      "fingerprint": "22632bb92bcd4493c503af0dd46bcfe98a50749155f9cba39e2dc306bf1fc3ab",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-CORS-001",
+        "findingFingerprint": "22632bb92bcd4493c503af0dd46bcfe98a50749155f9cba39e2dc306bf1fc3ab",
+        "scope": "fixtures",
+        "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-PASSWORD-001",
+      "fingerprint": "faaf98a41bc1aa0ee328bfd81322d70f04e20c5a0ee02f908727cfdb6a9f1993",
+      "proofState": "UNKNOWN",
+      "suppression": {
+        "rule": "AS-PASSWORD-001",
+        "findingFingerprint": "faaf98a41bc1aa0ee328bfd81322d70f04e20c5a0ee02f908727cfdb6a9f1993",
+        "scope": "fixtures",
+        "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-TOKEN-001",
+      "fingerprint": "7fa8b9395ed80f9f4f5fb677763dac36bf45329ce5adf0512e6b408940f75bcd",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-TOKEN-001",
+        "findingFingerprint": "7fa8b9395ed80f9f4f5fb677763dac36bf45329ce5adf0512e6b408940f75bcd",
+        "scope": "fixtures",
+        "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-SESSION-001",
+      "fingerprint": "f77373b5260b36c0adad19cfa2acb58f8ed9994a63e0f1aca472212c01eccf34",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SESSION-001",
+        "findingFingerprint": "f77373b5260b36c0adad19cfa2acb58f8ed9994a63e0f1aca472212c01eccf34",
+        "scope": "fixtures",
+        "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-SESSION-001",
+      "fingerprint": "357ef5f06b22d69289da8208bee14f100c884f1e5d201fee18bc397d4c7f92be",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SESSION-001",
+        "findingFingerprint": "357ef5f06b22d69289da8208bee14f100c884f1e5d201fee18bc397d4c7f92be",
+        "scope": "fixtures",
+        "reason": "Deliberately vulnerable regression corpus with secure counterparts",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    },
+    {
+      "ruleId": "AS-SECRET-001",
+      "fingerprint": "6b9efedc0ca011bfa65c091c157c185ecd63e59c3eb9064fe69a944e41b89efe",
+      "proofState": "PROVEN_INSECURE",
+      "suppression": {
+        "rule": "AS-SECRET-001",
+        "findingFingerprint": "6b9efedc0ca011bfa65c091c157c185ecd63e59c3eb9064fe69a944e41b89efe",
+        "scope": "tests/security",
+        "reason": "Synthetic outside-root credential marker used by the symlink escape regression test",
+        "owner": "security-maintainers",
+        "created": "2026-08-30",
+        "expires": "2027-08-30"
+      }
+    }
+  ],
+  "completeness": "PARTIAL",
+  "engines": [
+    {
+      "engine": "repository-discovery",
+      "status": "COMPLETE",
+      "details": "Repository traversal completed within configured bounds."
+    },
+    {
+      "engine": "syntax-parsing",
+      "status": "PARTIAL",
+      "details": "1 supported source file(s) failed parsing."
+    },
+    {
+      "engine": "application-dataflow",
+      "status": "PARTIAL",
+      "details": "4961 bounded path(s) considered; 0 truncation event(s)."
+    }
+  ],
+  "applicationDataflow": {
+    "schemaVersion": "1.0.0",
+    "engineVersion": "1.0.0",
+    "completeness": "PARTIAL",
+    "metrics": {
+      "filesAnalyzed": 398,
+      "astNodesVisited": 183862,
+      "factsCreated": 77,
+      "pathsConsidered": 4961,
+      "iterations": 3,
+      "truncationEvents": 0
+    },
+    "unknowns": [
+      {
+        "ruleId": "AS-XSS-001",
+        "path": "fixtures/batch1/command/positive/cross-function.ts",
+        "line": 9,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Untrusted content reaches an HTML response through a transformation whose context-specific safety is UNKNOWN."
+      },
+      {
+        "ruleId": "AS-INJECTION-CMD-001",
+        "path": "fixtures/batch1/command/unknown/custom-sanitizer.ts",
+        "line": 8,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Untrusted data reaches an unknown transformation before shell execution; control sufficiency is UNKNOWN."
+      },
+      {
+        "ruleId": "AS-XSS-001",
+        "path": "fixtures/batch1/path/adversarial/shadowed.ts",
+        "line": 6,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Untrusted content reaches an HTML response through a transformation whose context-specific safety is UNKNOWN."
+      },
+      {
+        "ruleId": "AS-XSS-001",
+        "path": "fixtures/batch1/path/negative/confined.ts",
+        "line": 10,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Untrusted content reaches an HTML response through a transformation whose context-specific safety is UNKNOWN."
+      },
+      {
+        "ruleId": "AS-XSS-001",
+        "path": "fixtures/batch1/path/positive/cross-function.ts",
+        "line": 10,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Untrusted content reaches an HTML response through a transformation whose context-specific safety is UNKNOWN."
+      },
+      {
+        "ruleId": "AS-XSS-001",
+        "path": "fixtures/batch1/path/positive/express.ts",
+        "line": 7,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Untrusted content reaches an HTML response through a transformation whose context-specific safety is UNKNOWN."
+      },
+      {
+        "ruleId": "AS-PATH-001",
+        "path": "fixtures/batch1/path/unknown/custom-sanitizer.ts",
+        "line": 8,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "An unknown path transformation precedes a filesystem sink; canonical confinement cannot be proven."
+      },
+      {
+        "ruleId": "AS-XSS-001",
+        "path": "fixtures/batch1/path/unknown/custom-sanitizer.ts",
+        "line": 8,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Untrusted content reaches an HTML response through a transformation whose context-specific safety is UNKNOWN."
+      },
+      {
+        "ruleId": "AS-INJECTION-SQL-001",
+        "path": "fixtures/batch1/sql/unknown/custom-sanitizer.ts",
+        "line": 9,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Untrusted data reaches an unrecognized transformation before a SQL sink; Cydetix cannot prove whether it affects SQL structure."
+      },
+      {
+        "ruleId": "AS-XSS-001",
+        "path": "fixtures/batch1/ssrf/positive/cross-function.ts",
+        "line": 9,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Untrusted content reaches an HTML response through a transformation whose context-specific safety is UNKNOWN."
+      },
+      {
+        "ruleId": "AS-XSS-001",
+        "path": "fixtures/batch1/ssrf/positive/express.ts",
+        "line": 8,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Untrusted content reaches an HTML response through a transformation whose context-specific safety is UNKNOWN."
+      },
+      {
+        "ruleId": "AS-SSRF-001",
+        "path": "fixtures/batch1/ssrf/unknown/custom-sanitizer.ts",
+        "line": 8,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "An unknown URL transformation precedes an HTTP sink; destination policy enforcement is UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "fixtures/batch2/csrf/unknown/custom-auth.ts",
+        "line": 12,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Authentication or ambient browser credential reliance is not proven for this state-changing Express route."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "fixtures/batch2/csrf/unknown/flask-custom-auth.py",
+        "line": 9,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Authentication or ambient browser credential reliance is not proven for this state-changing Python route."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "fixtures/batch2/csrf/unknown/same-site.ts",
+        "line": 20,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "SameSite cookie evidence exists, but request and deployment semantics are insufficient for universal CSRF proof."
+      },
+      {
+        "ruleId": "AS-REDIRECT-001",
+        "path": "fixtures/batch2/redirect/unknown/custom-policy.py",
+        "line": 8,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Python redirect destination policy semantics are UNKNOWN."
+      },
+      {
+        "ruleId": "AS-REDIRECT-001",
+        "path": "fixtures/batch2/redirect/unknown/custom-policy.ts",
+        "line": 7,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "An unknown destination transformation precedes a redirect sink; redirect policy sufficiency is UNKNOWN."
+      },
+      {
+        "ruleId": "AS-XSS-001",
+        "path": "fixtures/batch2/xss/unknown/custom-sanitizer.py",
+        "line": 8,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Python raw HTML rendering is reached through a transformation with UNKNOWN context-specific safety."
+      },
+      {
+        "ruleId": "AS-XSS-001",
+        "path": "fixtures/batch2/xss/unknown/custom-sanitizer.ts",
+        "line": 7,
+        "reasonCodes": [
+          "SANITIZER_UNKNOWN",
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Untrusted content reaches an HTML response through a transformation whose context-specific safety is UNKNOWN."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "fixtures/phase3/session-fixation/src/routes.ts",
+        "line": 5,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Authentication or ambient browser credential reliance is not proven for this state-changing Express route."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "fixtures/phase3/session-secure/src/routes.ts",
+        "line": 5,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Authentication or ambient browser credential reliance is not proven for this state-changing Express route."
+      },
+      {
+        "ruleId": "AS-CSRF-001",
+        "path": "fixtures/phase3/session-secure/src/routes.ts",
+        "line": 7,
+        "reasonCodes": [
+          "INSUFFICIENT_DATAFLOW_PROOF"
+        ],
+        "explanation": "Authentication or ambient browser credential reliance is not proven for this state-changing Express route."
+      }
+    ],
+    "limitations": [
+      "JavaScript/TypeScript propagation is bounded to direct assignments, aliases, object properties, templates, concatenation, resolved same-file calls, arguments, and returns.",
+      "Python propagation is bounded to parsed decorated routes and local assignments; cross-function and cross-file Python propagation is unsupported.",
+      "Unknown custom sanitizers and unresolved dynamic transformations produce UNKNOWN instead of an actionable finding.",
+      "No target code, package script, hook, framework CLI, test, build, or arbitrary interpreter was executed."
+    ]
+  },
+  "identityBounds": null,
+  "authorizationUnknown": 54,
+  "authenticationUnknown": 15,
+  "advisoryState": "NOT_CHECKED_OFFLINE",
+  "limitations": [
+    "Only explicit, evidence-backed supported patterns are evaluated; absence of findings is not a security guarantee.",
+    "Working-tree state was obtained with a five-second/one-MiB no-lock Git status probe; repository hooks/fsmonitor and submodule inspection were disabled.",
+    "Python analysis validates syntax but phase-one Python rules use exact configuration/call patterns rather than semantic name resolution.",
+    "No repository code, lifecycle script, hook, build, test, container, or network operation was executed.",
+    "Git history was not analyzed; use cydetix secrets . --history.",
+    "Dependency advisories were NOT_CHECKED_OFFLINE; this is not a zero-vulnerability result.",
+    "Generated code, runtime configuration, and dependency function reachability were not analyzed.",
+    "fixtures/batch1/incomplete/broken.ts: JavaScript/TypeScript parse failed: SyntaxError: Unexpected token (2:0)"
+  ]
+}

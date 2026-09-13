@@ -1,0 +1,6131 @@
+{
+  "$schema": "https://cyclonedx.org/schema/bom-1.7.schema.json",
+  "bomFormat": "CycloneDX",
+  "specVersion": "1.7",
+  "serialNumber": "urn:uuid:d5a8b698-805c-59d4-ad1d-bf6632119669",
+  "version": 1,
+  "metadata": {
+    "timestamp": "2026-09-13T08:04:22.205Z",
+    "tools": {
+      "components": [
+        {
+          "type": "application",
+          "bom-ref": "pkg:npm/cydetix@0.6.0-alpha.12",
+          "name": "cydetix",
+          "version": "0.6.0-alpha.12",
+          "purl": "pkg:npm/cydetix@0.6.0-alpha.12"
+        }
+      ]
+    },
+    "component": {
+      "type": "application",
+      "bom-ref": "pkg:npm/cydetix@0.6.0-alpha.12",
+      "name": "cydetix",
+      "version": "0.6.0-alpha.12",
+      "purl": "pkg:npm/cydetix@0.6.0-alpha.12"
+    }
+  },
+  "components": [
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40babel/code-frame@8.0.0",
+      "name": "@babel/code-frame",
+      "version": "8.0.0",
+      "purl": "pkg:npm/%40babel/code-frame@8.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40babel/generator@8.0.0",
+      "name": "@babel/generator",
+      "version": "8.0.0",
+      "purl": "pkg:npm/%40babel/generator@8.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40babel/helper-globals@8.0.0",
+      "name": "@babel/helper-globals",
+      "version": "8.0.0",
+      "purl": "pkg:npm/%40babel/helper-globals@8.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40babel/helper-string-parser@7.29.7",
+      "name": "@babel/helper-string-parser",
+      "version": "7.29.7",
+      "purl": "pkg:npm/%40babel/helper-string-parser@7.29.7",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40babel/helper-string-parser@8.0.0",
+      "name": "@babel/helper-string-parser",
+      "version": "8.0.0",
+      "purl": "pkg:npm/%40babel/helper-string-parser@8.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40babel/helper-validator-identifier@7.29.7",
+      "name": "@babel/helper-validator-identifier",
+      "version": "7.29.7",
+      "purl": "pkg:npm/%40babel/helper-validator-identifier@7.29.7",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40babel/helper-validator-identifier@8.0.4",
+      "name": "@babel/helper-validator-identifier",
+      "version": "8.0.4",
+      "purl": "pkg:npm/%40babel/helper-validator-identifier@8.0.4",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40babel/parser@8.0.4",
+      "name": "@babel/parser",
+      "version": "8.0.4",
+      "purl": "pkg:npm/%40babel/parser@8.0.4",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "direct"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40babel/template@8.0.0",
+      "name": "@babel/template",
+      "version": "8.0.0",
+      "purl": "pkg:npm/%40babel/template@8.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40babel/traverse@8.0.4",
+      "name": "@babel/traverse",
+      "version": "8.0.4",
+      "purl": "pkg:npm/%40babel/traverse@8.0.4",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "direct"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40babel/types@7.29.8",
+      "name": "@babel/types",
+      "version": "7.29.8",
+      "purl": "pkg:npm/%40babel/types@7.29.8",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40babel/types@8.0.4",
+      "name": "@babel/types",
+      "version": "8.0.4",
+      "purl": "pkg:npm/%40babel/types@8.0.4",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "direct"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/aix-ppc64@0.28.2",
+      "name": "@esbuild/aix-ppc64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/aix-ppc64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/android-arm@0.28.2",
+      "name": "@esbuild/android-arm",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/android-arm@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/android-arm64@0.28.2",
+      "name": "@esbuild/android-arm64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/android-arm64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/android-x64@0.28.2",
+      "name": "@esbuild/android-x64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/android-x64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/darwin-arm64@0.28.2",
+      "name": "@esbuild/darwin-arm64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/darwin-arm64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/darwin-x64@0.28.2",
+      "name": "@esbuild/darwin-x64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/darwin-x64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/freebsd-arm64@0.28.2",
+      "name": "@esbuild/freebsd-arm64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/freebsd-arm64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/freebsd-x64@0.28.2",
+      "name": "@esbuild/freebsd-x64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/freebsd-x64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/linux-arm@0.28.2",
+      "name": "@esbuild/linux-arm",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/linux-arm@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/linux-arm64@0.28.2",
+      "name": "@esbuild/linux-arm64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/linux-arm64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/linux-ia32@0.28.2",
+      "name": "@esbuild/linux-ia32",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/linux-ia32@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/linux-loong64@0.28.2",
+      "name": "@esbuild/linux-loong64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/linux-loong64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/linux-mips64el@0.28.2",
+      "name": "@esbuild/linux-mips64el",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/linux-mips64el@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/linux-ppc64@0.28.2",
+      "name": "@esbuild/linux-ppc64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/linux-ppc64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/linux-riscv64@0.28.2",
+      "name": "@esbuild/linux-riscv64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/linux-riscv64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/linux-s390x@0.28.2",
+      "name": "@esbuild/linux-s390x",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/linux-s390x@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/linux-x64@0.28.2",
+      "name": "@esbuild/linux-x64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/linux-x64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/netbsd-arm64@0.28.2",
+      "name": "@esbuild/netbsd-arm64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/netbsd-arm64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/netbsd-x64@0.28.2",
+      "name": "@esbuild/netbsd-x64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/netbsd-x64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/openbsd-arm64@0.28.2",
+      "name": "@esbuild/openbsd-arm64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/openbsd-arm64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/openbsd-x64@0.28.2",
+      "name": "@esbuild/openbsd-x64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/openbsd-x64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/openharmony-arm64@0.28.2",
+      "name": "@esbuild/openharmony-arm64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/openharmony-arm64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/sunos-x64@0.28.2",
+      "name": "@esbuild/sunos-x64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/sunos-x64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/win32-arm64@0.28.2",
+      "name": "@esbuild/win32-arm64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/win32-arm64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/win32-ia32@0.28.2",
+      "name": "@esbuild/win32-ia32",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/win32-ia32@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40esbuild/win32-x64@0.28.2",
+      "name": "@esbuild/win32-x64",
+      "version": "0.28.2",
+      "purl": "pkg:npm/%40esbuild/win32-x64@0.28.2",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40eslint-community/eslint-utils@4.10.1",
+      "name": "@eslint-community/eslint-utils",
+      "version": "4.10.1",
+      "purl": "pkg:npm/%40eslint-community/eslint-utils@4.10.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40eslint-community/regexpp@4.12.2",
+      "name": "@eslint-community/regexpp",
+      "version": "4.12.2",
+      "purl": "pkg:npm/%40eslint-community/regexpp@4.12.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40eslint/config-array@0.23.5",
+      "name": "@eslint/config-array",
+      "version": "0.23.5",
+      "purl": "pkg:npm/%40eslint/config-array@0.23.5",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40eslint/config-helpers@0.7.0",
+      "name": "@eslint/config-helpers",
+      "version": "0.7.0",
+      "purl": "pkg:npm/%40eslint/config-helpers@0.7.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40eslint/core@1.2.1",
+      "name": "@eslint/core",
+      "version": "1.2.1",
+      "purl": "pkg:npm/%40eslint/core@1.2.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40eslint/js@10.0.1",
+      "name": "@eslint/js",
+      "version": "10.0.1",
+      "purl": "pkg:npm/%40eslint/js@10.0.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "dev"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40eslint/object-schema@3.0.5",
+      "name": "@eslint/object-schema",
+      "version": "3.0.5",
+      "purl": "pkg:npm/%40eslint/object-schema@3.0.5",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40eslint/plugin-kit@0.7.2",
+      "name": "@eslint/plugin-kit",
+      "version": "0.7.2",
+      "purl": "pkg:npm/%40eslint/plugin-kit@0.7.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40humanfs/core@0.19.2",
+      "name": "@humanfs/core",
+      "version": "0.19.2",
+      "purl": "pkg:npm/%40humanfs/core@0.19.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40humanfs/node@0.16.8",
+      "name": "@humanfs/node",
+      "version": "0.16.8",
+      "purl": "pkg:npm/%40humanfs/node@0.16.8",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40humanfs/types@0.15.0",
+      "name": "@humanfs/types",
+      "version": "0.15.0",
+      "purl": "pkg:npm/%40humanfs/types@0.15.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40humanwhocodes/module-importer@1.0.1",
+      "name": "@humanwhocodes/module-importer",
+      "version": "1.0.1",
+      "purl": "pkg:npm/%40humanwhocodes/module-importer@1.0.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40humanwhocodes/retry@0.4.3",
+      "name": "@humanwhocodes/retry",
+      "version": "0.4.3",
+      "purl": "pkg:npm/%40humanwhocodes/retry@0.4.3",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40jridgewell/gen-mapping@0.3.13",
+      "name": "@jridgewell/gen-mapping",
+      "version": "0.3.13",
+      "purl": "pkg:npm/%40jridgewell/gen-mapping@0.3.13",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40jridgewell/resolve-uri@3.1.2",
+      "name": "@jridgewell/resolve-uri",
+      "version": "3.1.2",
+      "purl": "pkg:npm/%40jridgewell/resolve-uri@3.1.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40jridgewell/sourcemap-codec@1.6.0",
+      "name": "@jridgewell/sourcemap-codec",
+      "version": "1.6.0",
+      "purl": "pkg:npm/%40jridgewell/sourcemap-codec@1.6.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40jridgewell/trace-mapping@0.3.31",
+      "name": "@jridgewell/trace-mapping",
+      "version": "0.3.31",
+      "purl": "pkg:npm/%40jridgewell/trace-mapping@0.3.31",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40lezer/common@1.5.2",
+      "name": "@lezer/common",
+      "version": "1.5.2",
+      "purl": "pkg:npm/%40lezer/common@1.5.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40lezer/highlight@1.2.3",
+      "name": "@lezer/highlight",
+      "version": "1.2.3",
+      "purl": "pkg:npm/%40lezer/highlight@1.2.3",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40lezer/lr@1.4.10",
+      "name": "@lezer/lr",
+      "version": "1.4.10",
+      "purl": "pkg:npm/%40lezer/lr@1.4.10",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40lezer/python@1.1.19",
+      "name": "@lezer/python",
+      "version": "1.1.19",
+      "purl": "pkg:npm/%40lezer/python@1.1.19",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "direct"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40microsoft/sarif-multitool-darwin@5.7.0",
+      "name": "@microsoft/sarif-multitool-darwin",
+      "version": "5.7.0",
+      "purl": "pkg:npm/%40microsoft/sarif-multitool-darwin@5.7.0",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40microsoft/sarif-multitool-linux@5.7.0",
+      "name": "@microsoft/sarif-multitool-linux",
+      "version": "5.7.0",
+      "purl": "pkg:npm/%40microsoft/sarif-multitool-linux@5.7.0",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40microsoft/sarif-multitool-win32@5.7.0",
+      "name": "@microsoft/sarif-multitool-win32",
+      "version": "5.7.0",
+      "purl": "pkg:npm/%40microsoft/sarif-multitool-win32@5.7.0",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40microsoft/sarif-multitool@5.7.0",
+      "name": "@microsoft/sarif-multitool",
+      "version": "5.7.0",
+      "purl": "pkg:npm/%40microsoft/sarif-multitool@5.7.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "dev"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40oxc-project/types@0.147.0",
+      "name": "@oxc-project/types",
+      "version": "0.147.0",
+      "purl": "pkg:npm/%40oxc-project/types@0.147.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-android-arm-eabi@1.2.6",
+      "name": "@rolldown/binding-android-arm-eabi",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-android-arm-eabi@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-android-arm64@1.2.6",
+      "name": "@rolldown/binding-android-arm64",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-android-arm64@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-darwin-arm64@1.2.6",
+      "name": "@rolldown/binding-darwin-arm64",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-darwin-arm64@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-darwin-x64@1.2.6",
+      "name": "@rolldown/binding-darwin-x64",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-darwin-x64@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-freebsd-x64@1.2.6",
+      "name": "@rolldown/binding-freebsd-x64",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-freebsd-x64@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-linux-arm-gnueabihf@1.2.6",
+      "name": "@rolldown/binding-linux-arm-gnueabihf",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-linux-arm-gnueabihf@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-linux-arm64-gnu@1.2.6",
+      "name": "@rolldown/binding-linux-arm64-gnu",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-linux-arm64-gnu@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-linux-arm64-musl@1.2.6",
+      "name": "@rolldown/binding-linux-arm64-musl",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-linux-arm64-musl@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-linux-ppc64-gnu@1.2.6",
+      "name": "@rolldown/binding-linux-ppc64-gnu",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-linux-ppc64-gnu@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-linux-s390x-gnu@1.2.6",
+      "name": "@rolldown/binding-linux-s390x-gnu",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-linux-s390x-gnu@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-linux-x64-gnu@1.2.6",
+      "name": "@rolldown/binding-linux-x64-gnu",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-linux-x64-gnu@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-linux-x64-musl@1.2.6",
+      "name": "@rolldown/binding-linux-x64-musl",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-linux-x64-musl@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-openharmony-arm64@1.2.6",
+      "name": "@rolldown/binding-openharmony-arm64",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-openharmony-arm64@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-win32-arm64-msvc@1.2.6",
+      "name": "@rolldown/binding-win32-arm64-msvc",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-win32-arm64-msvc@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/binding-win32-x64-msvc@1.2.6",
+      "name": "@rolldown/binding-win32-x64-msvc",
+      "version": "1.2.6",
+      "purl": "pkg:npm/%40rolldown/binding-win32-x64-msvc@1.2.6",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40rolldown/pluginutils@1.0.1",
+      "name": "@rolldown/pluginutils",
+      "version": "1.0.1",
+      "purl": "pkg:npm/%40rolldown/pluginutils@1.0.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40standard-schema/spec@1.1.0",
+      "name": "@standard-schema/spec",
+      "version": "1.1.0",
+      "purl": "pkg:npm/%40standard-schema/spec@1.1.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40types/babel__traverse@7.28.0",
+      "name": "@types/babel__traverse",
+      "version": "7.28.0",
+      "purl": "pkg:npm/%40types/babel__traverse@7.28.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "dev"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40types/chai@5.2.3",
+      "name": "@types/chai",
+      "version": "5.2.3",
+      "purl": "pkg:npm/%40types/chai@5.2.3",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40types/deep-eql@4.0.2",
+      "name": "@types/deep-eql",
+      "version": "4.0.2",
+      "purl": "pkg:npm/%40types/deep-eql@4.0.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40types/esrecurse@4.3.1",
+      "name": "@types/esrecurse",
+      "version": "4.3.1",
+      "purl": "pkg:npm/%40types/esrecurse@4.3.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40types/estree@1.0.9",
+      "name": "@types/estree",
+      "version": "1.0.9",
+      "purl": "pkg:npm/%40types/estree@1.0.9",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40types/jsesc@2.5.1",
+      "name": "@types/jsesc",
+      "version": "2.5.1",
+      "purl": "pkg:npm/%40types/jsesc@2.5.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40types/json-schema@7.0.15",
+      "name": "@types/json-schema",
+      "version": "7.0.15",
+      "purl": "pkg:npm/%40types/json-schema@7.0.15",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40types/node@26.4.0",
+      "name": "@types/node",
+      "version": "26.4.0",
+      "purl": "pkg:npm/%40types/node@26.4.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "dev"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40typescript-eslint/eslint-plugin@8.68.0",
+      "name": "@typescript-eslint/eslint-plugin",
+      "version": "8.68.0",
+      "purl": "pkg:npm/%40typescript-eslint/eslint-plugin@8.68.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40typescript-eslint/parser@8.68.0",
+      "name": "@typescript-eslint/parser",
+      "version": "8.68.0",
+      "purl": "pkg:npm/%40typescript-eslint/parser@8.68.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40typescript-eslint/project-service@8.68.0",
+      "name": "@typescript-eslint/project-service",
+      "version": "8.68.0",
+      "purl": "pkg:npm/%40typescript-eslint/project-service@8.68.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40typescript-eslint/scope-manager@8.68.0",
+      "name": "@typescript-eslint/scope-manager",
+      "version": "8.68.0",
+      "purl": "pkg:npm/%40typescript-eslint/scope-manager@8.68.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40typescript-eslint/tsconfig-utils@8.68.0",
+      "name": "@typescript-eslint/tsconfig-utils",
+      "version": "8.68.0",
+      "purl": "pkg:npm/%40typescript-eslint/tsconfig-utils@8.68.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40typescript-eslint/type-utils@8.68.0",
+      "name": "@typescript-eslint/type-utils",
+      "version": "8.68.0",
+      "purl": "pkg:npm/%40typescript-eslint/type-utils@8.68.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40typescript-eslint/types@8.68.0",
+      "name": "@typescript-eslint/types",
+      "version": "8.68.0",
+      "purl": "pkg:npm/%40typescript-eslint/types@8.68.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40typescript-eslint/typescript-estree@8.68.0",
+      "name": "@typescript-eslint/typescript-estree",
+      "version": "8.68.0",
+      "purl": "pkg:npm/%40typescript-eslint/typescript-estree@8.68.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40typescript-eslint/utils@8.68.0",
+      "name": "@typescript-eslint/utils",
+      "version": "8.68.0",
+      "purl": "pkg:npm/%40typescript-eslint/utils@8.68.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40typescript-eslint/visitor-keys@8.68.0",
+      "name": "@typescript-eslint/visitor-keys",
+      "version": "8.68.0",
+      "purl": "pkg:npm/%40typescript-eslint/visitor-keys@8.68.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40vitest/expect@4.1.11",
+      "name": "@vitest/expect",
+      "version": "4.1.11",
+      "purl": "pkg:npm/%40vitest/expect@4.1.11",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40vitest/mocker@4.1.11",
+      "name": "@vitest/mocker",
+      "version": "4.1.11",
+      "purl": "pkg:npm/%40vitest/mocker@4.1.11",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40vitest/pretty-format@4.1.11",
+      "name": "@vitest/pretty-format",
+      "version": "4.1.11",
+      "purl": "pkg:npm/%40vitest/pretty-format@4.1.11",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40vitest/runner@4.1.11",
+      "name": "@vitest/runner",
+      "version": "4.1.11",
+      "purl": "pkg:npm/%40vitest/runner@4.1.11",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40vitest/snapshot@4.1.11",
+      "name": "@vitest/snapshot",
+      "version": "4.1.11",
+      "purl": "pkg:npm/%40vitest/snapshot@4.1.11",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40vitest/spy@4.1.11",
+      "name": "@vitest/spy",
+      "version": "4.1.11",
+      "purl": "pkg:npm/%40vitest/spy@4.1.11",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/%40vitest/utils@4.1.11",
+      "name": "@vitest/utils",
+      "version": "4.1.11",
+      "purl": "pkg:npm/%40vitest/utils@4.1.11",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/acorn-jsx@5.3.2",
+      "name": "acorn-jsx",
+      "version": "5.3.2",
+      "purl": "pkg:npm/acorn-jsx@5.3.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/acorn@8.18.0",
+      "name": "acorn",
+      "version": "8.18.0",
+      "purl": "pkg:npm/acorn@8.18.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/ajv@6.15.0",
+      "name": "ajv",
+      "version": "6.15.0",
+      "purl": "pkg:npm/ajv@6.15.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/assertion-error@2.0.1",
+      "name": "assertion-error",
+      "version": "2.0.1",
+      "purl": "pkg:npm/assertion-error@2.0.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/balanced-match@4.0.4",
+      "name": "balanced-match",
+      "version": "4.0.4",
+      "purl": "pkg:npm/balanced-match@4.0.4",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/brace-expansion@5.0.9",
+      "name": "brace-expansion",
+      "version": "5.0.9",
+      "purl": "pkg:npm/brace-expansion@5.0.9",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/chai@6.2.2",
+      "name": "chai",
+      "version": "6.2.2",
+      "purl": "pkg:npm/chai@6.2.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/commander@15.0.0",
+      "name": "commander",
+      "version": "15.0.0",
+      "purl": "pkg:npm/commander@15.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "direct"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/convert-source-map@2.0.0",
+      "name": "convert-source-map",
+      "version": "2.0.0",
+      "purl": "pkg:npm/convert-source-map@2.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/cross-spawn@7.0.6",
+      "name": "cross-spawn",
+      "version": "7.0.6",
+      "purl": "pkg:npm/cross-spawn@7.0.6",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/debug@4.4.3",
+      "name": "debug",
+      "version": "4.4.3",
+      "purl": "pkg:npm/debug@4.4.3",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/deep-is@0.1.4",
+      "name": "deep-is",
+      "version": "0.1.4",
+      "purl": "pkg:npm/deep-is@0.1.4",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/detect-libc@2.1.2",
+      "name": "detect-libc",
+      "version": "2.1.2",
+      "purl": "pkg:npm/detect-libc@2.1.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/es-module-lexer@2.3.2",
+      "name": "es-module-lexer",
+      "version": "2.3.2",
+      "purl": "pkg:npm/es-module-lexer@2.3.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/esbuild@0.28.2",
+      "name": "esbuild",
+      "version": "0.28.2",
+      "purl": "pkg:npm/esbuild@0.28.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/escape-string-regexp@4.0.0",
+      "name": "escape-string-regexp",
+      "version": "4.0.0",
+      "purl": "pkg:npm/escape-string-regexp@4.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/eslint-scope@9.1.2",
+      "name": "eslint-scope",
+      "version": "9.1.2",
+      "purl": "pkg:npm/eslint-scope@9.1.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/eslint-visitor-keys@3.4.3",
+      "name": "eslint-visitor-keys",
+      "version": "3.4.3",
+      "purl": "pkg:npm/eslint-visitor-keys@3.4.3",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/eslint-visitor-keys@5.0.1",
+      "name": "eslint-visitor-keys",
+      "version": "5.0.1",
+      "purl": "pkg:npm/eslint-visitor-keys@5.0.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/eslint@10.9.1",
+      "name": "eslint",
+      "version": "10.9.1",
+      "purl": "pkg:npm/eslint@10.9.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "dev"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/espree@11.2.0",
+      "name": "espree",
+      "version": "11.2.0",
+      "purl": "pkg:npm/espree@11.2.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/esquery@1.7.0",
+      "name": "esquery",
+      "version": "1.7.0",
+      "purl": "pkg:npm/esquery@1.7.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/esrecurse@4.3.0",
+      "name": "esrecurse",
+      "version": "4.3.0",
+      "purl": "pkg:npm/esrecurse@4.3.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/estraverse@5.3.0",
+      "name": "estraverse",
+      "version": "5.3.0",
+      "purl": "pkg:npm/estraverse@5.3.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/estree-walker@3.0.3",
+      "name": "estree-walker",
+      "version": "3.0.3",
+      "purl": "pkg:npm/estree-walker@3.0.3",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/esutils@2.0.3",
+      "name": "esutils",
+      "version": "2.0.3",
+      "purl": "pkg:npm/esutils@2.0.3",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/expect-type@1.4.0",
+      "name": "expect-type",
+      "version": "1.4.0",
+      "purl": "pkg:npm/expect-type@1.4.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/fast-deep-equal@3.1.3",
+      "name": "fast-deep-equal",
+      "version": "3.1.3",
+      "purl": "pkg:npm/fast-deep-equal@3.1.3",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/fast-json-stable-stringify@2.1.0",
+      "name": "fast-json-stable-stringify",
+      "version": "2.1.0",
+      "purl": "pkg:npm/fast-json-stable-stringify@2.1.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/fast-levenshtein@2.0.6",
+      "name": "fast-levenshtein",
+      "version": "2.0.6",
+      "purl": "pkg:npm/fast-levenshtein@2.0.6",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/fdir@6.5.0",
+      "name": "fdir",
+      "version": "6.5.0",
+      "purl": "pkg:npm/fdir@6.5.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/file-entry-cache@8.0.0",
+      "name": "file-entry-cache",
+      "version": "8.0.0",
+      "purl": "pkg:npm/file-entry-cache@8.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/find-up@5.0.0",
+      "name": "find-up",
+      "version": "5.0.0",
+      "purl": "pkg:npm/find-up@5.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/flat-cache@4.0.1",
+      "name": "flat-cache",
+      "version": "4.0.1",
+      "purl": "pkg:npm/flat-cache@4.0.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/flatted@3.4.4",
+      "name": "flatted",
+      "version": "3.4.4",
+      "purl": "pkg:npm/flatted@3.4.4",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/fsevents@2.3.3",
+      "name": "fsevents",
+      "version": "2.3.3",
+      "purl": "pkg:npm/fsevents@2.3.3",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/glob-parent@6.0.2",
+      "name": "glob-parent",
+      "version": "6.0.2",
+      "purl": "pkg:npm/glob-parent@6.0.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/ignore@5.3.2",
+      "name": "ignore",
+      "version": "5.3.2",
+      "purl": "pkg:npm/ignore@5.3.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/ignore@7.0.7",
+      "name": "ignore",
+      "version": "7.0.7",
+      "purl": "pkg:npm/ignore@7.0.7",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/imurmurhash@0.1.4",
+      "name": "imurmurhash",
+      "version": "0.1.4",
+      "purl": "pkg:npm/imurmurhash@0.1.4",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/is-extglob@2.1.1",
+      "name": "is-extglob",
+      "version": "2.1.1",
+      "purl": "pkg:npm/is-extglob@2.1.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/is-glob@4.0.3",
+      "name": "is-glob",
+      "version": "4.0.3",
+      "purl": "pkg:npm/is-glob@4.0.3",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/isexe@2.0.0",
+      "name": "isexe",
+      "version": "2.0.0",
+      "purl": "pkg:npm/isexe@2.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/js-tokens@10.0.0",
+      "name": "js-tokens",
+      "version": "10.0.0",
+      "purl": "pkg:npm/js-tokens@10.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/jsesc@3.1.0",
+      "name": "jsesc",
+      "version": "3.1.0",
+      "purl": "pkg:npm/jsesc@3.1.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/json-buffer@3.0.1",
+      "name": "json-buffer",
+      "version": "3.0.1",
+      "purl": "pkg:npm/json-buffer@3.0.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/json-schema-traverse@0.4.1",
+      "name": "json-schema-traverse",
+      "version": "0.4.1",
+      "purl": "pkg:npm/json-schema-traverse@0.4.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/json-stable-stringify-without-jsonify@1.0.1",
+      "name": "json-stable-stringify-without-jsonify",
+      "version": "1.0.1",
+      "purl": "pkg:npm/json-stable-stringify-without-jsonify@1.0.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/keyv@4.5.4",
+      "name": "keyv",
+      "version": "4.5.4",
+      "purl": "pkg:npm/keyv@4.5.4",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/levn@0.4.1",
+      "name": "levn",
+      "version": "0.4.1",
+      "purl": "pkg:npm/levn@0.4.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/lightningcss-android-arm64@1.33.0",
+      "name": "lightningcss-android-arm64",
+      "version": "1.33.0",
+      "purl": "pkg:npm/lightningcss-android-arm64@1.33.0",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/lightningcss-darwin-arm64@1.33.0",
+      "name": "lightningcss-darwin-arm64",
+      "version": "1.33.0",
+      "purl": "pkg:npm/lightningcss-darwin-arm64@1.33.0",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/lightningcss-darwin-x64@1.33.0",
+      "name": "lightningcss-darwin-x64",
+      "version": "1.33.0",
+      "purl": "pkg:npm/lightningcss-darwin-x64@1.33.0",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/lightningcss-freebsd-x64@1.33.0",
+      "name": "lightningcss-freebsd-x64",
+      "version": "1.33.0",
+      "purl": "pkg:npm/lightningcss-freebsd-x64@1.33.0",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/lightningcss-linux-arm-gnueabihf@1.33.0",
+      "name": "lightningcss-linux-arm-gnueabihf",
+      "version": "1.33.0",
+      "purl": "pkg:npm/lightningcss-linux-arm-gnueabihf@1.33.0",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/lightningcss-linux-arm64-gnu@1.33.0",
+      "name": "lightningcss-linux-arm64-gnu",
+      "version": "1.33.0",
+      "purl": "pkg:npm/lightningcss-linux-arm64-gnu@1.33.0",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/lightningcss-linux-arm64-musl@1.33.0",
+      "name": "lightningcss-linux-arm64-musl",
+      "version": "1.33.0",
+      "purl": "pkg:npm/lightningcss-linux-arm64-musl@1.33.0",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/lightningcss-linux-x64-gnu@1.33.0",
+      "name": "lightningcss-linux-x64-gnu",
+      "version": "1.33.0",
+      "purl": "pkg:npm/lightningcss-linux-x64-gnu@1.33.0",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/lightningcss-linux-x64-musl@1.33.0",
+      "name": "lightningcss-linux-x64-musl",
+      "version": "1.33.0",
+      "purl": "pkg:npm/lightningcss-linux-x64-musl@1.33.0",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/lightningcss-win32-arm64-msvc@1.33.0",
+      "name": "lightningcss-win32-arm64-msvc",
+      "version": "1.33.0",
+      "purl": "pkg:npm/lightningcss-win32-arm64-msvc@1.33.0",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/lightningcss-win32-x64-msvc@1.33.0",
+      "name": "lightningcss-win32-x64-msvc",
+      "version": "1.33.0",
+      "purl": "pkg:npm/lightningcss-win32-x64-msvc@1.33.0",
+      "scope": "optional",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/lightningcss@1.33.0",
+      "name": "lightningcss",
+      "version": "1.33.0",
+      "purl": "pkg:npm/lightningcss@1.33.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/locate-path@6.0.0",
+      "name": "locate-path",
+      "version": "6.0.0",
+      "purl": "pkg:npm/locate-path@6.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/magic-string@0.30.21",
+      "name": "magic-string",
+      "version": "0.30.21",
+      "purl": "pkg:npm/magic-string@0.30.21",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/minimatch@10.2.6",
+      "name": "minimatch",
+      "version": "10.2.6",
+      "purl": "pkg:npm/minimatch@10.2.6",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/ms@2.1.3",
+      "name": "ms",
+      "version": "2.1.3",
+      "purl": "pkg:npm/ms@2.1.3",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/nanoid@3.3.18",
+      "name": "nanoid",
+      "version": "3.3.18",
+      "purl": "pkg:npm/nanoid@3.3.18",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/natural-compare@1.4.0",
+      "name": "natural-compare",
+      "version": "1.4.0",
+      "purl": "pkg:npm/natural-compare@1.4.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/obug@2.1.4",
+      "name": "obug",
+      "version": "2.1.4",
+      "purl": "pkg:npm/obug@2.1.4",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/optionator@0.9.4",
+      "name": "optionator",
+      "version": "0.9.4",
+      "purl": "pkg:npm/optionator@0.9.4",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/p-limit@3.1.0",
+      "name": "p-limit",
+      "version": "3.1.0",
+      "purl": "pkg:npm/p-limit@3.1.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/p-locate@5.0.0",
+      "name": "p-locate",
+      "version": "5.0.0",
+      "purl": "pkg:npm/p-locate@5.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/path-exists@4.0.0",
+      "name": "path-exists",
+      "version": "4.0.0",
+      "purl": "pkg:npm/path-exists@4.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/path-key@3.1.1",
+      "name": "path-key",
+      "version": "3.1.1",
+      "purl": "pkg:npm/path-key@3.1.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/pathe@2.0.3",
+      "name": "pathe",
+      "version": "2.0.3",
+      "purl": "pkg:npm/pathe@2.0.3",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/picocolors@1.1.1",
+      "name": "picocolors",
+      "version": "1.1.1",
+      "purl": "pkg:npm/picocolors@1.1.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/picomatch@4.0.7",
+      "name": "picomatch",
+      "version": "4.0.7",
+      "purl": "pkg:npm/picomatch@4.0.7",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/postcss@8.5.26",
+      "name": "postcss",
+      "version": "8.5.26",
+      "purl": "pkg:npm/postcss@8.5.26",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/prelude-ls@1.2.1",
+      "name": "prelude-ls",
+      "version": "1.2.1",
+      "purl": "pkg:npm/prelude-ls@1.2.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/prettier@3.9.6",
+      "name": "prettier",
+      "version": "3.9.6",
+      "purl": "pkg:npm/prettier@3.9.6",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "dev"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/punycode@2.3.1",
+      "name": "punycode",
+      "version": "2.3.1",
+      "purl": "pkg:npm/punycode@2.3.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/rolldown@1.2.6",
+      "name": "rolldown",
+      "version": "1.2.6",
+      "purl": "pkg:npm/rolldown@1.2.6",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/semver@7.8.5",
+      "name": "semver",
+      "version": "7.8.5",
+      "purl": "pkg:npm/semver@7.8.5",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/shebang-command@2.0.0",
+      "name": "shebang-command",
+      "version": "2.0.0",
+      "purl": "pkg:npm/shebang-command@2.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/shebang-regex@3.0.0",
+      "name": "shebang-regex",
+      "version": "3.0.0",
+      "purl": "pkg:npm/shebang-regex@3.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/siginfo@2.0.0",
+      "name": "siginfo",
+      "version": "2.0.0",
+      "purl": "pkg:npm/siginfo@2.0.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/source-map-js@1.2.1",
+      "name": "source-map-js",
+      "version": "1.2.1",
+      "purl": "pkg:npm/source-map-js@1.2.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/stackback@0.0.2",
+      "name": "stackback",
+      "version": "0.0.2",
+      "purl": "pkg:npm/stackback@0.0.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/std-env@4.2.0",
+      "name": "std-env",
+      "version": "4.2.0",
+      "purl": "pkg:npm/std-env@4.2.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/tinybench@2.9.0",
+      "name": "tinybench",
+      "version": "2.9.0",
+      "purl": "pkg:npm/tinybench@2.9.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/tinyexec@1.3.0",
+      "name": "tinyexec",
+      "version": "1.3.0",
+      "purl": "pkg:npm/tinyexec@1.3.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/tinyglobby@0.2.17",
+      "name": "tinyglobby",
+      "version": "0.2.17",
+      "purl": "pkg:npm/tinyglobby@0.2.17",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/tinyrainbow@3.1.1",
+      "name": "tinyrainbow",
+      "version": "3.1.1",
+      "purl": "pkg:npm/tinyrainbow@3.1.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/ts-api-utils@2.5.0",
+      "name": "ts-api-utils",
+      "version": "2.5.0",
+      "purl": "pkg:npm/ts-api-utils@2.5.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/tsx@4.23.13",
+      "name": "tsx",
+      "version": "4.23.13",
+      "purl": "pkg:npm/tsx@4.23.13",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "dev"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/type-check@0.4.0",
+      "name": "type-check",
+      "version": "0.4.0",
+      "purl": "pkg:npm/type-check@0.4.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/typescript-eslint@8.68.0",
+      "name": "typescript-eslint",
+      "version": "8.68.0",
+      "purl": "pkg:npm/typescript-eslint@8.68.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "dev"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/typescript@6.0.3",
+      "name": "typescript",
+      "version": "6.0.3",
+      "purl": "pkg:npm/typescript@6.0.3",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "dev"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/undici-types@8.3.0",
+      "name": "undici-types",
+      "version": "8.3.0",
+      "purl": "pkg:npm/undici-types@8.3.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/uri-js@4.4.1",
+      "name": "uri-js",
+      "version": "4.4.1",
+      "purl": "pkg:npm/uri-js@4.4.1",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/vite@8.2.2",
+      "name": "vite",
+      "version": "8.2.2",
+      "purl": "pkg:npm/vite@8.2.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/vitest@4.1.11",
+      "name": "vitest",
+      "version": "4.1.11",
+      "purl": "pkg:npm/vitest@4.1.11",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "dev"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/which@2.0.2",
+      "name": "which",
+      "version": "2.0.2",
+      "purl": "pkg:npm/which@2.0.2",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/why-is-node-running@2.3.0",
+      "name": "why-is-node-running",
+      "version": "2.3.0",
+      "purl": "pkg:npm/why-is-node-running@2.3.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/word-wrap@1.2.5",
+      "name": "word-wrap",
+      "version": "1.2.5",
+      "purl": "pkg:npm/word-wrap@1.2.5",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/yaml@2.9.0",
+      "name": "yaml",
+      "version": "2.9.0",
+      "purl": "pkg:npm/yaml@2.9.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "direct"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/yocto-queue@0.1.0",
+      "name": "yocto-queue",
+      "version": "0.1.0",
+      "purl": "pkg:npm/yocto-queue@0.1.0",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "transitive"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    },
+    {
+      "type": "library",
+      "bom-ref": "pkg:npm/zod@4.5.4",
+      "name": "zod",
+      "version": "4.5.4",
+      "purl": "pkg:npm/zod@4.5.4",
+      "scope": "required",
+      "properties": [
+        {
+          "name": "cydetix:dependency-kind",
+          "value": "direct"
+        },
+        {
+          "name": "cydetix:resolved",
+          "value": "true"
+        },
+        {
+          "name": "cydetix:source",
+          "value": "registry"
+        }
+      ]
+    }
+  ],
+  "dependencies": [
+    {
+      "ref": "pkg:npm/%40babel/code-frame@8.0.0",
+      "dependsOn": [
+        "pkg:npm/%40babel/helper-validator-identifier@8.0.4",
+        "pkg:npm/js-tokens@10.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40babel/generator@8.0.0",
+      "dependsOn": [
+        "pkg:npm/%40babel/parser@8.0.4",
+        "pkg:npm/%40babel/types@8.0.4",
+        "pkg:npm/%40jridgewell/gen-mapping@0.3.13",
+        "pkg:npm/%40jridgewell/trace-mapping@0.3.31",
+        "pkg:npm/%40types/jsesc@2.5.1",
+        "pkg:npm/jsesc@3.1.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40babel/helper-globals@8.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40babel/helper-string-parser@7.29.7",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40babel/helper-string-parser@8.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40babel/helper-validator-identifier@7.29.7",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40babel/helper-validator-identifier@8.0.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40babel/parser@8.0.4",
+      "dependsOn": [
+        "pkg:npm/%40babel/types@8.0.4"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40babel/template@8.0.0",
+      "dependsOn": [
+        "pkg:npm/%40babel/code-frame@8.0.0",
+        "pkg:npm/%40babel/parser@8.0.4",
+        "pkg:npm/%40babel/types@8.0.4"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40babel/traverse@8.0.4",
+      "dependsOn": [
+        "pkg:npm/%40babel/code-frame@8.0.0",
+        "pkg:npm/%40babel/generator@8.0.0",
+        "pkg:npm/%40babel/helper-globals@8.0.0",
+        "pkg:npm/%40babel/parser@8.0.4",
+        "pkg:npm/%40babel/template@8.0.0",
+        "pkg:npm/%40babel/types@8.0.4",
+        "pkg:npm/obug@2.1.4"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40babel/types@7.29.8",
+      "dependsOn": [
+        "pkg:npm/%40babel/helper-string-parser@7.29.7",
+        "pkg:npm/%40babel/helper-validator-identifier@7.29.7"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40babel/types@8.0.4",
+      "dependsOn": [
+        "pkg:npm/%40babel/helper-string-parser@8.0.0",
+        "pkg:npm/%40babel/helper-validator-identifier@8.0.4"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/aix-ppc64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/android-arm@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/android-arm64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/android-x64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/darwin-arm64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/darwin-x64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/freebsd-arm64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/freebsd-x64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/linux-arm@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/linux-arm64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/linux-ia32@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/linux-loong64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/linux-mips64el@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/linux-ppc64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/linux-riscv64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/linux-s390x@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/linux-x64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/netbsd-arm64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/netbsd-x64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/openbsd-arm64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/openbsd-x64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/openharmony-arm64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/sunos-x64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/win32-arm64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/win32-ia32@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40esbuild/win32-x64@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40eslint-community/eslint-utils@4.10.1",
+      "dependsOn": [
+        "pkg:npm/eslint-visitor-keys@3.4.3"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40eslint-community/regexpp@4.12.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40eslint/config-array@0.23.5",
+      "dependsOn": [
+        "pkg:npm/%40eslint/object-schema@3.0.5",
+        "pkg:npm/debug@4.4.3",
+        "pkg:npm/minimatch@10.2.6"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40eslint/config-helpers@0.7.0",
+      "dependsOn": [
+        "pkg:npm/%40eslint/core@1.2.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40eslint/core@1.2.1",
+      "dependsOn": [
+        "pkg:npm/%40types/json-schema@7.0.15"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40eslint/js@10.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40eslint/object-schema@3.0.5",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40eslint/plugin-kit@0.7.2",
+      "dependsOn": [
+        "pkg:npm/%40eslint/core@1.2.1",
+        "pkg:npm/levn@0.4.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40humanfs/core@0.19.2",
+      "dependsOn": [
+        "pkg:npm/%40humanfs/types@0.15.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40humanfs/node@0.16.8",
+      "dependsOn": [
+        "pkg:npm/%40humanfs/core@0.19.2",
+        "pkg:npm/%40humanfs/types@0.15.0",
+        "pkg:npm/%40humanwhocodes/retry@0.4.3"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40humanfs/types@0.15.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40humanwhocodes/module-importer@1.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40humanwhocodes/retry@0.4.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40jridgewell/gen-mapping@0.3.13",
+      "dependsOn": [
+        "pkg:npm/%40jridgewell/sourcemap-codec@1.6.0",
+        "pkg:npm/%40jridgewell/trace-mapping@0.3.31"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40jridgewell/resolve-uri@3.1.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40jridgewell/sourcemap-codec@1.6.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40jridgewell/trace-mapping@0.3.31",
+      "dependsOn": [
+        "pkg:npm/%40jridgewell/resolve-uri@3.1.2",
+        "pkg:npm/%40jridgewell/sourcemap-codec@1.6.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40lezer/common@1.5.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40lezer/highlight@1.2.3",
+      "dependsOn": [
+        "pkg:npm/%40lezer/common@1.5.2"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40lezer/lr@1.4.10",
+      "dependsOn": [
+        "pkg:npm/%40lezer/common@1.5.2"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40lezer/python@1.1.19",
+      "dependsOn": [
+        "pkg:npm/%40lezer/common@1.5.2",
+        "pkg:npm/%40lezer/highlight@1.2.3",
+        "pkg:npm/%40lezer/lr@1.4.10"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40microsoft/sarif-multitool-darwin@5.7.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40microsoft/sarif-multitool-linux@5.7.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40microsoft/sarif-multitool-win32@5.7.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40microsoft/sarif-multitool@5.7.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40oxc-project/types@0.147.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-android-arm-eabi@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-android-arm64@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-darwin-arm64@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-darwin-x64@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-freebsd-x64@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-linux-arm-gnueabihf@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-linux-arm64-gnu@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-linux-arm64-musl@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-linux-ppc64-gnu@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-linux-s390x-gnu@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-linux-x64-gnu@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-linux-x64-musl@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-openharmony-arm64@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-win32-arm64-msvc@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/binding-win32-x64-msvc@1.2.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40rolldown/pluginutils@1.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40standard-schema/spec@1.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40types/babel__traverse@7.28.0",
+      "dependsOn": [
+        "pkg:npm/%40babel/types@7.29.8"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40types/chai@5.2.3",
+      "dependsOn": [
+        "pkg:npm/%40types/deep-eql@4.0.2",
+        "pkg:npm/assertion-error@2.0.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40types/deep-eql@4.0.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40types/esrecurse@4.3.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40types/estree@1.0.9",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40types/jsesc@2.5.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40types/json-schema@7.0.15",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40types/node@26.4.0",
+      "dependsOn": [
+        "pkg:npm/undici-types@8.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40typescript-eslint/eslint-plugin@8.68.0",
+      "dependsOn": [
+        "pkg:npm/%40eslint-community/regexpp@4.12.2",
+        "pkg:npm/%40typescript-eslint/scope-manager@8.68.0",
+        "pkg:npm/%40typescript-eslint/type-utils@8.68.0",
+        "pkg:npm/%40typescript-eslint/utils@8.68.0",
+        "pkg:npm/%40typescript-eslint/visitor-keys@8.68.0",
+        "pkg:npm/ignore@7.0.7",
+        "pkg:npm/natural-compare@1.4.0",
+        "pkg:npm/ts-api-utils@2.5.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40typescript-eslint/parser@8.68.0",
+      "dependsOn": [
+        "pkg:npm/%40typescript-eslint/scope-manager@8.68.0",
+        "pkg:npm/%40typescript-eslint/types@8.68.0",
+        "pkg:npm/%40typescript-eslint/typescript-estree@8.68.0",
+        "pkg:npm/%40typescript-eslint/visitor-keys@8.68.0",
+        "pkg:npm/debug@4.4.3"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40typescript-eslint/project-service@8.68.0",
+      "dependsOn": [
+        "pkg:npm/%40typescript-eslint/tsconfig-utils@8.68.0",
+        "pkg:npm/%40typescript-eslint/types@8.68.0",
+        "pkg:npm/debug@4.4.3"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40typescript-eslint/scope-manager@8.68.0",
+      "dependsOn": [
+        "pkg:npm/%40typescript-eslint/types@8.68.0",
+        "pkg:npm/%40typescript-eslint/visitor-keys@8.68.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40typescript-eslint/tsconfig-utils@8.68.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40typescript-eslint/type-utils@8.68.0",
+      "dependsOn": [
+        "pkg:npm/%40typescript-eslint/types@8.68.0",
+        "pkg:npm/%40typescript-eslint/typescript-estree@8.68.0",
+        "pkg:npm/%40typescript-eslint/utils@8.68.0",
+        "pkg:npm/debug@4.4.3",
+        "pkg:npm/ts-api-utils@2.5.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40typescript-eslint/types@8.68.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40typescript-eslint/typescript-estree@8.68.0",
+      "dependsOn": [
+        "pkg:npm/%40typescript-eslint/project-service@8.68.0",
+        "pkg:npm/%40typescript-eslint/tsconfig-utils@8.68.0",
+        "pkg:npm/%40typescript-eslint/types@8.68.0",
+        "pkg:npm/%40typescript-eslint/visitor-keys@8.68.0",
+        "pkg:npm/debug@4.4.3",
+        "pkg:npm/minimatch@10.2.6",
+        "pkg:npm/semver@7.8.5",
+        "pkg:npm/tinyglobby@0.2.17",
+        "pkg:npm/ts-api-utils@2.5.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40typescript-eslint/utils@8.68.0",
+      "dependsOn": [
+        "pkg:npm/%40eslint-community/eslint-utils@4.10.1",
+        "pkg:npm/%40typescript-eslint/scope-manager@8.68.0",
+        "pkg:npm/%40typescript-eslint/types@8.68.0",
+        "pkg:npm/%40typescript-eslint/typescript-estree@8.68.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40typescript-eslint/visitor-keys@8.68.0",
+      "dependsOn": [
+        "pkg:npm/%40typescript-eslint/types@8.68.0",
+        "pkg:npm/eslint-visitor-keys@5.0.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40vitest/expect@4.1.11",
+      "dependsOn": [
+        "pkg:npm/%40standard-schema/spec@1.1.0",
+        "pkg:npm/%40types/chai@5.2.3",
+        "pkg:npm/%40vitest/spy@4.1.11",
+        "pkg:npm/%40vitest/utils@4.1.11",
+        "pkg:npm/chai@6.2.2",
+        "pkg:npm/tinyrainbow@3.1.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40vitest/mocker@4.1.11",
+      "dependsOn": [
+        "pkg:npm/%40vitest/spy@4.1.11",
+        "pkg:npm/estree-walker@3.0.3",
+        "pkg:npm/magic-string@0.30.21"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40vitest/pretty-format@4.1.11",
+      "dependsOn": [
+        "pkg:npm/tinyrainbow@3.1.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40vitest/runner@4.1.11",
+      "dependsOn": [
+        "pkg:npm/%40vitest/utils@4.1.11",
+        "pkg:npm/pathe@2.0.3"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40vitest/snapshot@4.1.11",
+      "dependsOn": [
+        "pkg:npm/%40vitest/pretty-format@4.1.11",
+        "pkg:npm/%40vitest/utils@4.1.11",
+        "pkg:npm/magic-string@0.30.21",
+        "pkg:npm/pathe@2.0.3"
+      ]
+    },
+    {
+      "ref": "pkg:npm/%40vitest/spy@4.1.11",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/%40vitest/utils@4.1.11",
+      "dependsOn": [
+        "pkg:npm/%40vitest/pretty-format@4.1.11",
+        "pkg:npm/convert-source-map@2.0.0",
+        "pkg:npm/tinyrainbow@3.1.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/acorn-jsx@5.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/acorn@8.18.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/ajv@6.15.0",
+      "dependsOn": [
+        "pkg:npm/fast-deep-equal@3.1.3",
+        "pkg:npm/fast-json-stable-stringify@2.1.0",
+        "pkg:npm/json-schema-traverse@0.4.1",
+        "pkg:npm/uri-js@4.4.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/assertion-error@2.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/balanced-match@4.0.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/brace-expansion@5.0.9",
+      "dependsOn": [
+        "pkg:npm/balanced-match@4.0.4"
+      ]
+    },
+    {
+      "ref": "pkg:npm/chai@6.2.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/commander@15.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/convert-source-map@2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/cross-spawn@7.0.6",
+      "dependsOn": [
+        "pkg:npm/path-key@3.1.1",
+        "pkg:npm/shebang-command@2.0.0",
+        "pkg:npm/which@2.0.2"
+      ]
+    },
+    {
+      "ref": "pkg:npm/cydetix@0.6.0-alpha.12",
+      "dependsOn": [
+        "pkg:npm/%40babel/parser@8.0.4",
+        "pkg:npm/%40babel/traverse@8.0.4",
+        "pkg:npm/%40babel/types@8.0.4",
+        "pkg:npm/%40eslint/js@10.0.1",
+        "pkg:npm/%40lezer/python@1.1.19",
+        "pkg:npm/%40microsoft/sarif-multitool@5.7.0",
+        "pkg:npm/%40types/babel__traverse@7.28.0",
+        "pkg:npm/%40types/node@26.4.0",
+        "pkg:npm/commander@15.0.0",
+        "pkg:npm/eslint@10.9.1",
+        "pkg:npm/prettier@3.9.6",
+        "pkg:npm/tsx@4.23.13",
+        "pkg:npm/typescript-eslint@8.68.0",
+        "pkg:npm/typescript@6.0.3",
+        "pkg:npm/vitest@4.1.11",
+        "pkg:npm/yaml@2.9.0",
+        "pkg:npm/zod@4.5.4"
+      ]
+    },
+    {
+      "ref": "pkg:npm/debug@4.4.3",
+      "dependsOn": [
+        "pkg:npm/ms@2.1.3"
+      ]
+    },
+    {
+      "ref": "pkg:npm/deep-is@0.1.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/detect-libc@2.1.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/es-module-lexer@2.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/esbuild@0.28.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/escape-string-regexp@4.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/eslint-scope@9.1.2",
+      "dependsOn": [
+        "pkg:npm/%40types/esrecurse@4.3.1",
+        "pkg:npm/%40types/estree@1.0.9",
+        "pkg:npm/esrecurse@4.3.0",
+        "pkg:npm/estraverse@5.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/eslint-visitor-keys@3.4.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/eslint-visitor-keys@5.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/eslint@10.9.1",
+      "dependsOn": [
+        "pkg:npm/%40eslint-community/eslint-utils@4.10.1",
+        "pkg:npm/%40eslint-community/regexpp@4.12.2",
+        "pkg:npm/%40eslint/config-array@0.23.5",
+        "pkg:npm/%40eslint/config-helpers@0.7.0",
+        "pkg:npm/%40eslint/core@1.2.1",
+        "pkg:npm/%40eslint/plugin-kit@0.7.2",
+        "pkg:npm/%40humanfs/node@0.16.8",
+        "pkg:npm/%40humanwhocodes/module-importer@1.0.1",
+        "pkg:npm/%40humanwhocodes/retry@0.4.3",
+        "pkg:npm/%40types/estree@1.0.9",
+        "pkg:npm/ajv@6.15.0",
+        "pkg:npm/cross-spawn@7.0.6",
+        "pkg:npm/debug@4.4.3",
+        "pkg:npm/escape-string-regexp@4.0.0",
+        "pkg:npm/eslint-scope@9.1.2",
+        "pkg:npm/eslint-visitor-keys@5.0.1",
+        "pkg:npm/espree@11.2.0",
+        "pkg:npm/esquery@1.7.0",
+        "pkg:npm/esutils@2.0.3",
+        "pkg:npm/fast-deep-equal@3.1.3",
+        "pkg:npm/file-entry-cache@8.0.0",
+        "pkg:npm/find-up@5.0.0",
+        "pkg:npm/glob-parent@6.0.2",
+        "pkg:npm/ignore@5.3.2",
+        "pkg:npm/imurmurhash@0.1.4",
+        "pkg:npm/is-glob@4.0.3",
+        "pkg:npm/json-stable-stringify-without-jsonify@1.0.1",
+        "pkg:npm/minimatch@10.2.6",
+        "pkg:npm/natural-compare@1.4.0",
+        "pkg:npm/optionator@0.9.4"
+      ]
+    },
+    {
+      "ref": "pkg:npm/espree@11.2.0",
+      "dependsOn": [
+        "pkg:npm/acorn-jsx@5.3.2",
+        "pkg:npm/acorn@8.18.0",
+        "pkg:npm/eslint-visitor-keys@5.0.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/esquery@1.7.0",
+      "dependsOn": [
+        "pkg:npm/estraverse@5.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/esrecurse@4.3.0",
+      "dependsOn": [
+        "pkg:npm/estraverse@5.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/estraverse@5.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/estree-walker@3.0.3",
+      "dependsOn": [
+        "pkg:npm/%40types/estree@1.0.9"
+      ]
+    },
+    {
+      "ref": "pkg:npm/esutils@2.0.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/expect-type@1.4.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/fast-deep-equal@3.1.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/fast-json-stable-stringify@2.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/fast-levenshtein@2.0.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/fdir@6.5.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/file-entry-cache@8.0.0",
+      "dependsOn": [
+        "pkg:npm/flat-cache@4.0.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/find-up@5.0.0",
+      "dependsOn": [
+        "pkg:npm/locate-path@6.0.0",
+        "pkg:npm/path-exists@4.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/flat-cache@4.0.1",
+      "dependsOn": [
+        "pkg:npm/flatted@3.4.4",
+        "pkg:npm/keyv@4.5.4"
+      ]
+    },
+    {
+      "ref": "pkg:npm/flatted@3.4.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/fsevents@2.3.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/glob-parent@6.0.2",
+      "dependsOn": [
+        "pkg:npm/is-glob@4.0.3"
+      ]
+    },
+    {
+      "ref": "pkg:npm/ignore@5.3.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/ignore@7.0.7",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/imurmurhash@0.1.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/is-extglob@2.1.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/is-glob@4.0.3",
+      "dependsOn": [
+        "pkg:npm/is-extglob@2.1.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/isexe@2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/js-tokens@10.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/jsesc@3.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/json-buffer@3.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/json-schema-traverse@0.4.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/json-stable-stringify-without-jsonify@1.0.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/keyv@4.5.4",
+      "dependsOn": [
+        "pkg:npm/json-buffer@3.0.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/levn@0.4.1",
+      "dependsOn": [
+        "pkg:npm/prelude-ls@1.2.1",
+        "pkg:npm/type-check@0.4.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/lightningcss-android-arm64@1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/lightningcss-darwin-arm64@1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/lightningcss-darwin-x64@1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/lightningcss-freebsd-x64@1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/lightningcss-linux-arm-gnueabihf@1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/lightningcss-linux-arm64-gnu@1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/lightningcss-linux-arm64-musl@1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/lightningcss-linux-x64-gnu@1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/lightningcss-linux-x64-musl@1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/lightningcss-win32-arm64-msvc@1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/lightningcss-win32-x64-msvc@1.33.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/lightningcss@1.33.0",
+      "dependsOn": [
+        "pkg:npm/detect-libc@2.1.2"
+      ]
+    },
+    {
+      "ref": "pkg:npm/locate-path@6.0.0",
+      "dependsOn": [
+        "pkg:npm/p-locate@5.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/magic-string@0.30.21",
+      "dependsOn": [
+        "pkg:npm/%40jridgewell/sourcemap-codec@1.6.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/minimatch@10.2.6",
+      "dependsOn": [
+        "pkg:npm/brace-expansion@5.0.9"
+      ]
+    },
+    {
+      "ref": "pkg:npm/ms@2.1.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/nanoid@3.3.18",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/natural-compare@1.4.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/obug@2.1.4",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/optionator@0.9.4",
+      "dependsOn": [
+        "pkg:npm/deep-is@0.1.4",
+        "pkg:npm/fast-levenshtein@2.0.6",
+        "pkg:npm/levn@0.4.1",
+        "pkg:npm/prelude-ls@1.2.1",
+        "pkg:npm/type-check@0.4.0",
+        "pkg:npm/word-wrap@1.2.5"
+      ]
+    },
+    {
+      "ref": "pkg:npm/p-limit@3.1.0",
+      "dependsOn": [
+        "pkg:npm/yocto-queue@0.1.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/p-locate@5.0.0",
+      "dependsOn": [
+        "pkg:npm/p-limit@3.1.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/path-exists@4.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/path-key@3.1.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/pathe@2.0.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/picocolors@1.1.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/picomatch@4.0.7",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/postcss@8.5.26",
+      "dependsOn": [
+        "pkg:npm/nanoid@3.3.18",
+        "pkg:npm/picocolors@1.1.1",
+        "pkg:npm/source-map-js@1.2.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/prelude-ls@1.2.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/prettier@3.9.6",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/punycode@2.3.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/rolldown@1.2.6",
+      "dependsOn": [
+        "pkg:npm/%40oxc-project/types@0.147.0",
+        "pkg:npm/%40rolldown/pluginutils@1.0.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/semver@7.8.5",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/shebang-command@2.0.0",
+      "dependsOn": [
+        "pkg:npm/shebang-regex@3.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/shebang-regex@3.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/siginfo@2.0.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/source-map-js@1.2.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/stackback@0.0.2",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/std-env@4.2.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/tinybench@2.9.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/tinyexec@1.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/tinyglobby@0.2.17",
+      "dependsOn": [
+        "pkg:npm/fdir@6.5.0",
+        "pkg:npm/picomatch@4.0.7"
+      ]
+    },
+    {
+      "ref": "pkg:npm/tinyrainbow@3.1.1",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/ts-api-utils@2.5.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/tsx@4.23.13",
+      "dependsOn": [
+        "pkg:npm/esbuild@0.28.2"
+      ]
+    },
+    {
+      "ref": "pkg:npm/type-check@0.4.0",
+      "dependsOn": [
+        "pkg:npm/prelude-ls@1.2.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/typescript-eslint@8.68.0",
+      "dependsOn": [
+        "pkg:npm/%40typescript-eslint/eslint-plugin@8.68.0",
+        "pkg:npm/%40typescript-eslint/parser@8.68.0",
+        "pkg:npm/%40typescript-eslint/typescript-estree@8.68.0",
+        "pkg:npm/%40typescript-eslint/utils@8.68.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/typescript@6.0.3",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/undici-types@8.3.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/uri-js@4.4.1",
+      "dependsOn": [
+        "pkg:npm/punycode@2.3.1"
+      ]
+    },
+    {
+      "ref": "pkg:npm/vite@8.2.2",
+      "dependsOn": [
+        "pkg:npm/lightningcss@1.33.0",
+        "pkg:npm/picomatch@4.0.7",
+        "pkg:npm/postcss@8.5.26",
+        "pkg:npm/rolldown@1.2.6",
+        "pkg:npm/tinyglobby@0.2.17"
+      ]
+    },
+    {
+      "ref": "pkg:npm/vitest@4.1.11",
+      "dependsOn": [
+        "pkg:npm/%40vitest/expect@4.1.11",
+        "pkg:npm/%40vitest/mocker@4.1.11",
+        "pkg:npm/%40vitest/pretty-format@4.1.11",
+        "pkg:npm/%40vitest/runner@4.1.11",
+        "pkg:npm/%40vitest/snapshot@4.1.11",
+        "pkg:npm/%40vitest/spy@4.1.11",
+        "pkg:npm/%40vitest/utils@4.1.11",
+        "pkg:npm/es-module-lexer@2.3.2",
+        "pkg:npm/expect-type@1.4.0",
+        "pkg:npm/magic-string@0.30.21",
+        "pkg:npm/obug@2.1.4",
+        "pkg:npm/pathe@2.0.3",
+        "pkg:npm/picomatch@4.0.7",
+        "pkg:npm/std-env@4.2.0",
+        "pkg:npm/tinybench@2.9.0",
+        "pkg:npm/tinyexec@1.3.0",
+        "pkg:npm/tinyglobby@0.2.17",
+        "pkg:npm/tinyrainbow@3.1.1",
+        "pkg:npm/vite@8.2.2",
+        "pkg:npm/why-is-node-running@2.3.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/which@2.0.2",
+      "dependsOn": [
+        "pkg:npm/isexe@2.0.0"
+      ]
+    },
+    {
+      "ref": "pkg:npm/why-is-node-running@2.3.0",
+      "dependsOn": [
+        "pkg:npm/siginfo@2.0.0",
+        "pkg:npm/stackback@0.0.2"
+      ]
+    },
+    {
+      "ref": "pkg:npm/word-wrap@1.2.5",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/yaml@2.9.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/yocto-queue@0.1.0",
+      "dependsOn": []
+    },
+    {
+      "ref": "pkg:npm/zod@4.5.4",
+      "dependsOn": []
+    }
+  ],
+  "compositions": [
+    {
+      "aggregate": "complete",
+      "assemblies": [
+        "pkg:npm/cydetix@0.6.0-alpha.12",
+        "pkg:npm/%40babel/code-frame@8.0.0",
+        "pkg:npm/%40babel/generator@8.0.0",
+        "pkg:npm/%40babel/helper-globals@8.0.0",
+        "pkg:npm/%40babel/helper-string-parser@7.29.7",
+        "pkg:npm/%40babel/helper-string-parser@8.0.0",
+        "pkg:npm/%40babel/helper-validator-identifier@7.29.7",
+        "pkg:npm/%40babel/helper-validator-identifier@8.0.4",
+        "pkg:npm/%40babel/parser@8.0.4",
+        "pkg:npm/%40babel/template@8.0.0",
+        "pkg:npm/%40babel/traverse@8.0.4",
+        "pkg:npm/%40babel/types@7.29.8",
+        "pkg:npm/%40babel/types@8.0.4",
+        "pkg:npm/%40esbuild/aix-ppc64@0.28.2",
+        "pkg:npm/%40esbuild/android-arm@0.28.2",
+        "pkg:npm/%40esbuild/android-arm64@0.28.2",
+        "pkg:npm/%40esbuild/android-x64@0.28.2",
+        "pkg:npm/%40esbuild/darwin-arm64@0.28.2",
+        "pkg:npm/%40esbuild/darwin-x64@0.28.2",
+        "pkg:npm/%40esbuild/freebsd-arm64@0.28.2",
+        "pkg:npm/%40esbuild/freebsd-x64@0.28.2",
+        "pkg:npm/%40esbuild/linux-arm@0.28.2",
+        "pkg:npm/%40esbuild/linux-arm64@0.28.2",
+        "pkg:npm/%40esbuild/linux-ia32@0.28.2",
+        "pkg:npm/%40esbuild/linux-loong64@0.28.2",
+        "pkg:npm/%40esbuild/linux-mips64el@0.28.2",
+        "pkg:npm/%40esbuild/linux-ppc64@0.28.2",
+        "pkg:npm/%40esbuild/linux-riscv64@0.28.2",
+        "pkg:npm/%40esbuild/linux-s390x@0.28.2",
+        "pkg:npm/%40esbuild/linux-x64@0.28.2",
+        "pkg:npm/%40esbuild/netbsd-arm64@0.28.2",
+        "pkg:npm/%40esbuild/netbsd-x64@0.28.2",
+        "pkg:npm/%40esbuild/openbsd-arm64@0.28.2",
+        "pkg:npm/%40esbuild/openbsd-x64@0.28.2",
+        "pkg:npm/%40esbuild/openharmony-arm64@0.28.2",
+        "pkg:npm/%40esbuild/sunos-x64@0.28.2",
+        "pkg:npm/%40esbuild/win32-arm64@0.28.2",
+        "pkg:npm/%40esbuild/win32-ia32@0.28.2",
+        "pkg:npm/%40esbuild/win32-x64@0.28.2",
+        "pkg:npm/%40eslint-community/eslint-utils@4.10.1",
+        "pkg:npm/%40eslint-community/regexpp@4.12.2",
+        "pkg:npm/%40eslint/config-array@0.23.5",
+        "pkg:npm/%40eslint/config-helpers@0.7.0",
+        "pkg:npm/%40eslint/core@1.2.1",
+        "pkg:npm/%40eslint/js@10.0.1",
+        "pkg:npm/%40eslint/object-schema@3.0.5",
+        "pkg:npm/%40eslint/plugin-kit@0.7.2",
+        "pkg:npm/%40humanfs/core@0.19.2",
+        "pkg:npm/%40humanfs/node@0.16.8",
+        "pkg:npm/%40humanfs/types@0.15.0",
+        "pkg:npm/%40humanwhocodes/module-importer@1.0.1",
+        "pkg:npm/%40humanwhocodes/retry@0.4.3",
+        "pkg:npm/%40jridgewell/gen-mapping@0.3.13",
+        "pkg:npm/%40jridgewell/resolve-uri@3.1.2",
+        "pkg:npm/%40jridgewell/sourcemap-codec@1.6.0",
+        "pkg:npm/%40jridgewell/trace-mapping@0.3.31",
+        "pkg:npm/%40lezer/common@1.5.2",
+        "pkg:npm/%40lezer/highlight@1.2.3",
+        "pkg:npm/%40lezer/lr@1.4.10",
+        "pkg:npm/%40lezer/python@1.1.19",
+        "pkg:npm/%40microsoft/sarif-multitool-darwin@5.7.0",
+        "pkg:npm/%40microsoft/sarif-multitool-linux@5.7.0",
+        "pkg:npm/%40microsoft/sarif-multitool-win32@5.7.0",
+        "pkg:npm/%40microsoft/sarif-multitool@5.7.0",
+        "pkg:npm/%40oxc-project/types@0.147.0",
+        "pkg:npm/%40rolldown/binding-android-arm-eabi@1.2.6",
+        "pkg:npm/%40rolldown/binding-android-arm64@1.2.6",
+        "pkg:npm/%40rolldown/binding-darwin-arm64@1.2.6",
+        "pkg:npm/%40rolldown/binding-darwin-x64@1.2.6",
+        "pkg:npm/%40rolldown/binding-freebsd-x64@1.2.6",
+        "pkg:npm/%40rolldown/binding-linux-arm-gnueabihf@1.2.6",
+        "pkg:npm/%40rolldown/binding-linux-arm64-gnu@1.2.6",
+        "pkg:npm/%40rolldown/binding-linux-arm64-musl@1.2.6",
+        "pkg:npm/%40rolldown/binding-linux-ppc64-gnu@1.2.6",
+        "pkg:npm/%40rolldown/binding-linux-s390x-gnu@1.2.6",
+        "pkg:npm/%40rolldown/binding-linux-x64-gnu@1.2.6",
+        "pkg:npm/%40rolldown/binding-linux-x64-musl@1.2.6",
+        "pkg:npm/%40rolldown/binding-openharmony-arm64@1.2.6",
+        "pkg:npm/%40rolldown/binding-win32-arm64-msvc@1.2.6",
+        "pkg:npm/%40rolldown/binding-win32-x64-msvc@1.2.6",
+        "pkg:npm/%40rolldown/pluginutils@1.0.1",
+        "pkg:npm/%40standard-schema/spec@1.1.0",
+        "pkg:npm/%40types/babel__traverse@7.28.0",
+        "pkg:npm/%40types/chai@5.2.3",
+        "pkg:npm/%40types/deep-eql@4.0.2",
+        "pkg:npm/%40types/esrecurse@4.3.1",
+        "pkg:npm/%40types/estree@1.0.9",
+        "pkg:npm/%40types/jsesc@2.5.1",
+        "pkg:npm/%40types/json-schema@7.0.15",
+        "pkg:npm/%40types/node@26.4.0",
+        "pkg:npm/%40typescript-eslint/eslint-plugin@8.68.0",
+        "pkg:npm/%40typescript-eslint/parser@8.68.0",
+        "pkg:npm/%40typescript-eslint/project-service@8.68.0",
+        "pkg:npm/%40typescript-eslint/scope-manager@8.68.0",
+        "pkg:npm/%40typescript-eslint/tsconfig-utils@8.68.0",
+        "pkg:npm/%40typescript-eslint/type-utils@8.68.0",
+        "pkg:npm/%40typescript-eslint/types@8.68.0",
+        "pkg:npm/%40typescript-eslint/typescript-estree@8.68.0",
+        "pkg:npm/%40typescript-eslint/utils@8.68.0",
+        "pkg:npm/%40typescript-eslint/visitor-keys@8.68.0",
+        "pkg:npm/%40vitest/expect@4.1.11",
+        "pkg:npm/%40vitest/mocker@4.1.11",
+        "pkg:npm/%40vitest/pretty-format@4.1.11",
+        "pkg:npm/%40vitest/runner@4.1.11",
+        "pkg:npm/%40vitest/snapshot@4.1.11",
+        "pkg:npm/%40vitest/spy@4.1.11",
+        "pkg:npm/%40vitest/utils@4.1.11",
+        "pkg:npm/acorn-jsx@5.3.2",
+        "pkg:npm/acorn@8.18.0",
+        "pkg:npm/ajv@6.15.0",
+        "pkg:npm/assertion-error@2.0.1",
+        "pkg:npm/balanced-match@4.0.4",
+        "pkg:npm/brace-expansion@5.0.9",
+        "pkg:npm/chai@6.2.2",
+        "pkg:npm/commander@15.0.0",
+        "pkg:npm/convert-source-map@2.0.0",
+        "pkg:npm/cross-spawn@7.0.6",
+        "pkg:npm/debug@4.4.3",
+        "pkg:npm/deep-is@0.1.4",
+        "pkg:npm/detect-libc@2.1.2",
+        "pkg:npm/es-module-lexer@2.3.2",
+        "pkg:npm/esbuild@0.28.2",
+        "pkg:npm/escape-string-regexp@4.0.0",
+        "pkg:npm/eslint-scope@9.1.2",
+        "pkg:npm/eslint-visitor-keys@3.4.3",
+        "pkg:npm/eslint-visitor-keys@5.0.1",
+        "pkg:npm/eslint@10.9.1",
+        "pkg:npm/espree@11.2.0",
+        "pkg:npm/esquery@1.7.0",
+        "pkg:npm/esrecurse@4.3.0",
+        "pkg:npm/estraverse@5.3.0",
+        "pkg:npm/estree-walker@3.0.3",
+        "pkg:npm/esutils@2.0.3",
+        "pkg:npm/expect-type@1.4.0",
+        "pkg:npm/fast-deep-equal@3.1.3",
+        "pkg:npm/fast-json-stable-stringify@2.1.0",
+        "pkg:npm/fast-levenshtein@2.0.6",
+        "pkg:npm/fdir@6.5.0",
+        "pkg:npm/file-entry-cache@8.0.0",
+        "pkg:npm/find-up@5.0.0",
+        "pkg:npm/flat-cache@4.0.1",
+        "pkg:npm/flatted@3.4.4",
+        "pkg:npm/fsevents@2.3.3",
+        "pkg:npm/glob-parent@6.0.2",
+        "pkg:npm/ignore@5.3.2",
+        "pkg:npm/ignore@7.0.7",
+        "pkg:npm/imurmurhash@0.1.4",
+        "pkg:npm/is-extglob@2.1.1",
+        "pkg:npm/is-glob@4.0.3",
+        "pkg:npm/isexe@2.0.0",
+        "pkg:npm/js-tokens@10.0.0",
+        "pkg:npm/jsesc@3.1.0",
+        "pkg:npm/json-buffer@3.0.1",
+        "pkg:npm/json-schema-traverse@0.4.1",
+        "pkg:npm/json-stable-stringify-without-jsonify@1.0.1",
+        "pkg:npm/keyv@4.5.4",
+        "pkg:npm/levn@0.4.1",
+        "pkg:npm/lightningcss-android-arm64@1.33.0",
+        "pkg:npm/lightningcss-darwin-arm64@1.33.0",
+        "pkg:npm/lightningcss-darwin-x64@1.33.0",
+        "pkg:npm/lightningcss-freebsd-x64@1.33.0",
+        "pkg:npm/lightningcss-linux-arm-gnueabihf@1.33.0",
+        "pkg:npm/lightningcss-linux-arm64-gnu@1.33.0",
+        "pkg:npm/lightningcss-linux-arm64-musl@1.33.0",
+        "pkg:npm/lightningcss-linux-x64-gnu@1.33.0",
+        "pkg:npm/lightningcss-linux-x64-musl@1.33.0",
+        "pkg:npm/lightningcss-win32-arm64-msvc@1.33.0",
+        "pkg:npm/lightningcss-win32-x64-msvc@1.33.0",
+        "pkg:npm/lightningcss@1.33.0",
+        "pkg:npm/locate-path@6.0.0",
+        "pkg:npm/magic-string@0.30.21",
+        "pkg:npm/minimatch@10.2.6",
+        "pkg:npm/ms@2.1.3",
+        "pkg:npm/nanoid@3.3.18",
+        "pkg:npm/natural-compare@1.4.0",
+        "pkg:npm/obug@2.1.4",
+        "pkg:npm/optionator@0.9.4",
+        "pkg:npm/p-limit@3.1.0",
+        "pkg:npm/p-locate@5.0.0",
+        "pkg:npm/path-exists@4.0.0",
+        "pkg:npm/path-key@3.1.1",
+        "pkg:npm/pathe@2.0.3",
+        "pkg:npm/picocolors@1.1.1",
+        "pkg:npm/picomatch@4.0.7",
+        "pkg:npm/postcss@8.5.26",
+        "pkg:npm/prelude-ls@1.2.1",
+        "pkg:npm/prettier@3.9.6",
+        "pkg:npm/punycode@2.3.1",
+        "pkg:npm/rolldown@1.2.6",
+        "pkg:npm/semver@7.8.5",
+        "pkg:npm/shebang-command@2.0.0",
+        "pkg:npm/shebang-regex@3.0.0",
+        "pkg:npm/siginfo@2.0.0",
+        "pkg:npm/source-map-js@1.2.1",
+        "pkg:npm/stackback@0.0.2",
+        "pkg:npm/std-env@4.2.0",
+        "pkg:npm/tinybench@2.9.0",
+        "pkg:npm/tinyexec@1.3.0",
+        "pkg:npm/tinyglobby@0.2.17",
+        "pkg:npm/tinyrainbow@3.1.1",
+        "pkg:npm/ts-api-utils@2.5.0",
+        "pkg:npm/tsx@4.23.13",
+        "pkg:npm/type-check@0.4.0",
+        "pkg:npm/typescript-eslint@8.68.0",
+        "pkg:npm/typescript@6.0.3",
+        "pkg:npm/undici-types@8.3.0",
+        "pkg:npm/uri-js@4.4.1",
+        "pkg:npm/vite@8.2.2",
+        "pkg:npm/vitest@4.1.11",
+        "pkg:npm/which@2.0.2",
+        "pkg:npm/why-is-node-running@2.3.0",
+        "pkg:npm/word-wrap@1.2.5",
+        "pkg:npm/yaml@2.9.0",
+        "pkg:npm/yocto-queue@0.1.0",
+        "pkg:npm/zod@4.5.4"
+      ]
+    }
+  ]
+}
