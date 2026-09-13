@@ -1,0 +1,315 @@
+{
+  "schemaVersion": "1.0.0",
+  "baselineCommit": "4e13b96cc3539e1b623a4c5a12f10a0954776253",
+  "scanRepetitions": 2,
+  "policy": {
+    "mode": "offline static source",
+    "targetCodeExecuted": false,
+    "targetDependenciesInstalled": false,
+    "groundTruth": "INCOMPLETE",
+    "recallReported": false,
+    "accuracyReported": false
+  },
+  "targets": [
+    {
+      "id": "nodegoat",
+      "repository": "OWASP/NodeGoat",
+      "commit": "c5cb68a7084e4ae7dcc60e6a98768720a81841e8",
+      "language": "JavaScript",
+      "framework": "Express; CommonJS",
+      "classification": "VULNERABLE",
+      "previousAlpha11Batch2": true,
+      "purpose": "Replay alpha.11 across all enabled rules and the full normalized report."
+    },
+    {
+      "id": "dvna",
+      "repository": "appsecco/dvna",
+      "commit": "9ba473add536f66ac9007966acb2a775dd31277a",
+      "language": "JavaScript",
+      "framework": "Express; controllers",
+      "classification": "VULNERABLE",
+      "previousAlpha11Batch2": true,
+      "purpose": "Replay alpha.11 across all enabled rules and the full normalized report."
+    },
+    {
+      "id": "express",
+      "repository": "expressjs/express",
+      "commit": "53d4a0d606c0388f764f192b306ce0e90200e7e8",
+      "language": "JavaScript",
+      "framework": "Express",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": true,
+      "purpose": "Replay alpha.11 across all enabled rules and the full normalized report."
+    },
+    {
+      "id": "fastify",
+      "repository": "fastify/fastify",
+      "commit": "d266f833f2bff34c6115c026e461b682e94d0b9c",
+      "language": "JavaScript; TypeScript",
+      "framework": "Fastify",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": true,
+      "purpose": "Replay alpha.11 across all enabled rules and the full normalized report."
+    },
+    {
+      "id": "vikas-vulnerable-website",
+      "repository": "Vikas2171/vulnerable-website",
+      "commit": "1258fa3efac1547da5bb3c7e6ab8279f00e47206",
+      "language": "JavaScript",
+      "framework": "Express; express-session",
+      "classification": "VULNERABLE",
+      "previousAlpha11Batch2": true,
+      "purpose": "Replay alpha.11 across all enabled rules and the full normalized report."
+    },
+    {
+      "id": "juice-shop",
+      "repository": "juice-shop/juice-shop",
+      "commit": "1618a611b173b4bf114028e6e02549950606e29d",
+      "language": "TypeScript",
+      "framework": "Express; Angular",
+      "classification": "VULNERABLE",
+      "previousAlpha11Batch2": true,
+      "purpose": "Replay alpha.11 across all enabled rules and the full normalized report."
+    },
+    {
+      "id": "vulnerable-flask-app",
+      "repository": "we45/Vulnerable-Flask-App",
+      "commit": "b6a4f97afd466e83e1f60781494252dec1c37039",
+      "language": "Python",
+      "framework": "Flask; Jinja",
+      "classification": "VULNERABLE",
+      "previousAlpha11Batch2": true,
+      "purpose": "Replay alpha.11 across all enabled rules and the full normalized report."
+    },
+    {
+      "id": "breakableflask",
+      "repository": "stephenbradshaw/breakableflask",
+      "commit": "553e8b2f51c14f259f565d5df478339c366a9172",
+      "language": "Python",
+      "framework": "Flask; Jinja",
+      "classification": "VULNERABLE",
+      "previousAlpha11Batch2": true,
+      "purpose": "Replay alpha.11 across all enabled rules and the full normalized report."
+    },
+    {
+      "id": "flask",
+      "repository": "pallets/flask",
+      "commit": "d73fa1cdcbd8b1465c151db8924ba58b1dd14e35",
+      "language": "Python",
+      "framework": "Flask; Jinja",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": true,
+      "purpose": "Replay alpha.11 across all enabled rules and the full normalized report."
+    },
+    {
+      "id": "fastapi-appsec-lab",
+      "repository": "LevaAverGit/appsec-review-lab-v2",
+      "commit": "372ed54ad40059f4228f9e08dc375c51fe60b625",
+      "language": "Python",
+      "framework": "FastAPI; Starlette",
+      "classification": "VULNERABLE",
+      "previousAlpha11Batch2": true,
+      "purpose": "Replay alpha.11 across all enabled rules and the full normalized report."
+    },
+    {
+      "id": "nextjs-auth",
+      "repository": "vercel/nextjs-postgres-auth-starter",
+      "commit": "fde8ecf1da9337223081f70cf88b420060039d6e",
+      "language": "TypeScript",
+      "framework": "Next.js; React",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": true,
+      "purpose": "Replay alpha.11 across all enabled rules and the full normalized report."
+    },
+    {
+      "id": "antony-vulnerable-flask",
+      "repository": "AntonyNRM/vulnerable-flask-app",
+      "commit": "7a12a015d0fc0d028be5cf492db822bce9af45ba",
+      "language": "Python",
+      "framework": "Flask",
+      "classification": "VULNERABLE",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge admitted source/sink propagation and review unsupported composition."
+    },
+    {
+      "id": "axios",
+      "repository": "axios/axios",
+      "commit": "18e7dfedf30c96e58652887f930642ae82e0130c",
+      "language": "JavaScript; TypeScript",
+      "framework": "HTTP client library",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds."
+    },
+    {
+      "id": "django",
+      "repository": "django/django",
+      "commit": "2b30f6255b5ef84afbd827993643d52ef2c0963a",
+      "language": "Python",
+      "framework": "Django",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds."
+    },
+    {
+      "id": "fastapi",
+      "repository": "fastapi/fastapi",
+      "commit": "50113da16fec53b66b80d75e80a89296de4fa5a5",
+      "language": "Python",
+      "framework": "FastAPI",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds."
+    },
+    {
+      "id": "flask-sqlinjection",
+      "repository": "guilatrova/flask-sqlinjection-vulnerable",
+      "commit": "708246139f2f216c55c683c7aec2297bc91b7346",
+      "language": "Python",
+      "framework": "Flask; SQL",
+      "classification": "VULNERABLE",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge admitted source/sink propagation and review unsupported composition."
+    },
+    {
+      "id": "payatu-vuln-node",
+      "repository": "payatu/vuln-nodejs-app",
+      "commit": "bc3c90920ba4e1c668d954e5027d9ca814d2d5c6",
+      "language": "JavaScript",
+      "framework": "Express; CommonJS",
+      "classification": "VULNERABLE",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge admitted source/sink propagation and review unsupported composition."
+    },
+    {
+      "id": "simple-ssrf",
+      "repository": "vulnerable-apps/simple-ssrf",
+      "commit": "9fe0f47ca9bc69faf8454e96e0dcdf1400ce8a5a",
+      "language": "Python",
+      "framework": "Flask; requests",
+      "classification": "VULNERABLE",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge admitted source/sink propagation and review unsupported composition."
+    },
+    {
+      "id": "sirappsec-vuln-node",
+      "repository": "SirAppSec/vuln-node.js-express.js-app",
+      "commit": "b977c7407f328da929577745ad509639e26c428a",
+      "language": "JavaScript",
+      "framework": "Express",
+      "classification": "VULNERABLE",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge admitted source/sink propagation and review unsupported composition."
+    },
+    {
+      "id": "vulnerable-typescript",
+      "repository": "ryanmcmorrowsnyk/vulnerable-typescript-app",
+      "commit": "7f8b240a2f02beba099da3632d1ba679ff8bc32f",
+      "language": "TypeScript",
+      "framework": "Express",
+      "classification": "VULNERABLE",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge admitted source/sink propagation and review unsupported composition."
+    },
+    {
+      "id": "microblog",
+      "repository": "miguelgrinberg/microblog",
+      "commit": "a975ef64864354867c88e0ed3a17ba7d17dca752",
+      "language": "Python",
+      "framework": "Flask; Flask-Login; Flask-WTF",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds."
+    },
+    {
+      "id": "flask-security",
+      "repository": "pallets-eco/flask-security",
+      "commit": "5d47d697d6f0806d0fe58559fe61cd6fd8ae16ef",
+      "language": "Python",
+      "framework": "Flask; Flask-Security",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds."
+    },
+    {
+      "id": "starlette",
+      "repository": "encode/starlette",
+      "commit": "03f12b7fcf0a3e21a8da648ca0900c79472e9efe",
+      "language": "Python",
+      "framework": "Starlette",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds."
+    },
+    {
+      "id": "full-stack-fastapi",
+      "repository": "fastapi/full-stack-fastapi-template",
+      "commit": "cb740b656d7a0a6c5e12c7bf8e50343ec94ee9c7",
+      "language": "Python; TypeScript",
+      "framework": "FastAPI; React",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds."
+    },
+    {
+      "id": "node-express-boilerplate",
+      "repository": "hagopj13/node-express-boilerplate",
+      "commit": "179ae84efec61b14206d0305d941daed6c6d07f9",
+      "language": "JavaScript",
+      "framework": "Express; Passport; Mongoose",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds."
+    },
+    {
+      "id": "hackathon-starter",
+      "repository": "sahat/hackathon-starter",
+      "commit": "636440342a5b7b640d127dcde0c405c711c0ddaa",
+      "language": "JavaScript",
+      "framework": "Express; Passport; Pug",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds."
+    },
+    {
+      "id": "realworld-express",
+      "repository": "gothinkster/node-express-realworld-example-app",
+      "commit": "30b68e1e881462b2f4164ea09ab4c4f5699c7b0b",
+      "language": "TypeScript",
+      "framework": "Express; Prisma",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds."
+    },
+    {
+      "id": "express-session",
+      "repository": "expressjs/session",
+      "commit": "96ebea4b6cd805584fba04523773b1b918a836d7",
+      "language": "JavaScript",
+      "framework": "express-session",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds."
+    },
+    {
+      "id": "fastify-secure-session",
+      "repository": "fastify/fastify-secure-session",
+      "commit": "06f4afb58d2a91e6350b71a6e491d4604333e6d4",
+      "language": "JavaScript; TypeScript",
+      "framework": "Fastify; secure-session",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds."
+    },
+    {
+      "id": "strapi",
+      "repository": "strapi/strapi",
+      "commit": "34fdea8fb4e11afc475a0ffdc14311cce09ddded",
+      "language": "TypeScript; JavaScript",
+      "framework": "Strapi; Koa; React",
+      "classification": "ORDINARY",
+      "previousAlpha11Batch2": false,
+      "purpose": "Challenge false positives, framework constructs, parser behavior and resource bounds."
+    }
+  ]
+}
