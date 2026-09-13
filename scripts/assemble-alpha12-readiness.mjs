@@ -85,7 +85,17 @@ const integrationFiles = suiteRecords.filter((s) =>
   /tests\/(?:integrations|mcp|remediation|verification)\//u.test(s.path),
 );
 const integrationPassed =
-  integrationFiles.length > 0 && integrationFiles.every((s) => s.failed === 0 && s.skipped === 0);
+  integrationFiles.some(
+    (s) => s.path === "tests/integrations/alpha12.test.ts" && s.passed === 11,
+  ) && integrationFiles.every((s) => s.status === "passed" && s.failed === 0 && s.skipped === 0);
+const contractsPassed = suiteRecords.some(
+  (s) =>
+    s.path === "tests/validation/public-contracts.test.ts" &&
+    s.status === "passed" &&
+    s.passed >= 2 &&
+    s.failed === 0 &&
+    s.skipped === 0,
+);
 const integration = [
   "codex",
   "claude",
@@ -256,7 +266,7 @@ const report = validateBetaReadiness({
   },
   integrations: integration,
   publicContracts: {
-    state: "PASSED",
+    state: contractsPassed ? "PASSED" : "FAILED",
     evidence:
       "validation/alpha12/public-contracts.json and tests/validation/public-contracts.test.ts",
     intentionalChanges: contracts.intentionalChanges,

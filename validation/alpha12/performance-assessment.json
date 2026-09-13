@@ -1,0 +1,388 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "98d67f95fc0d16de5d5a1bba27ab6a7ce4a70044",
+  "evidence": "validation/alpha12/performance.json",
+  "state": "INCONCLUSIVE",
+  "discoverySourceUnchangedSinceBaseline": true,
+  "results": [
+    {
+      "target": "express-session",
+      "p50Ratio": 0.30505438151938946,
+      "p95Ratio": 0.30003440506659923,
+      "semanticEquivalence": "PASSED",
+      "variants": {
+        "baseline": {
+          "stageP50Milliseconds": {
+            "repositoryDiscovery": 88.71230000000105,
+            "parsing": 14.504000000000815,
+            "callGraph": 371.20050000000083,
+            "securityGraph": 288.64540000000125,
+            "authenticationGraph": 0.5116999999991094,
+            "invariantEvaluation": 518.2194,
+            "applicationDataflow": 145.1867999999995,
+            "reportGeneration": 5.516899999999623
+          },
+          "peakProcessRssBytes": 256114688,
+          "representativeRssP50Bytes": 254595072,
+          "filesVisited": [
+            28
+          ],
+          "filesAnalyzed": [
+            13
+          ],
+          "batches": [
+            {
+              "p50Milliseconds": 1587.2020000000011,
+              "p95Milliseconds": 1916.9323999999997,
+              "slowestSamples": [
+                {
+                  "total": 1916.9323999999997,
+                  "discovery": 118.17430000000058,
+                  "parsing": 17.78859999999986,
+                  "dataflow": 180.61299999999937
+                },
+                {
+                  "total": 1759.3339000000014,
+                  "discovery": 104.7456000000002,
+                  "parsing": 14.628799999998591,
+                  "dataflow": 157.00080000000162
+                }
+              ]
+            },
+            {
+              "p50Milliseconds": 1534.2195000000002,
+              "p95Milliseconds": 1574.0993999999992,
+              "slowestSamples": [
+                {
+                  "total": 1574.0993999999992,
+                  "discovery": 90.84439999999995,
+                  "parsing": 12.790399999999863,
+                  "dataflow": 141.0837999999967
+                },
+                {
+                  "total": 1550.3042000000005,
+                  "discovery": 90.20550000000003,
+                  "parsing": 12.998199999999997,
+                  "dataflow": 143.79160000000047
+                }
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "stageP50Milliseconds": {
+            "repositoryDiscovery": 85.16920000000027,
+            "parsing": 47.96299999999974,
+            "callGraph": 43.68640000000005,
+            "securityGraph": 23.917199999999866,
+            "authenticationGraph": 0.5034000000005108,
+            "invariantEvaluation": 27.67750000000069,
+            "applicationDataflow": 150.8797000000004,
+            "reportGeneration": 5.3288000000002285
+          },
+          "peakProcessRssBytes": 306884608,
+          "representativeRssP50Bytes": 286588928,
+          "filesVisited": [
+            28
+          ],
+          "filesAnalyzed": [
+            13
+          ],
+          "batches": [
+            {
+              "p50Milliseconds": 472.7480999999998,
+              "p95Milliseconds": 548.7491000000002,
+              "slowestSamples": [
+                {
+                  "total": 548.7491000000002,
+                  "discovery": 95.88110000000006,
+                  "parsing": 75.80619999999999,
+                  "dataflow": 163.27909999999997
+                },
+                {
+                  "total": 512.7047000000002,
+                  "discovery": 93.02899999999954,
+                  "parsing": 48.286700000000565,
+                  "dataflow": 163.48419999999987
+                }
+              ]
+            },
+            {
+              "p50Milliseconds": 457.1313,
+              "p95Milliseconds": 527.8607000000002,
+              "slowestSamples": [
+                {
+                  "total": 527.8607000000002,
+                  "discovery": 93.42910000000006,
+                  "parsing": 74.96319999999992,
+                  "dataflow": 154.2994000000001
+                },
+                {
+                  "total": 523.1257999999998,
+                  "discovery": 108.65980000000036,
+                  "parsing": 57.470800000000054,
+                  "dataflow": 151.73570000000018
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "target": "express",
+      "p50Ratio": 0.6558028907704635,
+      "p95Ratio": 0.8960163877863596,
+      "semanticEquivalence": "PASSED",
+      "variants": {
+        "baseline": {
+          "stageP50Milliseconds": {
+            "repositoryDiscovery": 249.3057000000008,
+            "parsing": 61.9373999999998,
+            "callGraph": 539.3955999999998,
+            "securityGraph": 335.2591000000002,
+            "authenticationGraph": 2.244300000002113,
+            "invariantEvaluation": 575.3172000000013,
+            "applicationDataflow": 625.8064000000013,
+            "reportGeneration": 9.100399999999354
+          },
+          "peakProcessRssBytes": 726876160,
+          "representativeRssP50Bytes": 722436096,
+          "filesVisited": [
+            214
+          ],
+          "filesAnalyzed": [
+            141
+          ],
+          "batches": [
+            {
+              "p50Milliseconds": 2739.222300000005,
+              "p95Milliseconds": 4304.3195,
+              "slowestSamples": [
+                {
+                  "total": 4304.3195,
+                  "discovery": 546.0792000000001,
+                  "parsing": 108.86559999999918,
+                  "dataflow": 1069.8986999999997
+                },
+                {
+                  "total": 3299.2353999999996,
+                  "discovery": 236.88450000000012,
+                  "parsing": 59.69390000000021,
+                  "dataflow": 600.8580000000002
+                }
+              ]
+            },
+            {
+              "p50Milliseconds": 2699.5430000000006,
+              "p95Milliseconds": 3430.1155,
+              "slowestSamples": [
+                {
+                  "total": 3430.1155,
+                  "discovery": 543.2530000000006,
+                  "parsing": 79.53100000000268,
+                  "dataflow": 652.4356000000007
+                },
+                {
+                  "total": 3419.448999999997,
+                  "discovery": 240.45700000000215,
+                  "parsing": 61.793299999997544,
+                  "dataflow": 753.0555999999997
+                }
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "stageP50Milliseconds": {
+            "repositoryDiscovery": 242.3726000000006,
+            "parsing": 217.6190999999999,
+            "callGraph": 197.1277000000009,
+            "securityGraph": 87.09900000000016,
+            "authenticationGraph": 2.1226000000024214,
+            "invariantEvaluation": 119.20329999999922,
+            "applicationDataflow": 605.334600000002,
+            "reportGeneration": 9.419499999999971
+          },
+          "peakProcessRssBytes": 641941504,
+          "representativeRssP50Bytes": 637399040,
+          "filesVisited": [
+            214
+          ],
+          "filesAnalyzed": [
+            141
+          ],
+          "batches": [
+            {
+              "p50Milliseconds": 1744.954099999999,
+              "p95Milliseconds": 1845.8071,
+              "slowestSamples": [
+                {
+                  "total": 1845.8071,
+                  "discovery": 259.0010999999995,
+                  "parsing": 252.30249999999978,
+                  "dataflow": 615.1578000000009
+                },
+                {
+                  "total": 1810.6478000000002,
+                  "discovery": 241.8507999999997,
+                  "parsing": 242.25780000000032,
+                  "dataflow": 628.9188999999997
+                }
+              ]
+            },
+            {
+              "p50Milliseconds": 1828.0321999999996,
+              "p95Milliseconds": 3094.1616999999997,
+              "slowestSamples": [
+                {
+                  "total": 3094.1616999999997,
+                  "discovery": 405.2588999999998,
+                  "parsing": 404.7452000000003,
+                  "dataflow": 1071.1738000000005
+                },
+                {
+                  "total": 3073.4397000000026,
+                  "discovery": 446.14300000000003,
+                  "parsing": 435.58420000000115,
+                  "dataflow": 1021.3077999999987
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "target": "fastapi",
+      "p50Ratio": 1.0401383055773763,
+      "p95Ratio": 1.2061436710199573,
+      "semanticEquivalence": "PASSED",
+      "variants": {
+        "baseline": {
+          "stageP50Milliseconds": {
+            "repositoryDiscovery": 3202.9136000000008,
+            "parsing": 925.7523999999976,
+            "callGraph": 18.24499999999898,
+            "securityGraph": 11.483800000001793,
+            "authenticationGraph": 0.8315000000002328,
+            "invariantEvaluation": 25.33559999999852,
+            "applicationDataflow": 65.73860000000423,
+            "reportGeneration": 5.5625
+          },
+          "peakProcessRssBytes": 405762048,
+          "representativeRssP50Bytes": 389849088,
+          "filesVisited": [
+            3140
+          ],
+          "filesAnalyzed": [
+            590
+          ],
+          "batches": [
+            {
+              "p50Milliseconds": 4573.150799999999,
+              "p95Milliseconds": 7051.022700000001,
+              "slowestSamples": [
+                {
+                  "total": 7051.022700000001,
+                  "discovery": 5664.514099999997,
+                  "parsing": 975.0262000000002,
+                  "dataflow": 69.7635999999984
+                },
+                {
+                  "total": 5076.942800000001,
+                  "discovery": 3376.8022999999994,
+                  "parsing": 1133.1075,
+                  "dataflow": 94.21749999999884
+                }
+              ]
+            },
+            {
+              "p50Milliseconds": 4532.4563,
+              "p95Milliseconds": 5420.000499999998,
+              "slowestSamples": [
+                {
+                  "total": 5420.000499999998,
+                  "discovery": 4071.5378999999994,
+                  "parsing": 943.3788999999997,
+                  "dataflow": 62.68510000000242
+                },
+                {
+                  "total": 4704.2663999999995,
+                  "discovery": 3330.5512,
+                  "parsing": 948.9511000000002,
+                  "dataflow": 72.89420000000064
+                }
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "stageP50Milliseconds": {
+            "repositoryDiscovery": 3354.5690000000013,
+            "parsing": 945.9457999999995,
+            "callGraph": 8.934799999999086,
+            "securityGraph": 6.827799999999115,
+            "authenticationGraph": 0.8293999999987136,
+            "invariantEvaluation": 14.015800000001036,
+            "applicationDataflow": 68.60910000000149,
+            "reportGeneration": 6.010400000002846
+          },
+          "peakProcessRssBytes": 471379968,
+          "representativeRssP50Bytes": 393056256,
+          "filesVisited": [
+            3140
+          ],
+          "filesAnalyzed": [
+            590
+          ],
+          "batches": [
+            {
+              "p50Milliseconds": 4709.913199999999,
+              "p95Milliseconds": 6537.299300000002,
+              "slowestSamples": [
+                {
+                  "total": 6537.299300000002,
+                  "discovery": 4571.301800000001,
+                  "parsing": 1353.4440000000031,
+                  "dataflow": 92.58030000000144
+                },
+                {
+                  "total": 6339.079299999998,
+                  "discovery": 5040.487500000003,
+                  "parsing": 934.6127999999953,
+                  "dataflow": 66.8018000000011
+                }
+              ]
+            },
+            {
+              "p50Milliseconds": 4722.0826,
+              "p95Milliseconds": 7940.261299999998,
+              "slowestSamples": [
+                {
+                  "total": 7940.261299999998,
+                  "discovery": 6635.325000000004,
+                  "parsing": 937.8367999999973,
+                  "dataflow": 63.4742999999944
+                },
+                {
+                  "total": 4892.342100000001,
+                  "discovery": 3563.6852,
+                  "parsing": 932.7983999999997,
+                  "dataflow": 76.7471000000005
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "conclusions": [
+    "Small/medium JavaScript targets improved observed total p50 and p95 while retaining equivalent proof reports.",
+    "FastAPI total p50 increased 4.0% and p95 increased 20.6%. This observed regression remains explicit and unresolved.",
+    "FastAPI discovery p50 increased from 3202.9 to 3354.6 ms; parsing from 925.8 to 945.9 ms; dataflow from 65.7 to 68.6 ms. Graph and invariant stages improved. The slowest samples are dominated by discovery.",
+    "Discovery implementation and visited/analyzed counts are unchanged. These facts identify a measurement stage, not causality; filesystem, scheduling, thermal or background activity cannot be excluded or proven from this run.",
+    "A quiet independent-machine comparison is required before a claim of no material large-repository regression. Do not discard slow samples, relax coverage bounds or select a favorable rerun as replacement evidence."
+  ]
+}
