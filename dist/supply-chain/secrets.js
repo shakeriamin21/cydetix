@@ -143,6 +143,7 @@ export function analyzeWorkingTreeSecrets(files) {
         limitations: [
             "Detection is passive; credentials are never submitted to providers for validation.",
             "Entropy-only candidates without credential context are not emitted to preserve precision.",
+            "Private-key headers are marker observations only; their findings remain UNKNOWN because payload validity, fixture purpose and deployment are not established.",
         ],
     });
 }

@@ -208,10 +208,10 @@
     {
       "schemaVersion": "1.0.0",
       "id": "AS-SECRET-001",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "title": "Credential-like secret committed as a literal",
       "category": "secrets",
-      "description": "Detects supported provider tokens, high-risk credential assignments, private-key material, and explicit synthetic regression credentials while redacting all values.",
+      "description": "Detects supported provider tokens, high-risk credential assignments, private-key markers, and explicit synthetic regression credentials while redacting all values. Private-key markers remain UNKNOWN because their payload and deployment are unproven.",
       "severity": "high",
       "confidence": "high",
       "standards": {

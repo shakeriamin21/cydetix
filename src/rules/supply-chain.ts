@@ -5,6 +5,7 @@ import { makeFinding, pointAt } from "../rule-engine/finding.js";
 import type { SourceFile } from "../repository-discovery/traverse.js";
 import type { SupplyChainBuildResult } from "../supply-chain/engine.js";
 import { assessRemediation } from "../remediation/assessment.js";
+import { privateKeyMarkerFinding } from "./committed-secret.js";
 
 const vulnerableDependency = requireRule("AS-SCA-001");
 const actionPinning = requireRule("AS-CI-001");
@@ -25,7 +26,7 @@ function historicalSecretFinding(
     requestedClass: "ARCHITECTURAL",
     reasonCodes: ["ARCHITECTURE_CHANGE_REQUIRED"],
   });
-  return {
+  const finding: Finding = {
     fingerprint: stableFingerprint([
       committedSecret.id,
       "git-history",
@@ -61,6 +62,7 @@ function historicalSecretFinding(
     remediationAssessment,
     verificationStatus: "not_attempted",
   };
+  return exposure.provider === "cryptographic-key" ? privateKeyMarkerFinding(finding) : finding;
 }
 
 function workflowFinding(

@@ -117,10 +117,10 @@ const definitions = [
     {
         schemaVersion: PRODUCT.ruleSchemaVersion,
         id: "AS-SECRET-001",
-        version: "1.0.0",
+        version: "1.0.1",
         title: "Credential-like secret committed as a literal",
         category: "secrets",
-        description: "Detects high-risk credential variable names assigned a long literal or embedded private-key material, while redacting the value.",
+        description: "Detects credential literal patterns and private-key markers while redacting values. Private-key markers remain UNKNOWN because payload and deployment are unproven.",
         severity: "high",
         confidence: "medium",
         standards: {
