@@ -185,6 +185,7 @@ interface FlowFact {
   readonly source: FlowStep;
   readonly steps: readonly FlowStep[];
   readonly unknownControl: boolean;
+  readonly evidenceTruncated?: boolean;
   readonly controls?: readonly ("HTML_ESCAPE" | "HTML_SANITIZE")[];
 }
 
@@ -206,6 +207,7 @@ interface FunctionInfo {
 }
 
 export interface DataflowCandidate {
+  readonly evidenceTruncated?: boolean;
   readonly kind: ApplicationDataflowKind;
   readonly file: SourceFile;
   readonly startOffset: number;
@@ -319,6 +321,7 @@ function appendStep(
     source: fact.source,
     steps,
     unknownControl,
+    evidenceTruncated: fact.evidenceTruncated === true || fact.steps.length >= MAX_EVIDENCE_STEPS,
     ...(fact.controls === undefined ? {} : { controls: fact.controls }),
   };
 }
@@ -332,6 +335,7 @@ function appendControl(
     source: fact.source,
     steps: [...fact.steps, step].slice(0, MAX_EVIDENCE_STEPS),
     unknownControl: fact.unknownControl,
+    evidenceTruncated: fact.evidenceTruncated === true || fact.steps.length >= MAX_EVIDENCE_STEPS,
     controls: [...new Set([...(fact.controls ?? []), control])],
   };
 }
@@ -629,6 +633,7 @@ function createCandidate(
   const sinkPoint = pointAt(file.text, sinkNode.start);
   return {
     kind,
+    evidenceTruncated: fact.evidenceTruncated === true,
     file,
     startOffset: sinkNode.start,
     endOffset: sinkNode.end,
@@ -862,6 +867,7 @@ function analyzeJavaScriptFile(
   for (const info of functions.values()) info.reachable = reachable.has(info.id);
 
   const facts = new Map<string, FlowFact>();
+  const evidenceState = { truncated: false };
   const returns = new Map<string, FlowFact>();
   const candidates = new Map<string, DataflowCandidate>();
   const unknownKeys = new Set<string>();
@@ -941,6 +947,14 @@ function analyzeJavaScriptFile(
     return undefined;
   };
   const evaluate = (scope: string, expression: Node | null | undefined): FlowFact | undefined => {
+    const fact = evaluateExpression(scope, expression);
+    if (fact?.evidenceTruncated === true) evidenceState.truncated = true;
+    return fact;
+  };
+  const evaluateExpression = (
+    scope: string,
+    expression: Node | null | undefined,
+  ): FlowFact | undefined => {
     if (expression === undefined || expression === null) return undefined;
     const direct = requestSource(scope, expression);
     if (direct !== undefined) return direct;
@@ -1269,6 +1283,10 @@ function analyzeJavaScriptFile(
         const first = arguments_[0];
         const firstFact = evaluate(scope, first);
         const add = (candidate: DataflowCandidate | undefined): void => {
+          if (candidate?.evidenceTruncated === true) {
+            evidenceState.truncated = true;
+            return;
+          }
           if (candidate !== undefined) candidates.set(candidate.fingerprintAnchor, candidate);
         };
 
@@ -1558,10 +1576,18 @@ function analyzeJavaScriptFile(
       },
     });
     if (!iterationState.changed) break;
+    if (iteration === MAX_ITERATIONS - 1) {
+      metrics.truncationEvents += 1;
+      return { candidates: [], truncated: true };
+    }
     if (facts.size >= MAX_FACTS) {
       metrics.truncationEvents += 1;
       return { candidates: [], truncated: true };
     }
+  }
+  if (evidenceState.truncated) {
+    metrics.truncationEvents += 1;
+    return { candidates: [], truncated: true };
   }
   return {
     candidates: [...candidates.values()].sort(
@@ -1648,6 +1674,11 @@ function analyzePythonFile(
   }
   metrics.filesAnalyzed += 1;
   const imports = pythonImports(file.text);
+  const evidenceState = { truncated: false };
+  const boundedPythonSteps = (steps: PythonFact["steps"]): PythonFact["steps"] => {
+    if (steps.length > MAX_EVIDENCE_STEPS) evidenceState.truncated = true;
+    return steps.slice(0, MAX_EVIDENCE_STEPS);
+  };
   const routeFunctions: Array<{
     from: number;
     to: number;
@@ -1703,14 +1734,14 @@ function analyzePythonFile(
     const control: "HTML_ESCAPE" | "HTML_SANITIZE" = htmlSanitize ? "HTML_SANITIZE" : "HTML_ESCAPE";
     return {
       ...fact,
-      steps: [
+      steps: boundedPythonSteps([
         ...fact.steps,
         {
           kind: "CONTROL" as const,
           label: `${control} applied by a provenance-backed supported Python library`,
           offset,
         },
-      ].slice(0, MAX_EVIDENCE_STEPS),
+      ]),
       controls: [...new Set([...(fact.controls ?? []), control])],
     };
   };
@@ -1774,14 +1805,14 @@ function analyzePythonFile(
       !recognizedHtmlCall && /\b(?!str\b|quote\b|urlencode\b)[A-Za-z_]\w*\s*\(/u.test(text);
     return applyPythonHtmlControl(text, offset, {
       ...used,
-      steps: [
+      steps: boundedPythonSteps([
         ...used.steps,
         {
           kind: "PROPAGATION" as const,
           label: `propagates through ${text.trim().slice(0, 80)}`,
           offset,
         },
-      ].slice(0, MAX_EVIDENCE_STEPS),
+      ]),
       unknownControl: used.unknownControl || customCall,
     } satisfies PythonFact);
   };
@@ -1799,15 +1830,26 @@ function analyzePythonFile(
       const name = assignment[1];
       const factKey = name === undefined ? undefined : `${route.from}:${name}`;
       if (factKey !== undefined && fact !== undefined && !facts.has(factKey)) {
+        if (facts.size >= MAX_FACTS) {
+          metrics.truncationEvents += 1;
+          return { candidates: [], truncated: true };
+        }
         facts.set(factKey, {
           ...fact,
-          steps: [...fact.steps, { label: `assigned to ${name}`, offset: range.from }],
+          steps: boundedPythonSteps([
+            ...fact.steps,
+            { label: `assigned to ${name}`, offset: range.from },
+          ]),
         });
         metrics.factsCreated += 1;
         changed = true;
       }
     }
     if (!changed) break;
+    if (iteration === MAX_ITERATIONS - 1) {
+      metrics.truncationEvents += 1;
+      return { candidates: [], truncated: true };
+    }
   }
 
   const addPythonCandidate = (
@@ -2058,7 +2100,7 @@ function analyzePythonFile(
         const proofFact: PythonFact = weakPrefix
           ? {
               ...fact,
-              steps: [
+              steps: boundedPythonSteps([
                 ...fact.steps,
                 {
                   kind: "CONTROL" as const,
@@ -2066,7 +2108,7 @@ function analyzePythonFile(
                     "SAME_ORIGIN_REDIRECT_POLICY textual startswith('/') check is contextually ineffective",
                   offset: range.from,
                 },
-              ].slice(0, MAX_EVIDENCE_STEPS),
+              ]),
             }
           : fact;
         addPythonCandidate(
@@ -2150,6 +2192,10 @@ function analyzePythonFile(
       `Proven ${route.method} Python route relies on ambient browser credentials without a supported anti-CSRF control.`,
       "AMBIENTLY_AUTHENTICATED_STATE_CHANGING_BROWSER_REQUESTS_MUST_PROVE_REQUEST_ORIGIN",
     );
+  }
+  if (evidenceState.truncated) {
+    metrics.truncationEvents += 1;
+    return { candidates: [], truncated: true };
   }
   return { candidates, truncated: false };
 }

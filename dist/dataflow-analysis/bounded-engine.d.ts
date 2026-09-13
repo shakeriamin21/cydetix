@@ -4,6 +4,7 @@ import type { SourceFile } from "../repository-discovery/traverse.js";
 import type { SecurityIr } from "../security-ir/model.js";
 import { type ApplicationDataflowAnalysis, type ApplicationDataflowKind } from "./model.js";
 export interface DataflowCandidate {
+    readonly evidenceTruncated?: boolean;
     readonly kind: ApplicationDataflowKind;
     readonly file: SourceFile;
     readonly startOffset: number;
