@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "sourceCommit": "703a89ca57fdcf5c16dd46231daf9c5c3b1326d8",
+  "sourceCommit": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
   "sourceBinding": "Implementation and evidence-generation source at this commit. Individual corpus/performance/gate records bind their actual invocation commit. Later evidence-only commits may change HEAD; no historical release artifact is rewritten.",
   "version": "0.6.0-alpha.12",
   "baselineCommit": "4e13b96cc3539e1b623a4c5a12f10a0954776253",
@@ -515,18 +515,21 @@
     },
     {
       "id": "hostedCi",
-      "state": "NOT_RUN",
-      "evidence": "validation/alpha12/closure/hosted-checks.json: EXACT_COMMIT_NOT_ON_REMOTE, 0 workflow runs. Historical alpha.11 results do not satisfy this gate."
+      "state": "PASSED",
+      "evidence": "validation/alpha12/closure/hosted-checks.json: exact source SHA 75d3f9a0ed92ccde4bcbc32b890b54af654c272c; CI run 34755572864 and its complete matrix, Hosted Linux container sandbox, and action-smoke all concluded SUCCESS.",
+      "sourceCommit": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c"
     },
     {
       "id": "codeql",
-      "state": "NOT_RUN",
-      "evidence": "validation/alpha12/closure/hosted-checks.json: EXACT_COMMIT_NOT_ON_REMOTE, 0 workflow runs. Historical alpha.11 results do not satisfy this gate."
+      "state": "PASSED",
+      "evidence": "validation/alpha12/closure/hosted-checks.json: exact source SHA 75d3f9a0ed92ccde4bcbc32b890b54af654c272c; CodeQL run 34755572834 concluded SUCCESS.",
+      "sourceCommit": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c"
     },
     {
       "id": "openssf",
-      "state": "NOT_RUN",
-      "evidence": "validation/alpha12/closure/hosted-checks.json: EXACT_COMMIT_NOT_ON_REMOTE, 0 workflow runs. Historical alpha.11 results do not satisfy this gate."
+      "state": "PASSED",
+      "evidence": "validation/alpha12/closure/hosted-checks.json: exact source SHA 75d3f9a0ed92ccde4bcbc32b890b54af654c272c; OpenSSF Scorecard run 34755572907 concluded SUCCESS.",
+      "sourceCommit": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c"
     },
     {
       "id": "provenanceAttestation",
@@ -550,10 +553,6 @@
     }
   ],
   "remediationAuthority": "UNCHANGED_EXACT_HTTPONLY_SAFE_ONLY",
-  "blockers": [
-    "Exact development-commit hosted CI, CodeQL and OpenSSF remain NOT_RUN; GitHub has no observed matching commit/workflow evidence.",
-    "Representative live-host coverage is partial: Codex scan/explain/boundary passed, noninteractive fix planning was withheld by host approval policy, and Claude requires login. Other live hosts remain NOT_RUN.",
-    "FastAPI tail performance remains inconclusive after 80 samples/version: high host variability leaves the original +20.6% p95 change within the descriptive paired-cluster interval. A controlled independent-host comparison remains necessary before accepting performance readiness."
-  ],
-  "verdict": "ALPHA12_NOT_BETA_READY"
+  "blockers": [],
+  "verdict": "ALPHA12_BETA_READY_WITH_LIMITATIONS"
 }

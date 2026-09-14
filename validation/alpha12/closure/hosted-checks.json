@@ -1,8 +1,8 @@
 {
   "schemaVersion": "1.0.0",
-  "sourceCommit": "703a89ca57fdcf5c16dd46231daf9c5c3b1326d8",
+  "sourceCommit": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
   "repository": "shakeriamin21/cydetix",
-  "observedAt": "2026-09-13T10:42:20.418Z",
+  "observedAt": "2026-09-13T12:13:17.694Z",
   "method": "Unauthenticated, read-only GitHub REST requests. No dispatch, push or release action.",
   "results": {
     "repository": {
@@ -13,13 +13,19 @@
       "defaultBranch": "main"
     },
     "commit": {
-      "url": "https://api.github.com/repos/shakeriamin21/cydetix/commits/703a89ca57fdcf5c16dd46231daf9c5c3b1326d8",
-      "status": 422,
+      "url": "https://github.com/shakeriamin21/cydetix/commit/75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+      "status": 200,
       "pagination": null,
-      "message": "No commit found for SHA: 703a89ca57fdcf5c16dd46231daf9c5c3b1326d8"
+      "sha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+      "authorLogin": "shakeriamin21",
+      "committerLogin": "shakeriamin21",
+      "verification": {
+        "verified": false,
+        "reason": "unsigned"
+      }
     },
     "status": {
-      "url": "https://api.github.com/repos/shakeriamin21/cydetix/commits/703a89ca57fdcf5c16dd46231daf9c5c3b1326d8/status",
+      "url": "https://api.github.com/repos/shakeriamin21/cydetix/commits/75d3f9a0ed92ccde4bcbc32b890b54af654c272c/status",
       "status": 200,
       "pagination": null,
       "state": "pending",
@@ -27,17 +33,203 @@
       "statuses": []
     },
     "checkRuns": {
-      "url": "https://api.github.com/repos/shakeriamin21/cydetix/commits/703a89ca57fdcf5c16dd46231daf9c5c3b1326d8/check-runs?per_page=100",
-      "status": 422,
-      "pagination": null,
-      "message": "No commit found for SHA: 703a89ca57fdcf5c16dd46231daf9c5c3b1326d8"
-    },
-    "workflowRuns": {
-      "url": "https://api.github.com/repos/shakeriamin21/cydetix/actions/runs?head_sha=703a89ca57fdcf5c16dd46231daf9c5c3b1326d8&per_page=100",
+      "url": "https://api.github.com/repos/shakeriamin21/cydetix/commits/75d3f9a0ed92ccde4bcbc32b890b54af654c272c/check-runs?per_page=100",
       "status": 200,
       "pagination": null,
-      "totalCount": 0,
-      "runs": []
+      "totalCount": 19,
+      "checks": [
+        {
+          "name": "verify (ubuntu-latest, 24.11.0)",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755572864/job/103719244861"
+        },
+        {
+          "name": "verify (macos-latest, 22.18.0)",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755572864/job/103719244834"
+        },
+        {
+          "name": "verify (macos-latest, 24.11.0)",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755572864/job/103719244825"
+        },
+        {
+          "name": "verify (ubuntu-latest, 22.18.0)",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755572864/job/103719244798"
+        },
+        {
+          "name": "verify (windows-latest, 24.11.0)",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755572864/job/103719244767"
+        },
+        {
+          "name": "Hosted Linux container sandbox",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755572864/job/103719244738"
+        },
+        {
+          "name": "verify (windows-latest, 22.18.0)",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755572864/job/103719244718"
+        },
+        {
+          "name": "action-smoke",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755572864/job/103719244626"
+        },
+        {
+          "name": "OpenSSF Scorecard analysis",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755572907/job/103719244372"
+        },
+        {
+          "name": "analyze",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755572834/job/103719244114"
+        },
+        {
+          "name": "verify (windows-latest, 24.11.0)",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755256056/job/103718431136"
+        },
+        {
+          "name": "verify (ubuntu-latest, 22.18.0)",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755256056/job/103718431130"
+        },
+        {
+          "name": "verify (ubuntu-latest, 24.11.0)",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755256056/job/103718431115"
+        },
+        {
+          "name": "verify (macos-latest, 22.18.0)",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755256056/job/103718431081"
+        },
+        {
+          "name": "verify (windows-latest, 22.18.0)",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755256056/job/103718431069"
+        },
+        {
+          "name": "verify (macos-latest, 24.11.0)",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755256056/job/103718431045"
+        },
+        {
+          "name": "action-smoke",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755256056/job/103718431029"
+        },
+        {
+          "name": "Hosted Linux container sandbox",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755256056/job/103718430967"
+        },
+        {
+          "name": "analyze",
+          "status": "completed",
+          "conclusion": "success",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755252745/job/103718423068"
+        }
+      ]
+    },
+    "workflowRuns": {
+      "url": "https://api.github.com/repos/shakeriamin21/cydetix/actions/runs?head_sha=75d3f9a0ed92ccde4bcbc32b890b54af654c272c&per_page=100",
+      "status": 200,
+      "pagination": null,
+      "totalCount": 5,
+      "runs": [
+        {
+          "id": 34755572834,
+          "name": "CodeQL",
+          "event": "push",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "headBranch": "main",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755572834"
+        },
+        {
+          "id": 34755572907,
+          "name": "OpenSSF Scorecard",
+          "event": "push",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "headBranch": "main",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755572907"
+        },
+        {
+          "id": 34755572864,
+          "name": "CI",
+          "event": "push",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "headBranch": "main",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755572864"
+        },
+        {
+          "id": 34755256056,
+          "name": "CI",
+          "event": "workflow_dispatch",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "headBranch": "alpha12-beta-readiness",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755256056"
+        },
+        {
+          "id": 34755252745,
+          "name": "CodeQL",
+          "event": "workflow_dispatch",
+          "headSha": "75d3f9a0ed92ccde4bcbc32b890b54af654c272c",
+          "headBranch": "alpha12-beta-readiness",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/shakeriamin21/cydetix/actions/runs/34755252745"
+        }
+      ]
     },
     "offendingCommit": {
       "url": "https://github.com/shakeriamin21/cydetix/commit/d8b3d5a10f4c878c413a388d6f640fa390cb4b5b",
@@ -52,7 +244,7 @@
       }
     }
   },
-  "conclusion": "EXACT_COMMIT_NOT_ON_REMOTE",
+  "conclusion": "REQUIRES_CHECK_REVIEW",
   "limitations": [
     "HTTP errors and authentication failures are not passing checks. Pagination, if present, prevents a complete check inventory.",
     "Local passing gates and historical release checks do not establish exact-commit hosted validation."

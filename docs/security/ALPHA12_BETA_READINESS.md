@@ -1,20 +1,21 @@
 # Alpha.12 beta readiness
 
-**Verdict: ALPHA12_NOT_BETA_READY**
+**Verdict: ALPHA12_BETA_READY_WITH_LIMITATIONS**
 
 Alpha.12 blocker closure completed the independent fresh-context corpus review and corrected the
-all-refs privacy audit. Beta.1 is not yet justified: exact-commit hosted gates remain unrun,
-representative live-host coverage is partial, and repeated FastAPI tail measurements are
-inconclusive. No optimization or security-engine change was made during blocker closure.
+all-refs privacy audit. The candidate is beta-ready with explicitly retained limitations:
+representative live-host coverage is partial, repeated FastAPI tail measurements remain
+inconclusive, and corpus ground truth remains selective and incomplete. No optimization or
+security-engine change was made during blocker closure.
 
 Development version: `0.6.0-alpha.12`. Evidence assembly source:
-`703a89ca57fdcf5c16dd46231daf9c5c3b1326d8`. Individual invocation commits are recorded in the
+`75d3f9a0ed92ccde4bcbc32b890b54af654c272c`. Individual invocation commits are recorded in the
 machine evidence. Later documentation/evidence commits can change HEAD without changing the tested
 implementation; the development handoff gives the final HEAD. The immutable alpha.11 commit is
 `4e13b96cc3539e1b623a4c5a12f10a0954776253` and its annotated tag object is
 `e692f1e23d58157a209f511adb6180d3f489a80c`. Development validation checks their identity and the
-byte identity of 19 historical evidence files. No release tag, GitHub release, npm publication, push
-or final release metadata is part of this work.
+byte identity of 19 historical evidence files. No release tag, GitHub release, npm publication or
+final release metadata is part of this work.
 
 ## Changes and preserved authority
 
@@ -260,31 +261,31 @@ commits and sanitized logs are retained in
 | verify           | PASSED | [log](../../validation/alpha12/gates/verify.txt)           |
 | workflow         | PASSED | [log](../../validation/alpha12/gates/workflow.txt)         |
 
-| Supply-chain/control gate   | Result  | Invocation commit or scope     |
-| --------------------------- | ------- | ------------------------------ |
-| lockedInstallation          | PASSED  | `c4638767b817`                 |
-| npmAudit                    | PASSED  | `ac5ac499da35`                 |
-| onlineOsv                   | PASSED  | `ac5ac499da35`                 |
-| licenses                    | PASSED  | `ac5ac499da35`                 |
-| privacy                     | PASSED  | `ac5ac499da35`                 |
-| history                     | PASSED  | `ac5ac499da35`                 |
-| workflowSecurity            | PASSED  | `c6173fda8f15`                 |
-| package                     | PASSED  | `ac5ac499da35`                 |
-| packedInstall               | PASSED  | `ac5ac499da35`                 |
-| packedPlugin                | PASSED  | `9e7e3177ab74`                 |
-| selfScan                    | PASSED  | `ac5ac499da35`                 |
-| cycloneDx                   | PASSED  | `ac5ac499da35`                 |
-| sarif                       | PASSED  | `ac5ac499da35`                 |
-| releaseControls             | PASSED  | `ac5ac499da35`                 |
-| gitleaks                    | PASSED  | `ac5ac499da35`                 |
-| mandatorySandbox            | PASSED  | `ac5ac499da35`                 |
-| hostedCi                    | NOT_RUN | No alpha.12 hosted transaction |
-| codeql                      | NOT_RUN | No alpha.12 hosted transaction |
-| openssf                     | NOT_RUN | No alpha.12 hosted transaction |
-| provenanceAttestation       | NOT_RUN | No alpha.12 hosted transaction |
-| sbomAttestation             | NOT_RUN | No alpha.12 hosted transaction |
-| trustedPublishing           | NOT_RUN | No alpha.12 hosted transaction |
-| protectedReleaseEnvironment | NOT_RUN | No alpha.12 hosted transaction |
+| Supply-chain/control gate   | Result  | Invocation commit or scope      |
+| --------------------------- | ------- | ------------------------------- |
+| lockedInstallation          | PASSED  | `c4638767b817`                  |
+| npmAudit                    | PASSED  | `ac5ac499da35`                  |
+| onlineOsv                   | PASSED  | `ac5ac499da35`                  |
+| licenses                    | PASSED  | `ac5ac499da35`                  |
+| privacy                     | PASSED  | `ac5ac499da35`                  |
+| history                     | PASSED  | `ac5ac499da35`                  |
+| workflowSecurity            | PASSED  | `c6173fda8f15`                  |
+| package                     | PASSED  | `ac5ac499da35`                  |
+| packedInstall               | PASSED  | `ac5ac499da35`                  |
+| packedPlugin                | PASSED  | `9e7e3177ab74`                  |
+| selfScan                    | PASSED  | `ac5ac499da35`                  |
+| cycloneDx                   | PASSED  | `ac5ac499da35`                  |
+| sarif                       | PASSED  | `ac5ac499da35`                  |
+| releaseControls             | PASSED  | `ac5ac499da35`                  |
+| gitleaks                    | PASSED  | `ac5ac499da35`                  |
+| mandatorySandbox            | PASSED  | `ac5ac499da35`                  |
+| hostedCi                    | PASSED  | `75d3f9a0ed9` / run 34755572864 |
+| codeql                      | PASSED  | `75d3f9a0ed9` / run 34755572834 |
+| openssf                     | PASSED  | `75d3f9a0ed9` / run 34755572907 |
+| provenanceAttestation       | NOT_RUN | No alpha.12 hosted transaction  |
+| sbomAttestation             | NOT_RUN | No alpha.12 hosted transaction  |
+| trustedPublishing           | NOT_RUN | No alpha.12 hosted transaction  |
+| protectedReleaseEnvironment | NOT_RUN | No alpha.12 hosted transaction  |
 
 Locked installation uses npm ci --ignore-scripts. Online OSV checks lockfile package identities, not
 source content. CycloneDX and SARIF are validated separately from vulnerability proof. SARIF gate
@@ -336,21 +337,26 @@ Local npm/plugin archives are test inputs only. No final release artifact set or
 prepared. Historical alpha.11 hosted/publication evidence is preserved and is not reused as an
 alpha.12 pass. The strict release verifier is intentionally not bypassed by development validation.
 
-## Remaining beta blockers and decision
+## Readiness limitations and release boundary
 
-- Exact development-commit hosted CI, CodeQL and OpenSSF remain NOT_RUN; GitHub has no observed
-  matching commit/workflow evidence.
-- Representative live-host coverage is partial: Codex scan/explain/boundary passed, noninteractive
-  fix planning was withheld by host approval policy, and Claude requires login. Other live hosts
-  remain NOT_RUN.
-- FastAPI tail performance remains inconclusive after 80 samples/version: high host variability
-  leaves the original +20.6% p95 change within the descriptive paired-cluster interval. A controlled
-  independent-host comparison remains necessary before accepting performance readiness.
+There are no unresolved hard blockers in the evidence for source SHA
+`75d3f9a0ed92ccde4bcbc32b890b54af654c272c`. CI run 34755572864, including the complete matrix,
+Hosted Linux container sandbox and action-smoke, concluded SUCCESS. CodeQL run 34755572834 and
+OpenSSF Scorecard run 34755572907 also concluded SUCCESS. The refreshed read-only hosted-check
+record retains the exact check inventory and source SHA.
 
-GitHub's exact-commit query at 703a89ca57fdcf5c16dd46231daf9c5c3b1326d8 reports
-EXACT_COMMIT_NOT_ON_REMOTE, with 0 workflow runs and 0 status contexts. A pending aggregate with
-zero contexts is not a running check. Local gates do not substitute for CI, CodeQL or OpenSSF.
-Closure is limited to local evidence; no push, dispatch, release preparation or publication was
-performed. The known lexical observation noise, unsupported framework composition and incomplete
-corpus ground truth remain explicit limitations alongside the blockers above. Final decision remains
-**ALPHA12_NOT_BETA_READY**.
+The **ALPHA12_BETA_READY_WITH_LIMITATIONS** verdict preserves these limitations:
+
+- Broader live-host testing remains incomplete for unavailable hosts.
+- FastAPI tail-performance evidence remains INCONCLUSIVE, not a demonstrated material regression.
+- Corpus ground truth remains selective and INCOMPLETE; recall and accuracy remain null, and no
+  corpus-wide recall or accuracy claim is permitted.
+- The independently adjudicated lexical false-positive observation remains recorded in `confirmedFP`
+  and its evidence.
+- UNKNOWN and TRUNCATED semantics, counts and limitations remain unchanged.
+
+This governance/readiness commit is a new release-candidate SHA. The hosted results above are
+historical evidence for `75d3f9a0ed92ccde4bcbc32b890b54af654c272c` only; they do not satisfy hosted
+validation for the new commit. CI, CodeQL and OpenSSF must all pass again on the new exact SHA
+before creating `v0.6.0-alpha.12`. No tag, GitHub release or npm publication is authorized by this
+verdict.

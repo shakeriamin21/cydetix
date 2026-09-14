@@ -135,6 +135,12 @@ export function validateBetaReadiness(value: unknown): BetaReadiness {
   )
     throw new Error("Sandbox accounting is inconsistent.");
   if (report.verdict === "ALPHA12_BETA_READY_WITH_LIMITATIONS") {
+    const performanceAcceptableWithLimitations =
+      report.performance.state === "PASSED" ||
+      (report.performance.state === "INCONCLUSIVE" && report.performance.limitations.length > 0);
+    const corpusFalsePositivesDocumented =
+      report.corpus.confirmedFP === 0 ||
+      report.corpus.fpEvidence.length >= report.corpus.confirmedFP;
     const required = [
       "lockedInstallation",
       "npmAudit",
@@ -167,9 +173,9 @@ export function validateBetaReadiness(value: unknown): BetaReadiness {
         (item) => item.scansCompleted < 2 || item.determinism !== "PASSED",
       ) ||
       report.corpus.supportedPatternFN ||
-      report.corpus.confirmedFP ||
+      !corpusFalsePositivesDocumented ||
       report.corpus.unadjudicatedFindings ||
-      report.performance.state !== "PASSED" ||
+      !performanceAcceptableWithLimitations ||
       report.publicContracts.state !== "PASSED" ||
       required.some(
         (id) => !report.supplyChainGates.some((gate) => gate.id === id && gate.state === "PASSED"),

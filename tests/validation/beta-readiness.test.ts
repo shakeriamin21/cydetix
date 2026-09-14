@@ -117,11 +117,33 @@ describe("beta readiness evidence gates", () => {
   it("accepts a complete synthetic positive and does not require unsupported code to become secure", () => {
     expect(validateBetaReadiness(passing()).corpus.unknown.applicationDataflow).toBe(2);
   });
+  it("accepts explicitly documented non-blocking limitations without rewriting them", () => {
+    const report = passing();
+    report.performance.state = "INCONCLUSIVE";
+    report.corpus.confirmedFP = 1;
+    report.corpus.fpEvidence = ["adjudicated lexical false-positive observation retained"];
+
+    const validated = validateBetaReadiness(report);
+    expect(validated.performance.state).toBe("INCONCLUSIVE");
+    expect(validated.corpus.confirmedFP).toBe(1);
+  });
   it.each([
     [
       "missing hosted gate",
       (r: BetaReadiness) => {
         r.supplyChainGates = r.supplyChainGates.filter((g) => g.id !== "hostedCi");
+      },
+    ],
+    [
+      "missing mandatory local gate",
+      (r: BetaReadiness) => {
+        r.supplyChainGates = r.supplyChainGates.filter((g) => g.id !== "workflowSecurity");
+      },
+    ],
+    [
+      "failed reviewed-secret gate",
+      (r: BetaReadiness) => {
+        first(r.supplyChainGates.filter((g) => g.id === "gitleaks")).state = "FAILED";
       },
     ],
     [
@@ -142,6 +164,31 @@ describe("beta readiness evidence gates", () => {
       "supported false negative",
       (r: BetaReadiness) => {
         r.corpus.supportedPatternFN++;
+      },
+    ],
+    [
+      "undocumented false positive",
+      (r: BetaReadiness) => {
+        r.corpus.confirmedFP = 1;
+      },
+    ],
+    [
+      "demonstrated performance regression",
+      (r: BetaReadiness) => {
+        r.performance.state = "FAILED";
+      },
+    ],
+    [
+      "performance evidence not run",
+      (r: BetaReadiness) => {
+        r.performance.state = "NOT_RUN";
+      },
+    ],
+    [
+      "inconclusive performance without a documented limitation",
+      (r: BetaReadiness) => {
+        r.performance.state = "INCONCLUSIVE";
+        r.performance.limitations = [];
       },
     ],
     [
