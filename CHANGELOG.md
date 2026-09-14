@@ -27,6 +27,9 @@ package; report and rule schemas are versioned independently.
 - Cache source coordinates and index repeated evidence/symbol lookups without changing their order
   or content. Record 30 pinned deterministic scan pairs, scoped adjudication, comparative
   performance, eleven adapter launch checks and machine-readable beta-readiness gates.
+- Align `ALPHA12_BETA_READY_WITH_LIMITATIONS` validation with documented non-blocking limitations:
+  retain inconclusive performance and adjudicated false-positive evidence while continuing to reject
+  unresolved hard blockers and missing mandatory gates.
 
 ## [0.6.0-alpha.11] - 2026-09-12
 
