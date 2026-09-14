@@ -2,6 +2,13 @@ import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
+function developmentChildEnvironment(): NodeJS.ProcessEnv {
+  const environment = { ...process.env };
+  delete environment.CYDETIX_EXPECTED_TAG;
+  delete environment.GITHUB_REF_TYPE;
+  return environment;
+}
+
 describe("explicit development and release boundaries", () => {
   it("preserves every verification step while validating historical release evidence separately", () => {
     const pkg = JSON.parse(readFileSync("package.json", "utf8")) as {
@@ -17,6 +24,7 @@ describe("explicit development and release boundaries", () => {
       shell: false,
       windowsHide: true,
       timeout: 30_000,
+      env: developmentChildEnvironment(),
     });
     expect(result.status, result.stderr).toBe(0);
     expect(result.stdout).toContain(
@@ -24,16 +32,22 @@ describe("explicit development and release boundaries", () => {
     );
   });
 
-  it("refuses to substitute development evidence in a release context", () => {
+  it.each([
+    ["CYDETIX_EXPECTED_TAG", { CYDETIX_EXPECTED_TAG: "v0.6.0-alpha.12" }],
+    ["GITHUB_REF_TYPE", { GITHUB_REF_TYPE: "tag" }],
+  ])("refuses a release context selected by %s", (_selector, releaseEnvironment) => {
     const result = spawnSync(process.execPath, ["scripts/validate-development.mjs"], {
       encoding: "utf8",
       shell: false,
       windowsHide: true,
       timeout: 30_000,
-      env: { ...process.env, CYDETIX_EXPECTED_TAG: "v0.6.0-alpha.12" },
+      env: { ...developmentChildEnvironment(), ...releaseEnvironment },
     });
     expect(result.status).not.toBe(0);
     expect(result.stderr).toContain("Development validation cannot validate a release tag");
+  });
+
+  it("keeps complete verification in the release workflow", () => {
     const workflow = readFileSync(".github/workflows/release.yml", "utf8");
     expect(workflow).toContain("run: npm run verify\n");
     expect(workflow).not.toContain("verify:development");
