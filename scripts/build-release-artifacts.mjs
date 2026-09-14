@@ -5,6 +5,8 @@ import path from "node:path";
 
 import { scanRepository } from "../dist/core/engine.js";
 import { generateCycloneDxSbom } from "../dist/supply-chain/sbom.js";
+import { releaseValidationReportSchema } from "../dist/validation/release.js";
+import { versionedReleaseReportPath } from "../dist/validation/release-evidence.js";
 
 const root = path.resolve(".");
 const preview = process.argv.includes("--preview");
@@ -180,9 +182,22 @@ const gitleaks = await readFile(
 const osv = await readFile(path.join(root, ".cydetix", "evidence", "osv-online.json"), "utf8")
   .then(JSON.parse)
   .catch(() => ({ state: "NOT_CHECKED" }));
-const phase6bValidation = JSON.parse(
-  await readFile(path.join(root, "validation", "validation-report.json"), "utf8"),
-);
+const currentReportPath = path.join(root, versionedReleaseReportPath(packageJson.version));
+const phase6bValidation = await readFile(currentReportPath, "utf8")
+  .then(JSON.parse)
+  .then((report) => releaseValidationReportSchema.parse(report))
+  .catch((error) => {
+    if (error?.code !== "ENOENT") throw error;
+    if (process.env.GITHUB_REF_TYPE === "tag" || process.env.CYDETIX_EXPECTED_TAG !== undefined)
+      throw new Error("Current versioned release evidence is mandatory in a tag release context.");
+    return undefined;
+  });
+if (
+  phase6bValidation !== undefined &&
+  (phase6bValidation.product.name !== packageJson.name ||
+    phase6bValidation.product.version !== packageJson.version)
+)
+  throw new Error("Current versioned release evidence does not match the package identity.");
 const declaredState = (name) => process.env[name] ?? "NOT_CHECKED";
 const checks = {
   historicalTests: declaredState("CYDETIX_HISTORICAL_TESTS_STATE"),
@@ -207,7 +222,10 @@ const checks = {
   openssfScorecard: process.env.CYDETIX_OPENSSF_STATE ?? "NOT_CHECKED",
 };
 const releaseCandidateState =
-  publication.decision === "APPROVED" && Object.values(checks).every((state) => state === "PASS")
+  phase6bValidation !== undefined &&
+  phase6bValidation.verdict !== "NOT_READY_FOR_PUBLIC_USE" &&
+  publication.decision === "APPROVED" &&
+  Object.values(checks).every((state) => state === "PASS")
     ? "RELEASE_CANDIDATE"
     : "NOT_READY_FOR_PUBLICATION";
 const phase7Validation = {
@@ -218,16 +236,23 @@ const phase7Validation = {
   sourceCommit,
   sourceState,
   checks,
-  phase6bEvidence: {
-    verdict: phase6bValidation.verdict,
-    evidenceOrigin: phase6bValidation.product.evidenceOrigin,
-    ...(phase6bValidation.product.publicSourceCommit === undefined
-      ? {}
-      : { publicSourceCommit: phase6bValidation.product.publicSourceCommit }),
-    sandboxState: phase6bValidation.sandbox.state,
-    tests: phase6bValidation.tests,
-    environment: phase6bValidation.environment,
-  },
+  phase6bEvidence:
+    phase6bValidation === undefined
+      ? {
+          state: "NOT_GENERATED",
+          reportPath: path.relative(root, currentReportPath).replaceAll("\\", "/"),
+        }
+      : {
+          state: "CURRENT_VERSIONED_REPORT",
+          verdict: phase6bValidation.verdict,
+          evidenceOrigin: phase6bValidation.product.evidenceOrigin,
+          ...(phase6bValidation.product.publicSourceCommit === undefined
+            ? {}
+            : { publicSourceCommit: phase6bValidation.product.publicSourceCommit }),
+          sandboxState: phase6bValidation.sandbox.state,
+          tests: phase6bValidation.tests,
+          environment: phase6bValidation.environment,
+        },
 };
 const validationName = `cydetix-release-validation-${packageJson.version}.json`;
 const validationPath = path.join(destination, validationName);
@@ -274,7 +299,7 @@ const publicReleaseManifest = {
   runtime: {
     generatedWith: { node: nodeVersion, npm: npmVersion },
     supportedNode: ["22.18+ within Node 22", "24.11+ within Node 24"],
-    phase6bSandboxEnvironment: phase6bValidation.environment,
+    phase6bSandboxEnvironment: phase6bValidation?.environment ?? null,
   },
   artifacts,
   lockfile,
@@ -288,7 +313,9 @@ const publicReleaseManifest = {
     githubArtifactAttestation: "WORKFLOW_CONFIGURED_NOT_EXECUTED",
     sbomAttestation: "WORKFLOW_CONFIGURED_NOT_EXECUTED",
   },
-  knownLimitations: phase6bValidation.knownLimitations,
+  knownLimitations: phase6bValidation?.knownLimitations ?? [
+    `Current release evidence ${path.relative(root, currentReportPath).replaceAll("\\", "/")} has not been generated; this bootstrap artifact set is not publication-ready.`,
+  ],
 };
 const publicManifestPath = path.join(destination, "release-manifest.json");
 await writeFile(publicManifestPath, `${JSON.stringify(publicReleaseManifest, null, 2)}\n`, "utf8");

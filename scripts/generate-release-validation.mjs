@@ -3,6 +3,12 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 import { releaseValidationReportSchema } from "../dist/validation/release.js";
+import {
+  assessReleaseTagIntegrity,
+  mandatoryReleaseCheckIds,
+  releaseHistorySchema,
+  versionedReleaseReportPath,
+} from "../dist/validation/release-evidence.js";
 import { createContainerSandboxRunner } from "../dist/verification/runner.js";
 
 const root = path.resolve(".");
@@ -130,7 +136,28 @@ const filesSkipped = fileResults.filter((status) => status === "skipped").length
 const testsSkipped = testReport.numPendingTests ?? 0;
 const implementationCommit = git(["rev-parse", "HEAD"]);
 const publicCommitCount = Number(git(["rev-list", "--count", "--all"]));
-const publicTags = git(["tag", "--list"]).split("\n").filter(Boolean);
+const releaseHistory = releaseHistorySchema.parse(
+  JSON.parse(
+    await readFile(path.resolve("validation", "releases", "release-history.json"), "utf8"),
+  ),
+);
+const observedTags = git(["tag", "--list", "v*"])
+  .split("\n")
+  .filter(Boolean)
+  .map((tag) => ({
+    tag,
+    type: git(["cat-file", "-t", `refs/tags/${tag}`]),
+    object: git(["rev-parse", `refs/tags/${tag}`]),
+    target: git(["rev-parse", `refs/tags/${tag}^{}`]),
+  }));
+const expectedCurrentTag =
+  process.env.CYDETIX_EXPECTED_TAG ??
+  (process.env.GITHUB_REF_TYPE === "tag" ? process.env.GITHUB_REF_NAME : undefined);
+const releaseTagIntegrity = assessReleaseTagIntegrity(releaseHistory, observedTags, {
+  currentVersion: packageJson.version,
+  currentHead: implementationCommit,
+  ...(expectedCurrentTag === undefined ? {} : { expectedCurrentTag }),
+});
 const externalConsistent =
   corpora[0]?.counts?.truePositive === 6 &&
   corpora[0]?.counts?.falsePositive === 0 &&
@@ -343,8 +370,20 @@ const checks = [
   },
   {
     id: "clean-public-lineage",
-    state: publicCommitCount >= 1 && publicTags.length === 0 ? "executed_pass" : "executed_fail",
-    evidence: `${publicCommitCount} commit(s) are reachable in the clean public lineage; ${publicTags.length} tag(s) exist before publication approval.`,
+    state:
+      publicCommitCount >= 1 && releaseTagIntegrity.state === "PASS"
+        ? "executed_pass"
+        : "executed_fail",
+    evidence:
+      releaseTagIntegrity.state === "PASS"
+        ? `${publicCommitCount} commit(s) are reachable; ${releaseTagIntegrity.historicalTagsVerified} annotated historical release tag identities match the registry${releaseTagIntegrity.currentTag === null ? "; no current release tag context was asserted" : `; current release tag ${releaseTagIntegrity.currentTag} is annotated and targets HEAD`}.`
+        : `Release-tag integrity failed: ${releaseTagIntegrity.issues.join(" ")}`,
+    controls: [
+      "annotated historical tag object identity",
+      "historical tag target identity",
+      "current-version tag context",
+      "unexpected release-tag rejection",
+    ],
   },
   {
     id: "cross-platform-ci-matrix",
@@ -361,30 +400,7 @@ const checks = [
   },
 ];
 
-const mandatoryChecks = new Set([
-  "source-state",
-  "git-history-privacy",
-  "complete-test-suite",
-  "container-capability",
-  "previously-gated-five",
-  "network-denial",
-  "environment-and-host-filesystem-isolation",
-  "container-privilege-controls",
-  "resource-and-timeout-enforcement",
-  "ephemeral-workspace-cleanup",
-  "ordinary-scan-hostile-repository",
-  "no-silent-local-fallback",
-  "authorized-command-entrypoint-integrity",
-  "sandboxed-remediation-end-to-end",
-  "sandboxed-verification-rollback",
-  "sandbox-output-redaction-and-terminal-safety",
-  "stored-external-results-integrity",
-  "self-scan",
-  "packed-install-current-host",
-  "packed-plugin",
-  "release-artifacts",
-  "clean-public-lineage",
-]);
+const mandatoryChecks = new Set(mandatoryReleaseCheckIds);
 const mandatoryPassed = checks
   .filter((check) => mandatoryChecks.has(check.id))
   .every((check) => check.state === "executed_pass");
@@ -474,11 +490,9 @@ const validation = releaseValidationReportSchema.parse({
   ],
 });
 await mkdir(resultsDirectory, { recursive: true });
-await writeFile(
-  path.resolve("validation", "validation-report.json"),
-  `${JSON.stringify(validation, null, 2)}\n`,
-  "utf8",
-);
+const validationPath = path.resolve(versionedReleaseReportPath(packageJson.version));
+await mkdir(path.dirname(validationPath), { recursive: true });
+await writeFile(validationPath, `${JSON.stringify(validation, null, 2)}\n`, "utf8");
 process.stdout.write(
   `Generated release validation ${validation.verdict} for ${validation.product.publicSourceCommit}.\n`,
 );

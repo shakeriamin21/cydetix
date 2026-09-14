@@ -2,7 +2,10 @@ import { createHash } from "node:crypto";
 import { readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-const source = path.resolve("validation", "validation-report.json");
+import { versionedReleaseReportPath } from "../dist/validation/release-evidence.js";
+
+const packageJson = JSON.parse(await readFile("package.json", "utf8"));
+const source = path.resolve(versionedReleaseReportPath(packageJson.version));
 const releaseDirectory = path.resolve(
   process.env.CYDETIX_RELEASE_DIR ?? path.join(".cydetix", "release"),
 );

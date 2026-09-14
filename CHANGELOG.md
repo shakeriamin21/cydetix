@@ -5,6 +5,19 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+- Version release-validation reports under `validation/releases/v<version>/` so immutable historical
+  evidence and current candidate evidence no longer compete for one mutable path. Validate
+  historical snapshots against their annotated tag objects and targets, resolve current evidence
+  from the package version, reject stale or contradictory reports, and replace the obsolete zero-tag
+  lineage assumption with explicit historical/current release-tag integrity checks.
+
+The `v0.6.0-alpha.12` tag is an immutable failed release attempt. Annotated tag object
+`c03f2a1e72af312266f68d66ac4183e0c00511bd` targets `5bf295f53f4ca912a79715fd1ea455a31b72a585`.
+Trusted release run `34821381636` failed during the complete `npm run verify` suite because a
+positive development-validation test inherited the tag environment. Publication was skipped: no
+alpha.12 npm package or public GitHub release was created. This was release-test isolation failure,
+not a newly discovered security-engine defect, and the tag must not be moved or reused.
+
 ## [0.6.0-alpha.12] - 2026-09-14
 
 - Reject empty or incomplete complete-history Gitleaks reports when immutable reviewed findings are

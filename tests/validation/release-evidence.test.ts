@@ -1,0 +1,279 @@
+import { readFileSync } from "node:fs";
+import { mkdtemp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import path from "node:path";
+
+import { describe, expect, it } from "vitest";
+
+import {
+  assessReleaseTagIntegrity,
+  readVersionedReleaseReport,
+  releaseHistorySchema,
+  validateCurrentReleaseReport,
+  verifyHistoricalEvidenceSnapshot,
+  versionedReleaseReportPath,
+} from "../../src/validation/release-evidence.js";
+import {
+  releaseValidationReportSchema,
+  type ReleaseValidationReport,
+} from "../../src/validation/release.js";
+
+const history = releaseHistorySchema.parse(
+  JSON.parse(readFileSync("validation/releases/release-history.json", "utf8")),
+);
+
+const observedHistoricalTags = history.tags.map((tag) => ({
+  tag: tag.tag,
+  type: "tag",
+  object: tag.object,
+  target: tag.target,
+}));
+
+function currentReportFixture(): ReleaseValidationReport {
+  const report = releaseValidationReportSchema.parse(
+    JSON.parse(
+      readFileSync("validation/releases/v0.6.0-alpha.11/validation-report.json", "utf8"),
+    ) as unknown,
+  );
+  report.product.version = "0.6.0-beta.1";
+  report.product.publicSourceCommit = "a".repeat(40);
+  return report;
+}
+
+describe("versioned release evidence", () => {
+  it("accepts multiple legitimate immutable historical tags", () => {
+    const result = assessReleaseTagIntegrity(history, observedHistoricalTags, {
+      currentVersion: "0.6.0-beta.1",
+      currentHead: "b".repeat(40),
+    });
+    expect(result).toMatchObject({
+      state: "PASS",
+      historicalTagsVerified: history.tags.length,
+      currentTag: null,
+      issues: [],
+    });
+  });
+
+  it("accepts one annotated current release tag targeting HEAD in tag context", () => {
+    const head = "b".repeat(40);
+    const result = assessReleaseTagIntegrity(
+      history,
+      [
+        ...observedHistoricalTags,
+        { tag: "v0.6.0-beta.1", type: "tag", object: "c".repeat(40), target: head },
+      ],
+      {
+        currentVersion: "0.6.0-beta.1",
+        currentHead: head,
+        expectedCurrentTag: "v0.6.0-beta.1",
+      },
+    );
+    expect(result.state).toBe("PASS");
+    expect(result.currentTag).toBe("v0.6.0-beta.1");
+  });
+
+  it("rejects a changed historical tag target", () => {
+    const observed = structuredClone(observedHistoricalTags);
+    const alpha11 = observed.find((tag) => tag.tag === "v0.6.0-alpha.11");
+    if (alpha11 === undefined) throw new Error("Alpha.11 fixture is missing.");
+    alpha11.target = "d".repeat(40);
+    const result = assessReleaseTagIntegrity(history, observed, {
+      currentVersion: "0.6.0-beta.1",
+      currentHead: "b".repeat(40),
+    });
+    expect(result.state).toBe("FAIL");
+    expect(result.issues).toContain("Historical tag v0.6.0-alpha.11 target changed.");
+  });
+
+  it("rejects changes to protected historical identities in the registry", () => {
+    const changedHistory = structuredClone(history);
+    const alpha12 = changedHistory.tags.find((tag) => tag.tag === "v0.6.0-alpha.12");
+    if (alpha12 === undefined) throw new Error("Alpha.12 fixture is missing.");
+    alpha12.target = "d".repeat(40);
+    expect(() => releaseHistorySchema.parse(changedHistory)).toThrow(
+      "Immutable historical identity changed: v0.6.0-alpha.12",
+    );
+  });
+
+  it("rejects missing and altered historical tag identities", () => {
+    const observed = structuredClone(observedHistoricalTags).filter(
+      (tag) => tag.tag !== "v0.6.0-alpha.10",
+    );
+    const alpha11 = observed.find((tag) => tag.tag === "v0.6.0-alpha.11");
+    if (alpha11 === undefined) throw new Error("Alpha.11 fixture is missing.");
+    alpha11.object = "e".repeat(40);
+    const result = assessReleaseTagIntegrity(history, observed, {
+      currentVersion: "0.6.0-beta.1",
+      currentHead: "b".repeat(40),
+    });
+    expect(result.state).toBe("FAIL");
+    expect(result.issues).toContain("Required historical tag v0.6.0-alpha.10 is missing.");
+    expect(result.issues).toContain("Historical tag v0.6.0-alpha.11 object identity changed.");
+  });
+
+  it("rejects a conflicting current-version tag outside release context", () => {
+    const result = assessReleaseTagIntegrity(
+      history,
+      [
+        ...observedHistoricalTags,
+        {
+          tag: "v0.6.0-beta.1",
+          type: "tag",
+          object: "c".repeat(40),
+          target: "b".repeat(40),
+        },
+      ],
+      { currentVersion: "0.6.0-beta.1", currentHead: "b".repeat(40) },
+    );
+    expect(result.state).toBe("FAIL");
+    expect(result.issues).toContain(
+      "Conflicting current-version tag v0.6.0-beta.1 exists outside a tag release context.",
+    );
+  });
+
+  it("rejects current release tags that are lightweight or target the wrong commit", () => {
+    const result = assessReleaseTagIntegrity(
+      history,
+      [
+        ...observedHistoricalTags,
+        {
+          tag: "v0.6.0-beta.1",
+          type: "commit",
+          object: "c".repeat(40),
+          target: "d".repeat(40),
+        },
+      ],
+      {
+        currentVersion: "0.6.0-beta.1",
+        currentHead: "b".repeat(40),
+        expectedCurrentTag: "v0.6.0-beta.1",
+      },
+    );
+    expect(result.state).toBe("FAIL");
+    expect(result.issues).toContain("Current release tag v0.6.0-beta.1 is not annotated.");
+    expect(result.issues).toContain("Current release tag v0.6.0-beta.1 does not target HEAD.");
+  });
+
+  it("verifies the Alpha.11 snapshot bytes and digest", async () => {
+    const snapshot = history.evidenceSnapshots[0];
+    if (snapshot === undefined) throw new Error("Historical snapshot fixture is missing.");
+    const stored = await readFile(snapshot.snapshotPath);
+    const report = verifyHistoricalEvidenceSnapshot(snapshot, stored, stored);
+    expect(report.product.version).toBe("0.6.0-alpha.11");
+    expect(() =>
+      verifyHistoricalEvidenceSnapshot(snapshot, Buffer.concat([stored, Buffer.from(" ")]), stored),
+    ).toThrow("Historical release evidence digest changed");
+  });
+
+  it("resolves and validates the report belonging to the package version", async () => {
+    const root = await mkdtemp(path.join(tmpdir(), "cydetix-release-report-"));
+    try {
+      const relative = versionedReleaseReportPath("0.6.0-beta.1");
+      await mkdir(path.dirname(path.join(root, relative)), { recursive: true });
+      await writeFile(path.join(root, relative), `${JSON.stringify(currentReportFixture())}\n`);
+      const input = await readVersionedReleaseReport(root, "0.6.0-beta.1");
+      const report = validateCurrentReleaseReport(
+        input,
+        { name: "cydetix", version: "0.6.0-beta.1" },
+        {
+          head: "a".repeat(40),
+          parent: null,
+          changedFromParent: [],
+          reportTrackedClean: false,
+        },
+      );
+      expect(report.product.version).toBe("0.6.0-beta.1");
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+
+  it("accepts a committed report only as the sole change after its source commit", () => {
+    const report = currentReportFixture();
+    const validated = validateCurrentReleaseReport(
+      report,
+      { name: "cydetix", version: "0.6.0-beta.1" },
+      {
+        head: "b".repeat(40),
+        parent: "a".repeat(40),
+        changedFromParent: [versionedReleaseReportPath("0.6.0-beta.1")],
+        reportTrackedClean: true,
+      },
+    );
+    expect(validated.product.publicSourceCommit).toBe("a".repeat(40));
+  });
+
+  it("fails closed for missing and malformed versioned reports", async () => {
+    const root = await mkdtemp(path.join(tmpdir(), "cydetix-release-report-"));
+    try {
+      await expect(readVersionedReleaseReport(root, "0.6.0-beta.1")).rejects.toThrow(
+        "Current release report is missing",
+      );
+      const relative = versionedReleaseReportPath("0.6.0-beta.1");
+      await mkdir(path.dirname(path.join(root, relative)), { recursive: true });
+      await writeFile(path.join(root, relative), "not json\n");
+      await expect(readVersionedReleaseReport(root, "0.6.0-beta.1")).rejects.toThrow(
+        "Current release report is malformed",
+      );
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects wrong product, wrong version and stale source identity", () => {
+    const report = currentReportFixture();
+    expect(() =>
+      validateCurrentReleaseReport(
+        { ...report, product: { ...report.product, name: "other" } },
+        { name: "cydetix", version: "0.6.0-beta.1" },
+        {
+          head: "a".repeat(40),
+          parent: null,
+          changedFromParent: [],
+          reportTrackedClean: false,
+        },
+      ),
+    ).toThrow();
+    expect(() =>
+      validateCurrentReleaseReport(
+        { ...report, product: { ...report.product, version: "0.6.0-beta.2" } },
+        { name: "cydetix", version: "0.6.0-beta.1" },
+        {
+          head: "a".repeat(40),
+          parent: null,
+          changedFromParent: [],
+          reportTrackedClean: false,
+        },
+      ),
+    ).toThrow("does not match package");
+    expect(() =>
+      validateCurrentReleaseReport(
+        report,
+        { name: "cydetix", version: "0.6.0-beta.1" },
+        {
+          head: "b".repeat(40),
+          parent: "c".repeat(40),
+          changedFromParent: [versionedReleaseReportPath("0.6.0-beta.1")],
+          reportTrackedClean: true,
+        },
+      ),
+    ).toThrow("stale or contradictory source identity");
+  });
+
+  it("rejects a ready verdict contradicted by mandatory evidence", () => {
+    const report = currentReportFixture();
+    report.verdict = "PUBLIC_ALPHA_READY_WITH_LIMITATIONS";
+    expect(() =>
+      validateCurrentReleaseReport(
+        report,
+        { name: "cydetix", version: "0.6.0-beta.1" },
+        {
+          head: "a".repeat(40),
+          parent: null,
+          changedFromParent: [],
+          reportTrackedClean: false,
+        },
+      ),
+    ).toThrow("Ready release verdict contradicts mandatory checks");
+  });
+});

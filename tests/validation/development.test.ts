@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 function developmentChildEnvironment(): NodeJS.ProcessEnv {
@@ -28,8 +28,33 @@ describe("explicit development and release boundaries", () => {
     });
     expect(result.status, result.stderr).toBe(0);
     expect(result.stdout).toContain(
-      "historical evidence files and immutable alpha.11 identity preserved",
+      "historical evidence files and immutable release identities preserved",
     );
+  });
+
+  it("allows development validation to coexist with newer versioned current evidence", () => {
+    const directory = "validation/releases/v0.6.0-alpha.12";
+    const reportPath = `${directory}/validation-report.json`;
+    const report = JSON.parse(
+      readFileSync("validation/releases/v0.6.0-alpha.11/validation-report.json", "utf8"),
+    ) as { product: { version: string; publicSourceCommit?: string }; [key: string]: unknown };
+    const head = spawnSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).stdout.trim();
+    report.product.version = "0.6.0-alpha.12";
+    report.product.publicSourceCommit = head;
+    mkdirSync(directory, { recursive: true });
+    try {
+      writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`, "utf8");
+      const result = spawnSync(process.execPath, ["scripts/validate-development.mjs"], {
+        encoding: "utf8",
+        shell: false,
+        windowsHide: true,
+        timeout: 30_000,
+        env: developmentChildEnvironment(),
+      });
+      expect(result.status, result.stderr).toBe(0);
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
   });
 
   it.each([

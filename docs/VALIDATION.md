@@ -107,13 +107,13 @@ workflow is configured but has not executed.
 
 ## Release interpretation
 
-The machine-readable `validation/validation-report.json` is schema-validated and contains source
-provenance, corpora, counts, sandbox capability, Docker/WSL metadata, performance cases, known
-limitations, and readiness verdict. Check states are explicitly `executed_pass`, `executed_fail`,
-`skipped_capability`, `not_applicable`, or `not_checked`. The current verdict is
-`NOT_READY_FOR_PUBLIC_USE`: preview artifacts are explicitly uncommitted, Git author metadata has
-not been approved for public history, and hosted/repository/npm/name-clearance gates remain open. No
-artifact is published by this verdict.
+The machine-readable `validation/releases/v<version>/validation-report.json` is schema-validated and
+contains source provenance, corpora, counts, sandbox capability, Docker/WSL metadata, performance
+cases, known limitations, and readiness verdict. Check states are explicitly `executed_pass`,
+`executed_fail`, `skipped_capability`, `not_applicable`, or `not_checked`. The versioned Alpha.11
+snapshot retains its historical `NOT_READY_FOR_PUBLIC_USE` verdict and is not current release
+evidence. A current version has no release verdict until its own report is generated from executed
+checks; missing current evidence fails release-report validation.
 
 The clean-export explicit online OSV self-query completed successfully for 214 normalized resolved
 package identities with `CHECKED_NO_FINDINGS`; npm audit independently reported zero vulnerabilities

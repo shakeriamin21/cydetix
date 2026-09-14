@@ -36,16 +36,26 @@ From a clean reviewed source commit:
 npm ci --ignore-scripts
 npm run audit
 $env:CYDETIX_SANDBOX_IMAGE = "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b"
-npm run verify
+npm run verify:development
 npm run release:self-scan
 npm run validate:online-osv
 npm run release:artifacts
-npm run validate:install
-npm run validate:packed-plugin
+npm run release:evidence
+npm run validate:release-report
 npm run audit:history -- --enforce --ref HEAD
 git diff --check
 git status --short
 ```
+
+Release validation reports are versioned at
+`validation/releases/v<package-version>/validation-report.json`. For a new version with no current
+report, the first untagged `release:artifacts` run creates only an explicitly
+`NOT_READY_FOR_PUBLICATION` bootstrap input set. `release:evidence` then generates the current
+report from those executed inputs. Commit that report as the sole change immediately following its
+recorded source commit. From that clean report commit, run `npm run verify`, rerun
+`npm run release:artifacts`, add the current report with `npm run release:validation-artifact`, and
+repeat the packed-install/plugin and history gates. A tag context never permits missing current
+evidence.
 
 `--ref HEAD` resolves one candidate commit and audits every ancestor reachable from it. The release
 workflow instead passes its already validated `refs/tags/<version>` ref explicitly. Unrelated branch

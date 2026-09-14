@@ -1,0 +1,79 @@
+{
+  "schemaVersion": "1.0.0",
+  "tags": [
+    {
+      "tag": "v0.6.0-alpha.2",
+      "object": "fa21dd3b2def8a649a7bba384e54950fa63fcf75",
+      "target": "90d7e1935e4c2f2bfb167be7d9208f6411066cd9"
+    },
+    {
+      "tag": "v0.6.0-alpha.3",
+      "object": "1a8d65133cbcf7946717cfa82fe8c53e9ef1937d",
+      "target": "7aa5007332b4f961b2812d739abd638fba6645cf"
+    },
+    {
+      "tag": "v0.6.0-alpha.4",
+      "object": "e9d566e92f7d8917fdd4b4062cc72d90f35b4a75",
+      "target": "a7faa9ae085e553334e196a4cdbe5153fbceb1f9"
+    },
+    {
+      "tag": "v0.6.0-alpha.5",
+      "object": "31c34c630125b2147dcdabb456be2a35657ad20a",
+      "target": "3574d740fb81bdd5e9e56f34c157ca63242653d1"
+    },
+    {
+      "tag": "v0.6.0-alpha.6",
+      "object": "57ce638b789a12c97ca4f659d10ccc5b56c51582",
+      "target": "7683c7643d0076ed9323c42393b80a95b264ca69"
+    },
+    {
+      "tag": "v0.6.0-alpha.7",
+      "object": "c1896896224dcf5a8d90252444884e0ad3ca735d",
+      "target": "d8946921ff8aa16c4df59c67a9f799d0d047b63e"
+    },
+    {
+      "tag": "v0.6.0-alpha.8",
+      "object": "7a367a988e804e45aa2b5946d0bb3f3516748629",
+      "target": "2bc4f9c2b1e22753499e8ff4578809d3b0c39d31"
+    },
+    {
+      "tag": "v0.6.0-alpha.9",
+      "object": "6fc76ad5ec27fdc921bdb439a30ce3f6b5996e57",
+      "target": "fa048d2f66d337198df9085bfcf1f491eda9dcfd"
+    },
+    {
+      "tag": "v0.6.0-alpha.10",
+      "object": "45ceb19feba03825f4d456100326f0f5a4d88387",
+      "target": "32e0e0e583bb26103d011563cfcfcd2ce0bc3c82"
+    },
+    {
+      "tag": "v0.6.0-alpha.11",
+      "object": "e692f1e23d58157a209f511adb6180d3f489a80c",
+      "target": "4e13b96cc3539e1b623a4c5a12f10a0954776253"
+    },
+    {
+      "tag": "v0.6.0-alpha.12",
+      "object": "c03f2a1e72af312266f68d66ac4183e0c00511bd",
+      "target": "5bf295f53f4ca912a79715fd1ea455a31b72a585"
+    }
+  ],
+  "evidenceSnapshots": [
+    {
+      "version": "0.6.0-alpha.11",
+      "tag": "v0.6.0-alpha.11",
+      "sourcePath": "validation/validation-report.json",
+      "snapshotPath": "validation/releases/v0.6.0-alpha.11/validation-report.json",
+      "sha256": "35ecd64fbd9c9d0a4bdff306afd058ee3e0c32cdb19dcb3dd3c051022a51b4bf"
+    }
+  ],
+  "failedReleaseAttempts": [
+    {
+      "tag": "v0.6.0-alpha.12",
+      "releaseRun": 34821381636,
+      "state": "FAILED_BEFORE_PUBLICATION",
+      "npmPublished": false,
+      "publicGitHubReleaseCreated": false,
+      "failure": "The positive development-validation test inherited the tag-release environment during npm run verify; publication was skipped."
+    }
+  ]
+}

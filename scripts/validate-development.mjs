@@ -1,7 +1,11 @@
 import { spawnSync } from "node:child_process";
 import { readFile } from "node:fs/promises";
 import { PRODUCT } from "../dist/core/brand.js";
-import { releaseValidationReportSchema } from "../dist/validation/release.js";
+import {
+  assessReleaseTagIntegrity,
+  releaseHistorySchema,
+  verifyHistoricalEvidenceSnapshot,
+} from "../dist/validation/release-evidence.js";
 
 // An explicit development-only gate. Strict release validators and release workflow are unchanged.
 if (process.env.CYDETIX_EXPECTED_TAG || process.env.GITHUB_REF_TYPE === "tag")
@@ -41,9 +45,70 @@ if (
   git(["rev-parse", "v0.6.0-alpha.11^{}"]).toString().trim() !== baseline
 )
   throw new Error("Immutable alpha.11 identity changed.");
+const history = releaseHistorySchema.parse(
+  JSON.parse(await readFile("validation/releases/release-history.json", "utf8")),
+);
+for (const required of [
+  {
+    tag: "v0.6.0-alpha.11",
+    object: tagObject,
+    target: baseline,
+  },
+  {
+    tag: "v0.6.0-alpha.12",
+    object: "c03f2a1e72af312266f68d66ac4183e0c00511bd",
+    target: "5bf295f53f4ca912a79715fd1ea455a31b72a585",
+  },
+]) {
+  const recorded = history.tags.find((entry) => entry.tag === required.tag);
+  if (recorded?.object !== required.object || recorded.target !== required.target)
+    throw new Error(`Immutable historical identity changed: ${required.tag}`);
+}
+const alpha11Snapshot = history.evidenceSnapshots.find(
+  (snapshot) => snapshot.version === "0.6.0-alpha.11",
+);
+if (
+  alpha11Snapshot?.tag !== "v0.6.0-alpha.11" ||
+  alpha11Snapshot.sourcePath !== "validation/validation-report.json" ||
+  alpha11Snapshot.snapshotPath !== "validation/releases/v0.6.0-alpha.11/validation-report.json" ||
+  alpha11Snapshot.sha256 !== "35ecd64fbd9c9d0a4bdff306afd058ee3e0c32cdb19dcb3dd3c051022a51b4bf"
+)
+  throw new Error("Immutable alpha.11 evidence snapshot contract changed.");
+const alpha12Failure = history.failedReleaseAttempts.find(
+  (attempt) => attempt.tag === "v0.6.0-alpha.12",
+);
+if (
+  alpha12Failure?.releaseRun !== 34821381636 ||
+  alpha12Failure.state !== "FAILED_BEFORE_PUBLICATION" ||
+  alpha12Failure.npmPublished !== false ||
+  alpha12Failure.publicGitHubReleaseCreated !== false
+)
+  throw new Error("Immutable alpha.12 failed-release record changed.");
+const observedTags = git(["tag", "--list", "v*"])
+  .toString()
+  .trim()
+  .split("\n")
+  .filter(Boolean)
+  .map((tag) => ({
+    tag,
+    type: git(["cat-file", "-t", `refs/tags/${tag}`])
+      .toString()
+      .trim(),
+    object: git(["rev-parse", `refs/tags/${tag}`])
+      .toString()
+      .trim(),
+    target: git(["rev-parse", `refs/tags/${tag}^{}`])
+      .toString()
+      .trim(),
+  }));
+const tagIntegrity = assessReleaseTagIntegrity(history, observedTags, {
+  currentVersion: version,
+  currentHead: git(["rev-parse", "HEAD"]).toString().trim(),
+});
+if (tagIntegrity.state !== "PASS")
+  throw new Error(`Historical release tag integrity failed: ${tagIntegrity.issues.join(" ")}`);
 const historicalPaths = [
   "docs/releases",
-  "validation/validation-report.json",
   "validation/gitleaks-reviewed-findings.json",
   "docs/security/ALPHA11_BATCH2_VALIDATION.md",
   "docs/security/ALPHA11_BATCH2_EXTERNAL_CORPUS_VALIDATION.md",
@@ -57,11 +122,15 @@ for (const file of files) {
   if (!(await readFile(file)).equals(git(["show", `${baseline}:${file}`])))
     throw new Error(`Historical release evidence changed: ${file}`);
 }
-const historical = releaseValidationReportSchema.parse(
-  JSON.parse(await readFile("validation/validation-report.json", "utf8")),
-);
-if (historical.product.version !== "0.6.0-alpha.11")
-  throw new Error("Historical evidence identity mismatch.");
+for (const snapshot of history.evidenceSnapshots) {
+  const tagged = history.tags.find((entry) => entry.tag === snapshot.tag);
+  if (tagged === undefined) throw new Error(`Historical snapshot tag missing: ${snapshot.tag}`);
+  verifyHistoricalEvidenceSnapshot(
+    snapshot,
+    await readFile(snapshot.snapshotPath),
+    git(["show", `${tagged.target}:${snapshot.sourcePath}`]),
+  );
+}
 process.stdout.write(
-  `Development ${version} is consistent; ${files.length} historical evidence files and immutable alpha.11 identity preserved. Release readiness is not asserted.\n`,
+  `Development ${version} is consistent; ${files.length + history.evidenceSnapshots.length} historical evidence files and immutable release identities preserved. Release readiness is not asserted.\n`,
 );
