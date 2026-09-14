@@ -135,6 +135,11 @@ const testsPassed = testReport.numPassedTests ?? 0;
 const filesSkipped = fileResults.filter((status) => status === "skipped").length;
 const testsSkipped = testReport.numPendingTests ?? 0;
 const implementationCommit = git(["rev-parse", "HEAD"]);
+if (
+  releaseInputs.sourceCommit !== implementationCommit ||
+  releaseInputs.productVersion !== packageJson.version
+)
+  throw new Error("Release evidence inputs do not belong to the current source candidate.");
 const publicCommitCount = Number(git(["rev-list", "--count", "--all"]));
 const releaseHistory = releaseHistorySchema.parse(
   JSON.parse(

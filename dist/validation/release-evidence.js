@@ -209,6 +209,7 @@ export function assessReleaseTagIntegrity(historyInput, observedTags, context) {
         state: issues.length === 0 ? "PASS" : "FAIL",
         historicalTagsVerified,
         currentTag: context.expectedCurrentTag ?? null,
+        currentEvidenceCommit: context.expectedCurrentTag === currentTag ? (observedCurrent?.target ?? null) : null,
         issues,
     };
 }
@@ -224,7 +225,20 @@ export function verifyHistoricalEvidenceSnapshot(snapshot, storedBytes, taggedBy
         throw new Error(`Historical release evidence version changed: ${snapshot.snapshotPath}`);
     return report;
 }
-export function validateCurrentReleaseReport(reportInput, packageIdentity, sourceIdentity) {
+export function releaseEvidenceOnlyPaths(version) {
+    return [versionedReleaseReportPath(version)];
+}
+function validateCommittedEvidenceIdentity(sourceCommit, packageVersion, sourceIdentity) {
+    if (sourceIdentity.parents.length !== 1)
+        throw new Error("Release evidence commit must have exactly one parent.");
+    if (sourceCommit !== sourceIdentity.parents[0])
+        throw new Error("Release report source commit must be the evidence commit's direct parent.");
+    const allowedPaths = releaseEvidenceOnlyPaths(packageVersion);
+    if (sourceIdentity.changedFromParent.length !== allowedPaths.length ||
+        allowedPaths.some((allowedPath) => !sourceIdentity.changedFromParent.includes(allowedPath)))
+        throw new Error(`Release evidence commit may change only: ${allowedPaths.join(", ")}.`);
+}
+export function validateCurrentReleaseReport(reportInput, packageIdentity, sourceIdentity, options = {}) {
     const parsed = releaseValidationReportSchema.safeParse(reportInput);
     if (!parsed.success)
         throw new Error("Current release report is malformed.");
@@ -236,14 +250,14 @@ export function validateCurrentReleaseReport(reportInput, packageIdentity, sourc
     if (report.product.evidenceOrigin !== "PUBLIC_GIT_COMMIT" ||
         report.product.publicSourceCommit === undefined)
         throw new Error("Current release evidence must identify a public source commit.");
-    const reportPath = versionedReleaseReportPath(packageIdentity.version);
     const sourceCommit = report.product.publicSourceCommit;
     const generatedAgainstCurrentHead = sourceCommit === sourceIdentity.head && !sourceIdentity.reportTrackedClean;
-    const committedImmediatelyAfterSource = sourceCommit === sourceIdentity.parent &&
-        sourceIdentity.changedFromParent.length === 1 &&
-        sourceIdentity.changedFromParent[0] === reportPath;
-    if (!generatedAgainstCurrentHead && !committedImmediatelyAfterSource)
-        throw new Error("Current release report has a stale or contradictory source identity.");
+    if (sourceIdentity.reportTrackedClean)
+        validateCommittedEvidenceIdentity(sourceCommit, packageIdentity.version, sourceIdentity);
+    else if (!generatedAgainstCurrentHead)
+        throw new Error("Uncommitted release report must identify the current source commit.");
+    if (options.requireReleaseReady === true && report.verdict === "NOT_READY_FOR_PUBLIC_USE")
+        throw new Error("Tagged release evidence is not ready for public use.");
     const checksById = new Map();
     for (const check of report.checks) {
         if (checksById.has(check.id))

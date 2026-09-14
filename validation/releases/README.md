@@ -5,14 +5,17 @@ Current release-validation reports live at:
 `validation/releases/v<package-version>/validation-report.json`
 
 The current report is generated from executed checks. It is resolved from `package.json`, must name
-the same product and version, and must identify the source commit against which it was generated. A
-committed report is accepted only when it is the sole change in the commit immediately following
-that source commit. Release-context validation separately requires a clean exact tagged checkout.
+the same product and version, and must identify the source commit `S` against which it was
+generated. The committed evidence identity `E` must have exactly one parent, that parent must be
+`S`, and the only `S..E` change permitted is the exact current version's report path above. The
+annotated release tag `T` targets `E`; the verifier derives `E` from `T` and never asks the report
+to predict its own commit identity. Release-context validation separately requires a clean exact
+tagged checkout.
 
 `release-history.json` records the annotated object and peeled target of each accepted historical
 release tag. A historical tag is accepted only while both identities match. An unregistered release
 tag is rejected unless it is the current version's annotated tag, the caller explicitly supplies
-that exact tag-release context, and it targets HEAD.
+that exact tag-release context, and it targets the checked-out evidence commit `E`.
 
 Historical evidence snapshots are copied without normalization from their immutable tagged source.
 Development validation compares each snapshot byte-for-byte and by SHA-256 with the path recorded in

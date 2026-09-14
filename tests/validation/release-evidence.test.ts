@@ -8,6 +8,7 @@ import { describe, expect, it } from "vitest";
 import {
   assessReleaseTagIntegrity,
   readVersionedReleaseReport,
+  releaseEvidenceOnlyPaths,
   releaseHistorySchema,
   validateCurrentReleaseReport,
   verifyHistoricalEvidenceSnapshot,
@@ -29,6 +30,12 @@ const observedHistoricalTags = history.tags.map((tag) => ({
   target: tag.target,
 }));
 
+const sourceCommit = "a".repeat(40);
+const evidenceCommit = "b".repeat(40);
+const grandparentCommit = "c".repeat(40);
+const unrelatedCommit = "d".repeat(40);
+const betaReportPath = versionedReleaseReportPath("0.6.0-beta.1");
+
 function currentReportFixture(): ReleaseValidationReport {
   const report = releaseValidationReportSchema.parse(
     JSON.parse(
@@ -36,7 +43,7 @@ function currentReportFixture(): ReleaseValidationReport {
     ) as unknown,
   );
   report.product.version = "0.6.0-beta.1";
-  report.product.publicSourceCommit = "a".repeat(40);
+  report.product.publicSourceCommit = sourceCommit;
   return report;
 }
 
@@ -50,26 +57,32 @@ describe("versioned release evidence", () => {
       state: "PASS",
       historicalTagsVerified: history.tags.length,
       currentTag: null,
+      currentEvidenceCommit: null,
       issues: [],
     });
   });
 
-  it("accepts one annotated current release tag targeting HEAD in tag context", () => {
-    const head = "b".repeat(40);
+  it("derives the evidence commit from an annotated current release tag", () => {
     const result = assessReleaseTagIntegrity(
       history,
       [
         ...observedHistoricalTags,
-        { tag: "v0.6.0-beta.1", type: "tag", object: "c".repeat(40), target: head },
+        {
+          tag: "v0.6.0-beta.1",
+          type: "tag",
+          object: grandparentCommit,
+          target: evidenceCommit,
+        },
       ],
       {
         currentVersion: "0.6.0-beta.1",
-        currentHead: head,
+        currentHead: evidenceCommit,
         expectedCurrentTag: "v0.6.0-beta.1",
       },
     );
     expect(result.state).toBe("PASS");
     expect(result.currentTag).toBe("v0.6.0-beta.1");
+    expect(result.currentEvidenceCommit).toBe(evidenceCommit);
   });
 
   it("rejects a changed historical tag target", () => {
@@ -131,7 +144,7 @@ describe("versioned release evidence", () => {
     );
   });
 
-  it("rejects current release tags that are lightweight or target the wrong commit", () => {
+  it("rejects a lightweight current release tag", () => {
     const result = assessReleaseTagIntegrity(
       history,
       [
@@ -140,17 +153,41 @@ describe("versioned release evidence", () => {
           tag: "v0.6.0-beta.1",
           type: "commit",
           object: "c".repeat(40),
-          target: "d".repeat(40),
+          target: evidenceCommit,
         },
       ],
       {
         currentVersion: "0.6.0-beta.1",
-        currentHead: "b".repeat(40),
+        currentHead: evidenceCommit,
         expectedCurrentTag: "v0.6.0-beta.1",
       },
     );
     expect(result.state).toBe("FAIL");
     expect(result.issues).toContain("Current release tag v0.6.0-beta.1 is not annotated.");
+  });
+
+  it.each([
+    ["source commit", sourceCommit],
+    ["an unrelated commit", unrelatedCommit],
+  ])("rejects an annotated tag targeting the %s instead of E", (_label, target) => {
+    const result = assessReleaseTagIntegrity(
+      history,
+      [
+        ...observedHistoricalTags,
+        {
+          tag: "v0.6.0-beta.1",
+          type: "tag",
+          object: grandparentCommit,
+          target,
+        },
+      ],
+      {
+        currentVersion: "0.6.0-beta.1",
+        currentHead: evidenceCommit,
+        expectedCurrentTag: "v0.6.0-beta.1",
+      },
+    );
+    expect(result.state).toBe("FAIL");
     expect(result.issues).toContain("Current release tag v0.6.0-beta.1 does not target HEAD.");
   });
 
@@ -176,8 +213,8 @@ describe("versioned release evidence", () => {
         input,
         { name: "cydetix", version: "0.6.0-beta.1" },
         {
-          head: "a".repeat(40),
-          parent: null,
+          head: sourceCommit,
+          parents: [],
           changedFromParent: [],
           reportTrackedClean: false,
         },
@@ -188,19 +225,20 @@ describe("versioned release evidence", () => {
     }
   });
 
-  it("accepts a committed report only as the sole change after its source commit", () => {
+  it("accepts a committed report at E that identifies direct parent S", () => {
     const report = currentReportFixture();
     const validated = validateCurrentReleaseReport(
       report,
       { name: "cydetix", version: "0.6.0-beta.1" },
       {
-        head: "b".repeat(40),
-        parent: "a".repeat(40),
-        changedFromParent: [versionedReleaseReportPath("0.6.0-beta.1")],
+        head: evidenceCommit,
+        parents: [sourceCommit],
+        changedFromParent: [betaReportPath],
         reportTrackedClean: true,
       },
     );
-    expect(validated.product.publicSourceCommit).toBe("a".repeat(40));
+    expect(validated.product.publicSourceCommit).toBe(sourceCommit);
+    expect(releaseEvidenceOnlyPaths("0.6.0-beta.1")).toEqual([betaReportPath]);
   });
 
   it("fails closed for missing and malformed versioned reports", async () => {
@@ -227,8 +265,8 @@ describe("versioned release evidence", () => {
         { ...report, product: { ...report.product, name: "other" } },
         { name: "cydetix", version: "0.6.0-beta.1" },
         {
-          head: "a".repeat(40),
-          parent: null,
+          head: sourceCommit,
+          parents: [],
           changedFromParent: [],
           reportTrackedClean: false,
         },
@@ -239,8 +277,8 @@ describe("versioned release evidence", () => {
         { ...report, product: { ...report.product, version: "0.6.0-beta.2" } },
         { name: "cydetix", version: "0.6.0-beta.1" },
         {
-          head: "a".repeat(40),
-          parent: null,
+          head: sourceCommit,
+          parents: [],
           changedFromParent: [],
           reportTrackedClean: false,
         },
@@ -251,13 +289,91 @@ describe("versioned release evidence", () => {
         report,
         { name: "cydetix", version: "0.6.0-beta.1" },
         {
-          head: "b".repeat(40),
-          parent: "c".repeat(40),
-          changedFromParent: [versionedReleaseReportPath("0.6.0-beta.1")],
+          head: evidenceCommit,
+          parents: [grandparentCommit],
+          changedFromParent: [betaReportPath],
           reportTrackedClean: true,
         },
       ),
-    ).toThrow("stale or contradictory source identity");
+    ).toThrow("direct parent");
+  });
+
+  it.each([
+    ["an unrelated commit", unrelatedCommit],
+    ["the grandparent", grandparentCommit],
+    ["the evidence commit itself", evidenceCommit],
+  ])("rejects publicSourceCommit identifying %s instead of direct parent S", (_label, commit) => {
+    const report = currentReportFixture();
+    report.product.publicSourceCommit = commit;
+    expect(() =>
+      validateCurrentReleaseReport(
+        report,
+        { name: "cydetix", version: "0.6.0-beta.1" },
+        {
+          head: evidenceCommit,
+          parents: [sourceCommit],
+          changedFromParent: [betaReportPath],
+          reportTrackedClean: true,
+        },
+      ),
+    ).toThrow("direct parent");
+  });
+
+  it("rejects an evidence merge commit", () => {
+    expect(() =>
+      validateCurrentReleaseReport(
+        currentReportFixture(),
+        { name: "cydetix", version: "0.6.0-beta.1" },
+        {
+          head: evidenceCommit,
+          parents: [sourceCommit, unrelatedCommit],
+          changedFromParent: [betaReportPath],
+          reportTrackedClean: true,
+        },
+      ),
+    ).toThrow("exactly one parent");
+  });
+
+  it("rejects adverse not-ready evidence in a trusted tag context", () => {
+    const report = currentReportFixture();
+    report.verdict = "NOT_READY_FOR_PUBLIC_USE";
+    expect(() =>
+      validateCurrentReleaseReport(
+        report,
+        { name: "cydetix", version: "0.6.0-beta.1" },
+        {
+          head: evidenceCommit,
+          parents: [sourceCommit],
+          changedFromParent: [betaReportPath],
+          reportTrackedClean: true,
+        },
+        { requireReleaseReady: true },
+      ),
+    ).toThrow("not ready for public use");
+  });
+
+  it.each([
+    ["runtime source", "src/cli/main.ts"],
+    ["dependencies", "package-lock.json"],
+    ["package version", "package.json"],
+    ["workflow logic", ".github/workflows/release.yml"],
+    ["security rules", "rules/AS-AUTHZ-001.yml"],
+    ["proof semantics", "src/analysis/proof.ts"],
+    ["remediation authority", "src/remediation/authority.ts"],
+    ["generated runtime", "dist/cli/main.js"],
+  ])("rejects %s changes in evidence commit E", (_label, changedPath) => {
+    expect(() =>
+      validateCurrentReleaseReport(
+        currentReportFixture(),
+        { name: "cydetix", version: "0.6.0-beta.1" },
+        {
+          head: evidenceCommit,
+          parents: [sourceCommit],
+          changedFromParent: [betaReportPath, changedPath],
+          reportTrackedClean: true,
+        },
+      ),
+    ).toThrow("may change only");
   });
 
   it("rejects a ready verdict contradicted by mandatory evidence", () => {
@@ -268,8 +384,8 @@ describe("versioned release evidence", () => {
         report,
         { name: "cydetix", version: "0.6.0-beta.1" },
         {
-          head: "a".repeat(40),
-          parent: null,
+          head: sourceCommit,
+          parents: [],
           changedFromParent: [],
           reportTrackedClean: false,
         },

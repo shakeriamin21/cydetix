@@ -1,5 +1,5 @@
 import { spawnSync } from "node:child_process";
-import { mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmdirSync, rmSync, writeFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 function developmentChildEnvironment(): NodeJS.ProcessEnv {
@@ -7,6 +7,14 @@ function developmentChildEnvironment(): NodeJS.ProcessEnv {
   delete environment.CYDETIX_EXPECTED_TAG;
   delete environment.GITHUB_REF_TYPE;
   return environment;
+}
+
+function removeDirectoryIfEmpty(directory: string): void {
+  try {
+    rmdirSync(directory);
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code !== "ENOTEMPTY") throw error;
+  }
 }
 
 describe("explicit development and release boundaries", () => {
@@ -41,6 +49,7 @@ describe("explicit development and release boundaries", () => {
     const head = spawnSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).stdout.trim();
     report.product.version = "0.6.0-beta.1";
     report.product.publicSourceCommit = head;
+    const existingReport = existsSync(reportPath) ? readFileSync(reportPath) : undefined;
     mkdirSync(directory, { recursive: true });
     try {
       writeFileSync(reportPath, `${JSON.stringify(report, null, 2)}\n`, "utf8");
@@ -53,7 +62,12 @@ describe("explicit development and release boundaries", () => {
       });
       expect(result.status, result.stderr).toBe(0);
     } finally {
-      rmSync(directory, { recursive: true, force: true });
+      if (existingReport === undefined) {
+        rmSync(reportPath, { force: true });
+        removeDirectoryIfEmpty(directory);
+      } else {
+        writeFileSync(reportPath, existingReport);
+      }
     }
   });
 

@@ -40,22 +40,7 @@ function git(arguments_, { allowFailure = false } = {}) {
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const reportPath = versionedReleaseReportPath(packageJson.version);
-const reportInput = await readVersionedReleaseReport(root, packageJson.version);
-
 const head = git(["rev-parse", "HEAD"]);
-const parent = git(["rev-parse", "HEAD^"], { allowFailure: true });
-const changedFromParent =
-  parent === null
-    ? []
-    : git(["diff", "--name-only", `${parent}..${head}`])
-        .split("\n")
-        .filter(Boolean);
-const reportTrackedClean = git(["status", "--porcelain", "--", reportPath]) === "";
-const report = validateCurrentReleaseReport(
-  reportInput,
-  { name: packageJson.name, version: packageJson.version },
-  { head, parent, changedFromParent, reportTrackedClean },
-);
 const history = releaseHistorySchema.parse(
   JSON.parse(await readFile("validation/releases/release-history.json", "utf8")),
 );
@@ -78,6 +63,44 @@ const tagIntegrity = assessReleaseTagIntegrity(history, observedTags, {
 });
 if (tagIntegrity.state !== "PASS")
   throw new Error(`Release tag integrity failed: ${tagIntegrity.issues.join(" ")}`);
+
+const evidenceCommit = tagIntegrity.currentEvidenceCommit ?? head;
+const identityLine = git(["rev-list", "--parents", "-n", "1", evidenceCommit]);
+const [resolvedCommit, ...parents] = identityLine.split(/\s+/u);
+if (resolvedCommit !== evidenceCommit)
+  throw new Error("Release evidence commit identity could not be resolved.");
+const changedFromParent =
+  parents.length === 1
+    ? git(["diff", "--name-only", `${parents[0]}..${evidenceCommit}`])
+        .split("\n")
+        .filter(Boolean)
+    : [];
+const reportTrackedClean = git(["status", "--porcelain", "--", reportPath]) === "";
+let reportInput;
+if (tagIntegrity.currentEvidenceCommit === null) {
+  reportInput = await readVersionedReleaseReport(root, packageJson.version);
+} else {
+  if (!reportTrackedClean)
+    throw new Error("Committed release report must be clean in a tag release context.");
+  const committedReport = git(["show", `${evidenceCommit}:${reportPath}`], {
+    allowFailure: true,
+  });
+  if (committedReport === null)
+    throw new Error(`Current release report is missing from evidence commit: ${reportPath}.`);
+  try {
+    reportInput = JSON.parse(committedReport);
+  } catch (error) {
+    throw new Error(`Current release report is malformed at evidence commit: ${reportPath}.`, {
+      cause: error,
+    });
+  }
+}
+const report = validateCurrentReleaseReport(
+  reportInput,
+  { name: packageJson.name, version: packageJson.version },
+  { head: evidenceCommit, parents, changedFromParent, reportTrackedClean },
+  { requireReleaseReady: tagIntegrity.currentEvidenceCommit !== null },
+);
 process.stdout.write(
-  `Validated release evidence for ${report.product.version}: ${report.verdict}; source ${report.product.publicSourceCommit}; ${tagIntegrity.historicalTagsVerified} historical tags verified.\n`,
+  `Validated release evidence for ${report.product.version}: ${report.verdict}; source ${report.product.publicSourceCommit}; evidence ${evidenceCommit}; ${tagIntegrity.historicalTagsVerified} historical tags verified.\n`,
 );

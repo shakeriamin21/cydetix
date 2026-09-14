@@ -54,6 +54,7 @@ export interface ReleaseTagIntegrityResult {
     state: "PASS" | "FAIL";
     historicalTagsVerified: number;
     currentTag: string | null;
+    currentEvidenceCommit: string | null;
     issues: string[];
 }
 export declare const mandatoryReleaseCheckIds: readonly ["source-state", "git-history-privacy", "complete-test-suite", "container-capability", "previously-gated-five", "network-denial", "environment-and-host-filesystem-isolation", "container-privilege-controls", "resource-and-timeout-enforcement", "ephemeral-workspace-cleanup", "ordinary-scan-hostile-repository", "no-silent-local-fallback", "authorized-command-entrypoint-integrity", "sandboxed-remediation-end-to-end", "sandboxed-verification-rollback", "sandbox-output-redaction-and-terminal-safety", "stored-external-results-integrity", "self-scan", "packed-install-current-host", "packed-plugin", "release-artifacts", "clean-public-lineage"];
@@ -63,13 +64,16 @@ export declare function assessReleaseTagIntegrity(historyInput: unknown, observe
 export declare function verifyHistoricalEvidenceSnapshot(snapshot: ReleaseHistory["evidenceSnapshots"][number], storedBytes: Uint8Array, taggedBytes: Uint8Array): ReleaseValidationReport;
 export interface ReleaseReportSourceIdentity {
     head: string;
-    parent: string | null;
+    parents: string[];
     changedFromParent: string[];
     reportTrackedClean: boolean;
 }
+export declare function releaseEvidenceOnlyPaths(version: string): readonly string[];
 export declare function validateCurrentReleaseReport(reportInput: unknown, packageIdentity: {
     name: string;
     version: string;
-}, sourceIdentity: ReleaseReportSourceIdentity): ReleaseValidationReport;
+}, sourceIdentity: ReleaseReportSourceIdentity, options?: {
+    requireReleaseReady?: boolean;
+}): ReleaseValidationReport;
 export {};
 //# sourceMappingURL=release-evidence.d.ts.map
