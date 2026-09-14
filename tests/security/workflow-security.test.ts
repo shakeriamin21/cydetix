@@ -8,10 +8,14 @@ import { temporaryDirectory } from "../helpers/temporary.js";
 
 const validatorScript = path.resolve("scripts", "validate-workflow-security.mjs");
 const releaseWorkflow = await readFile(path.resolve(".github", "workflows", "release.yml"), "utf8");
+const releaseChannelResolver = await readFile(
+  path.resolve("scripts", "resolve-release-channel.mjs"),
+  "utf8",
+);
 const publishCommand =
-  'npm publish "./${tarballs[0]}" --access public --tag alpha --ignore-scripts';
+  'npm publish "./${tarballs[0]}" --access public --tag "$npm_dist_tag" --ignore-scripts';
 const publishIssue =
-  "release.yml: npm publish must require exactly one verified tarball and use an explicit local ./ package path";
+  "release.yml: npm publish must require one verified local tarball and the deterministic version-derived dist-tag";
 const gitleaksIssue =
   "release.yml: complete-history Gitleaks scan must be pinned, unsuppressed, sandboxed, and exactly validated";
 const gitleaksConfigIssue =
@@ -26,6 +30,12 @@ async function validateWorkflow(source: string, gitleaksConfig = exactGitleaksCo
   const workflows = path.join(repository, ".github", "workflows");
   await mkdir(workflows, { recursive: true });
   await writeFile(path.join(workflows, "release.yml"), source, "utf8");
+  await mkdir(path.join(repository, "scripts"), { recursive: true });
+  await writeFile(
+    path.join(repository, "scripts", "resolve-release-channel.mjs"),
+    releaseChannelResolver,
+    "utf8",
+  );
   await mkdir(path.join(repository, "validation"), { recursive: true });
   await writeFile(path.join(repository, "validation", "gitleaks.toml"), gitleaksConfig, "utf8");
   const result = spawnSync(process.execPath, [validatorScript], {
@@ -63,19 +73,23 @@ describe("release workflow npm package spec", () => {
   it.each([
     [
       "a bare relative glob",
-      "npm publish release-bundle/*.tgz --access public --tag alpha --ignore-scripts",
+      'npm publish release-bundle/*.tgz --access public --tag "$npm_dist_tag" --ignore-scripts',
     ],
     [
       "an array element without ./",
-      'npm publish "${tarballs[0]}" --access public --tag alpha --ignore-scripts',
+      'npm publish "${tarballs[0]}" --access public --tag "$npm_dist_tag" --ignore-scripts',
     ],
     [
       "the release directory",
-      "npm publish ./release-bundle --access public --tag alpha --ignore-scripts",
+      'npm publish ./release-bundle --access public --tag "$npm_dist_tag" --ignore-scripts',
     ],
     [
       "a command without ignore-scripts",
-      'npm publish "./${tarballs[0]}" --access public --tag alpha',
+      'npm publish "./${tarballs[0]}" --access public --tag "$npm_dist_tag"',
+    ],
+    [
+      "a hard-coded channel",
+      'npm publish "./${tarballs[0]}" --access public --tag beta --ignore-scripts',
     ],
   ])("rejects %s as the publish package spec", async (_name, unsafeCommand) => {
     const result = await validateWorkflow(
@@ -94,6 +108,37 @@ describe("release workflow npm package spec", () => {
     const result = await validateWorkflow(weakened);
     expect(result.status).toBe(1);
     expect(result.report.issues).toContain(publishIssue);
+  });
+
+  it("rejects a release workflow that does not derive the channel from package version", async () => {
+    const weakened = replaceRequired(
+      releaseWorkflow,
+      'npm_dist_tag="$(node scripts/resolve-release-channel.mjs)"',
+      'npm_dist_tag="beta"',
+    );
+    const result = await validateWorkflow(weakened);
+    expect(result.status).toBe(1);
+    expect(result.report.issues).toContain(publishIssue);
+  });
+});
+
+describe("release workflow exact-commit hosted gates", () => {
+  it("requires CI, CodeQL, and OpenSSF", async () => {
+    const result = await validateWorkflow(releaseWorkflow);
+    expect(result.status).toBe(0);
+    expect(result.report.controls).toContain("EXACT_COMMIT_CI_CODEQL_OPENSSF_GATES");
+  });
+
+  it.each([
+    ["ci.yml", "ci-weakened.yml"],
+    ["codeql.yml", "codeql-weakened.yml"],
+    ["scorecard.yml", "scorecard-weakened.yml"],
+  ])("rejects a missing or changed %s exact-commit gate", async (expected, replacement) => {
+    const result = await validateWorkflow(replaceRequired(releaseWorkflow, expected, replacement));
+    expect(result.status).toBe(1);
+    expect(result.report.issues).toContain(
+      `release.yml: ${expected} exact-commit success gate is missing or weakened`,
+    );
   });
 });
 

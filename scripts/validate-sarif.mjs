@@ -9,6 +9,7 @@ import { resolveSarifMultitoolExecutable } from "../dist/validation/sarif-multit
 import {
   downloadOfficialSarifSchema,
   assertSarifValidationResult,
+  runSarifMultitoolWithTimeoutRetry,
 } from "./official-sarif-schema.mjs";
 
 const multitoolPath = await resolveSarifMultitoolExecutable();
@@ -71,7 +72,8 @@ try {
     const sarifPath = path.join(temporary, `${name}.sarif`);
     const report = await scanRepository({ path: fixturePath, ...options });
     await writeFile(sarifPath, renderSarif(report), "utf8");
-    const result = spawnSync(
+    const execution = runSarifMultitoolWithTimeoutRetry(
+      spawnSync,
       multitoolPath,
       ["validate", sarifPath, "--json-schema", schemaPath, "--threads", "1", "--level", "Error"],
       {
@@ -83,6 +85,11 @@ try {
         stdio: ["ignore", "pipe", "pipe"],
       },
     );
+    const { result } = execution;
+    if (execution.attempts > 1)
+      process.stderr.write(
+        `Microsoft SARIF Multitool initial ${name} attempt timed out; evaluated bounded attempt 2/2.\n`,
+      );
     try {
       assertSarifValidationResult(result);
     } catch (error) {
@@ -116,7 +123,8 @@ try {
     mutate(invalid);
     const invalidPath = path.join(temporary, `${name}.sarif`);
     await writeFile(invalidPath, JSON.stringify(invalid));
-    const rejected = spawnSync(
+    const execution = runSarifMultitoolWithTimeoutRetry(
+      spawnSync,
       multitoolPath,
       ["validate", invalidPath, "--json-schema", schemaPath, "--threads", "1", "--level", "Error"],
       {
@@ -128,6 +136,11 @@ try {
         stdio: ["ignore", "pipe", "pipe"],
       },
     );
+    const { result: rejected } = execution;
+    if (execution.attempts > 1)
+      process.stderr.write(
+        `Microsoft SARIF Multitool initial ${name} attempt timed out; evaluated bounded attempt 2/2.\n`,
+      );
     assertSarifValidationResult(rejected, name === "schema-negative" ? "JSON" : "SARIF");
     process.stdout.write(`Microsoft SARIF Multitool explicitly rejected ${name}.\n`);
   }

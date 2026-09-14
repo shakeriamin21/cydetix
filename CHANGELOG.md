@@ -5,11 +5,30 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+## [0.6.0-beta.1] - 2026-09-14
+
+- Begin the Beta.1 release line with the already validated Alpha.12 beta-readiness work and its
+  documented limitations intact; this is not a claim of unrestricted readiness, complete coverage,
+  corpus-wide recall, universal live-host validation, or proven FastAPI performance improvement.
 - Version release-validation reports under `validation/releases/v<version>/` so immutable historical
   evidence and current candidate evidence no longer compete for one mutable path. Validate
   historical snapshots against their annotated tag objects and targets, resolve current evidence
   from the package version, reject stale or contradictory reports, and replace the obsolete zero-tag
   lineage assumption with explicit historical/current release-tag integrity checks.
+- Derive the npm publication channel from the exact package semantic version (`alpha`, `beta`, or
+  `latest`) and reject malformed or unsupported prerelease identifiers rather than accepting an
+  arbitrary publication tag.
+- Require exact-commit CodeQL success beside the existing CI and OpenSSF gates in the trusted
+  tag-driven release workflow. No security rule, proof semantic, dependency, or remediation
+  authority changes are introduced.
+- Retry Microsoft SARIF Multitool once only after `ETIMEDOUT`, retaining the 210-second bound per
+  attempt and a hard failure after the final timeout; semantic and other process failures are not
+  retried or reclassified.
+
+Existing limitations remain evidence: broader live-host coverage is incomplete, FastAPI
+tail-performance evidence is `INCONCLUSIVE`, corpus ground truth is selective and incomplete, no
+corpus-wide recall claim is permitted, one adjudicated lexical false-positive observation remains
+recorded, and `UNKNOWN`/`TRUNCATED` semantics are unchanged.
 
 The `v0.6.0-alpha.12` tag is an immutable failed release attempt. Annotated tag object
 `c03f2a1e72af312266f68d66ac4183e0c00511bd` targets `5bf295f53f4ca912a79715fd1ea455a31b72a585`.

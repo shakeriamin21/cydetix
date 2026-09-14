@@ -20,7 +20,7 @@ describe("trust inspection reports", () => {
 
   it("reports actual engines, bounds, controls, SAFE adapters, and limitations", () => {
     const report = createTrustReport();
-    expect(report.version).toBe("0.6.0-alpha.12");
+    expect(report.version).toBe("0.6.0-beta.1");
     expect(report.maturityCounts.production).toBe(27);
     expect(report.safeRemediationAdapters).toHaveLength(1);
     expect(report.resourceBounds.maxIterations).toBe(8);

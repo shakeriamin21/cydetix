@@ -59,6 +59,18 @@ for (const [permission, expected] of [
 }
 if (release?.jobs?.["verify-release"]?.permissions?.["id-token"] !== undefined)
   issues.push("release.yml: verification job must not receive OIDC identity");
+for (const [name, workflow] of [
+  ["Require successful exact-commit hosted CI", "ci.yml"],
+  ["Require successful exact-commit CodeQL run", "codeql.yml"],
+  ["Require successful exact-commit OpenSSF run", "scorecard.yml"],
+]) {
+  const step = verifyRelease?.steps?.find((candidate) => candidate?.name === name);
+  if (
+    step?.env?.GITHUB_TOKEN !== "${{ github.token }}" ||
+    step?.run !== `npm run validate:hosted-workflow -- ${workflow}`
+  )
+    issues.push(`release.yml: ${workflow} exact-commit success gate is missing or weakened`);
+}
 const historyAuditStep = release?.jobs?.["verify-release"]?.steps?.find(
   (step) => step?.name === "Reject unsanitized reachable history",
 );
@@ -113,10 +125,28 @@ if [ "\${#tarballs[@]}" -ne 1 ]; then
   echo "Expected exactly one npm tarball, found \${#tarballs[@]}" >&2
   exit 1
 fi
-npm publish "./\${tarballs[0]}" --access public --tag alpha --ignore-scripts`;
+npm_dist_tag="$(node scripts/resolve-release-channel.mjs)"
+npm publish "./\${tarballs[0]}" --access public --tag "$npm_dist_tag" --ignore-scripts`;
 if (npmPublishStep?.shell !== "bash" || npmPublishStep?.run?.trim() !== expectedNpmPublishScript)
   issues.push(
-    "release.yml: npm publish must require exactly one verified tarball and use an explicit local ./ package path",
+    "release.yml: npm publish must require one verified local tarball and the deterministic version-derived dist-tag",
+  );
+const expectedReleaseChannelResolver = `import { readFile } from "node:fs/promises";
+
+import { npmReleaseChannelForVersion } from "../dist/validation/release-channel.js";
+
+const packageJson = JSON.parse(await readFile("package.json", "utf8"));
+process.stdout.write(\`\${npmReleaseChannelForVersion(packageJson.version)}\\n\`);
+`;
+let releaseChannelResolver;
+try {
+  releaseChannelResolver = await readFile("scripts/resolve-release-channel.mjs", "utf8");
+} catch {
+  releaseChannelResolver = undefined;
+}
+if (releaseChannelResolver?.replaceAll("\r\n", "\n") !== expectedReleaseChannelResolver)
+  issues.push(
+    "scripts/resolve-release-channel.mjs: deterministic package-version resolver changed",
   );
 
 const result = {
@@ -133,7 +163,9 @@ const result = {
     "COMPLETE_RELEASE_HISTORY_CHECKOUT",
     "RELEASE_REACHABLE_HISTORY_SCOPE",
     "PINNED_UNSUPPRESSED_COMPLETE_HISTORY_SECRET_SCAN",
+    "EXACT_COMMIT_CI_CODEQL_OPENSSF_GATES",
     "EXPLICIT_SINGLE_LOCAL_NPM_TARBALL",
+    "DETERMINISTIC_VERSION_DERIVED_NPM_DIST_TAG",
   ],
   issues,
 };

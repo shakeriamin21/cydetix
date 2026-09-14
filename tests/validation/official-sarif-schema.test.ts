@@ -13,6 +13,12 @@ const helper = (await import(
     result: { status: number | null; stdout?: string; stderr?: string; error?: Error },
     expectedErrorPrefix?: string,
   ): void;
+  runSarifMultitoolWithTimeoutRetry<T>(
+    spawnMultitool: (command: string, args: string[], options: object) => T,
+    command: string,
+    args: string[],
+    options: object,
+  ): { result: T; attempts: number };
 };
 
 describe("pinned official SARIF validation schema", () => {
@@ -41,6 +47,57 @@ describe("pinned official SARIF validation schema", () => {
     expect(() => helper.assertSarifValidationResult({ status: 0, stdout: "" }, "JSON")).toThrow(
       "expected validation error",
     );
+  });
+  it("retries one timeout and accepts only a completed retry", () => {
+    const results = [
+      { status: null, error: Object.assign(new Error("timeout"), { code: "ETIMEDOUT" }) },
+      { status: 0, stdout: "Analysis completed successfully.", stderr: "" },
+    ];
+    const calls: Array<{ command: string; args: string[]; options: object }> = [];
+    const execution = helper.runSarifMultitoolWithTimeoutRetry(
+      (command, args, options) => {
+        calls.push({ command, args, options });
+        const result = results.shift();
+        if (result === undefined) throw new Error("Unexpected retry.");
+        return result;
+      },
+      "multitool",
+      ["validate", "fixture.sarif"],
+      { timeout: 210_000 },
+    );
+    expect(execution.attempts).toBe(2);
+    expect(calls).toHaveLength(2);
+    expect(calls[0]).toEqual(calls[1]);
+    expect(() => helper.assertSarifValidationResult(execution.result)).not.toThrow();
+  });
+  it("returns the final timeout as a hard failure after the bounded retry", () => {
+    const timeout = () => ({
+      status: null,
+      error: Object.assign(new Error("timeout"), { code: "ETIMEDOUT" }),
+    });
+    const execution = helper.runSarifMultitoolWithTimeoutRetry(
+      timeout,
+      "multitool",
+      ["validate", "fixture.sarif"],
+      { timeout: 210_000 },
+    );
+    expect(execution.attempts).toBe(2);
+    expect(() => helper.assertSarifValidationResult(execution.result)).toThrow("did not complete");
+  });
+  it("does not retry non-timeout process failures", () => {
+    let calls = 0;
+    const execution = helper.runSarifMultitoolWithTimeoutRetry(
+      () => {
+        calls += 1;
+        return { status: 1, error: Object.assign(new Error("spawn failed"), { code: "EACCES" }) };
+      },
+      "multitool",
+      ["validate", "fixture.sarif"],
+      { timeout: 210_000 },
+    );
+    expect(calls).toBe(1);
+    expect(execution.attempts).toBe(1);
+    expect(() => helper.assertSarifValidationResult(execution.result)).toThrow("did not complete");
   });
   it("rejects a permissive schema instead of trusting identity text", () => {
     expect(() =>

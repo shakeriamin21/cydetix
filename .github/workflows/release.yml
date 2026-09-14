@@ -35,6 +35,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ github.token }}
         run: npm run validate:hosted-workflow -- ci.yml
+      - name: Require successful exact-commit CodeQL run
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: npm run validate:hosted-workflow -- codeql.yml
       - name: Require successful exact-commit OpenSSF run
         env:
           GITHUB_TOKEN: ${{ github.token }}
@@ -173,7 +177,8 @@ jobs:
             echo "Expected exactly one npm tarball, found ${#tarballs[@]}" >&2
             exit 1
           fi
-          npm publish "./${tarballs[0]}" --access public --tag alpha --ignore-scripts
+          npm_dist_tag="$(node scripts/resolve-release-channel.mjs)"
+          npm publish "./${tarballs[0]}" --access public --tag "$npm_dist_tag" --ignore-scripts
       - name: Publish the prepared GitHub prerelease
         env:
           GH_TOKEN: ${{ github.token }}

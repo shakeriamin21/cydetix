@@ -6,6 +6,7 @@ export const OFFICIAL_SARIF_SCHEMA_URL =
 export const OFFICIAL_SARIF_SCHEMA_SHA256 =
   "c3b4bb2d6093897483348925aaa73af03b3e3f4bd4ca38cef26dcb4212a2682e";
 const MAX_SCHEMA_BYTES = 131_072;
+export const SARIF_MULTITOOL_MAX_ATTEMPTS = 2;
 
 export function verifyOfficialSarifSchema(bytes) {
   if (
@@ -40,6 +41,15 @@ export async function downloadOfficialSarifSchema(fetchSchema = fetch) {
     chunks.push(chunk);
   }
   return verifyOfficialSarifSchema(Buffer.concat(chunks));
+}
+
+export function runSarifMultitoolWithTimeoutRetry(spawnMultitool, command, args, options) {
+  for (let attempt = 1; attempt <= SARIF_MULTITOOL_MAX_ATTEMPTS; attempt += 1) {
+    const result = spawnMultitool(command, args, options);
+    if (result.error?.code !== "ETIMEDOUT" || attempt === SARIF_MULTITOOL_MAX_ATTEMPTS)
+      return { result, attempts: attempt };
+  }
+  throw new Error("Unreachable SARIF Multitool retry state.");
 }
 
 export function assertSarifValidationResult(result, expectedErrorPrefix) {

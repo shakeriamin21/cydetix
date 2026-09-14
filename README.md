@@ -40,7 +40,7 @@ npm install -g cydetix@0.6.0-alpha.10
 cydetix
 ```
 
-The current source is the unpublished `0.6.0-alpha.12` hardening development line. The immutable
+The current source is the unpublished `0.6.0-beta.1` release-preparation line. The immutable
 `v0.6.0-alpha.11` tag is the released baseline. Alpha.12 is not authorized for publication. Use
 `npm run verify:development` for development validation. The separate `npm run verify` release gate
 still requires matching release metadata and evidence.
@@ -108,7 +108,7 @@ Node executable, the exact package identity/version, and the project root. Confi
 then use process-style command and argument fields equivalent to:
 
 ```text
-<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 0.6.0-alpha.12
+<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 0.6.0-beta.1
 ```
 
 They contain no npm/npx command, registry URL, downloader, secret, or shell indirection. Routine MCP

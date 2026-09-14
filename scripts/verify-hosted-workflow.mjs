@@ -1,6 +1,8 @@
 import { spawnSync } from "node:child_process";
 import path from "node:path";
 
+import { requireSuccessfulExactCommitWorkflowRun } from "../dist/validation/hosted-workflow.js";
+
 const workflow = process.argv[2];
 if (workflow === undefined) throw new Error("Workflow filename is required.");
 const repository = process.env.GITHUB_REPOSITORY;
@@ -24,16 +26,7 @@ const response = await fetch(
 );
 if (!response.ok) throw new Error(`GitHub workflow query failed with HTTP ${response.status}.`);
 const payload = await response.json();
-const matching = payload.workflow_runs?.filter(
-  (run) =>
-    run.head_sha === commit &&
-    run.head_branch === "main" &&
-    run.event === "push" &&
-    run.status === "completed" &&
-    run.conclusion === "success",
-);
-if (!Array.isArray(matching) || matching.length === 0)
-  throw new Error(`${workflow} has no successful main push run for ${commit}.`);
+const matching = requireSuccessfulExactCommitWorkflowRun(payload, workflow, commit);
 
 const root = path.resolve(".");
 const ancestor = spawnSync(
@@ -61,6 +54,4 @@ const ancestor = spawnSync(
 );
 if (ancestor.error !== undefined || ancestor.status !== 0)
   throw new Error("Tagged commit is not reachable from origin/main.");
-process.stdout.write(
-  `Verified ${workflow} run ${matching[0].id} for exact main commit ${commit}.\n`,
-);
+process.stdout.write(`Verified ${workflow} run ${matching.id} for exact main commit ${commit}.\n`);

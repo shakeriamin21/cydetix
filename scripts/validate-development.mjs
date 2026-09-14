@@ -12,7 +12,7 @@ if (process.env.CYDETIX_EXPECTED_TAG || process.env.GITHUB_REF_TYPE === "tag")
   throw new Error("Development validation cannot validate a release tag. Use npm run verify.");
 const baseline = "4e13b96cc3539e1b623a4c5a12f10a0954776253";
 const tagObject = "e692f1e23d58157a209f511adb6180d3f489a80c";
-const version = "0.6.0-alpha.12";
+const version = "0.6.0-beta.1";
 const pkg = JSON.parse(await readFile("package.json", "utf8"));
 const lock = JSON.parse(await readFile("package-lock.json", "utf8"));
 const plugin = JSON.parse(await readFile("plugins/cydetix/.codex-plugin/plugin.json", "utf8"));

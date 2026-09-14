@@ -33,13 +33,13 @@ describe("explicit development and release boundaries", () => {
   });
 
   it("allows development validation to coexist with newer versioned current evidence", () => {
-    const directory = "validation/releases/v0.6.0-alpha.12";
+    const directory = "validation/releases/v0.6.0-beta.1";
     const reportPath = `${directory}/validation-report.json`;
     const report = JSON.parse(
       readFileSync("validation/releases/v0.6.0-alpha.11/validation-report.json", "utf8"),
     ) as { product: { version: string; publicSourceCommit?: string }; [key: string]: unknown };
     const head = spawnSync("git", ["rev-parse", "HEAD"], { encoding: "utf8" }).stdout.trim();
-    report.product.version = "0.6.0-alpha.12";
+    report.product.version = "0.6.0-beta.1";
     report.product.publicSourceCommit = head;
     mkdirSync(directory, { recursive: true });
     try {

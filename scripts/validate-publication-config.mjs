@@ -1,5 +1,7 @@
 import { readFile } from "node:fs/promises";
 
+import { npmReleaseChannelForVersion } from "../dist/validation/release-channel.js";
+
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const plugin = JSON.parse(await readFile("plugins/cydetix/.codex-plugin/plugin.json", "utf8"));
 const publication = JSON.parse(await readFile("release/publication-config.json", "utf8"));
@@ -15,7 +17,14 @@ if (publication.nameMarketConflict !== "REVIEWED_AND_EXPLICITLY_APPROVED")
   errors.push("formal Cydetix name and legal review has not been explicitly approved");
 if (publication.version !== packageJson.version) errors.push("publication version mismatches");
 if (publication.tagCandidate !== `v${packageJson.version}`) errors.push("tag candidate mismatches");
-if (publication.npmDistTag !== "alpha") errors.push("first alpha must use the alpha dist-tag");
+let expectedNpmDistTag;
+try {
+  expectedNpmDistTag = npmReleaseChannelForVersion(packageJson.version);
+} catch (error) {
+  errors.push(error instanceof Error ? error.message : "release version is unsupported");
+}
+if (publication.npmDistTag !== expectedNpmDistTag)
+  errors.push("npm dist-tag does not match the deterministic package release channel");
 if (publication.npmPackageRegistration !== "EXISTS")
   errors.push("approved npm package registration is not confirmed to exist");
 if (publication.npmTrustedPublisher !== "CONFIGURED")
