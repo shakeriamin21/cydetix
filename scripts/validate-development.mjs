@@ -42,7 +42,6 @@ if (
 )
   throw new Error("Immutable alpha.11 identity changed.");
 const historicalPaths = [
-  "release",
   "docs/releases",
   "validation/validation-report.json",
   "validation/gitleaks-reviewed-findings.json",
