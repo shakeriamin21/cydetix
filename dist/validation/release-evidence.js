@@ -48,6 +48,11 @@ export const immutableHistoricalReleaseIdentities = [
         object: "c03f2a1e72af312266f68d66ac4183e0c00511bd",
         target: "5bf295f53f4ca912a79715fd1ea455a31b72a585",
     },
+    {
+        tag: "v0.6.0-beta.1",
+        object: "4aecf7055d2184d18e1dc5da63dd3a6e65e0259d",
+        target: "9ecc68f54127e5951d7c2a829cdd719b35779809",
+    },
 ];
 const alpha11SnapshotContract = {
     version: "0.6.0-alpha.11",
@@ -111,6 +116,12 @@ export const releaseHistorySchema = z
         context.addIssue({
             code: "custom",
             message: "Immutable alpha.12 failed-release record changed.",
+        });
+    const beta1Failure = history.failedReleaseAttempts.find((attempt) => attempt.tag === "v0.6.0-beta.1");
+    if (beta1Failure?.releaseRun !== 34930694658)
+        context.addIssue({
+            code: "custom",
+            message: "Immutable beta.1 failed-release record changed.",
         });
 });
 export const mandatoryReleaseCheckIds = [

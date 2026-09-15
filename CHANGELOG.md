@@ -5,6 +5,21 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+## [0.6.0-beta.2] - 2026-09-15
+
+- Keep development validation fail-closed in release contexts while making its development-only
+  positive tests inherit and respect the parent tag-release environment. The positive cases run as
+  development checks only in a genuine development context; in a tag context they assert the
+  expected rejection instead of deleting `CYDETIX_EXPECTED_TAG` and `GITHUB_REF_TYPE` and
+  manufacturing a false development checkout.
+- Preserve negative coverage proving that each release-context selector is rejected, unexpected or
+  unrecorded historical tags fail integrity validation, and an unrecorded current-version tag is a
+  conflict outside an explicit release context. `assessReleaseTagIntegrity` is unchanged.
+- Record `v0.6.0-beta.1` as an immutable failed release attempt. Annotated tag object
+  `4aecf7055d2184d18e1dc5da63dd3a6e65e0259d` targets `9ecc68f54127e5951d7c2a829cdd719b35779809`;
+  trusted release run `34930694658` failed during `npm run verify` before publication, and created
+  neither an authorized npm publication nor a public GitHub release.
+
 ## [0.6.0-beta.1] - 2026-09-14
 
 - Begin the Beta.1 release line with the already validated Alpha.12 beta-readiness work and its

@@ -55,6 +55,11 @@
       "tag": "v0.6.0-alpha.12",
       "object": "c03f2a1e72af312266f68d66ac4183e0c00511bd",
       "target": "5bf295f53f4ca912a79715fd1ea455a31b72a585"
+    },
+    {
+      "tag": "v0.6.0-beta.1",
+      "object": "4aecf7055d2184d18e1dc5da63dd3a6e65e0259d",
+      "target": "9ecc68f54127e5951d7c2a829cdd719b35779809"
     }
   ],
   "evidenceSnapshots": [
@@ -64,6 +69,13 @@
       "sourcePath": "validation/validation-report.json",
       "snapshotPath": "validation/releases/v0.6.0-alpha.11/validation-report.json",
       "sha256": "35ecd64fbd9c9d0a4bdff306afd058ee3e0c32cdb19dcb3dd3c051022a51b4bf"
+    },
+    {
+      "version": "0.6.0-beta.1",
+      "tag": "v0.6.0-beta.1",
+      "sourcePath": "validation/releases/v0.6.0-beta.1/validation-report.json",
+      "snapshotPath": "validation/releases/v0.6.0-beta.1/validation-report.json",
+      "sha256": "9c5cca11d1b258b0e7d6a5afd738222ab747f15d813914dfb3ec1a0382cfb8e8"
     }
   ],
   "failedReleaseAttempts": [
@@ -74,6 +86,14 @@
       "npmPublished": false,
       "publicGitHubReleaseCreated": false,
       "failure": "The positive development-validation test inherited the tag-release environment during npm run verify; publication was skipped."
+    },
+    {
+      "tag": "v0.6.0-beta.1",
+      "releaseRun": 34930694658,
+      "state": "FAILED_BEFORE_PUBLICATION",
+      "npmPublished": false,
+      "publicGitHubReleaseCreated": false,
+      "failure": "Development-only positive tests stripped the tag-release environment during npm run verify, manufacturing an invalid development context; publication was skipped."
     }
   ]
 }

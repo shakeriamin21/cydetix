@@ -50,7 +50,7 @@ function currentReportFixture(): ReleaseValidationReport {
 describe("versioned release evidence", () => {
   it("accepts multiple legitimate immutable historical tags", () => {
     const result = assessReleaseTagIntegrity(history, observedHistoricalTags, {
-      currentVersion: "0.6.0-beta.1",
+      currentVersion: "0.6.0-beta.2",
       currentHead: "b".repeat(40),
     });
     expect(result).toMatchObject({
@@ -68,20 +68,20 @@ describe("versioned release evidence", () => {
       [
         ...observedHistoricalTags,
         {
-          tag: "v0.6.0-beta.1",
+          tag: "v0.6.0-beta.2",
           type: "tag",
           object: grandparentCommit,
           target: evidenceCommit,
         },
       ],
       {
-        currentVersion: "0.6.0-beta.1",
+        currentVersion: "0.6.0-beta.2",
         currentHead: evidenceCommit,
-        expectedCurrentTag: "v0.6.0-beta.1",
+        expectedCurrentTag: "v0.6.0-beta.2",
       },
     );
     expect(result.state).toBe("PASS");
-    expect(result.currentTag).toBe("v0.6.0-beta.1");
+    expect(result.currentTag).toBe("v0.6.0-beta.2");
     expect(result.currentEvidenceCommit).toBe(evidenceCommit);
   });
 
@@ -91,7 +91,7 @@ describe("versioned release evidence", () => {
     if (alpha11 === undefined) throw new Error("Alpha.11 fixture is missing.");
     alpha11.target = "d".repeat(40);
     const result = assessReleaseTagIntegrity(history, observed, {
-      currentVersion: "0.6.0-beta.1",
+      currentVersion: "0.6.0-beta.2",
       currentHead: "b".repeat(40),
     });
     expect(result.state).toBe("FAIL");
@@ -100,11 +100,11 @@ describe("versioned release evidence", () => {
 
   it("rejects changes to protected historical identities in the registry", () => {
     const changedHistory = structuredClone(history);
-    const alpha12 = changedHistory.tags.find((tag) => tag.tag === "v0.6.0-alpha.12");
-    if (alpha12 === undefined) throw new Error("Alpha.12 fixture is missing.");
-    alpha12.target = "d".repeat(40);
+    const beta1 = changedHistory.tags.find((tag) => tag.tag === "v0.6.0-beta.1");
+    if (beta1 === undefined) throw new Error("Beta.1 fixture is missing.");
+    beta1.target = "d".repeat(40);
     expect(() => releaseHistorySchema.parse(changedHistory)).toThrow(
-      "Immutable historical identity changed: v0.6.0-alpha.12",
+      "Immutable historical identity changed: v0.6.0-beta.1",
     );
   });
 
@@ -116,7 +116,7 @@ describe("versioned release evidence", () => {
     if (alpha11 === undefined) throw new Error("Alpha.11 fixture is missing.");
     alpha11.object = "e".repeat(40);
     const result = assessReleaseTagIntegrity(history, observed, {
-      currentVersion: "0.6.0-beta.1",
+      currentVersion: "0.6.0-beta.2",
       currentHead: "b".repeat(40),
     });
     expect(result.state).toBe("FAIL");
@@ -130,18 +130,36 @@ describe("versioned release evidence", () => {
       [
         ...observedHistoricalTags,
         {
-          tag: "v0.6.0-beta.1",
+          tag: "v0.6.0-beta.2",
           type: "tag",
           object: "c".repeat(40),
           target: "b".repeat(40),
         },
       ],
-      { currentVersion: "0.6.0-beta.1", currentHead: "b".repeat(40) },
+      { currentVersion: "0.6.0-beta.2", currentHead: "b".repeat(40) },
     );
     expect(result.state).toBe("FAIL");
     expect(result.issues).toContain(
-      "Conflicting current-version tag v0.6.0-beta.1 exists outside a tag release context.",
+      "Conflicting current-version tag v0.6.0-beta.2 exists outside a tag release context.",
     );
+  });
+
+  it("rejects an unexpected unrecorded historical release tag", () => {
+    const result = assessReleaseTagIntegrity(
+      history,
+      [
+        ...observedHistoricalTags,
+        {
+          tag: "v0.5.0",
+          type: "tag",
+          object: "c".repeat(40),
+          target: "b".repeat(40),
+        },
+      ],
+      { currentVersion: "0.6.0-beta.2", currentHead: "b".repeat(40) },
+    );
+    expect(result.state).toBe("FAIL");
+    expect(result.issues).toContain("Unexpected release tag v0.5.0.");
   });
 
   it("rejects a lightweight current release tag", () => {
@@ -150,20 +168,20 @@ describe("versioned release evidence", () => {
       [
         ...observedHistoricalTags,
         {
-          tag: "v0.6.0-beta.1",
+          tag: "v0.6.0-beta.2",
           type: "commit",
           object: "c".repeat(40),
           target: evidenceCommit,
         },
       ],
       {
-        currentVersion: "0.6.0-beta.1",
+        currentVersion: "0.6.0-beta.2",
         currentHead: evidenceCommit,
-        expectedCurrentTag: "v0.6.0-beta.1",
+        expectedCurrentTag: "v0.6.0-beta.2",
       },
     );
     expect(result.state).toBe("FAIL");
-    expect(result.issues).toContain("Current release tag v0.6.0-beta.1 is not annotated.");
+    expect(result.issues).toContain("Current release tag v0.6.0-beta.2 is not annotated.");
   });
 
   it.each([
@@ -175,20 +193,20 @@ describe("versioned release evidence", () => {
       [
         ...observedHistoricalTags,
         {
-          tag: "v0.6.0-beta.1",
+          tag: "v0.6.0-beta.2",
           type: "tag",
           object: grandparentCommit,
           target,
         },
       ],
       {
-        currentVersion: "0.6.0-beta.1",
+        currentVersion: "0.6.0-beta.2",
         currentHead: evidenceCommit,
-        expectedCurrentTag: "v0.6.0-beta.1",
+        expectedCurrentTag: "v0.6.0-beta.2",
       },
     );
     expect(result.state).toBe("FAIL");
-    expect(result.issues).toContain("Current release tag v0.6.0-beta.1 does not target HEAD.");
+    expect(result.issues).toContain("Current release tag v0.6.0-beta.2 does not target HEAD.");
   });
 
   it("verifies the Alpha.11 snapshot bytes and digest", async () => {
@@ -200,6 +218,14 @@ describe("versioned release evidence", () => {
     expect(() =>
       verifyHistoricalEvidenceSnapshot(snapshot, Buffer.concat([stored, Buffer.from(" ")]), stored),
     ).toThrow("Historical release evidence digest changed");
+  });
+
+  it("preserves the immutable Beta.1 validation snapshot", async () => {
+    const snapshot = history.evidenceSnapshots.find((entry) => entry.version === "0.6.0-beta.1");
+    if (snapshot === undefined) throw new Error("Beta.1 snapshot fixture is missing.");
+    const stored = await readFile(snapshot.snapshotPath);
+    const report = verifyHistoricalEvidenceSnapshot(snapshot, stored, stored);
+    expect(report.product.version).toBe("0.6.0-beta.1");
   });
 
   it("resolves and validates the report belonging to the package version", async () => {

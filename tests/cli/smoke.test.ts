@@ -41,7 +41,7 @@ describe("CLI smoke contract", () => {
   it("reports the version", () => {
     const result = runCli("version");
     expect(result.status).toBe(0);
-    expect(result.stdout).toBe("0.6.0-beta.1\n");
+    expect(result.stdout).toBe("0.6.0-beta.2\n");
     expect(result.stderr).toBe("");
   });
 
@@ -54,7 +54,7 @@ describe("CLI smoke contract", () => {
       catalogueFingerprint: string;
       rules: Array<{ id: string; maturity: string; maxRemediationClass: string }>;
     };
-    expect(report.cydetixVersion).toBe("0.6.0-beta.1");
+    expect(report.cydetixVersion).toBe("0.6.0-beta.2");
     expect(report.catalogueFingerprint).toMatch(/^[a-f0-9]{64}$/u);
     expect(report.rules.find((rule) => rule.id === "AS-INJECTION-SQL-001")).toMatchObject({
       maturity: "PRODUCTION",
@@ -71,7 +71,7 @@ describe("CLI smoke contract", () => {
       safeRemediationAdapters: string[];
       unsupportedOrIncomplete: string[];
     };
-    expect(report.version).toBe("0.6.0-beta.1");
+    expect(report.version).toBe("0.6.0-beta.2");
     expect(report.safeRemediationAdapters).toHaveLength(1);
     expect(report.unsupportedOrIncomplete.length).toBeGreaterThan(0);
   });
@@ -152,7 +152,7 @@ describe("CLI smoke contract", () => {
       "--project-root",
       canonicalProject,
       "--require-version",
-      "0.6.0-beta.1",
+      "0.6.0-beta.2",
     ]);
     expect(JSON.stringify(server).toLowerCase()).not.toMatch(
       /\b(?:npm|npx|pnpm|yarn|bunx|curl|wget)\b|invoke-webrequest/u,
