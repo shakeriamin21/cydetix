@@ -7,7 +7,6 @@ import process from "node:process";
 import { format } from "prettier";
 
 const root = process.cwd();
-const auditedSourceSha = "c937ae1ddbf329bc62fb0376f04bf2123f438f4e";
 try {
   await lstat(path.join(root, ".gitleaksignore"));
   throw new Error("Repository-controlled Gitleaks ignore file is forbidden.");
@@ -18,9 +17,20 @@ const directory = path.resolve(".cydetix/v1-readiness-gitleaks");
 await mkdir(directory, { recursive: true });
 const sourceCommit = spawnSync("git", ["rev-parse", "HEAD"], {
   encoding: "utf8",
+  shell: false,
   windowsHide: true,
 }).stdout.trim();
-if (sourceCommit !== auditedSourceSha) throw new Error("Gitleaks source commit binding changed.");
+if (!/^[a-f0-9]{40}$/u.test(sourceCommit))
+  throw new Error("Gitleaks could not resolve an exact source commit.");
+const sourceState = spawnSync("git", ["status", "--porcelain", "--untracked-files=no"], {
+  encoding: "utf8",
+  shell: false,
+  windowsHide: true,
+});
+if (sourceState.error !== undefined || sourceState.status !== 0)
+  throw new Error("Gitleaks could not inspect the tracked source state.");
+if (sourceState.stdout.trim() !== "")
+  throw new Error("Gitleaks requires a clean tracked source commit.");
 const user =
   process.platform === "win32" ? "1000:1000" : `${os.userInfo().uid}:${os.userInfo().gid}`;
 const arguments_ = [
@@ -100,7 +110,7 @@ if (reviewed.error || reviewed.status !== 0)
 const review = JSON.parse(await readFile(".cydetix/evidence/gitleaks-review.json", "utf8"));
 const report = {
   schemaVersion: "1.0.0",
-  auditedSourceSha,
+  auditedSourceSha: sourceCommit,
   state: "PASSED",
   tool: {
     name: "gitleaks",
