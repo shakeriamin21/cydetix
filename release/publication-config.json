@@ -5,17 +5,21 @@
   "npmPackageName": "cydetix",
   "githubRepository": "shakeriamin21/cydetix",
   "cliCommand": "cydetix",
-  "version": "0.6.0-beta.3",
-  "tagCandidate": "v0.6.0-beta.3",
+  "version": "0.6.0-beta.4",
+  "tagCandidate": "v0.6.0-beta.4",
   "npmDistTag": "beta",
   "npmPackageRegistration": "EXISTS",
   "npmAvailabilityCheckedAt": "2026-09-06",
-  "npmAvailabilityEvidence": "Version 0.6.0-beta.3 remains unpublished until the trusted tag-driven workflow completes its exact-commit release gates.",
+  "npmAvailabilityEvidence": "Beta.3 was published only by trusted release run 34947037844. Version 0.6.0-beta.4 is an untagged development stabilization candidate and is not authorized for publication.",
   "nameMarketConflict": "REVIEWED_AND_EXPLICITLY_APPROVED",
   "trademarkClearance": "NOT_CLAIMED",
   "npmTrustedPublisher": "CONFIGURED",
   "githubEnvironment": "release",
   "privateVulnerabilityReporting": "ENABLED",
+  "approvedPublicEmails": [
+    "49699333+dependabot[bot]@users.noreply.github.com",
+    "noreply@github.com"
+  ],
   "approvedHistoryAuthorEmailSha256": [
     "c17e937df082f74192111bb52b7274d3d1f5657005c23c793e9e10637f601a96",
     "6d2d413f66d0c163ae32890d341b3acb3259b2cd8dd52bed87b6b6fa8506ed65"

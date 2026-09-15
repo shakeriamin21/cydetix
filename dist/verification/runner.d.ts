@@ -11,8 +11,26 @@ interface ContainerRunnerOptions {
     readonly dockerExecutable?: string;
     readonly temporaryRoot?: string;
 }
+interface DockerCommandResult {
+    readonly error?: Error;
+    readonly status: number | null;
+    readonly stdout: string;
+    readonly stderr: string;
+}
+export type DockerCommand = (arguments_: readonly string[], timeoutMilliseconds: number) => DockerCommandResult;
+export interface ContainerCleanupResult {
+    readonly state: "REMOVED" | "ALREADY_ABSENT" | "FAILED";
+    readonly attempts: number;
+    readonly observedStates: readonly string[];
+    readonly failure: string | null;
+}
+export declare function removeAndConfirmContainer(containerName: string, dockerCommand: DockerCommand, options?: {
+    readonly maximumAttempts?: number;
+    readonly retryMilliseconds?: number;
+    readonly absenceConfirmations?: number;
+}): ContainerCleanupResult;
 export declare function buildContainerArguments(image: string, containerName: string, workspace: string, command: VerificationCommand): string[];
-export declare function hardenedContainerProfileFailures(inspected: unknown): string[];
+export declare function hardenedContainerProfileFailures(inspected: unknown, expectedWorkingDirectory?: string): string[];
 export declare function createContainerSandboxRunner(options: ContainerRunnerOptions): VerificationRunner;
 export {};
 //# sourceMappingURL=runner.d.ts.map

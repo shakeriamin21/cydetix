@@ -5,6 +5,22 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+## [0.6.0-beta.4] - Unreleased
+
+- Stabilize Docker timeout cleanup with a two-phase create/start lifecycle, exact-name idempotent
+  removal, bounded retry, state inspection, explicit cleanup failure, lifecycle regression tests,
+  and repeated parallel leak checks. Sandbox isolation, resource limits, timeout enforcement, and
+  execution authority are unchanged.
+- Define a CLI-only JavaScript package boundary. The five documented stable JSON schema subpaths and
+  package metadata are exported; the package root, internal `dist` modules, MCP implementation,
+  internal TypeScript modules, and experimental schemas are not importable package APIs.
+- Publish the V1 stable/experimental/internal compatibility policy, correct current Beta.3 public
+  installation and release evidence, and record three exact immutable GitHub Dependabot author
+  tuples without wildcard or content-policy exemptions.
+- Advance development metadata from the immutable released Beta.3 to this untagged Beta.4
+  stabilization candidate. This does not authorize a Beta.4 or V1 tag or publication and changes no
+  detection rule, proof state, remediation class, SAFE authority, dependency, or MCP tool surface.
+
 ## [0.6.0-beta.3] - 2026-09-15
 
 - Recover from the immutable failed Beta.2 release attempt by preparing the required versioned

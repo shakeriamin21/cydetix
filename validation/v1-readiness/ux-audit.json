@@ -1,0 +1,89 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "persona": "A new security-tool user installing the exact published Beta.3 package and scanning an unfamiliar repository.",
+  "evidence": [
+    "tests/cli/smoke.test.ts",
+    "tests/security/hostile-repository.test.ts",
+    "scripts/validate-packed-install.mjs",
+    "validation/v1-readiness/installation-edge-cases.json",
+    "README.md",
+    "docs/CLAIMS.md",
+    "docs/LIMITATIONS.md",
+    "docs/integrations/agents.md"
+  ],
+  "findings": [
+    {
+      "id": "UX-FIRST-COMMAND",
+      "area": "first command and scan output",
+      "state": "GOOD",
+      "finding": "The zero-argument command scans the current directory, is offline/read-only, and uses concise output. --details, --json and --sarif expose deeper evidence without making the default noisy."
+    },
+    {
+      "id": "UX-EXIT-MODE",
+      "area": "default behavior and CI",
+      "state": "ACCEPTABLE_WITH_DOCUMENTATION",
+      "finding": "Interactive scan completes with exit 0 even when findings exist; `ci`/`verify` provide threshold exit 1. This is coherent, but the distinction must remain conspicuous so users do not mistake `scan` for a CI policy gate."
+    },
+    {
+      "id": "UX-UNKNOWN",
+      "area": "UNKNOWN and proof explanation",
+      "state": "GOOD",
+      "finding": "UNKNOWN is labeled as not proven secure, carries evidence gaps and limitations, and is explained through details/text and `explain`; it is not rendered as a clean pass."
+    },
+    {
+      "id": "UX-FINDING-READABILITY",
+      "area": "finding readability",
+      "state": "GOOD",
+      "finding": "Findings expose stable rule identity/version, proof, confidence, reachability, evidence anchors, prerequisites, impact and remediation class; terminal control characters and secret values are sanitized/redacted."
+    },
+    {
+      "id": "UX-REMEDIATION",
+      "area": "planning and SAFE fixes",
+      "state": "GOOD",
+      "finding": "Planning is zero-write. Only one exact SAFE transformation may autoapply; non-interactive mutation is withheld without the required intent, REVIEW_REQUIRED/ARCHITECTURAL changes do not autoapply, and verification/rescan outcomes are explicit."
+    },
+    {
+      "id": "UX-FAILURES",
+      "area": "failure messages",
+      "state": "GOOD",
+      "finding": "Usage, scan, verification, withheld-remediation and provider failures are separated by exit code. Missing and permission-denied paths fail with actionable path context; malformed analyzable input remains a successful scan with explicit partial coverage."
+    },
+    {
+      "id": "UX-SARIF",
+      "area": "SARIF integration",
+      "state": "GOOD",
+      "finding": "SARIF 2.1.0 preserves proof and coverage properties, stable fingerprints, supported code flows and exact SAFE fixes. The exact Beta.3 release gate validated it with Microsoft SARIF Multitool and the checksum-pinned official schema."
+    },
+    {
+      "id": "UX-AGENT-SETUP",
+      "area": "MCP and agent setup",
+      "state": "GOOD_WITH_BOUNDED_HOST_CLAIMS",
+      "finding": "Setup persists exact Node/entrypoint/version and canonical root rather than an ephemeral package-manager command. Status/verify are readable and MCP exposes exactly three tools. Host UI/version compatibility remains best-effort."
+    },
+    {
+      "id": "UX-NPX-PIN",
+      "area": "npx exact-version use",
+      "state": "DOCUMENTATION_GAP",
+      "finding": "On Windows npm 11.19.1 the exact-version shorthand did not infer the package bin and could fall through to an older global command. The explicit `npm exec --package=... -- cydetix` form passed and should be the documented exact pin."
+    },
+    {
+      "id": "UX-STALE-DOCS",
+      "area": "documentation discoverability and trust",
+      "state": "V1_BLOCKER",
+      "finding": "The primary README recommends Alpha.10/Alpha.11/Alpha.7, describes Beta.3 as unpublished, and names Alpha.11 as the released baseline. Claims/limitations pages still say hosted publication/provenance evidence is absent. A new user cannot reliably identify the released product or evidence state."
+    },
+    {
+      "id": "UX-CONTRACT-TIERS",
+      "area": "stable compatibility expectations",
+      "state": "V1_BLOCKER",
+      "finding": "User-facing docs do not distinguish stable CLI/report/MCP guarantees from experimental auth graph, diagnostics, setup host formats and human wording, creating accidental v1 compatibility expectations."
+    }
+  ],
+  "summary": {
+    "strengths": 8,
+    "documentationGaps": 1,
+    "v1Blockers": 2,
+    "cosmeticRedesignRequired": false
+  }
+}

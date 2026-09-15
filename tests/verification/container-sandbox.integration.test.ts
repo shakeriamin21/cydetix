@@ -33,6 +33,16 @@ function sha256(content: Buffer | string): string {
   return createHash("sha256").update(content).digest("hex");
 }
 
+function verificationContainers(): string[] {
+  const remaining = spawnSync(
+    "docker",
+    ["ps", "-a", "--filter", "name=cydetix-verify-", "--format", "{{.Names}}"],
+    { encoding: "utf8", shell: false, windowsHide: true, timeout: 10_000 },
+  );
+  expect(remaining.status).toBe(0);
+  return remaining.stdout.trim().split("\n").filter(Boolean);
+}
+
 describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => {
   let root = "";
   let runner: VerificationRunner;
@@ -162,14 +172,36 @@ describe.skipIf(sandboxImage === undefined)("hardened container sandbox", () => 
       networkPolicy: "DENIED",
     });
     expect(result.state).toBe("TIMED_OUT");
-    const remaining = spawnSync(
-      "docker",
-      ["ps", "-a", "--filter", "name=cydetix-verify-", "--format", "{{.Names}}"],
-      { encoding: "utf8", shell: false, windowsHide: true, timeout: 10_000 },
-    );
-    expect(remaining.status).toBe(0);
-    expect(remaining.stdout.trim()).toBe("");
+    expect(verificationContainers()).toEqual([]);
   });
+
+  it("cleans a timeout before docker start can complete", async () => {
+    const result = await runner.run(root, {
+      executable: "node",
+      arguments: ["-e", "setInterval(()=>{},1000)"],
+      workingDirectory: ".",
+      timeoutMilliseconds: 1,
+      networkPolicy: "DENIED",
+    });
+    expect(result.state).toBe("TIMED_OUT");
+    expect(verificationContainers()).toEqual([]);
+  });
+
+  it("cleans parallel timed-out containers by their exact independent names", async () => {
+    const results = await Promise.all(
+      Array.from({ length: 4 }, () =>
+        runner.run(root, {
+          executable: "node",
+          arguments: ["-e", "setInterval(()=>{},1000)"],
+          workingDirectory: ".",
+          timeoutMilliseconds: 50,
+          networkPolicy: "DENIED",
+        }),
+      ),
+    );
+    expect(results.map((result) => result.state)).toEqual(Array(4).fill("TIMED_OUT"));
+    expect(verificationContainers()).toEqual([]);
+  }, 60_000);
 
   it("enforces the aggregate captured-output bound", async () => {
     const result = await runner.run(root, {

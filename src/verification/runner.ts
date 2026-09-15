@@ -191,36 +191,145 @@ function dockerEnvironment(configurationDirectory: string): NodeJS.ProcessEnv {
   };
 }
 
-function removeAndConfirmContainer(
+interface DockerCommandResult {
+  readonly error?: Error;
+  readonly status: number | null;
+  readonly stdout: string;
+  readonly stderr: string;
+}
+
+export type DockerCommand = (
+  arguments_: readonly string[],
+  timeoutMilliseconds: number,
+) => DockerCommandResult;
+
+export interface ContainerCleanupResult {
+  readonly state: "REMOVED" | "ALREADY_ABSENT" | "FAILED";
+  readonly attempts: number;
+  readonly observedStates: readonly string[];
+  readonly failure: string | null;
+}
+
+function createDockerCommand(
   dockerExecutable: string,
-  containerName: string,
   environment: NodeJS.ProcessEnv,
-): boolean {
-  for (let attempt = 0; attempt < 3; attempt += 1) {
-    spawnSync(dockerExecutable, ["rm", "--force", containerName], {
+): DockerCommand {
+  return (arguments_, timeoutMilliseconds) => {
+    const result = spawnSync(dockerExecutable, [...arguments_], {
       env: environment,
+      encoding: "utf8",
       shell: false,
       windowsHide: true,
-      timeout: 5_000,
-      stdio: "ignore",
+      timeout: timeoutMilliseconds,
+      maxBuffer: 256_000,
     });
-    const remaining = spawnSync(
-      dockerExecutable,
-      ["ps", "-a", "--no-trunc", "--filter", `name=^/${containerName}$`, "--quiet"],
-      {
-        env: environment,
-        encoding: "utf8",
-        shell: false,
-        windowsHide: true,
-        timeout: 5_000,
-        maxBuffer: 64_000,
-      },
-    );
-    if (remaining.error === undefined && remaining.status === 0 && remaining.stdout.trim() === "")
-      return true;
-    if (attempt < 2) Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 250);
+    return {
+      ...(result.error === undefined ? {} : { error: result.error }),
+      status: result.status,
+      stdout: result.stdout,
+      stderr: result.stderr,
+    };
+  };
+}
+
+type ContainerPresence =
+  | { readonly state: "ABSENT" }
+  | { readonly state: "PRESENT"; readonly containerState: string }
+  | { readonly state: "UNKNOWN"; readonly failure: string };
+
+function inspectContainer(containerName: string, dockerCommand: DockerCommand): ContainerPresence {
+  const inspection = dockerCommand(
+    ["container", "inspect", containerName, "--format", "{{.State.Status}}"],
+    5_000,
+  );
+  if (inspection.error === undefined && inspection.status === 0) {
+    return {
+      state: "PRESENT",
+      containerState: inspection.stdout.trim().toUpperCase() || "UNKNOWN",
+    };
   }
-  return false;
+  const listing = dockerCommand(
+    ["ps", "-a", "--no-trunc", "--filter", `name=^/${containerName}$`, "--quiet"],
+    5_000,
+  );
+  if (listing.error === undefined && listing.status === 0)
+    return listing.stdout.trim() === ""
+      ? { state: "ABSENT" }
+      : { state: "PRESENT", containerState: "UNKNOWN" };
+  return {
+    state: "UNKNOWN",
+    failure: `container inspection failed (inspect=${String(
+      inspection.error?.message ?? inspection.status,
+    )}; list=${String(listing.error?.message ?? listing.status)})`,
+  };
+}
+
+export function removeAndConfirmContainer(
+  containerName: string,
+  dockerCommand: DockerCommand,
+  options: {
+    readonly maximumAttempts?: number;
+    readonly retryMilliseconds?: number;
+    readonly absenceConfirmations?: number;
+  } = {},
+): ContainerCleanupResult {
+  const maximumAttempts = options.maximumAttempts ?? 5;
+  const retryMilliseconds = options.retryMilliseconds ?? 250;
+  const absenceConfirmations = options.absenceConfirmations ?? 1;
+  const observedStates: string[] = [];
+  const initial = inspectContainer(containerName, dockerCommand);
+  if (initial.state === "ABSENT" && absenceConfirmations <= 1)
+    return { state: "ALREADY_ABSENT", attempts: 0, observedStates, failure: null };
+  let consecutiveAbsences = initial.state === "ABSENT" ? 1 : 0;
+  let observedPresent = initial.state !== "ABSENT";
+  if (initial.state === "PRESENT") observedStates.push(initial.containerState);
+  else if (initial.state === "UNKNOWN") observedStates.push("INSPECTION_FAILED");
+  else observedStates.push("ABSENT");
+
+  let lastFailure = initial.state === "UNKNOWN" ? initial.failure : null;
+  for (let attempt = 1; attempt <= maximumAttempts; attempt += 1) {
+    const removal = dockerCommand(["rm", "--force", containerName], 5_000);
+    const presence = inspectContainer(containerName, dockerCommand);
+    if (presence.state === "ABSENT") {
+      consecutiveAbsences += 1;
+      observedStates.push("ABSENT");
+      if (consecutiveAbsences >= absenceConfirmations)
+        return {
+          state: observedPresent ? "REMOVED" : "ALREADY_ABSENT",
+          attempts: attempt,
+          observedStates,
+          failure: null,
+        };
+      lastFailure = "container absence has not reached the required confirmation count";
+    } else if (presence.state === "PRESENT") {
+      consecutiveAbsences = 0;
+      observedPresent = true;
+      observedStates.push(presence.containerState);
+      lastFailure =
+        removal.error === undefined && removal.status === 0
+          ? `container remained ${presence.containerState} after removal`
+          : `container removal failed (${String(removal.error?.message ?? removal.status)})`;
+    } else {
+      consecutiveAbsences = 0;
+      observedStates.push("INSPECTION_FAILED");
+      lastFailure = presence.failure;
+    }
+    if (attempt < maximumAttempts)
+      Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, Math.max(0, retryMilliseconds));
+  }
+  return {
+    state: "FAILED",
+    attempts: maximumAttempts,
+    observedStates,
+    failure: lastFailure ?? "container absence could not be confirmed",
+  };
+}
+
+function assertContainerCleanup(result: ContainerCleanupResult, context: string): void {
+  if (result.state === "FAILED")
+    throw new Error(
+      `${context} cleanup failed after ${result.attempts} attempts: ${result.failure ?? "absence was not confirmed"}.`,
+    );
 }
 
 async function copyEphemeralRepository(
@@ -345,7 +454,10 @@ function strings(value: unknown): readonly string[] {
     : [];
 }
 
-export function hardenedContainerProfileFailures(inspected: unknown): string[] {
+export function hardenedContainerProfileFailures(
+  inspected: unknown,
+  expectedWorkingDirectory = "/workspace",
+): string[] {
   if (typeof inspected !== "object" || inspected === null) return ["container inspection JSON"];
   const container = inspected as ContainerInspection;
   const containerEnvironment = strings(container.Config?.Env);
@@ -371,7 +483,9 @@ export function hardenedContainerProfileFailures(inspected: unknown): string[] {
 
   return [
     ...(container.Config?.User === "65534:65534" ? [] : ["non-root user"]),
-    ...(container.Config?.WorkingDir === "/workspace" ? [] : ["bounded working directory"]),
+    ...(container.Config?.WorkingDir === expectedWorkingDirectory
+      ? []
+      : ["bounded working directory"]),
     ...(emptyEntrypoint ? [] : ["explicit empty entrypoint"]),
     ...(containerEnvironment.includes("CI=true") ? [] : ["sanitized CI environment"]),
     ...(containerEnvironment.includes("CYDETIX_VERIFICATION=1")
@@ -469,6 +583,7 @@ export function createContainerSandboxRunner(options: ContainerRunnerOptions): V
     const configurationDirectory = await mkdtemp(path.join(os.tmpdir(), "cydetix-docker-"));
     let probeWorkspace: string | undefined;
     let probeContainerName: string | undefined;
+    let probeCreationMayBeInFlight = false;
     try {
       const environment = dockerEnvironment(configurationDirectory);
       const version = spawnSync(docker, ["version", "--format", "{{.Server.Version}}"], {
@@ -607,6 +722,7 @@ export function createContainerSandboxRunner(options: ContainerRunnerOptions): V
         timeout: 15_000,
         maxBuffer: 64_000,
       });
+      probeCreationMayBeInFlight = create.error !== undefined;
       const inspection = spawnSync(
         docker,
         ["inspect", probeContainerName, "--format", "{{json .}}"],
@@ -651,13 +767,22 @@ export function createContainerSandboxRunner(options: ContainerRunnerOptions): V
             },
           )
         : undefined;
+      const probeCleanup = removeAndConfirmContainer(
+        probeContainerName,
+        createDockerCommand(docker, environment),
+        probeCreationMayBeInFlight
+          ? { maximumAttempts: 120, retryMilliseconds: 250, absenceConfirmations: 120 }
+          : undefined,
+      );
+      if (probeCleanup.state !== "FAILED") probeContainerName = undefined;
       if (
         !profileReceived ||
         probe === undefined ||
         probe.spawnFailed ||
         probe.timedOut ||
         probe.outputExceeded ||
-        probe.exitCode !== 0
+        probe.exitCode !== 0 ||
+        probeCleanup.state === "FAILED"
       ) {
         const launchFailures = [
           ...probeFailures,
@@ -665,6 +790,7 @@ export function createContainerSandboxRunner(options: ContainerRunnerOptions): V
           ...(probe?.timedOut === true ? ["container start timeout"] : []),
           ...(probe?.outputExceeded === true ? ["container start output bound"] : []),
           ...(probe !== undefined && probe.exitCode !== 0 ? ["container start exit status"] : []),
+          ...(probeCleanup.state === "FAILED" ? ["container cleanup"] : []),
         ];
         cachedCapability = sandboxCapabilitySchema.parse({
           schemaVersion: "1.0.0",
@@ -701,13 +827,14 @@ export function createContainerSandboxRunner(options: ContainerRunnerOptions): V
     } finally {
       if (probeContainerName !== undefined) {
         const environment = dockerEnvironment(configurationDirectory);
-        spawnSync(docker, ["rm", "--force", probeContainerName], {
-          env: environment,
-          shell: false,
-          windowsHide: true,
-          timeout: 10_000,
-          stdio: "ignore",
-        });
+        const finalProbeCleanup = removeAndConfirmContainer(
+          probeContainerName,
+          createDockerCommand(docker, environment),
+          probeCreationMayBeInFlight
+            ? { maximumAttempts: 120, retryMilliseconds: 250, absenceConfirmations: 120 }
+            : undefined,
+        );
+        assertContainerCleanup(finalProbeCleanup, "Container capability-probe");
       }
       if (probeWorkspace !== undefined) await rm(probeWorkspace, { recursive: true, force: true });
       await rm(configurationDirectory, { recursive: true, force: true });
@@ -757,6 +884,9 @@ export function createContainerSandboxRunner(options: ContainerRunnerOptions): V
       let workspace: string | undefined;
       let configurationDirectory: string | undefined;
       let containerName: string | undefined;
+      let cleanupResult: ContainerCleanupResult | undefined;
+      let result: VerificationExecutionResult | undefined;
+      let creationMayBeInFlight = false;
       try {
         workspace = await copyEphemeralRepository(repositoryRoot, options.temporaryRoot);
         configurationDirectory = await mkdtemp(path.join(os.tmpdir(), "cydetix-docker-"));
@@ -769,70 +899,100 @@ export function createContainerSandboxRunner(options: ContainerRunnerOptions): V
           command,
         );
         const environment = dockerEnvironment(configurationDirectory);
-        const execution = await runBoundedProcess(
-          docker,
-          arguments_,
-          environment,
-          command.timeoutMilliseconds,
-          () => {
-            spawnSync(docker, ["kill", activeContainerName], {
-              env: environment,
-              shell: false,
-              windowsHide: true,
-              timeout: 10_000,
-              stdio: "ignore",
-            });
-          },
-        );
-        const containerRemoved = removeAndConfirmContainer(
-          docker,
-          activeContainerName,
-          environment,
-        );
-        if (containerRemoved) containerName = undefined;
-        if (!containerRemoved) {
-          return verificationExecutionResultSchema.parse({
+        const dockerCommand = createDockerCommand(docker, environment);
+        const creation = dockerCommand(["create", ...arguments_.slice(2)], 30_000);
+        creationMayBeInFlight = creation.error !== undefined;
+        if (creation.error !== undefined || creation.status !== 0) {
+          result = verificationExecutionResultSchema.parse({
             schemaVersion: "1.0.0",
             runner: "CONTAINER_SANDBOX",
-            state: "SANDBOX_MISCONFIGURED",
+            state: "SANDBOX_UNAVAILABLE",
             commandFingerprint: fingerprint,
-            exitCode: execution.exitCode,
+            exitCode: creation.status,
             durationMilliseconds: performance.now() - started,
-            stdoutBytes: execution.stdoutBytes,
-            stderrBytes: execution.stderrBytes,
-            outputTruncated: execution.outputExceeded,
+            stdoutBytes: Math.min(Buffer.byteLength(creation.stdout), MAX_OUTPUT_BYTES),
+            stderrBytes: Math.min(Buffer.byteLength(creation.stderr), MAX_OUTPUT_BYTES),
+            outputTruncated:
+              Buffer.byteLength(creation.stdout) + Buffer.byteLength(creation.stderr) >
+              MAX_OUTPUT_BYTES,
             capability,
             message:
-              "Container workload cleanup could not be confirmed; no success or timeout result was reported.",
+              "Container creation failed within a bounded Docker invocation; no local fallback was attempted.",
           });
+        } else {
+          creationMayBeInFlight = false;
+          const inspection = dockerCommand(
+            ["container", "inspect", activeContainerName, "--format", "{{json .}}"],
+            10_000,
+          );
+          let inspected: unknown;
+          try {
+            inspected = JSON.parse(inspection.stdout) as unknown;
+          } catch {
+            inspected = undefined;
+          }
+          const profileFailures = [
+            ...(inspection.error === undefined && inspection.status === 0
+              ? []
+              : ["container inspection command"]),
+            ...hardenedContainerProfileFailures(
+              inspected,
+              path.posix.resolve("/workspace", command.workingDirectory.replaceAll("\\", "/")),
+            ),
+          ];
+          if (profileFailures.length > 0) {
+            result = verificationExecutionResultSchema.parse({
+              schemaVersion: "1.0.0",
+              runner: "CONTAINER_SANDBOX",
+              state: "SANDBOX_MISCONFIGURED",
+              commandFingerprint: fingerprint,
+              exitCode: null,
+              durationMilliseconds: performance.now() - started,
+              stdoutBytes: 0,
+              stderrBytes: 0,
+              outputTruncated: false,
+              capability,
+              message: `Created container failed hardened profile inspection: ${profileFailures.join(", ")}.`,
+            });
+          } else {
+            const execution = await runBoundedProcess(
+              docker,
+              ["start", "--attach", activeContainerName],
+              environment,
+              command.timeoutMilliseconds,
+              () => {
+                dockerCommand(["kill", activeContainerName], 10_000);
+              },
+            );
+            const state = execution.timedOut
+              ? "TIMED_OUT"
+              : execution.outputExceeded
+                ? "OUTPUT_LIMIT_EXCEEDED"
+                : execution.spawnFailed
+                  ? "SANDBOX_UNAVAILABLE"
+                  : execution.exitCode === 0
+                    ? "SUCCEEDED"
+                    : "COMMAND_FAILED";
+            result = verificationExecutionResultSchema.parse({
+              schemaVersion: "1.0.0",
+              runner: "CONTAINER_SANDBOX",
+              state,
+              commandFingerprint: fingerprint,
+              exitCode: execution.exitCode,
+              durationMilliseconds: performance.now() - started,
+              stdoutBytes: execution.stdoutBytes,
+              stderrBytes: execution.stderrBytes,
+              outputTruncated: execution.outputExceeded,
+              capability,
+              message:
+                state === "SUCCEEDED"
+                  ? "Command passed in the ephemeral network-denied container; output was discarded."
+                  : "Container command failed within an enforced bound; output was discarded.",
+            });
+          }
         }
-        const state = execution.timedOut
-          ? "TIMED_OUT"
-          : execution.outputExceeded
-            ? "OUTPUT_LIMIT_EXCEEDED"
-            : execution.spawnFailed
-              ? "SANDBOX_UNAVAILABLE"
-              : execution.exitCode === 0
-                ? "SUCCEEDED"
-                : "COMMAND_FAILED";
-        return verificationExecutionResultSchema.parse({
-          schemaVersion: "1.0.0",
-          runner: "CONTAINER_SANDBOX",
-          state,
-          commandFingerprint: fingerprint,
-          exitCode: execution.exitCode,
-          durationMilliseconds: performance.now() - started,
-          stdoutBytes: execution.stdoutBytes,
-          stderrBytes: execution.stderrBytes,
-          outputTruncated: execution.outputExceeded,
-          capability,
-          message:
-            state === "SUCCEEDED"
-              ? "Command passed in the ephemeral network-denied container; output was discarded."
-              : "Container command failed within an enforced bound; output was discarded.",
-        });
       } catch {
-        return verificationExecutionResultSchema.parse({
+        result = verificationExecutionResultSchema.parse({
           schemaVersion: "1.0.0",
           runner: "CONTAINER_SANDBOX",
           state: "WORKSPACE_FAILED",
@@ -847,16 +1007,34 @@ export function createContainerSandboxRunner(options: ContainerRunnerOptions): V
         });
       } finally {
         if (containerName !== undefined && configurationDirectory !== undefined) {
-          removeAndConfirmContainer(
-            docker,
+          cleanupResult = removeAndConfirmContainer(
             containerName,
-            dockerEnvironment(configurationDirectory),
+            createDockerCommand(docker, dockerEnvironment(configurationDirectory)),
+            creationMayBeInFlight
+              ? { maximumAttempts: 120, retryMilliseconds: 250, absenceConfirmations: 120 }
+              : undefined,
           );
         }
         if (workspace !== undefined) await rm(workspace, { recursive: true, force: true });
         if (configurationDirectory !== undefined)
           await rm(configurationDirectory, { recursive: true, force: true });
       }
+      if (cleanupResult?.state === "FAILED") {
+        return verificationExecutionResultSchema.parse({
+          schemaVersion: "1.0.0",
+          runner: "CONTAINER_SANDBOX",
+          state: "SANDBOX_MISCONFIGURED",
+          commandFingerprint: fingerprint,
+          exitCode: result.exitCode,
+          durationMilliseconds: performance.now() - started,
+          stdoutBytes: result.stdoutBytes,
+          stderrBytes: result.stderrBytes,
+          outputTruncated: result.outputTruncated,
+          capability,
+          message: `Container workload cleanup failed after ${cleanupResult.attempts} attempts: ${cleanupResult.failure ?? "absence was not confirmed"}. No success or timeout result was reported.`,
+        });
+      }
+      return result;
     },
   };
 }

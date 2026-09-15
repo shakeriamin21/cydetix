@@ -119,7 +119,23 @@ describe("pinned official SARIF validation schema", () => {
         expect(options.signal).toBeDefined();
         return Promise.resolve(new Response("unavailable", { status: 503 }));
       }),
-    ).rejects.toThrow("cannot be skipped");
+    ).rejects.toThrow("SARIF_SCHEMA_HTTP_FAILURE");
+  });
+  it("distinguishes an external network timeout from content integrity failure", async () => {
+    const transport = new Error("fetch failed", {
+      cause: Object.assign(new Error("connect timeout"), { code: "UND_ERR_CONNECT_TIMEOUT" }),
+    });
+    let timeoutAttempts = 0;
+    await expect(
+      helper.downloadOfficialSarifSchema(() => {
+        timeoutAttempts += 1;
+        return Promise.reject(transport);
+      }),
+    ).rejects.toThrow("SARIF_SCHEMA_NETWORK_TIMEOUT");
+    expect(timeoutAttempts).toBe(2);
+    await expect(
+      helper.downloadOfficialSarifSchema(() => Promise.resolve(new Response("{}"))),
+    ).rejects.toThrow("checksum mismatch");
   });
   it("bounds schema response bytes before accepting a payload", async () => {
     await expect(

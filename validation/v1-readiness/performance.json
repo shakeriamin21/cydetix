@@ -1,0 +1,166 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "platform": "win32-x64",
+  "node": "v24.15.0",
+  "methodology": {
+    "startup": "20 sequential fresh Node processes invoking the built CLI --version",
+    "syntheticScale": "One deterministic run per existing phase-six synthetic fixture, compared with the Beta.3 release report from the same machine class but not a controlled isolated benchmark host",
+    "repositories": "Five sequential scans in one process for each pinned representative repository; p95 is the nearest-rank maximum for n=5",
+    "interpretation": "Descriptive only. No cross-machine service-level objective or statistically controlled regression conclusion is claimed."
+  },
+  "cliStartupMilliseconds": {
+    "samples": 20,
+    "minimum": 580.3014999999996,
+    "p50": 651.3825999999999,
+    "p95": 773.7042000000001,
+    "maximum": 3541.8822
+  },
+  "syntheticScale": [
+    {
+      "name": "source-100",
+      "wallMilliseconds": 716.8824,
+      "peakRssBytes": 87277568,
+      "files": 101,
+      "filesPerSecond": 140.88782204724237,
+      "graphNodes": 101,
+      "graphEdges": 0,
+      "findings": 0,
+      "beta3BaselineWallMilliseconds": 486.3345000000004,
+      "wallChangePercent": 47.40521184493377,
+      "beta3BaselinePeakRssBytes": 85209088,
+      "peakRssChangePercent": 2.427534490217757
+    },
+    {
+      "name": "source-1000",
+      "wallMilliseconds": 3864.2311,
+      "peakRssBytes": 106127360,
+      "files": 1001,
+      "filesPerSecond": 259.0424780753925,
+      "graphNodes": 1001,
+      "graphEdges": 0,
+      "findings": 0,
+      "beta3BaselineWallMilliseconds": 2950.625,
+      "wallChangePercent": 30.963138318152932,
+      "beta3BaselinePeakRssBytes": 103088128,
+      "peakRssChangePercent": 2.9481881754609027
+    },
+    {
+      "name": "source-5000",
+      "wallMilliseconds": 11647.6995,
+      "peakRssBytes": 158117888,
+      "files": 5001,
+      "filesPerSecond": 429.35517009174214,
+      "graphNodes": 5001,
+      "graphEdges": 0,
+      "findings": 0,
+      "beta3BaselineWallMilliseconds": 17463.041599999997,
+      "wallChangePercent": -33.30085464607721,
+      "beta3BaselinePeakRssBytes": 155815936,
+      "peakRssChangePercent": 1.477353381877448
+    },
+    {
+      "name": "dependencies-2500",
+      "wallMilliseconds": 954.8244999999988,
+      "peakRssBytes": 311414784,
+      "files": 2,
+      "filesPerSecond": 2.0946257663057475,
+      "graphNodes": 1,
+      "graphEdges": 0,
+      "findings": 0,
+      "beta3BaselineWallMilliseconds": 1002.2507999999943,
+      "wallChangePercent": -4.731979261078744,
+      "beta3BaselinePeakRssBytes": 318795776,
+      "peakRssChangePercent": -2.3152728347316622
+    },
+    {
+      "name": "workflows-250",
+      "wallMilliseconds": 661.7239999999983,
+      "peakRssBytes": 317816832,
+      "files": 250,
+      "filesPerSecond": 377.8010167380972,
+      "graphNodes": 1,
+      "graphEdges": 0,
+      "findings": 0,
+      "beta3BaselineWallMilliseconds": 584.7464999999938,
+      "wallChangePercent": 13.164251517538853,
+      "beta3BaselinePeakRssBytes": 315269120,
+      "peakRssChangePercent": 0.808107054696635
+    }
+  ],
+  "representativeRepositories": [
+    {
+      "id": "express-session",
+      "pinnedCommit": "96ebea4b6cd805584fba04523773b1b918a836d7",
+      "scans": 5,
+      "determinism": "PASSED",
+      "completeness": "COMPLETE",
+      "filesVisited": 28,
+      "bytesExamined": 209584,
+      "wallMilliseconds": {
+        "minimum": 627.6071000000002,
+        "p50": 682.9961000000003,
+        "p95": 799.3822,
+        "maximum": 799.3822
+      },
+      "maximumRepresentativeRssBytes": 288665600,
+      "processHighWaterRssBytes": 289161216,
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      }
+    },
+    {
+      "id": "express",
+      "pinnedCommit": "53d4a0d606c0388f764f192b306ce0e90200e7e8",
+      "scans": 5,
+      "determinism": "PASSED",
+      "completeness": "PARTIAL",
+      "filesVisited": 214,
+      "bytesExamined": 713814,
+      "wallMilliseconds": {
+        "minimum": 2371.9419000000016,
+        "p50": 2623.4437000000016,
+        "p95": 2755.952000000001,
+        "maximum": 2755.952000000001
+      },
+      "maximumRepresentativeRssBytes": 641998848,
+      "processHighWaterRssBytes": 644255744,
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": []
+      }
+    },
+    {
+      "id": "fastapi",
+      "pinnedCommit": "50113da16fec53b66b80d75e80a89296de4fa5a5",
+      "scans": 5,
+      "determinism": "PASSED",
+      "completeness": "TRUNCATED",
+      "filesVisited": 3140,
+      "bytesExamined": 22822034,
+      "wallMilliseconds": {
+        "minimum": 7121.103600000002,
+        "p50": 7869.640700000004,
+        "p95": 10105.722000000002,
+        "maximum": 10105.722000000002
+      },
+      "maximumRepresentativeRssBytes": 406986752,
+      "processHighWaterRssBytes": 408522752,
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 544,
+        "traversal": [
+          {
+            "path": "docs/en/docs/img/deployment/https/https03.drawio.svg",
+            "reason": "too_large"
+          }
+        ]
+      }
+    }
+  ],
+  "sandboxOverhead": "Measured by the mandatory 13-case Docker integration suite as an aggregate gate duration; no isolated stable per-invocation latency baseline exists.",
+  "conclusion": "Resource bounds remained enforced and all outputs were deterministic. The mixed timing deltas and uncontrolled host conditions establish no critical performance regression, but stable cross-platform performance guarantees remain a measurement gap."
+}

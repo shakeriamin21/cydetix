@@ -1,9 +1,10 @@
 # Local coding-agent compatibility
 
-Cydetix `0.6.0-alpha.7` is a local, agent-independent security runtime. Every supported host uses
-the same three stdio MCP tools and the same deterministic engine. Host adapters only detect and
-merge configuration; they contain no vulnerability rules, proof logic, authentication or
-authorization analysis, or remediation classification.
+Cydetix Beta.3 is the immutable released local, agent-independent security runtime. The current
+source is the untagged `0.6.0-beta.4` stabilization candidate. Every supported host uses the same
+three stdio MCP tools and the same deterministic engine. Host adapters only detect and merge
+configuration; they contain no vulnerability rules, proof logic, authentication or authorization
+analysis, or remediation classification.
 
 The capability registry describes the integration Cydetix provides in this release. `mcpHttp` is
 false for every entry because remote HTTP MCP is intentionally out of scope, even where a host may
@@ -76,7 +77,7 @@ downloader, shell, or network bootstrap.
 
 ## Bounded MCP roots and transport
 
-Alpha.7 does not consume host-provided `roots/list` results. The configured canonical project root
+Cydetix does not consume host-provided `roots/list` results. The configured canonical project root
 remains authoritative and MCP requests may select only real directories inside it. Client capability
 or root declarations cannot widen access. Local stdio remains the only Cydetix MCP transport;
 remote/cloud HTTP MCP is deferred until its separate authentication, authorization, tenancy,

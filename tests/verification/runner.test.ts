@@ -11,6 +11,8 @@ import {
   createLocalExplicitRunner,
   createNoExecutionRunner,
   hardenedContainerProfileFailures,
+  removeAndConfirmContainer,
+  type DockerCommand,
 } from "../../src/verification/runner.js";
 
 const temporaryDirectories: string[] = [];
@@ -30,6 +32,129 @@ afterEach(async () => {
 });
 
 describe("verification runners", () => {
+  function simulatedDocker(options: {
+    state: string | null;
+    removalFailures?: number;
+    inspectionFailures?: number;
+  }): DockerCommand {
+    let removalFailures = options.removalFailures ?? 0;
+    let inspectionFailures = options.inspectionFailures ?? 0;
+    return (arguments_) => {
+      const command = arguments_.slice(0, 2).join(" ");
+      if (command === "container inspect") {
+        if (inspectionFailures > 0) {
+          inspectionFailures -= 1;
+          return { status: 1, stdout: "", stderr: "transient inspect failure" };
+        }
+        return options.state === null
+          ? { status: 1, stdout: "", stderr: "No such object" }
+          : { status: 0, stdout: `${options.state}\n`, stderr: "" };
+      }
+      if (arguments_[0] === "ps") {
+        if (inspectionFailures > 0) {
+          inspectionFailures -= 1;
+          return { status: 1, stdout: "", stderr: "transient list failure" };
+        }
+        return {
+          status: 0,
+          stdout: options.state === null ? "" : "synthetic-container-id\n",
+          stderr: "",
+        };
+      }
+      if (arguments_[0] === "rm") {
+        if (removalFailures > 0) {
+          removalFailures -= 1;
+          return { status: 1, stdout: "", stderr: "transient removal failure" };
+        }
+        options.state = null;
+        return { status: 0, stdout: "synthetic-container-id\n", stderr: "" };
+      }
+      throw new Error(`Unexpected simulated Docker command: ${arguments_.join(" ")}`);
+    };
+  }
+
+  it.each(["created", "running", "exited", "dead", "removing"])(
+    "removes and confirms a container in the %s state",
+    (state) => {
+      const result = removeAndConfirmContainer("cydetix-test", simulatedDocker({ state }), {
+        retryMilliseconds: 0,
+      });
+      expect(result).toMatchObject({ state: "REMOVED", attempts: 1, failure: null });
+      expect(result.observedStates).toContain(state.toUpperCase());
+    },
+  );
+
+  it("retries transient removal and inspection failures, then confirms absence", () => {
+    const removalRetry = removeAndConfirmContainer(
+      "cydetix-test",
+      simulatedDocker({ state: "running", removalFailures: 1 }),
+      { retryMilliseconds: 0 },
+    );
+    expect(removalRetry).toMatchObject({ state: "REMOVED", attempts: 2, failure: null });
+
+    const inspectionRetry = removeAndConfirmContainer(
+      "cydetix-test",
+      simulatedDocker({ state: "created", inspectionFailures: 2 }),
+      { retryMilliseconds: 0 },
+    );
+    expect(inspectionRetry).toMatchObject({ state: "REMOVED", attempts: 1, failure: null });
+    expect(inspectionRetry.observedStates).toContain("INSPECTION_FAILED");
+  });
+
+  it("is idempotent for already-removed containers and repeated cleanup", () => {
+    const docker = simulatedDocker({ state: "exited" });
+    expect(removeAndConfirmContainer("cydetix-test", docker, { retryMilliseconds: 0 }).state).toBe(
+      "REMOVED",
+    );
+    expect(
+      removeAndConfirmContainer("cydetix-test", docker, { retryMilliseconds: 0 }),
+    ).toMatchObject({ state: "ALREADY_ABSENT", attempts: 0, failure: null });
+  });
+
+  it("does not accept early absence while a timed-out create may still materialize", () => {
+    let state: string | null = null;
+    let listingCount = 0;
+    const docker: DockerCommand = (arguments_) => {
+      if (arguments_[0] === "container")
+        return state === null
+          ? { status: 1, stdout: "", stderr: "not present yet" }
+          : { status: 0, stdout: `${state}\n`, stderr: "" };
+      if (arguments_[0] === "ps") {
+        listingCount += 1;
+        if (listingCount === 2) state = "created";
+        return {
+          status: 0,
+          stdout: state === null ? "" : "late-container-id\n",
+          stderr: "",
+        };
+      }
+      if (arguments_[0] === "rm") {
+        state = null;
+        return { status: 0, stdout: "late-container-id\n", stderr: "" };
+      }
+      throw new Error(`Unexpected simulated Docker command: ${arguments_.join(" ")}`);
+    };
+    const result = removeAndConfirmContainer("cydetix-test", docker, {
+      maximumAttempts: 5,
+      retryMilliseconds: 0,
+      absenceConfirmations: 3,
+    });
+    expect(result).toMatchObject({ state: "REMOVED", attempts: 4, failure: null });
+    expect(result.observedStates).toContain("UNKNOWN");
+  });
+
+  it("surfaces an unconfirmed cleanup failure after the exact retry bound", () => {
+    const result = removeAndConfirmContainer(
+      "cydetix-test",
+      simulatedDocker({ state: "dead", removalFailures: 10 }),
+      { maximumAttempts: 3, retryMilliseconds: 0 },
+    );
+    expect(result.state).toBe("FAILED");
+    expect(result.attempts).toBe(3);
+    expect(result.failure).toContain("removal failed");
+    expect(result.observedStates).toEqual(["DEAD", "DEAD", "DEAD", "DEAD"]);
+  });
+
   it("constructs a hardened non-shell container invocation and rejects workdir escapes", () => {
     const command = {
       executable: "node",

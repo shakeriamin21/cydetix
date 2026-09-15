@@ -1,0 +1,81 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "immutableBaseline": {
+    "version": "0.6.0-beta.3",
+    "tag": "v0.6.0-beta.3",
+    "tagObject": "29203b647094604184bdd84386a1e7f23809ac28",
+    "targetCommit": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+    "releaseWorkflow": 34947037844,
+    "releaseState": "SUCCESS"
+  },
+  "verdict": "V1_NOT_READY",
+  "blockers": [
+    {
+      "id": "V1-BLOCKER-SANDBOX-CLEANUP",
+      "rationale": "A timed-out Docker verification returned TIMED_OUT while its container appeared after the cleanup absence check and remained in Created state. Stable cleanup cannot be guaranteed until daemon-side creation/removal is synchronized and stress-tested.",
+      "smallestRemediation": "Make container lifecycle ownership explicit: create then inspect before start, or otherwise wait for the Docker client/daemon operation to settle; remove by the exact random name until confirmed absent after the creation process has terminated; add repeated timeout-race regression coverage. Preserve network denial, non-root, read-only rootfs, resource limits and no local fallback."
+    },
+    {
+      "id": "V1-BLOCKER-PACKAGE-BOUNDARY",
+      "rationale": "No package exports map defines whether deep dist imports are supported, so v1 semantic-version obligations would be ambiguous.",
+      "smallestRemediation": "Choose and test one explicit boundary: CLI-only, or a deliberately enumerated supported programmatic API. Add an exports map and a release note; do not expose implementation modules accidentally."
+    },
+    {
+      "id": "V1-BLOCKER-COMPATIBILITY-POLICY",
+      "rationale": "Stable scan/report/MCP surfaces and experimental auth-graph/host-integration/diagnostic surfaces are shipped together without a public v1 compatibility policy.",
+      "smallestRemediation": "Publish a reviewed stability table and evolution rules for CLI flags/exit codes, JSON schemas, SARIF extensions, rule IDs/versions, MCP schemas, configuration and experimental surfaces. No implementation expansion is required."
+    },
+    {
+      "id": "V1-BLOCKER-PUBLIC-DOCUMENTATION",
+      "rationale": "Primary documentation tells users to install older Alpha releases and incorrectly describes Beta.3 as unpublished and hosted/provenance evidence as absent.",
+      "smallestRemediation": "Correct the README, claims, limitations and agent/install pages to the immutable Beta.3 evidence; document unambiguous exact-version npm exec syntax and retain all honest coverage limits."
+    }
+  ],
+  "responsibleV1GuaranteesAfterBlockerClosure": {
+    "stableInterfaces": [
+      "The documented CLI command/flag/default/exit-code subset",
+      "scan, finding, rule and remediation JSON schemas at their declared versions",
+      "SARIF 2.1.0 mapping, stable partial fingerprints, code flows and exact SAFE fixes",
+      "Proof states PROVEN_SECURE, PROVEN_INSECURE, UNKNOWN and NOT_APPLICABLE",
+      "Remediation classes SAFE, REVIEW_REQUIRED and ARCHITECTURAL",
+      "Exactly cydetix_scan, cydetix_fix and cydetix_explain as the stable MCP tool surface",
+      "Strict data-only .cydetix.json configuration at its declared schema version",
+      "Node ^22.18.0 or ^24.11.0 and the documented package/CLI entry boundary"
+    ],
+    "supportedSecurityAnalysisEnvelope": [
+      "Only catalogued rule invariants and declared literal/direct parser/framework patterns",
+      "Evidence-anchor proof within the reported completeness and resource bounds",
+      "Offline deterministic scanning by default",
+      "No whole-program, deployment, universal framework, zero-false-negative, recall or accuracy guarantee"
+    ],
+    "bestEffortIntegrations": [
+      "Host-specific agent configuration discovery and live UI behavior",
+      "Online advisory-provider availability",
+      "Cross-platform performance outside measured representative cases"
+    ],
+    "experimentalCandidates": [
+      "setup/status/mcp-config host formats and human presentation wording",
+      "auth and graph exploratory output",
+      "security IR, authentication/authorization graph and diagnostic schemas",
+      "readiness/release evidence schemas"
+    ],
+    "knownLimitationsEvidence": "validation/v1-readiness/limitations.json"
+  },
+  "acceptableLimitations": [
+    "LIM-UNKNOWN",
+    "LIM-TRUNCATED",
+    "LIM-PARSER-FRAMEWORK",
+    "LIM-RESOURCE-BOUNDS",
+    "LIM-CORPUS-GROUND-TRUTH",
+    "LIM-RECALL",
+    "LIM-KNOWN-FALSE-POSITIVES",
+    "LIM-SUPPORTED-ENVELOPE",
+    "LIM-DEPENDENCY-SCOPE",
+    "LIM-SECRETS-SCOPE",
+    "LIM-REMEDIATION",
+    "LIM-SANDBOX",
+    "LIM-SANDBOX-COPY"
+  ],
+  "nextAction": "Review and authorize one narrow V1 stabilization phase containing only the four blocker remediations, policy/documentation gaps, and regression evidence; keep version 0.6.0-beta.3 unchanged during this gate and do not create or publish a v1 release."
+}

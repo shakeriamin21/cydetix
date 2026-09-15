@@ -1,11 +1,11 @@
 # npm package and Trusted Publishing
 
-Checked: 2026-09-06
+Historical registration checked: 2026-09-06. Successful trusted publication: Beta.3, 2026-09-15.
 
-The required coordinate is the exact unscoped package `cydetix`. A historical registry command
-returned `cydetix@0.6.0-alpha.1` on the check date. It is not current registry-state evidence and
-must be repeated before release. It confirms historical registration, not authority to publish a new
-version, product-name exclusivity, or trademark clearance.
+The required coordinate is the exact unscoped package `cydetix`. Beta.3 was published by trusted
+release run `34947037844`; no manual publication path is authorized. Registry state is external and
+time-varying and must be rechecked before another release. Registration and a successful publication
+do not grant authority for a new version, product-name exclusivity, or trademark clearance.
 
 ## Stop condition
 
@@ -21,17 +21,14 @@ identity:
 
 ## Trusted Publishing setup
 
-The package now has a settings page, so an authorized maintainer can bind npm Trusted Publishing to
-`shakeriamin21/cydetix`, `.github/workflows/release.yml`, and the protected `release` environment.
-Require a clean public commit, hosted OS matrix, sandbox job, repository security settings, final
-package/plugin/skill/MCP gates, SBOM, manifest, and checksums. Use the `alpha` dist-tag and do not
-add a long-lived npm token to the workflow.
+The package is bound for npm Trusted Publishing to `shakeriamin21/cydetix`,
+`.github/workflows/release.yml`, and the protected `release` environment. Require a clean public
+commit, hosted OS matrix, sandbox job, repository security settings, final package/plugin/skill/MCP
+gates, SBOM, manifest, and checksums. Use only the release workflow's semver-derived dist-tag and do
+not add a long-lived npm token to the workflow.
 
-The alpha.7 publication metadata preserves the maintainer-provided state that Trusted Publishing is
-configured. Alpha.4 reached the npm command only after its verification and attestation gates, but
-npm parsed the ambiguous non-`./` relative tarball path as GitHub shorthand and failed before
-registry authentication. Therefore no release has yet empirically proved a successful OIDC
-publication.
+Beta.3 empirically proved the OIDC publication path and provenance configuration. That evidence is
+bound to its immutable source/tag/run and does not authorize or validate any later candidate.
 
 References: [npm Trusted Publishers](https://docs.npmjs.com/trusted-publishers/),
 [dist-tags](https://docs.npmjs.com/adding-dist-tags-to-packages/), and

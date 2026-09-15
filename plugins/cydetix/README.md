@@ -14,7 +14,8 @@ npm run release:artifacts
 npm run validate:packed-plugin
 ```
 
-The release artifact is `cydetix-codex-plugin-0.6.0-alpha.7.tar.gz` with its SHA-256 recorded in the
-release manifest and `SHA256SUMS`. The repository catalog entry is in
+Versioned plugin archives use `cydetix-codex-plugin-<version>.tar.gz`; their SHA-256 is recorded in
+the release manifest and `SHA256SUMS`. Beta.3 is the current immutable released archive; Beta.4 is
+an untagged stabilization candidate. The repository catalog entry is in
 `.agents/plugins/marketplace.json`; it is installable from a reviewed public repository ref only
 after that repository exists. Marketplace publication is not claimed.

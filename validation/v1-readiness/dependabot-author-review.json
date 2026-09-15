@@ -1,0 +1,45 @@
+{
+  "schemaVersion": "1.0.0",
+  "reviewedAt": "2026-09-15",
+  "scope": "Three post-Beta.3 commits on isolated fetched Dependabot refs; none is ancestral to Beta.3 or main at review time.",
+  "identityDecision": "The exact public GitHub Dependabot noreply author and GitHub noreply committer tuple matches nine previously reviewed immutable Dependabot commits. Allowances are per exact commit and ref; no wildcard bot identity is accepted.",
+  "entries": [
+    {
+      "ref": "refs/remotes/origin/dependabot/npm_and_yarn/typescript-eslint-8.70.0",
+      "commit": "1fae8d7ce33059666b99289cb91c86bf6b96c265",
+      "authorName": "dependabot[bot]",
+      "authorEmail": "49699333+dependabot[bot]@users.noreply.github.com",
+      "committerName": "GitHub",
+      "committerEmail": "noreply@github.com",
+      "provenance": "GitHub Dependabot npm dependency-update branch; commit subject bumps typescript-eslint from 8.68.0 to 8.70.0.",
+      "ancestralToBeta3OrMain": false,
+      "decision": "ALLOW_EXACT_TUPLE",
+      "scope": "Author metadata only; dependency/code content is not approved by this decision."
+    },
+    {
+      "ref": "refs/remotes/origin/dependabot/npm_and_yarn/zod-4.6.1",
+      "commit": "32d6457f237fbd5ed4ed5f3c7ea1d991a6578bd1",
+      "authorName": "dependabot[bot]",
+      "authorEmail": "49699333+dependabot[bot]@users.noreply.github.com",
+      "committerName": "GitHub",
+      "committerEmail": "noreply@github.com",
+      "provenance": "GitHub Dependabot npm dependency-update branch; commit subject bumps zod from 4.5.4 to 4.6.1.",
+      "ancestralToBeta3OrMain": false,
+      "decision": "ALLOW_EXACT_TUPLE",
+      "scope": "Author metadata only; dependency/code content is not approved by this decision."
+    },
+    {
+      "ref": "refs/remotes/origin/dependabot/npm_and_yarn/types/node-26.5.1",
+      "commit": "509f7d174e5861e8e6d5cc265024f84437f927ef",
+      "authorName": "dependabot[bot]",
+      "authorEmail": "49699333+dependabot[bot]@users.noreply.github.com",
+      "committerName": "GitHub",
+      "committerEmail": "noreply@github.com",
+      "provenance": "GitHub Dependabot npm dependency-update branch; commit subject bumps @types/node from 26.4.0 to 26.5.1.",
+      "ancestralToBeta3OrMain": false,
+      "decision": "ALLOW_EXACT_TUPLE",
+      "scope": "Author metadata only; dependency/code content is not approved by this decision."
+    }
+  ],
+  "futureUnknownBotIdentities": "DENY_FAIL_CLOSED"
+}

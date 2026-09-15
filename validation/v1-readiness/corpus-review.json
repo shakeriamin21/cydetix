@@ -1,0 +1,236 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "methodology": {
+    "source": "The existing 30-repository corpus remains pinned. Seven representative/adjudication-sensitive repositories were replayed twice against the Beta.3 build without executing target code.",
+    "scope": "The replay checks determinism and preservation of previously adjudicated supported-pattern cases. It is not a new complete human adjudication of every corpus line.",
+    "groundTruth": "INCOMPLETE",
+    "recall": null,
+    "accuracy": null
+  },
+  "historicalAdjudication": {
+    "sourceCommit": "1818a693ef3dd871b01b136af6696a13aa332693",
+    "evidence": "validation/alpha12/corpus-adjudication.json",
+    "repositories": 30,
+    "totals": {
+      "findings": 134,
+      "confirmedFalseInsecureBeforeCorrection": 3,
+      "unresolvedConfirmedFalseInsecure": 0,
+      "supportedPatternFalseNegativesDiscovered": 0,
+      "unadjudicatedFindings": 0,
+      "unknown": {
+        "applicationDataflow": 220,
+        "authorization": 0,
+        "authentication": 1,
+        "findingProof": 13
+      },
+      "resourceBoundRepositories": 13
+    },
+    "supportedPatternFnScope": "No supported-pattern FN was discovered in the explicitly reviewed local flow cases and selective source reviews listed here. Ground truth is incomplete; this is not a claim of zero corpus-wide false negatives, complete recall, or accuracy. Unsupported constructs, resource-bound omissions, missing password-purpose semantics and fixture-only observations are accounted separately."
+  },
+  "currentReplays": [
+    {
+      "id": "nodegoat",
+      "repository": "OWASP/NodeGoat",
+      "pinnedCommit": "c5cb68a7084e4ae7dcc60e6a98768720a81841e8",
+      "productVersion": "0.6.0-beta.3",
+      "scans": 2,
+      "determinism": "PASSED",
+      "normalizedReportSha256": [
+        "ec6a75e95157f8ccc0ef2f25678f74cdd70afc318c04575335253c6442d2cb57",
+        "ec6a75e95157f8ccc0ef2f25678f74cdd70afc318c04575335253c6442d2cb57"
+      ],
+      "evidenceSha256": "f4018238bdee207784cb9597c12b6a034feeae57de8ad2e47b91ba6d3872b29d",
+      "findings": 7,
+      "findingProofStates": { "PROVEN_INSECURE": 6, "UNKNOWN": 1 },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": {
+          "status": "TRUNCATED",
+          "iterations": 8,
+          "factsCreated": 304,
+          "maxIterations": 8,
+          "maxFacts": 10000
+        },
+        "applicationDataflow": 0,
+        "traversal": []
+      }
+    },
+    {
+      "id": "flask-security",
+      "repository": "pallets-eco/flask-security",
+      "pinnedCommit": "5d47d697d6f0806d0fe58559fe61cd6fd8ae16ef",
+      "productVersion": "0.6.0-beta.3",
+      "scans": 2,
+      "determinism": "PASSED",
+      "normalizedReportSha256": [
+        "57e62ad62b86ad8f43f936bb5b38df50cfd1362aeba6fc2fc0f98b5a10da6cd5",
+        "57e62ad62b86ad8f43f936bb5b38df50cfd1362aeba6fc2fc0f98b5a10da6cd5"
+      ],
+      "evidenceSha256": "3ba06f3d70c9157248ad7383ef3d15af246321b2936636af5bcf1ece71e509ff",
+      "findings": 1,
+      "findingProofStates": { "UNKNOWN": 1 },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": { "securityIdentity": null, "applicationDataflow": 5, "traversal": [] }
+    },
+    {
+      "id": "vulnerable-typescript",
+      "repository": "ryanmcmorrowsnyk/vulnerable-typescript-app",
+      "pinnedCommit": "7f8b240a2f02beba099da3632d1ba679ff8bc32f",
+      "productVersion": "0.6.0-beta.3",
+      "scans": 2,
+      "determinism": "PASSED",
+      "normalizedReportSha256": [
+        "1dea9679e95943e89c6e0ff1fba3c13145bf88525c29be60ad752202bbf89a84",
+        "1dea9679e95943e89c6e0ff1fba3c13145bf88525c29be60ad752202bbf89a84"
+      ],
+      "evidenceSha256": "3d5d2dbc62eb89ce36736211adb3e92ebcb1c6f20c890f10a8b40ca3bc5d907b",
+      "findings": 9,
+      "findingProofStates": { "UNKNOWN": 2, "PROVEN_INSECURE": 7 },
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 0,
+        "traversal": [{ "path": "package-lock.json", "reason": "too_large" }]
+      }
+    },
+    {
+      "id": "flask-sqlinjection",
+      "repository": "guilatrova/flask-sqlinjection-vulnerable",
+      "pinnedCommit": "708246139f2f216c55c683c7aec2297bc91b7346",
+      "productVersion": "0.6.0-beta.3",
+      "scans": 2,
+      "determinism": "PASSED",
+      "normalizedReportSha256": [
+        "12375fbab9cb3d3245e00d2552bbbb940dd35b7f1e2c3ae37e0739f8a8c72190",
+        "12375fbab9cb3d3245e00d2552bbbb940dd35b7f1e2c3ae37e0739f8a8c72190"
+      ],
+      "evidenceSha256": "b24db48bbbff871f9d9252ff846012e44b2334a3bf0fe3177d1c0c54de08436a",
+      "findings": 0,
+      "findingProofStates": {},
+      "completeness": "COMPLETE",
+      "resourceLimitEvents": { "securityIdentity": null, "applicationDataflow": 0, "traversal": [] }
+    },
+    {
+      "id": "express-session",
+      "repository": "expressjs/session",
+      "pinnedCommit": "96ebea4b6cd805584fba04523773b1b918a836d7",
+      "productVersion": "0.6.0-beta.3",
+      "scans": 2,
+      "determinism": "PASSED",
+      "normalizedReportSha256": [
+        "e2242879b4688ef937cd8ac58970cd68bc7a5ca98c24e25fcd1eb4267157f363",
+        "e2242879b4688ef937cd8ac58970cd68bc7a5ca98c24e25fcd1eb4267157f363"
+      ],
+      "evidenceSha256": "7c286f06188a33aba4aad2b78516ea5979e6fca337f48654a055c4b48c41db64",
+      "findings": 0,
+      "findingProofStates": {},
+      "completeness": "COMPLETE",
+      "resourceLimitEvents": { "securityIdentity": null, "applicationDataflow": 0, "traversal": [] }
+    },
+    {
+      "id": "express",
+      "repository": "expressjs/express",
+      "pinnedCommit": "53d4a0d606c0388f764f192b306ce0e90200e7e8",
+      "productVersion": "0.6.0-beta.3",
+      "scans": 2,
+      "determinism": "PASSED",
+      "normalizedReportSha256": [
+        "cb4d0feb68391f1b293c9a652fc7349116ca154d365c3626cb07c578c2e1d86c",
+        "cb4d0feb68391f1b293c9a652fc7349116ca154d365c3626cb07c578c2e1d86c"
+      ],
+      "evidenceSha256": "92f54988ffe0d8c174c8131207d9d9c7bf096f4f3c7c7fd2f657384cd8898c35",
+      "findings": 0,
+      "findingProofStates": {},
+      "completeness": "PARTIAL",
+      "resourceLimitEvents": { "securityIdentity": null, "applicationDataflow": 0, "traversal": [] }
+    },
+    {
+      "id": "fastapi",
+      "repository": "fastapi/fastapi",
+      "pinnedCommit": "50113da16fec53b66b80d75e80a89296de4fa5a5",
+      "productVersion": "0.6.0-beta.3",
+      "scans": 2,
+      "determinism": "PASSED",
+      "normalizedReportSha256": [
+        "ae73f2e854989fcf6433235bef89aa6192f5d2382aedb8c84e6e484f18c78896",
+        "ae73f2e854989fcf6433235bef89aa6192f5d2382aedb8c84e6e484f18c78896"
+      ],
+      "evidenceSha256": "d0982d091289080cd7db197d5d6b1b34587ed352cc3e7382c503d1f84de6cb72",
+      "findings": 0,
+      "findingProofStates": {},
+      "completeness": "TRUNCATED",
+      "resourceLimitEvents": {
+        "securityIdentity": null,
+        "applicationDataflow": 544,
+        "traversal": [
+          { "path": "docs/en/docs/img/deployment/https/https03.drawio.svg", "reason": "too_large" }
+        ]
+      }
+    }
+  ],
+  "falsePositiveReview": {
+    "previouslyConfirmedFalseInsecureBeforeCorrection": 3,
+    "unresolvedConfirmedFalseInsecure": 0,
+    "checks": [
+      {
+        "id": "FP-PASSWORD-PURPOSE",
+        "replay": "flask-security",
+        "result": "AS-PASSWORD-001@1.0.1 remains UNKNOWN, not PROVEN_INSECURE",
+        "state": "PASSED"
+      },
+      {
+        "id": "FP-KEY-PLACEHOLDER",
+        "replay": "vulnerable-typescript",
+        "result": "Both AS-SECRET-001@1.0.1 placeholder-key findings remain UNKNOWN",
+        "state": "PASSED"
+      }
+    ]
+  },
+  "falseNegativeReview": {
+    "newlyEstablishedSupportedPatternFalseNegatives": 0,
+    "unsupportedCasesPreserved": [
+      {
+        "repositoryId": "flask-sqlinjection",
+        "paths": ["src/flask_app.py", "src/db.py"],
+        "classification": "UNSUPPORTED_PATTERN",
+        "explanation": "Route path parameter is passed to an imported Python helper before SQL execution. Cross-file/function Python propagation is outside the declared envelope. The same parameter reaches an implicit Flask HTML string return at src/flask_app.py:27-30; only explicit Python HTML call sinks are modeled. Both are unsupported omissions, not supported-pattern FNs."
+      },
+      {
+        "repositoryId": "payatu-vuln-node",
+        "paths": ["routes/app.js", "controllers/vuln_controller.js"],
+        "classification": "UNSUPPORTED_PATTERN_AND_RESOURCE_BOUND",
+        "explanation": "CommonJS imported controllers, router.route chaining and custom authentication are outside supported cross-file ESM propagation. Actual truncation triggers are the eight-iteration identity bound (390 facts) and oversized vuln_react_app/package-lock.json. Application analysis reports zero truncation events; repository AST exhaustion was incorrectly attributed in the original adjudication."
+      },
+      {
+        "repositoryId": "sirappsec-vuln-node",
+        "paths": ["src/router/routes/system.js"],
+        "classification": "UNSUPPORTED_PATTERN_AND_RESOURCE_BOUND",
+        "explanation": "Routes are constructed inside a CommonJS exported app factory with locally loaded sink aliases. Actual truncation is three oversized vendor assets; application analysis reports zero truncation events. Repository AST exhaustion was incorrectly attributed in the original adjudication. These cases are not used to claim supported recall."
+      },
+      {
+        "repositoryId": "vikas-vulnerable-website",
+        "paths": ["server/server.js"],
+        "classification": "UNSUPPORTED_PATTERN",
+        "explanation": "The request host also reaches HTML at lines 134/143 inside an anonymous exec callback. Callback reachability, closure taint and response binding are outside the current same-file direct-call envelope. The command-injection finding does not cover this separate XSS omission."
+      },
+      {
+        "repositoryId": "vulnerable-typescript",
+        "paths": ["src/server.ts"],
+        "classification": "NEGATIVE_SOURCE_REVIEW",
+        "explanation": "The SQL-looking string at lines 72-74 is only logged; no SQL execution sink exists in that route. Lack of AS-INJECTION-SQL-001 there is not a FN. Math.random token, ReDoS and prototype pollution examples are outside the current rule families."
+      },
+      {
+        "repositoryId": "strapi",
+        "paths": [
+          "packages/core/admin/admin/src/pages/Auth/components/ResetPassword.tsx",
+          "packages/plugins/i18n/admin/src/components/CreateLocale.tsx"
+        ],
+        "classification": "UNSUPPORTED_SCOPE_AND_RESOURCE_BOUND",
+        "explanation": "Babel cannot build scopes for these type/value duplicate declarations. They are file-local parse failures; Strapi/Koa factory and plugin behavior is not a supported authorization adapter. Identity recursion is explicitly bounded."
+      }
+    ],
+    "qualification": "No new supported-pattern false negative was established in this selective replay/review. This is not a corpus-wide zero-FN, recall, accuracy, completeness, or deployment-security claim."
+  },
+  "conclusion": "The supported-pattern evidence remains suitable for a bounded v1 claim only when UNKNOWN, TRUNCATED, unsupported constructs and incomplete ground truth remain explicit."
+}

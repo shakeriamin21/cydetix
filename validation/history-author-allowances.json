@@ -81,6 +81,33 @@
       "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
       "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/types/node-26.4.1",
       "reason": "Alpha.12 blocker closure: explicitly approve public GitHub noreply metadata on this exact existing dependency-update commit. Privacy approval only; no future commits, bot pattern, dependency/code approval or content-scan exemption. Historical publication configuration, ancestry and tags remain unchanged."
+    },
+    {
+      "commit": "1fae8d7ce33059666b99289cb91c86bf6b96c265",
+      "authorName": "dependabot[bot]",
+      "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+      "committerName": "GitHub",
+      "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+      "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/typescript-eslint-8.70.0",
+      "reason": "V1 stabilization: explicitly allow the legitimate GitHub Dependabot public noreply author/committer metadata on this exact isolated dependency-update commit. Privacy metadata decision only; no wildcard, future commit, dependency/code approval, ancestry change, or content-scan exemption."
+    },
+    {
+      "commit": "32d6457f237fbd5ed4ed5f3c7ea1d991a6578bd1",
+      "authorName": "dependabot[bot]",
+      "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+      "committerName": "GitHub",
+      "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+      "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/zod-4.6.1",
+      "reason": "V1 stabilization: explicitly allow the legitimate GitHub Dependabot public noreply author/committer metadata on this exact isolated dependency-update commit. Privacy metadata decision only; no wildcard, future commit, dependency/code approval, ancestry change, or content-scan exemption."
+    },
+    {
+      "commit": "509f7d174e5861e8e6d5cc265024f84437f927ef",
+      "authorName": "dependabot[bot]",
+      "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+      "committerName": "GitHub",
+      "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+      "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/types/node-26.5.1",
+      "reason": "V1 stabilization: explicitly allow the legitimate GitHub Dependabot public noreply author/committer metadata on this exact isolated dependency-update commit. Privacy metadata decision only; no wildcard, future commit, dependency/code approval, ancestry change, or content-scan exemption."
     }
   ]
 }

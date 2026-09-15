@@ -1,0 +1,33 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "state": "PASSED",
+  "tool": {
+    "name": "gitleaks",
+    "version": "8.30.1",
+    "image": "ghcr.io/gitleaks/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f"
+  },
+  "durationMilliseconds": 26747.5266,
+  "commitsScanned": 88,
+  "scope": "Complete --all history, network denied, repository mounted read-only, no repository ignore file/directives, redacted report, exact reviewed non-secret fingerprints required.",
+  "review": {
+    "schemaVersion": "1.0.0",
+    "state": "PASS",
+    "tool": "gitleaks",
+    "version": "8.30.1",
+    "scope": "history",
+    "findings": 23,
+    "reviewedFindings": 23,
+    "unreviewedFindings": 0,
+    "commitsWithReviewedFindings": 4,
+    "classifications": {
+      "DOCUMENTATION_EVIDENCE": 10,
+      "FALSE_POSITIVE_PATTERN": 5,
+      "INTENTIONAL_TEST_FIXTURE": 8
+    },
+    "reportSha256": "05a3e57658eb59a393b2967940fd65d862d5a5e752d28d6ff15e6ed2f86486fe",
+    "reviewManifestSha256": "814dd566710b669cb9365c8f0be3f6f63467ab1d60f87f285859d80e1c8d8d81",
+    "supplementalReviewManifestSha256": "80f3bfd4b7750dc0823278cdd13173f3edc4e4cfa79d8519e187c3f435c5d7a9",
+    "disposition": "EXACT_REVIEWED_NON_SECRET_FINDINGS"
+  }
+}

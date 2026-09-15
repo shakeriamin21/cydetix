@@ -12,7 +12,7 @@ if (process.env.CYDETIX_EXPECTED_TAG || process.env.GITHUB_REF_TYPE === "tag")
   throw new Error("Development validation cannot validate a release tag. Use npm run verify.");
 const baseline = "4e13b96cc3539e1b623a4c5a12f10a0954776253";
 const tagObject = "e692f1e23d58157a209f511adb6180d3f489a80c";
-const version = "0.6.0-beta.3";
+const version = "0.6.0-beta.4";
 const pkg = JSON.parse(await readFile("package.json", "utf8"));
 const lock = JSON.parse(await readFile("package-lock.json", "utf8"));
 const plugin = JSON.parse(await readFile("plugins/cydetix/.codex-plugin/plugin.json", "utf8"));
@@ -68,6 +68,11 @@ for (const required of [
     tag: "v0.6.0-beta.2",
     object: "a76d297b9749aff247ce980310441d1b058f1644",
     target: "e4dbda8b15620e99827b056b92b51ce68a4c60e8",
+  },
+  {
+    tag: "v0.6.0-beta.3",
+    object: "29203b647094604184bdd84386a1e7f23809ac28",
+    target: "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
   },
 ]) {
   const recorded = history.tags.find((entry) => entry.tag === required.tag);

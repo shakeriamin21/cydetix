@@ -1,0 +1,126 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "artifact": {
+    "package": "cydetix@0.6.0-beta.3",
+    "registryShasum": "b5300defef9249805745ef9adef0b72c343fc687",
+    "registryIntegrity": "sha512-5MtOJFto75x7tUxDmMqyOhSthawFUPatTBRsDB80JcXpsw7pif6ZNTPn4tOs4OSONZu/YYIjGS9kNOVgo8MfEA==",
+    "packedFiles": 221,
+    "packedBytes": 296333,
+    "unpackedBytes": 1837613
+  },
+  "hostedMatrix": {
+    "workflowRun": 34942830651,
+    "commit": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+    "cases": [
+      {
+        "os": "windows-latest",
+        "node": "22.18.0",
+        "job": 104295237713,
+        "state": "SUCCESS"
+      },
+      {
+        "os": "windows-latest",
+        "node": "24.11.0",
+        "job": 104295237722,
+        "state": "SUCCESS"
+      },
+      {
+        "os": "ubuntu-latest",
+        "node": "22.18.0",
+        "job": 104295237706,
+        "state": "SUCCESS"
+      },
+      {
+        "os": "ubuntu-latest",
+        "node": "24.11.0",
+        "job": 104295237704,
+        "state": "SUCCESS"
+      },
+      {
+        "os": "macos-latest",
+        "node": "22.18.0",
+        "job": 104295237659,
+        "state": "SUCCESS"
+      },
+      {
+        "os": "macos-latest",
+        "node": "24.11.0",
+        "job": 104295237498,
+        "state": "SUCCESS"
+      }
+    ],
+    "perCaseChecks": [
+      "locked install with lifecycle scripts disabled",
+      "npm audit",
+      "complete verify",
+      "version and package allowlist",
+      "packed artifact install smoke",
+      "committed dist",
+      "self-scan",
+      "package contents"
+    ],
+    "additionalJobs": [
+      {
+        "name": "Hosted Linux container sandbox",
+        "job": 104295237287,
+        "state": "SUCCESS"
+      },
+      {
+        "name": "GitHub Action smoke",
+        "job": 104295237570,
+        "state": "SUCCESS"
+      }
+    ]
+  },
+  "currentWindowsPackedProduct": {
+    "platform": "win32-x64",
+    "os": "Microsoft Windows 10 Enterprise 10.0.19045",
+    "node": "24.15.0",
+    "npm": "11.19.1",
+    "cleanLocalInstall": "PASSED",
+    "globalInstall": "PASSED",
+    "offlineNpmExecFromTarball": "PASSED",
+    "setupStatusVerify": "PASSED",
+    "safeFixWithFullVerification": "PASSED",
+    "mcpExactRuntimeWithOlderGlobalOnPath": "PASSED",
+    "targetLifecycleScriptsExecuted": false,
+    "evidence": [
+      ".cydetix/evidence/packed-install.json",
+      "validation/v1-readiness/installation-edge-cases.json"
+    ]
+  },
+  "npx": {
+    "distTagInvocation": {
+      "command": "npx --yes cydetix@beta --version",
+      "observed": "0.6.0-beta.3",
+      "state": "PASSED"
+    },
+    "unambiguousExactVersion": {
+      "command": "npm exec --yes --package=cydetix@0.6.0-beta.3 -- cydetix --version",
+      "observed": "0.6.0-beta.3",
+      "state": "PASSED"
+    },
+    "shorthandExactVersion": {
+      "command": "npx --yes cydetix@0.6.0-beta.3 --version",
+      "observed": "npm 11.19.1 did not resolve an inferred bin; with an older global binary on PATH it invoked that binary, and without it the command was not found",
+      "state": "DOCUMENTATION_GAP"
+    }
+  },
+  "edgeCases": {
+    "state": "PASSED",
+    "passed": 8,
+    "failed": 0,
+    "cases": [
+      "version binding",
+      "path with spaces and non-Git repository",
+      "monorepo discovery",
+      "malformed repository reports incomplete engines",
+      "hostile repository does not execute lifecycle scripts, tests, hooks, Makefiles or instructions",
+      "read-only source remains unchanged",
+      "missing path exits with scan failure",
+      "permission-denied target exits with scan failure"
+    ]
+  },
+  "conclusion": "The exact published Beta.3 artifact installs and scans on the supported Node floor lines across all three hosted operating systems. Exact-version npx shorthand needs corrected documentation; the explicit npm exec form is deterministic."
+}

@@ -58,6 +58,11 @@ export const immutableHistoricalReleaseIdentities = [
         object: "a76d297b9749aff247ce980310441d1b058f1644",
         target: "e4dbda8b15620e99827b056b92b51ce68a4c60e8",
     },
+    {
+        tag: "v0.6.0-beta.3",
+        object: "29203b647094604184bdd84386a1e7f23809ac28",
+        target: "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+    },
 ];
 const alpha11SnapshotContract = {
     version: "0.6.0-alpha.11",

@@ -1,0 +1,78 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "productVersion": "0.6.0-beta.3",
+  "artifact": {
+    "source": "PUBLISHED_BETA3_TARBALL",
+    "pathRecordedAs": "cydetix-0.6.0-beta.3.tgz",
+    "installedWithLifecycleScriptsDisabled": true
+  },
+  "platform": "win32-x64",
+  "node": "v24.15.0",
+  "results": [
+    {
+      "id": "PACKED_VERSION",
+      "state": "PASSED",
+      "observed": "0.6.0-beta.3"
+    },
+    {
+      "id": "PATH_WITH_SPACES_NON_GIT",
+      "state": "PASSED",
+      "exitCode": 0,
+      "mutatedRepository": false,
+      "workingTreeState": "NOT_A_GIT_REPOSITORY"
+    },
+    {
+      "id": "MONOREPO",
+      "state": "PASSED",
+      "exitCode": 0,
+      "boundaries": ["."]
+    },
+    {
+      "id": "MALFORMED_REPOSITORY_FAILS_HONESTLY",
+      "state": "PASSED",
+      "exitCode": 0,
+      "incompleteEngines": [
+        {
+          "engine": "syntax-parsing",
+          "status": "PARTIAL"
+        },
+        {
+          "engine": "application-dataflow",
+          "status": "PARTIAL"
+        }
+      ]
+    },
+    {
+      "id": "HOSTILE_REPOSITORY_NO_EXECUTION",
+      "state": "PASSED",
+      "scans": 2,
+      "targetCommandsExecuted": false,
+      "sourceUnchanged": true,
+      "mutatedRepository": false
+    },
+    {
+      "id": "READ_ONLY_SOURCE",
+      "state": "PASSED",
+      "exitCode": 0,
+      "sourceUnchanged": true
+    },
+    {
+      "id": "MISSING_PATH_FAILURE",
+      "state": "PASSED",
+      "exitCode": 3,
+      "category": "SCAN_FAILURE"
+    },
+    {
+      "id": "PERMISSION_DENIED_TARGET_FAILURE",
+      "state": "PASSED",
+      "exitCode": 3,
+      "category": "SCAN_FAILURE",
+      "targetRecordedAs": "C:\\System Volume Information"
+    }
+  ],
+  "summary": {
+    "passed": 8,
+    "failed": 0
+  }
+}

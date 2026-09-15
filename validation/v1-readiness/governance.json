@@ -1,0 +1,146 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "immutableRelease": {
+    "version": "0.6.0-beta.3",
+    "tag": "v0.6.0-beta.3",
+    "tagObject": "29203b647094604184bdd84386a1e7f23809ac28",
+    "targetCommit": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+    "trustedReleaseWorkflow": {
+      "run": 34947037844,
+      "state": "SUCCESS",
+      "verifyJob": 104308801474,
+      "publishJob": 104310279623
+    },
+    "exactShaGates": [
+      {
+        "name": "CI",
+        "run": 34942830651,
+        "state": "SUCCESS"
+      },
+      {
+        "name": "CodeQL",
+        "run": 34942830674,
+        "state": "SUCCESS"
+      },
+      {
+        "name": "OpenSSF Scorecard",
+        "run": 34942830646,
+        "state": "SUCCESS"
+      }
+    ]
+  },
+  "checks": [
+    {
+      "id": "NPM-AUDIT",
+      "state": "PASS",
+      "result": "0 vulnerabilities"
+    },
+    {
+      "id": "OSV",
+      "state": "PASS",
+      "result": "npm run validate:online-osv exited 0 against the current lockfile"
+    },
+    {
+      "id": "RELEASE-REACHABLE-HISTORY",
+      "state": "PASS",
+      "result": "77 commits reachable from c937ae1ddbf329bc62fb0376f04bf2123f438f4e; no issues"
+    },
+    {
+      "id": "ALL-REFS-AUTHOR-METADATA",
+      "state": "GAP",
+      "result": "89 commits reviewed; three post-release Dependabot commits on isolated remote refs use an exact bot identity tuple not yet present in the author-allowance policy; none is an ancestor of Beta.3/main"
+    },
+    {
+      "id": "INDEPENDENT-GITLEAKS-ALL-REFS",
+      "state": "PASS",
+      "result": "Pinned Gitleaks 8.30.1 container, 88 content-bearing commits, network denied, repository read-only, no ignore directives; 23 exact reviewed non-secret findings and no unreviewed secret"
+    },
+    {
+      "id": "WORKFLOW-SECURITY",
+      "state": "PASS",
+      "result": "Four workflows; full-SHA pins, least privilege, no pull_request_target, protected tag-only release, exact-SHA gates, OIDC-only publish, single local tarball and deterministic dist-tag"
+    },
+    {
+      "id": "SHELL-INJECTION-DEFENSES",
+      "state": "PASS",
+      "result": "Workflow validator and hostile repository/agent/verification tests passed; target commands, lifecycle scripts and hooks were not executed during scanning"
+    },
+    {
+      "id": "PACKAGE-ALLOWLIST",
+      "state": "PASS",
+      "result": "221 entries; 296333 packed bytes; 1837613 unpacked bytes; no lifecycle scripts"
+    },
+    {
+      "id": "PACKED-INSTALL",
+      "state": "PASS",
+      "result": "Exact published tarball passed clean local, global and npm-exec validation plus 8/8 packed edge cases"
+    },
+    {
+      "id": "PLUGIN-ARCHIVE",
+      "state": "PASS",
+      "result": "0.6.0-beta.3 archive validated from isolated extraction; one skill"
+    },
+    {
+      "id": "SBOM",
+      "state": "PASS",
+      "result": "CycloneDX 1.7 fixture and Cydetix inventory validated"
+    },
+    {
+      "id": "SARIF",
+      "state": "PASS_WITH_CURRENT_NETWORK_GAP",
+      "result": "Exact Beta.3 release workflow validated SARIF; current focused renderer, official-schema control and SARIF Multitool tests passed. Fresh npm run validate:sarif failed closed because the checksum-pinned OASIS endpoint timed out twice, including outside the sandbox."
+    },
+    {
+      "id": "LICENSES",
+      "state": "PASS",
+      "result": "162 dependencies reviewed, Apache-2.0 package, no bundled dependencies, no issues"
+    },
+    {
+      "id": "PUBLIC-REPOSITORY-PRIVACY",
+      "state": "PASS",
+      "result": "1091 tracked and untracked-not-ignored files, 7745614 bytes, no issues"
+    },
+    {
+      "id": "SANDBOX",
+      "state": "V1_BLOCKER",
+      "result": "First mandatory 13-case run had 12 pass/1 fail and left the exact timed-out container in Created state; it was removed explicitly. A second complete run passed 13/13. The transient result disproves deterministic timeout cleanup."
+    },
+    {
+      "id": "SELF-SCAN",
+      "state": "PASS",
+      "result": "707 files, 5794693 bytes, 27 rules, 0 active and 28 documented suppressed findings"
+    },
+    {
+      "id": "FULL-TEST-SUITE",
+      "state": "PASS",
+      "result": "Exact Beta.3 tag context: 60 files passed, 1 skipped; 508 tests passed and 13 skipped out of 521. A no-tag-context run correctly failed two development-positive tests because the current package version already has a release tag."
+    },
+    {
+      "id": "FULL-VERIFY-COMMAND",
+      "state": "INCOMPLETE_EXTERNAL_ENDPOINT",
+      "result": "Exact Beta.3 tag-context npm run verify passed format, lint, typecheck and 21-schema/27-rule drift checks, then stopped fail-closed when the checksum-pinned OASIS SARIF schema endpoint timed out. Remaining component gates were run individually or by the full test suite."
+    },
+    {
+      "id": "RELEASE-REPORT",
+      "state": "PASS",
+      "result": "Exact Beta.3 tag context validated PUBLIC_ALPHA_READY_WITH_LIMITATIONS and all 13 historical tag identities"
+    },
+    {
+      "id": "RELEASE-PREVIEW",
+      "state": "PASS_AS_PREVIEW",
+      "result": "Generated package, CycloneDX, plugin and release-validation artifacts; state remained NOT_READY_FOR_PUBLICATION because this is an uncommitted readiness audit, not release authority"
+    }
+  ],
+  "trustedPublishing": {
+    "oidc": "EXECUTED_SUCCESSFULLY_FOR_BETA3",
+    "manualNpmToken": false,
+    "singleVerifiedLocalTarball": true,
+    "npmProvenance": "PRESENT",
+    "npmAttestationPredicate": "https://slsa.dev/provenance/v1",
+    "githubArtifactAttestation": "EXECUTED_SUCCESSFULLY_FOR_BETA3",
+    "sbomAttestation": "EXECUTED_SUCCESSFULLY_FOR_BETA3"
+  },
+  "releaseSemantics": "Only an annotated version tag triggers release. The protected verify job checks the exact tagged commit and immutable historical identities; the publish job alone receives id-token write, publishes the single verified local tarball with the version-derived prerelease tag, attests artifacts/SBOM, then publishes the GitHub prerelease.",
+  "conclusion": "Release governance is strong and Beta.3 is correctly bound and attested. Stable release remains blocked by the observed container cleanup race; all-refs author-policy currency and live SARIF endpoint availability are recorded without weakening their fail-closed gates."
+}

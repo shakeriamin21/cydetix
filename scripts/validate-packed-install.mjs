@@ -147,6 +147,34 @@ try {
     temporary,
     300_000,
   );
+  const esmExportCheck = path.join(consumer, "export-check.mjs");
+  await writeFile(
+    esmExportCheck,
+    [
+      'import scan from "cydetix/schemas/scan-report.schema.json" with { type: "json" };',
+      'import metadata from "cydetix/package.json" with { type: "json" };',
+      'if(scan.$id!=="https://cydetix.dev/schemas/v2/scan-report.schema.json")process.exit(21);',
+      'if(metadata.name!=="cydetix")process.exit(22);',
+      'for(const specifier of ["cydetix","cydetix/dist/core/engine.js","cydetix/dist/mcp/server.js","cydetix/schemas/security-ir.schema.json"]){',
+      "try{await import(specifier);process.exit(23)}catch(error){if(error.code!=='ERR_PACKAGE_PATH_NOT_EXPORTED')process.exit(24)}}",
+    ].join("\n"),
+    "utf8",
+  );
+  run(process.execPath, [esmExportCheck], consumer);
+  const commonJsExportCheck = path.join(consumer, "export-check.cjs");
+  await writeFile(
+    commonJsExportCheck,
+    [
+      'const scan=require("cydetix/schemas/scan-report.schema.json");',
+      'const metadata=require("cydetix/package.json");',
+      'if(scan.$id!=="https://cydetix.dev/schemas/v2/scan-report.schema.json")process.exit(21);',
+      'if(metadata.name!=="cydetix")process.exit(22);',
+      'for(const specifier of ["cydetix","cydetix/dist/core/engine.js","cydetix/dist/mcp/server.js","cydetix/schemas/security-ir.schema.json"]){',
+      "try{require(specifier);process.exit(23)}catch(error){if(error.code!=='ERR_PACKAGE_PATH_NOT_EXPORTED')process.exit(24)}}",
+    ].join("\n"),
+    "utf8",
+  );
+  run(process.execPath, [commonJsExportCheck], consumer);
   const installedRoot = path.join(consumer, "node_modules", ...packageJson.name.split("/"));
   const cli = path.join(installedRoot, "dist", "cli", "main.js");
   const installedPackageJson = JSON.parse(
@@ -529,6 +557,8 @@ try {
           "npm exec cydetix default scan from local tarball",
           "npm exec setup refusal from ephemeral runtime",
           "npm exec status refusal from ephemeral runtime",
+          "ESM stable-schema imports and blocked internal deep imports",
+          "CommonJS stable-schema imports and blocked internal deep imports",
           "--help",
           "doctor",
           "doctor --agent --project-root",

@@ -7,6 +7,30 @@ export const OFFICIAL_SARIF_SCHEMA_SHA256 =
   "c3b4bb2d6093897483348925aaa73af03b3e3f4bd4ca38cef26dcb4212a2682e";
 const MAX_SCHEMA_BYTES = 131_072;
 export const SARIF_MULTITOOL_MAX_ATTEMPTS = 2;
+export const SARIF_SCHEMA_NETWORK_MAX_ATTEMPTS = 2;
+
+function errorChainIncludes(error, predicate) {
+  let current = error;
+  for (let depth = 0; depth < 5 && current !== undefined && current !== null; depth += 1) {
+    if (predicate(current)) return true;
+    current = typeof current === "object" ? current.cause : undefined;
+  }
+  return false;
+}
+
+function isNetworkTimeout(error) {
+  return errorChainIncludes(error, (candidate) => {
+    if (typeof candidate !== "object") return false;
+    const code = Reflect.get(candidate, "code");
+    const name = Reflect.get(candidate, "name");
+    return (
+      code === "ETIMEDOUT" ||
+      code === "UND_ERR_CONNECT_TIMEOUT" ||
+      name === "AbortError" ||
+      name === "TimeoutError"
+    );
+  });
+}
 
 export function verifyOfficialSarifSchema(bytes) {
   if (
@@ -26,12 +50,29 @@ export function verifyOfficialSarifSchema(bytes) {
 }
 
 export async function downloadOfficialSarifSchema(fetchSchema = fetch) {
-  const response = await fetchSchema(OFFICIAL_SARIF_SCHEMA_URL, {
-    signal: AbortSignal.timeout(20_000),
-    redirect: "error",
-  });
+  let response;
+  for (let attempt = 1; attempt <= SARIF_SCHEMA_NETWORK_MAX_ATTEMPTS; attempt += 1) {
+    try {
+      response = await fetchSchema(OFFICIAL_SARIF_SCHEMA_URL, {
+        signal: AbortSignal.timeout(20_000),
+        redirect: "error",
+      });
+      break;
+    } catch (error) {
+      if (isNetworkTimeout(error) && attempt < SARIF_SCHEMA_NETWORK_MAX_ATTEMPTS) continue;
+      throw new Error(
+        isNetworkTimeout(error)
+          ? `SARIF_SCHEMA_NETWORK_TIMEOUT: Official SARIF schema transport timed out after ${attempt} bounded attempts; validation failed closed before content integrity could be evaluated.`
+          : "SARIF_SCHEMA_NETWORK_FAILURE: Official SARIF schema transport failed; validation failed closed before content integrity could be evaluated.",
+        { cause: error },
+      );
+    }
+  }
+  if (response === undefined) throw new Error("Unreachable SARIF schema network retry state.");
   if (!response.ok || !response.body)
-    throw new Error("Official SARIF schema download failed; validation cannot be skipped.");
+    throw new Error(
+      `SARIF_SCHEMA_HTTP_FAILURE: Official SARIF schema returned HTTP ${response.status}; validation cannot be skipped.`,
+    );
   const chunks = [];
   let bytes = 0;
   for await (const chunk of response.body) {

@@ -5,7 +5,7 @@ Security for AI-built software.
 ## One-off scanner
 
 ```bash
-npx cydetix@alpha
+npm exec --yes --package=cydetix@0.6.0-beta.3 -- cydetix
 ```
 
 That's it.
@@ -19,7 +19,7 @@ AI integration requires a persistent installation so routine agent execution nev
 installs packages at runtime:
 
 ```bash
-npm install -g cydetix@0.6.0-alpha.11
+npm install -g cydetix@0.6.0-beta.3
 cydetix setup
 ```
 
@@ -36,15 +36,16 @@ every AI product.
 For CLI-only use, the same global installation remains optional:
 
 ```bash
-npm install -g cydetix@0.6.0-alpha.10
+npm install -g cydetix@0.6.0-beta.3
 cydetix
 ```
 
-The current source is the unpublished `0.6.0-beta.3` release-preparation line. The immutable
-`v0.6.0-alpha.11` tag is the released baseline. Alpha.12, Beta.1, and Beta.2 are failed release
-attempts and are not authorized for publication. Use `npm run verify:development` for development
-validation. The separate `npm run verify` release gate still requires matching release metadata and
-evidence.
+`0.6.0-beta.3` is the current immutable published prerelease. Its annotated tag targets
+`c937ae1ddbf329bc62fb0376f04bf2123f438f4e`; trusted release run `34947037844` and exact-SHA CI,
+CodeQL, and OpenSSF gates succeeded. Alpha.12, Beta.1, and Beta.2 remain immutable failed attempts
+and were not published. The current source is the untagged `0.6.0-beta.4` V1-stabilization line; it
+is not a release. Use `npm run verify:development` for development validation. The separate
+`npm run verify` release gate still requires matching tag metadata and committed evidence.
 
 ## What the default command does
 
@@ -109,7 +110,7 @@ Node executable, the exact package identity/version, and the project root. Confi
 then use process-style command and argument fields equivalent to:
 
 ```text
-<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 0.6.0-beta.3
+<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 0.6.0-beta.4
 ```
 
 They contain no npm/npx command, registry URL, downloader, secret, or shell indirection. Routine MCP
@@ -212,7 +213,7 @@ cydetix doctor --agents --format json
 Specific execution can be requested when troubleshooting npm cache behavior:
 
 ```bash
-npx cydetix@0.6.0-alpha.7
+npm exec --yes --package=cydetix@0.6.0-beta.3 -- cydetix
 ```
 
 ## Security and limitations
@@ -225,23 +226,24 @@ Cydetix does not certify a project as secure or production-ready. Unsupported or
 behavior remains `UNKNOWN`, `NOT_APPLICABLE`, or uncovered as appropriate. Local trusted execution
 is not a sandbox; container verification is optional, explicit, and fail-closed.
 
-The alpha.8 development engine detects documented high-confidence SQL injection, OS command
-injection, path traversal, and SSRF dataflow patterns in bounded JavaScript/TypeScript and Python
-server contexts. It requires recognized sources, import/framework-proven sinks, propagation,
-reachability, complete analysis, and absence of a relevant recognized control. It does not claim
-universal language or framework coverage; all four rules are `REVIEW_REQUIRED` and have no automatic
-fix. See [rule coverage](docs/security/RULE_COVERAGE.md) and the
-[trust model](docs/security/TRUST_MODEL.md).
+The Beta.3 engine detects documented high-confidence SQL injection, OS command injection, path
+traversal, and SSRF dataflow patterns in bounded JavaScript/TypeScript and Python server contexts.
+It requires recognized sources, import/framework-proven sinks, propagation, reachability, complete
+analysis, and absence of a relevant recognized control. It does not claim universal language or
+framework coverage; all four rules are `REVIEW_REQUIRED` and have no automatic fix. See
+[rule coverage](docs/security/RULE_COVERAGE.md) and the [trust model](docs/security/TRUST_MODEL.md).
 
-A historical `npm view cydetix --json` check returned `cydetix@0.6.0-alpha.1` on 2026-09-06. That is
-not a current registry-state claim; the exact coordinate and dist-tags must be rechecked during
-separate release approval. Package registration is not product-name exclusivity or trademark
-clearance. Legal clearance has not been performed and no exclusivity is claimed.
+Beta.3 was published through the tag-driven OIDC trusted release workflow. Registry state and
+dist-tags remain time-varying external facts and must be rechecked for any future release. Package
+registration is not product-name exclusivity or trademark clearance. Legal clearance has not been
+performed and no exclusivity is claimed.
 
 Read the [security model](docs/SECURITY_MODEL.md), [threat model](THREAT_MODEL.md),
 [autofix policy](AUTOFIX_POLICY.md), [validation record](docs/VALIDATION.md), and
-[limitations](docs/LIMITATIONS.md) before relying on this alpha in a sensitive workflow. See the
-[local coding-agent compatibility registry](docs/integrations/agents.md) for adapter contracts.
+[limitations](docs/LIMITATIONS.md) before relying on this prerelease in a sensitive workflow. See
+the [local coding-agent compatibility registry](docs/integrations/agents.md) for adapter contracts.
+The [V1 contract policy](docs/V1_COMPATIBILITY.md) classifies stable, experimental, and internal
+surfaces, including the intentionally closed package import boundary.
 
 ## Development
 
@@ -251,7 +253,7 @@ Supported runtimes are Node.js `22.18+` within Node 22 and `24.11+` within Node 
 npm ci --ignore-scripts
 npm run build
 npm test
-npm run verify
+npm run verify:development
 npm run validate:install
 ```
 

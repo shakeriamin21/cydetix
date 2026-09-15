@@ -1,5 +1,9 @@
 # Cydetix publication gate
 
+> Historical Alpha.7 gate record. Beta.3 was subsequently released by the trusted OIDC workflow. Use
+> `docs/integrations/releases.md` and versioned readiness evidence for any future candidate; the
+> historical states below must not be read as current registry or hosted-gate status.
+
 Historical registry evidence: 2026-09-06; current candidate: 2026-09-09
 
 A historical check observed `cydetix@0.6.0-alpha.1`. The immutable alpha.2, alpha.3, and alpha.4

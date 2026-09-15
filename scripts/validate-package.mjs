@@ -75,10 +75,25 @@ if (packageJson.name !== "cydetix")
   throw new Error("Package name must be the unscoped cydetix identity.");
 if (JSON.stringify(packageJson.bin) !== JSON.stringify({ cydetix: "dist/cli/main.js" }))
   throw new Error("Package must expose exactly one cydetix binary at the compiled CLI path.");
+const expectedExports = {
+  "./schemas/scan-report.schema.json": "./schemas/scan-report.schema.json",
+  "./schemas/finding.schema.json": "./schemas/finding.schema.json",
+  "./schemas/rule.schema.json": "./schemas/rule.schema.json",
+  "./schemas/remediation-report.schema.json": "./schemas/remediation-report.schema.json",
+  "./schemas/cyclonedx-1.7.schema.json": "./schemas/cyclonedx-1.7.schema.json",
+  "./package.json": "./package.json",
+};
+if (JSON.stringify(packageJson.exports) !== JSON.stringify(expectedExports))
+  throw new Error(
+    "Package exports must expose only the reviewed stable schema and metadata paths.",
+  );
 const readme = await readFile(path.resolve("README.md"), "utf8");
 if (!readme.startsWith("# Cydetix\n\nSecurity for AI-built software.\n\n## One-off scanner\n"))
   throw new Error("README must lead with the Cydetix tagline and one-off scanner path.");
-if (!readme.includes("npx cydetix") || /(?:npx|npm install -g)\s+@/u.test(readme))
+if (
+  !readme.includes("npm exec --yes --package=cydetix@0.6.0-beta.3 -- cydetix") ||
+  /(?:npx|npm install -g|--package=)\s+@/u.test(readme)
+)
   throw new Error("README onboarding must use the unscoped Cydetix identity.");
 for (const name of ["preinstall", "install", "postinstall", "prepare"])
   if (packageJson.scripts?.[name] !== undefined)

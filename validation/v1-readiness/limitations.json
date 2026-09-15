@@ -1,0 +1,168 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "classificationDefinitions": {
+    "V1_BLOCKER": "A specific compatibility or user-safety condition that prevents responsible stable-interface commitments.",
+    "ACCEPTABLE_V1_LIMITATION": "A bounded product limitation that can coexist with v1 when it remains explicit and fail-closed.",
+    "DOCUMENTATION_GAP": "Implemented behavior or scope is not documented precisely enough for stable use.",
+    "MEASUREMENT_GAP": "The available evidence is honest but insufficient for a broader empirical claim."
+  },
+  "items": [
+    {
+      "id": "LIM-UNKNOWN",
+      "topic": "UNKNOWN semantics",
+      "classification": "ACCEPTABLE_V1_LIMITATION",
+      "rationale": "UNKNOWN is a first-class non-secure proof result with evidence gaps and is never collapsed into a clean result. Incomplete knowledge is expected in bounded static analysis; preserving it is the user-safety property."
+    },
+    {
+      "id": "LIM-TRUNCATED",
+      "topic": "TRUNCATED analysis",
+      "classification": "ACCEPTABLE_V1_LIMITATION",
+      "rationale": "Traversal, parser, identity and dataflow bounds surface TRUNCATED/PARTIAL instead of silently claiming complete analysis. The bound is acceptable because it fails honestly."
+    },
+    {
+      "id": "LIM-PARSER-FRAMEWORK",
+      "topic": "Parser and framework coverage",
+      "classification": "ACCEPTABLE_V1_LIMITATION",
+      "rationale": "The product supports declared literal/direct ESM Express and narrow Python/FastAPI/Flask patterns; CommonJS indirection, dependency injection, callbacks, dynamic construction and most cross-file Python propagation remain unsupported. v1 need not mean universal framework coverage."
+    },
+    {
+      "id": "LIM-RESOURCE-BOUNDS",
+      "topic": "Repository, parser, identity and dataflow resource bounds",
+      "classification": "ACCEPTABLE_V1_LIMITATION",
+      "rationale": "File size/count/depth, AST, identity iteration/fact and dataflow state/edge/path limits protect availability and report their effect. Weakening these bounds would reduce safety."
+    },
+    {
+      "id": "LIM-CORPUS-GROUND-TRUTH",
+      "topic": "Selective corpus ground truth",
+      "classification": "ACCEPTABLE_V1_LIMITATION",
+      "rationale": "The pinned 30-repository corpus has selective adjudication and incomplete ground truth. It supports bounded case evidence, not universal accuracy."
+    },
+    {
+      "id": "LIM-RECALL",
+      "topic": "Unsupported corpus-wide recall claims",
+      "classification": "ACCEPTABLE_V1_LIMITATION",
+      "rationale": "Recall and accuracy remain null because complete ground truth does not exist. A stable release can responsibly omit a recall guarantee."
+    },
+    {
+      "id": "LIM-KNOWN-FALSE-POSITIVES",
+      "topic": "Known adjudicated false positives",
+      "classification": "ACCEPTABLE_V1_LIMITATION",
+      "rationale": "Three historical false PROVEN_INSECURE results were corrected by rule versions 1.0.1 and remain UNKNOWN in current replays; no unresolved confirmed false-insecure result is recorded."
+    },
+    {
+      "id": "LIM-LIVE-HOST",
+      "topic": "Live-host validation breadth",
+      "classification": "MEASUREMENT_GAP",
+      "rationale": "Exact Node 22.18 and 24.11 hosted install/package gates passed on Windows, Ubuntu and macOS, but interactive agent-host versions and broader filesystem/enterprise policy combinations are not continuously exercised."
+    },
+    {
+      "id": "LIM-PERFORMANCE",
+      "topic": "Performance uncertainty",
+      "classification": "MEASUREMENT_GAP",
+      "rationale": "Deterministic representative runs exist, but host variance is material and there is no controlled cross-platform SLO or statistically powered regression threshold. No unsupported latency guarantee should be made."
+    },
+    {
+      "id": "LIM-SUPPORTED-ENVELOPE",
+      "topic": "Supported security-analysis envelope",
+      "classification": "ACCEPTABLE_V1_LIMITATION",
+      "rationale": "Findings prove only catalogued invariants at explicit evidence anchors. Absence of findings, COMPLETE within an engine, or a successful scan is not whole-program or deployed-runtime proof."
+    },
+    {
+      "id": "LIM-DEPENDENCY-SCOPE",
+      "topic": "Dependency analysis scope",
+      "classification": "ACCEPTABLE_V1_LIMITATION",
+      "rationale": "Deterministic inventory targets npm lockfile v2/v3 and does not claim dependency reachability, PyPI support, or SPDX output."
+    },
+    {
+      "id": "LIM-SECRETS-SCOPE",
+      "topic": "Secret analysis scope",
+      "classification": "ACCEPTABLE_V1_LIMITATION",
+      "rationale": "Secret scanning is passive, redacted and lexical; it does not validate credentials or prove deployment. Placeholder/key-purpose ambiguity remains UNKNOWN."
+    },
+    {
+      "id": "LIM-REMEDIATION",
+      "topic": "Remediation limitations",
+      "classification": "ACCEPTABLE_V1_LIMITATION",
+      "rationale": "Exactly one narrow HttpOnly false-to-true transformation is SAFE. REVIEW_REQUIRED and ARCHITECTURAL work never autoapplies, and any applied SAFE change requires a full rescan and verification conclusion."
+    },
+    {
+      "id": "LIM-SANDBOX",
+      "topic": "Sandbox assumptions",
+      "classification": "ACCEPTABLE_V1_LIMITATION",
+      "rationale": "Container verification depends on a trusted Docker runtime, a locally available immutable image, kernel controls and bounded temporary workspace capacity. The local runner is explicitly unsandboxed and opt-in."
+    },
+    {
+      "id": "LIM-SANDBOX-COPY",
+      "topic": "Sandbox workspace copy and filesystem atomicity",
+      "classification": "ACCEPTABLE_V1_LIMITATION",
+      "rationale": "The ephemeral copy is text-only and bounded at 10,000 files/100 MiB; local filesystem atomicity cannot provide a universal guarantee against all concurrent or hostile filesystem behavior."
+    },
+    {
+      "id": "LIM-SANDBOX-TIMEOUT-CLEANUP",
+      "topic": "Docker timeout cleanup race",
+      "classification": "V1_BLOCKER",
+      "rationale": "A mandatory local run returned TIMED_OUT and then left its exact cydetix-verify container in Created state. The immediate remove/absence loop can finish before a killed Docker client has completed daemon-side container creation. A second complete 13-case run passed, but the observed race disproves deterministic cleanup and requires a narrow lifecycle fix plus stress regression coverage."
+    },
+    {
+      "id": "LIM-AGENT-HOSTS",
+      "topic": "Agent-host integration",
+      "classification": "DOCUMENTATION_GAP",
+      "rationale": "Persistent exact-runtime configuration, root binding and MCP behavior are tested, but host-specific configuration formats and live UI invocation remain best-effort. The primary compatibility policy does not yet label this boundary clearly for v1."
+    },
+    {
+      "id": "LIM-PACKAGE-EXPORTS",
+      "topic": "Package public import boundary",
+      "classification": "V1_BLOCKER",
+      "rationale": "The package publishes dist and declarations without an exports map. Consumers can deep-import implementation modules, leaving it ambiguous which JavaScript/TypeScript APIs v1 semantic versioning would protect."
+    },
+    {
+      "id": "LIM-COMPATIBILITY-TIERS",
+      "topic": "Stable versus experimental public surface",
+      "classification": "V1_BLOCKER",
+      "rationale": "The shipped CLI and schemas include mature scan/report/MCP contracts alongside setup/status/auth-graph/diagnostic and host-integration surfaces, but no reviewed public policy identifies stable guarantees versus experimental functionality. A v1 release without this boundary would create accidental compatibility promises."
+    },
+    {
+      "id": "LIM-STALE-PUBLIC-DOCS",
+      "topic": "Beta.3 public installation and release documentation",
+      "classification": "V1_BLOCKER",
+      "rationale": "README and integration/limitation pages still direct users to older Alpha versions and state that Beta.3 is unpublished or hosted/live publication evidence is unavailable. Those statements contradict the immutable successful Beta.3 release and can cause unsafe or misleading installation choices."
+    },
+    {
+      "id": "LIM-RULE-VERSION-POLICY",
+      "topic": "Rule ID and rule-version evolution",
+      "classification": "DOCUMENTATION_GAP",
+      "rationale": "All 27 IDs and versions are inventoried, but the post-v1 compatibility rule for changes to meaning, severity, proof requirements, anchors and remediation ceilings is not yet published."
+    },
+    {
+      "id": "LIM-SARIF-EXTENSIONS",
+      "topic": "SARIF property-bag compatibility",
+      "classification": "DOCUMENTATION_GAP",
+      "rationale": "SARIF 2.1.0 level, fingerprint, code-flow and SAFE-fix behavior is deterministic, but the stability/additive policy for Cydetix-specific property-bag fields is not stated."
+    },
+    {
+      "id": "LIM-NPX-EXACT-PIN",
+      "topic": "Exact-version npx invocation on Windows npm 11",
+      "classification": "DOCUMENTATION_GAP",
+      "rationale": "The explicit form `npm exec --package=cydetix@0.6.0-beta.3 -- cydetix` runs the exact package, while shorthand `npx cydetix@0.6.0-beta.3` did not resolve the bin under npm 11.19.1 and could fall through to an older global binary. Exact pinning documentation must use the unambiguous form."
+    },
+    {
+      "id": "LIM-PLATFORM-EDGE-MATRIX",
+      "topic": "Cross-platform hostile and permission edge matrix",
+      "classification": "MEASUREMENT_GAP",
+      "rationale": "The current packed edge audit covers Windows paths with spaces, non-Git, monorepo, malformed, hostile, read-only and denied targets; hosted package gates cover Linux/macOS, but the full hostile/permission edge matrix has not been repeated independently on each hosted OS."
+    },
+    {
+      "id": "LIM-ALL-REFS-AUTHOR-POLICY",
+      "topic": "All-refs author privacy policy currency",
+      "classification": "DOCUMENTATION_GAP",
+      "rationale": "The complete history reachable from the audited release commit passes, and independent all-refs Gitleaks passes. A broader deterministic metadata audit of all locally fetched refs found three post-release Dependabot commits on isolated remote branches whose exact bot identity tuples are not yet recorded in the author-allowance policy. They are not ancestors of Beta.3 or main, but should be reviewed before claiming all public refs satisfy the policy."
+    }
+  ],
+  "summary": {
+    "V1_BLOCKER": 4,
+    "ACCEPTABLE_V1_LIMITATION": 13,
+    "DOCUMENTATION_GAP": 5,
+    "MEASUREMENT_GAP": 3
+  }
+}

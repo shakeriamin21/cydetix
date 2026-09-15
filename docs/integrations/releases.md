@@ -1,26 +1,22 @@
-# Public-alpha release procedure
+# Prerelease and stable release procedure
 
-The release workflow is prepared, not authorized. Do not create a tag, push, publish npm, create a
-public GitHub Release, or submit either Marketplace listing until the user separately approves
-publication.
+Beta.3 is the current immutable published prerelease. The current Beta.4 development candidate and
+any future stable release are not authorized by this document. Do not create a tag, publish npm,
+create a GitHub Release, or submit a Marketplace listing until the user separately approves that
+exact candidate.
 
 ## Trusted-publishing trust model
 
-The prepared release workflow uses a protected GitHub-hosted `release` environment and npm Trusted
-Publishing through OIDC. No long-lived `NPM_TOKEN` is accepted by that workflow. npm currently
-requires CLI 11.5.1+ and Node 22.14+ for trusted publishing; the workflow uses supported Node 24 and
-checks the npm CLI before publishing. The approved public `package.json` repository URL must exactly
-match the GitHub repository configured at npm.
+The release workflow uses a protected GitHub-hosted `release` environment and npm Trusted Publishing
+through OIDC. No long-lived `NPM_TOKEN` is accepted by that workflow. npm currently requires CLI
+11.5.1+ and Node 22.14+ for trusted publishing; the workflow uses supported Node 24 and checks the
+npm CLI before publishing. The approved public `package.json` repository URL must exactly match the
+GitHub repository configured at npm.
 
-A historical 2026-09-06 check observed `cydetix@0.6.0-alpha.1`; current registry state must be
-rechecked before release. The immutable alpha.2 and alpha.3 attempts failed at publication
-configuration and history scope respectively. Alpha.4 completed its verification, artifact,
-checksum, and attestation gates, then failed before registry authentication because its relative
-tarball package spec lacked `./`; its draft prerelease remained non-public. Those attempts did not
-publish to npm. Before releasing alpha.7, an authorized maintainer must independently confirm that
-npm Trusted Publishing is bound to `shakeriamin21/cydetix`, `.github/workflows/release.yml`, and the
-protected `release` environment. Repository configuration alone does not prove the external npm
-setting or a successful OIDC publication.
+Beta.3 trusted release run `34947037844` succeeded through npm OIDC publication and GitHub release
+finalization. That evidence is bound to the immutable Beta.3 tag/commit and does not authorize a
+future release. Registry state and the external trusted-publisher binding must be rechecked for the
+next exact candidate. Historical failed attempts remain recorded in immutable release history.
 
 Do not add a temporary long-lived npm token to `release.yml`. See
 [the npm package and Trusted Publishing plan](../NPM_BOOTSTRAP.md).
@@ -93,9 +89,9 @@ git switch main
 git pull --ff-only
 git rev-parse HEAD
 git status --short
-git tag -a v0.6.0-alpha.7 -m "Cydetix v0.6.0-alpha.7"
-git show --no-patch --decorate v0.6.0-alpha.7
-git push origin v0.6.0-alpha.7
+git tag -a "v<approved-version>" -m "Cydetix v<approved-version>"
+git show --no-patch --decorate "v<approved-version>"
+git push origin "v<approved-version>"
 ```
 
 The tag triggers `.github/workflows/release.yml`. It re-verifies the approved identity, annotated
@@ -106,7 +102,7 @@ SBOM, checksums, and manifest. The protected publication job then:
 1. downloads and verifies the exact build output;
 2. generates GitHub build and CycloneDX SBOM attestations;
 3. creates a non-public draft prerelease;
-4. publishes the npm tarball through OIDC under the `alpha` dist-tag;
+4. publishes the npm tarball through OIDC under the semver-derived prerelease or stable dist-tag;
 5. publishes the GitHub draft as a prerelease only after npm succeeds.
 
 This ordering reduces partial publication but cannot make two registries atomic. If npm succeeds and
@@ -122,7 +118,7 @@ gh attestation verify <artifact> --repo <owner/repository>
 ```
 
 Verify the SBOM attestation with the predicate type reported by the release workflow. Use only the
-registry-verified package coordinate and `@alpha` dist-tag; never infer publication from this source
+registry-verified package coordinate and intended dist-tag; never infer publication from a source
 tree alone.
 
 Current references:

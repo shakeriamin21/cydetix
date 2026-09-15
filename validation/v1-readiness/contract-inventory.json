@@ -1,0 +1,861 @@
+{
+  "schemaVersion": "1.0.0",
+  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "immutableBaseline": {
+    "version": "0.6.0-beta.3",
+    "commit": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+    "tag": "v0.6.0-beta.3",
+    "annotatedTagObject": "29203b647094604184bdd84386a1e7f23809ac28",
+    "releaseWorkflow": 34947037844
+  },
+  "package": {
+    "name": "cydetix",
+    "version": "0.6.0-beta.4",
+    "type": "module",
+    "bin": { "cydetix": "dist/cli/main.js" },
+    "files": [
+      "dist",
+      "!dist/**/*.map",
+      "rules",
+      "schemas",
+      "agent-skills",
+      "README.md",
+      "CHANGELOG.md",
+      "NOTICE",
+      "LICENSE"
+    ],
+    "engines": { "node": "^22.18.0 || ^24.11.0" },
+    "exports": {
+      "./schemas/scan-report.schema.json": "./schemas/scan-report.schema.json",
+      "./schemas/finding.schema.json": "./schemas/finding.schema.json",
+      "./schemas/rule.schema.json": "./schemas/rule.schema.json",
+      "./schemas/remediation-report.schema.json": "./schemas/remediation-report.schema.json",
+      "./schemas/cyclonedx-1.7.schema.json": "./schemas/cyclonedx-1.7.schema.json",
+      "./package.json": "./package.json"
+    },
+    "lifecycleScripts": [],
+    "contractAssessment": "EXPLICIT_EXPORT_BOUNDARY"
+  },
+  "cli": {
+    "entries": [
+      {
+        "command": "cydetix",
+        "classification": "STABLE",
+        "arguments": [],
+        "flags": ["-V, --version", "-h, --help", "--details", "--json", "--sarif"]
+      },
+      {
+        "command": "init",
+        "classification": "STABLE",
+        "arguments": ["[path]"],
+        "flags": ["-h, --help"]
+      },
+      {
+        "command": "setup",
+        "classification": "EXPERIMENTAL",
+        "arguments": [],
+        "flags": [
+          "-h, --help",
+          "--agent <name>",
+          "--all",
+          "--yes",
+          "--dry-run",
+          "--status",
+          "--verify",
+          "--remove",
+          "--project <path>"
+        ]
+      },
+      {
+        "command": "status",
+        "classification": "EXPERIMENTAL",
+        "arguments": [],
+        "flags": ["-h, --help", "--project <path>"]
+      },
+      {
+        "command": "scan",
+        "classification": "STABLE",
+        "arguments": ["[path]"],
+        "flags": [
+          "-h, --help",
+          "--format <format>",
+          "--severity <level>",
+          "--confidence <level>",
+          "--offline",
+          "--non-interactive"
+        ]
+      },
+      {
+        "command": "auth",
+        "classification": "EXPERIMENTAL",
+        "arguments": ["[path]"],
+        "flags": [
+          "-h, --help",
+          "--format <format>",
+          "--severity <level>",
+          "--confidence <level>",
+          "--offline"
+        ]
+      },
+      {
+        "command": "graph",
+        "classification": "EXPERIMENTAL",
+        "arguments": ["[path]"],
+        "flags": ["-h, --help", "--auth", "--format <format>"]
+      },
+      {
+        "command": "dependencies",
+        "classification": "STABLE",
+        "arguments": ["[path]"],
+        "flags": ["-h, --help", "--advisories <mode>", "--format <format>"]
+      },
+      {
+        "command": "secrets",
+        "classification": "STABLE",
+        "arguments": ["[path]"],
+        "flags": ["-h, --help", "--history", "--format <format>"]
+      },
+      {
+        "command": "supply-chain",
+        "classification": "STABLE",
+        "arguments": ["[path]"],
+        "flags": ["-h, --help", "--advisories <mode>", "--history", "--format <format>"]
+      },
+      {
+        "command": "sbom",
+        "classification": "STABLE",
+        "arguments": ["[path]"],
+        "flags": ["-h, --help", "--format <format>"]
+      },
+      {
+        "command": "fix",
+        "classification": "STABLE",
+        "arguments": ["[path]"],
+        "flags": [
+          "-h, --help",
+          "--finding <fingerprint>",
+          "--dry-run",
+          "--non-interactive",
+          "--verify-command <json>",
+          "--verification-runner <mode>",
+          "--sandbox-image <digest>",
+          "--format <format>"
+        ]
+      },
+      {
+        "command": "mcp",
+        "classification": "STABLE",
+        "arguments": [],
+        "flags": ["-h, --help", "--project-root <path>", "--require-version <version>"]
+      },
+      {
+        "command": "mcp-config",
+        "classification": "EXPERIMENTAL",
+        "arguments": [],
+        "flags": ["-h, --help", "--project <path>", "--format <format>"]
+      },
+      {
+        "command": "verify",
+        "classification": "STABLE",
+        "arguments": ["[path]"],
+        "flags": ["-h, --help", "--format <format>"]
+      },
+      {
+        "command": "remediation",
+        "classification": "STABLE",
+        "arguments": [],
+        "flags": ["-h, --help"]
+      },
+      {
+        "command": "remediation show",
+        "classification": "STABLE",
+        "arguments": ["<report>"],
+        "flags": ["-h, --help", "--format <format>"]
+      },
+      {
+        "command": "explain",
+        "classification": "STABLE",
+        "arguments": ["<rule-id>"],
+        "flags": ["-h, --help", "--format <format>"]
+      },
+      {
+        "command": "rules",
+        "classification": "STABLE",
+        "arguments": [],
+        "flags": ["-h, --help", "--format <format>"]
+      },
+      {
+        "command": "trust",
+        "classification": "STABLE",
+        "arguments": [],
+        "flags": ["-h, --help", "--format <format>"]
+      },
+      {
+        "command": "standards",
+        "classification": "EXPERIMENTAL",
+        "arguments": [],
+        "flags": ["-h, --help"]
+      },
+      {
+        "command": "ci",
+        "classification": "STABLE",
+        "arguments": ["[path]"],
+        "flags": ["-h, --help", "--format <format>", "--fail-on <level>"]
+      },
+      {
+        "command": "doctor",
+        "classification": "EXPERIMENTAL",
+        "arguments": [],
+        "flags": [
+          "-h, --help",
+          "--agent",
+          "--agents",
+          "--format <format>",
+          "--project-root <path>",
+          "--sandbox-image <digest>"
+        ]
+      },
+      { "command": "version", "classification": "STABLE", "arguments": [], "flags": ["-h, --help"] }
+    ],
+    "defaults": {
+      "command": "scan current directory with concise human output",
+      "scanFormat": "text",
+      "scanSeverity": "info",
+      "scanConfidence": "low",
+      "scanOffline": true,
+      "ciFormat": "sarif",
+      "ciFailOn": "high",
+      "fixDryRun": false,
+      "fixVerificationRunner": "local"
+    },
+    "exitCodes": {
+      "ok": 0,
+      "policyFindings": 1,
+      "usage": 2,
+      "scanFailure": 3,
+      "verificationFailure": 4,
+      "verifiedFixApplied": 5,
+      "unsafeRemediation": 6,
+      "providerUnavailable": 7
+    },
+    "semantics": "Default and scan exit 0 after a completed scan even when findings exist; ci/verify exit 1 at policy threshold. Usage is 2, scan failure 3, verification failure 4, verified SAFE application 5, withheld mutation 6, and required-provider unavailability 7. UNKNOWN never means secure."
+  },
+  "states": {
+    "proof": ["PROVEN_SECURE", "PROVEN_INSECURE", "UNKNOWN", "NOT_APPLICABLE"],
+    "confidence": ["low", "medium", "high"],
+    "reachability": ["unknown", "unlikely", "possible", "likely", "confirmed"],
+    "completeness": ["COMPLETE", "PARTIAL", "UNSUPPORTED", "TRUNCATED"],
+    "remediationAuthority": ["SAFE", "REVIEW_REQUIRED", "ARCHITECTURAL"],
+    "remediation": [
+      "PLANNED",
+      "NOT_APPLICABLE",
+      "UNSUPPORTED",
+      "REQUIRES_REVIEW",
+      "APPLIED_UNVERIFIED",
+      "APPLIED_VERIFIED",
+      "VERIFICATION_FAILED",
+      "ROLLBACK_SUCCEEDED",
+      "ROLLBACK_FAILED",
+      "PARTIALLY_REMEDIATED",
+      "RESIDUAL_RISK",
+      "STALE_FINDING",
+      "RESCAN_REQUIRED",
+      "SANDBOX_UNAVAILABLE",
+      "SANDBOX_MISCONFIGURED"
+    ],
+    "verificationConclusion": ["PROVEN_SECURE", "PROVEN_INSECURE", "UNKNOWN", "NOT_APPLICABLE"]
+  },
+  "configuration": {
+    "file": ".cydetix.json",
+    "schemaVersion": "1.0.0",
+    "strictDataOnly": true,
+    "maxBytes": 65536,
+    "keys": [
+      "schemaVersion",
+      "maxFileBytes",
+      "maxFiles",
+      "maxDepth",
+      "additionalIgnore",
+      "baseline",
+      "suppressions"
+    ],
+    "limits": {
+      "maxFileBytes": { "default": 1048576, "minimum": 1024, "maximum": 10485760 },
+      "maxFiles": { "default": 100000, "minimum": 1, "maximum": 500000 },
+      "maxDepth": { "default": 40, "minimum": 1, "maximum": 100 },
+      "additionalIgnoreMaximumEntries": 100
+    },
+    "suppressionRequiredFields": ["rule", "scope", "reason", "owner", "created"],
+    "suppressionOptionalFields": ["fingerprint", "expires"]
+  },
+  "schemas": [
+    {
+      "path": "schemas/agent-compatibility.schema.json",
+      "sha256": "3c39dc82e1a4b5b3d5498833529e8824061fc2dab1cda0da51ade83e8a809033",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/application-dataflow.schema.json",
+      "sha256": "6178fcca141743759335505fe75ec57583318deb213a45c326f2c3716fd71e45",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/authentication-analysis.schema.json",
+      "sha256": "17a08c1a02f9df79f16e862a257d2f844df90be1b1dd262b9e752b2c69e92f40",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/authorization-proof.schema.json",
+      "sha256": "1738bad7bf1b5c5d48cd2828b5c3ff47c8d4f37bbdb513e40c67004eaaa87a9b",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/beta-readiness.schema.json",
+      "sha256": "ce88d22d49a7aa5ebf07090a13fa34f75a8d78f12a0e8b205f8baa507a7d57df",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/cyclonedx-1.7.schema.json",
+      "sha256": "81fd195d7feb6692fd84c11964ec61cdd0e621fa080bc874b3a996a03f19f6df",
+      "classification": "STABLE"
+    },
+    {
+      "path": "schemas/finding.schema.json",
+      "sha256": "133a40b493b96e526359659c215212531cbbdd20a76c5312ba06494cd1d37548",
+      "classification": "STABLE"
+    },
+    {
+      "path": "schemas/release-validation.schema.json",
+      "sha256": "a2b841c7ee82409fd927345c55c578e55f5ea85d82f1c5311d033b39c84f5da7",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/remediation-report.schema.json",
+      "sha256": "05b27ad1fb5a1a14dc1f7da6dfc7df63f040e4182e157957c4addda0e75a3b6a",
+      "classification": "STABLE"
+    },
+    {
+      "path": "schemas/repository-manifest.schema.json",
+      "sha256": "f43fe4782c90f4258fbf1a9e49e1216934a7163588ae1aec86104cef7313de10",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/rule.schema.json",
+      "sha256": "fc0462ea883452f25ae8de5c4f7b4bc65c4de82040a3a0d643020c2683c7e0c4",
+      "classification": "STABLE"
+    },
+    {
+      "path": "schemas/rules-report.schema.json",
+      "sha256": "bdce7cbff5c1160e6eaf99b39b310f8274a06a68da6a48bb221c90433ea44f59",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/sandbox-capability.schema.json",
+      "sha256": "894cb1d36b718ea5a27efba8f6a48b9950287f92eeb021de78a9dfd76a4cab04",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/scan-report.schema.json",
+      "sha256": "d87dda764d0d3a16fdf2e284c75d7152b1e300e92941854be1981b3019d715bf",
+      "classification": "STABLE"
+    },
+    {
+      "path": "schemas/security-ir.schema.json",
+      "sha256": "8f4315e8358c478871aae80783473b4a067385c91ae9446e4848705ae843a83f",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/supply-chain-analysis.schema.json",
+      "sha256": "551225928fbe2e50afc84e99700f0f8cb7902c332a75465c578fa4e20c3a9807",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/trust-report.schema.json",
+      "sha256": "73da7d4662d809c1e973765beeb030a66f9730ec2b2d0654b76e99346a1695f0",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/validation-corpus.schema.json",
+      "sha256": "bf1875f2e6a41075e23b038a6f6c1a2dfcc6e51280d968ccc8cf05f3d29ca09b",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/validation-labels.schema.json",
+      "sha256": "0c15af8bb42662f10c9aa260d0540f474fb5d1b872a4ff9e1cdad655b09146d9",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/validation-result.schema.json",
+      "sha256": "a0dae4118029dfeaa8bf0e942d1e3b4e37d66f785ec86f558fd71ad4724af875",
+      "classification": "EXPERIMENTAL"
+    },
+    {
+      "path": "schemas/verification-execution.schema.json",
+      "sha256": "39187882323b0f6371b272416c803010fa503dbf31dcf9d88b2aee63003ceeed",
+      "classification": "EXPERIMENTAL"
+    }
+  ],
+  "sarif": {
+    "version": "2.1.0",
+    "schema": "https://docs.oasis-open.org/sarif/sarif/v2.1.0/errata01/os/schemas/sarif-schema-2.1.0.json",
+    "levels": {
+      "critical": "error",
+      "high": "error",
+      "medium": "warning",
+      "low": "note",
+      "info": "note"
+    },
+    "partialFingerprint": "cydetix/v1",
+    "codeFlows": "emitted when a finding has an evidencePath",
+    "fixes": "emitted only for exact SAFE findings with a concrete replacement",
+    "properties": "Existing Cydetix proof, confidence, reachability, completeness, verification, impact and remediation property names and meanings are stable; new properties may be additive. Other invocation diagnostics are experimental."
+  },
+  "rules": {
+    "count": 27,
+    "entries": [
+      {
+        "id": "AS-SESSION-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "SAFE"
+      },
+      {
+        "id": "AS-PASSWORD-001",
+        "version": "1.0.1",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-TOKEN-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-SECRET-001",
+        "version": "1.0.1",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-CORS-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-AUTHZ-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-TENANT-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-SESSION-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-SESSION-002",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-RESET-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-RESET-002",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-RESET-003",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-JWT-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-OAUTH-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-AUTH-OAUTH-002",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-SCA-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-CI-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-CI-002",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-CI-003",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "ARCHITECTURAL"
+      },
+      {
+        "id": "AS-CI-004",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-INJECTION-SQL-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-INJECTION-CMD-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-PATH-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-SSRF-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-XSS-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-REDIRECT-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "REVIEW_REQUIRED"
+      },
+      {
+        "id": "AS-CSRF-001",
+        "version": "1.0.0",
+        "maturity": "PRODUCTION",
+        "maxRemediationClass": "REVIEW_REQUIRED"
+      }
+    ],
+    "versionSemantics": "IDs are stable security-invariant identities and are not reused. Material changes to meaning, applicability, evidence anchors, proof requirements, default severity, false-positive behavior, or remediation ceiling require explicit review, a rule-version decision, and release documentation; authority never silently increases."
+  },
+  "mcp": {
+    "transport": "stdio newline-delimited JSON-RPC",
+    "retainedRequestCharacterLimit": 1048576,
+    "tools": [
+      {
+        "name": "cydetix_scan",
+        "description": "Use when the user asks to check, audit, review, or harden project security, vulnerabilities, authentication, authorization, sessions, JWT, OAuth, secrets, dependencies, supply chain, or CI/CD. This deterministic scan is read-only, offline by default, returns a structured report, leaves the repository unmodified, and stays inside the configured trusted project root.",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Project-relative directory. Defaults to the configured project root."
+            }
+          }
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        }
+      },
+      {
+        "name": "cydetix_fix",
+        "description": "Use only when the user explicitly asks to fix, remediate, repair, or resolve security findings. Plan remediation first. Mutation requires explicit user intent plus apply=true and confirmedUserIntent. Only SAFE changes may autoapply; REVIEW_REQUIRED needs human review and ARCHITECTURAL never autoapplies. Omit apply or set it false for a zero-write plan.",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "path": {
+              "type": "string",
+              "description": "Project-relative directory. Defaults to the configured project root."
+            },
+            "finding": {
+              "type": "string",
+              "description": "Optional finding fingerprint to scope remediation."
+            },
+            "apply": {
+              "type": "boolean",
+              "default": false,
+              "description": "False plans only. True can apply SAFE fixes after explicit user intent."
+            },
+            "confirmedUserIntent": {
+              "type": "string",
+              "enum": ["fix-security-issues"],
+              "description": "Required with apply=true. Assert only when the user explicitly requested source remediation."
+            }
+          }
+        },
+        "annotations": {
+          "readOnlyHint": false,
+          "destructiveHint": true,
+          "idempotentHint": false,
+          "openWorldHint": false
+        }
+      },
+      {
+        "name": "cydetix_explain",
+        "description": "Explain a Cydetix finding, rule, evidence requirement, remediation class, or UNKNOWN result. Explanation is read-only and never modifies the repository.",
+        "inputSchema": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "ruleId": { "type": "string", "description": "Stable Cydetix rule ID." },
+            "finding": { "type": "string", "description": "Finding fingerprint to explain." },
+            "path": {
+              "type": "string",
+              "description": "Project directory used to resolve a finding fingerprint."
+            }
+          },
+          "anyOf": [{ "required": ["ruleId"] }, { "required": ["finding"] }]
+        },
+        "annotations": {
+          "readOnlyHint": true,
+          "destructiveHint": false,
+          "idempotentHint": true,
+          "openWorldHint": false
+        }
+      }
+    ],
+    "exactToolNames": ["cydetix_scan", "cydetix_fix", "cydetix_explain"],
+    "rootBinding": "canonical configured project root; request paths may only narrow inside it",
+    "versionBinding": "--require-version rejects mismatch before serving requests"
+  },
+  "agents": {
+    "compatibilityTiers": [
+      {
+        "id": "tier-1-native-mcp",
+        "level": 1,
+        "displayName": "Tier 1 - Native MCP",
+        "description": "Structured local MCP tools over stdio with full Cydetix integration."
+      },
+      {
+        "id": "tier-2-deterministic-cli",
+        "level": 2,
+        "displayName": "Tier 2 - Deterministic CLI",
+        "description": "Exact persistent Node and Cydetix entrypoint invocation with strict JSON output."
+      },
+      {
+        "id": "tier-3-ci-report",
+        "level": 3,
+        "displayName": "Tier 3 - CI/report consumption",
+        "description": "Consumes SARIF, JSON, or CI results without claiming interactive integration."
+      }
+    ],
+    "adapters": [
+      {
+        "id": "codex",
+        "displayName": "OpenAI Codex",
+        "compatibilityTier": "tier-1-native-mcp",
+        "capabilities": {
+          "mcpStdio": true,
+          "mcpHttp": false,
+          "projectScopedConfig": false,
+          "userScopedConfig": true,
+          "skills": true,
+          "instructionFiles": true
+        }
+      },
+      {
+        "id": "claude",
+        "displayName": "Claude Code",
+        "compatibilityTier": "tier-1-native-mcp",
+        "capabilities": {
+          "mcpStdio": true,
+          "mcpHttp": false,
+          "projectScopedConfig": true,
+          "userScopedConfig": false,
+          "skills": true,
+          "instructionFiles": true
+        }
+      },
+      {
+        "id": "cursor",
+        "displayName": "Cursor",
+        "compatibilityTier": "tier-1-native-mcp",
+        "capabilities": {
+          "mcpStdio": true,
+          "mcpHttp": false,
+          "projectScopedConfig": true,
+          "userScopedConfig": false,
+          "skills": false,
+          "instructionFiles": true
+        }
+      },
+      {
+        "id": "copilot",
+        "displayName": "GitHub Copilot",
+        "compatibilityTier": "tier-1-native-mcp",
+        "capabilities": {
+          "mcpStdio": true,
+          "mcpHttp": false,
+          "projectScopedConfig": true,
+          "userScopedConfig": false,
+          "skills": true,
+          "instructionFiles": true
+        }
+      },
+      {
+        "id": "windsurf",
+        "displayName": "Windsurf",
+        "compatibilityTier": "tier-1-native-mcp",
+        "capabilities": {
+          "mcpStdio": true,
+          "mcpHttp": false,
+          "projectScopedConfig": true,
+          "userScopedConfig": true,
+          "skills": true,
+          "instructionFiles": true
+        }
+      },
+      {
+        "id": "gemini",
+        "displayName": "Gemini CLI",
+        "compatibilityTier": "tier-1-native-mcp",
+        "capabilities": {
+          "mcpStdio": true,
+          "mcpHttp": false,
+          "projectScopedConfig": true,
+          "userScopedConfig": true,
+          "skills": true,
+          "instructionFiles": true
+        }
+      },
+      {
+        "id": "cline",
+        "displayName": "Cline",
+        "compatibilityTier": "tier-1-native-mcp",
+        "capabilities": {
+          "mcpStdio": true,
+          "mcpHttp": false,
+          "projectScopedConfig": false,
+          "userScopedConfig": true,
+          "skills": false,
+          "instructionFiles": true
+        }
+      },
+      {
+        "id": "roo",
+        "displayName": "Roo Code",
+        "compatibilityTier": "tier-1-native-mcp",
+        "capabilities": {
+          "mcpStdio": true,
+          "mcpHttp": false,
+          "projectScopedConfig": true,
+          "userScopedConfig": true,
+          "skills": false,
+          "instructionFiles": true
+        }
+      },
+      {
+        "id": "continue",
+        "displayName": "Continue",
+        "compatibilityTier": "tier-1-native-mcp",
+        "capabilities": {
+          "mcpStdio": true,
+          "mcpHttp": false,
+          "projectScopedConfig": true,
+          "userScopedConfig": true,
+          "skills": false,
+          "instructionFiles": true
+        }
+      },
+      {
+        "id": "goose",
+        "displayName": "Goose",
+        "compatibilityTier": "tier-1-native-mcp",
+        "capabilities": {
+          "mcpStdio": true,
+          "mcpHttp": false,
+          "projectScopedConfig": false,
+          "userScopedConfig": true,
+          "skills": false,
+          "instructionFiles": true
+        }
+      },
+      {
+        "id": "generic-mcp",
+        "displayName": "Generic MCP",
+        "compatibilityTier": "tier-1-native-mcp",
+        "capabilities": {
+          "mcpStdio": true,
+          "mcpHttp": false,
+          "projectScopedConfig": true,
+          "userScopedConfig": false,
+          "skills": false,
+          "instructionFiles": false
+        }
+      }
+    ],
+    "contract": "Persistent configuration binds canonical project root, exact Node executable, exact installed entrypoint and exact Cydetix version. Host configuration formats and live invocation behavior remain best-effort/experimental."
+  },
+  "compatibilityRisks": [
+    {
+      "id": "CONTRACT-PACKAGE-EXPORTS",
+      "severity": "V1_BLOCKER",
+      "state": "CLOSED",
+      "evidence": "package.json now exports only five reviewed stable JSON schemas and package metadata. The CLI bin remains public; package root, dist, MCP implementation, declarations, and experimental schemas reject deep imports in source and packed-consumer tests."
+    },
+    {
+      "id": "CONTRACT-STABILITY-TIERS",
+      "severity": "V1_BLOCKER",
+      "state": "CLOSED",
+      "evidence": "docs/V1_COMPATIBILITY.md and contract-policy.json classify every required surface as STABLE, EXPERIMENTAL, or INTERNAL and define evolution rules."
+    },
+    {
+      "id": "CONTRACT-RULE-VERSION-POLICY",
+      "severity": "DOCUMENTATION_GAP",
+      "state": "CLOSED",
+      "evidence": "The V1 policy freezes public rule IDs as invariant identities and requires explicit rule-version review for meaning, applicability, proof, anchor, severity, false-positive, or remediation-ceiling changes."
+    },
+    {
+      "id": "CONTRACT-INVENTORY-REQUIRED-OPTION",
+      "severity": "DOCUMENTATION_GAP",
+      "state": "CLOSED",
+      "evidence": "The historical Alpha.12 static inventory omitted required graph --auth even though CLI help, implementation and tests expose it; this inventory includes requiredOption declarations."
+    }
+  ]
+}
