@@ -1,13 +1,13 @@
 {
   "schemaVersion": "1.0.0",
-  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "auditedSourceSha": "edd6163bea572d830043659860322c0232453942",
   "state": "PASSED",
   "tool": {
     "name": "gitleaks",
     "version": "8.30.1",
     "image": "ghcr.io/gitleaks/gitleaks:v8.30.1@sha256:c00b6bd0aeb3071cbcb79009cb16a60dd9e0a7c60e2be9ab65d25e6bc8abbb7f"
   },
-  "durationMilliseconds": 26747.5266,
+  "durationMilliseconds": 23019.537800000002,
   "commitsScanned": 88,
   "scope": "Complete --all history, network denied, repository mounted read-only, no repository ignore file/directives, redacted report, exact reviewed non-secret fingerprints required.",
   "review": {

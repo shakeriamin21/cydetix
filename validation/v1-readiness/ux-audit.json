@@ -1,6 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "auditedSourceSha": "edd6163bea572d830043659860322c0232453942",
+  "beta3BaselineSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
   "persona": "A new security-tool user installing the exact published Beta.3 package and scanning an unfamiliar repository.",
   "evidence": [
     "tests/cli/smoke.test.ts",
@@ -64,26 +65,31 @@
     {
       "id": "UX-NPX-PIN",
       "area": "npx exact-version use",
-      "state": "DOCUMENTATION_GAP",
-      "finding": "On Windows npm 11.19.1 the exact-version shorthand did not infer the package bin and could fall through to an older global command. The explicit `npm exec --package=... -- cydetix` form passed and should be the documented exact pin."
+      "state": "RESOLVED",
+      "finding": "On Windows npm 11.19.1 the exact-version shorthand did not infer the package bin and could fall through to an older global command.",
+      "resolution": "README and package validation now require the explicit `npm exec --yes --package=... -- cydetix` form for an exact pin."
     },
     {
       "id": "UX-STALE-DOCS",
       "area": "documentation discoverability and trust",
-      "state": "V1_BLOCKER",
-      "finding": "The primary README recommends Alpha.10/Alpha.11/Alpha.7, describes Beta.3 as unpublished, and names Alpha.11 as the released baseline. Claims/limitations pages still say hosted publication/provenance evidence is absent. A new user cannot reliably identify the released product or evidence state."
+      "state": "RESOLVED",
+      "finding": "The Beta.3 baseline documentation recommended older Alpha versions and described Beta.3 as unpublished or unvalidated.",
+      "resolution": "Public installation, claims, limitations, agent/plugin and release/provenance pages now identify immutable released Beta.3 exactly without exaggerating its assurance."
     },
     {
       "id": "UX-CONTRACT-TIERS",
       "area": "stable compatibility expectations",
-      "state": "V1_BLOCKER",
-      "finding": "User-facing docs do not distinguish stable CLI/report/MCP guarantees from experimental auth graph, diagnostics, setup host formats and human wording, creating accidental v1 compatibility expectations."
+      "state": "RESOLVED",
+      "finding": "The Beta.3 documentation did not distinguish stable CLI/report/MCP guarantees from experimental diagnostics and host integration surfaces.",
+      "resolution": "docs/V1_COMPATIBILITY.md and contract-policy.json now classify every required surface and define its evolution rules."
     }
   ],
   "summary": {
     "strengths": 8,
-    "documentationGaps": 1,
-    "v1Blockers": 2,
+    "historicalDocumentationGaps": 1,
+    "historicalV1Blockers": 2,
+    "activeDocumentationGaps": 0,
+    "activeV1Blockers": 0,
     "cosmeticRedesignRequired": false
   }
 }

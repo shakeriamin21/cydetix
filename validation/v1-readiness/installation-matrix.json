@@ -1,6 +1,7 @@
 {
   "schemaVersion": "1.0.0",
-  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "auditedSourceSha": "edd6163bea572d830043659860322c0232453942",
+  "beta3BaselineSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
   "artifact": {
     "package": "cydetix@0.6.0-beta.3",
     "registryShasum": "b5300defef9249805745ef9adef0b72c343fc687",
@@ -104,7 +105,8 @@
     "shorthandExactVersion": {
       "command": "npx --yes cydetix@0.6.0-beta.3 --version",
       "observed": "npm 11.19.1 did not resolve an inferred bin; with an older global binary on PATH it invoked that binary, and without it the command was not found",
-      "state": "DOCUMENTATION_GAP"
+      "state": "HISTORICAL_DOCUMENTATION_GAP_RESOLVED",
+      "resolution": "Public exact-version examples now use npm exec --yes --package=cydetix@0.6.0-beta.3 -- cydetix."
     }
   },
   "edgeCases": {
@@ -122,5 +124,19 @@
       "permission-denied target exits with scan failure"
     ]
   },
-  "conclusion": "The exact published Beta.3 artifact installs and scans on the supported Node floor lines across all three hosted operating systems. Exact-version npx shorthand needs corrected documentation; the explicit npm exec form is deterministic."
+  "stabilizationCandidate": {
+    "version": "0.6.0-beta.4",
+    "tagged": false,
+    "localPackedInstall": "PASSED",
+    "localGlobalInstall": "PASSED",
+    "localOfflineNpmExec": "PASSED",
+    "packageEntries": 221,
+    "exportsBoundary": "PASSED_ESM_CJS_AND_BLOCKED_DEEP_IMPORTS",
+    "hostedWorkflow": 35008472979,
+    "hostedSourceSha": "edd6163bea572d830043659860322c0232453942",
+    "hostedOperatingSystems": ["ubuntu-latest", "macos-latest", "windows-latest"],
+    "hostedNodeVersions": ["22.18.0", "24.11.0"],
+    "state": "PASSED"
+  },
+  "conclusion": "The exact published Beta.3 artifact remains the immutable public baseline. The untagged Beta.4 stabilization candidate passed packed installation and its explicit export boundary locally and on the supported Node floor lines across all three hosted operating systems."
 }

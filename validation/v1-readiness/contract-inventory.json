@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "auditedSourceSha": "edd6163bea572d830043659860322c0232453942",
   "immutableBaseline": {
     "version": "0.6.0-beta.3",
     "commit": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",

@@ -1,6 +1,8 @@
 {
   "schemaVersion": "1.0.0",
   "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "stabilizationSourceSha": "edd6163bea572d830043659860322c0232453942",
+  "carryForwardBasis": "The stabilization diff changes no detection rule, parser/framework envelope, proof semantic or remediation authority; Beta.3 corpus observations therefore remain the applicable selective evidence baseline.",
   "methodology": {
     "source": "The existing 30-repository corpus remains pinned. Seven representative/adjudication-sensitive repositories were replayed twice against the Beta.3 build without executing target code.",
     "scope": "The replay checks determinism and preservation of previously adjudicated supported-pattern cases. It is not a new complete human adjudication of every corpus line.",

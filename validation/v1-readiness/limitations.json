@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0.0",
-  "auditedSourceSha": "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
+  "auditedSourceSha": "edd6163bea572d830043659860322c0232453942",
   "classificationDefinitions": {
     "V1_BLOCKER": "A specific compatibility or user-safety condition that prevents responsible stable-interface commitments.",
     "ACCEPTABLE_V1_LIMITATION": "A bounded product limitation that can coexist with v1 when it remains explicit and fail-closed.",
@@ -102,49 +102,81 @@
       "id": "LIM-SANDBOX-TIMEOUT-CLEANUP",
       "topic": "Docker timeout cleanup race",
       "classification": "V1_BLOCKER",
-      "rationale": "A mandatory local run returned TIMED_OUT and then left its exact cydetix-verify container in Created state. The immediate remove/absence loop can finish before a killed Docker client has completed daemon-side container creation. A second complete 13-case run passed, but the observed race disproves deterministic cleanup and requires a narrow lifecycle fix plus stress regression coverage."
+      "rationale": "A mandatory local run returned TIMED_OUT and then left its exact cydetix-verify container in Created state. The immediate remove/absence loop can finish before a killed Docker client has completed daemon-side container creation. A second complete 13-case run passed, but the observed race disproves deterministic cleanup and requires a narrow lifecycle fix plus stress regression coverage.",
+      "resolution": {
+        "state": "CLOSED",
+        "evidence": "The runner now creates and inspects the hardened container before bounded start --attach, force-removes by exact random name with retries and confirmed absence, and surfaces cleanup failure. Exact-SHA mandatory Docker passed 15/15; stress passed 50/50 with zero cleanup failures and zero leaked containers."
+      }
     },
     {
       "id": "LIM-AGENT-HOSTS",
       "topic": "Agent-host integration",
       "classification": "DOCUMENTATION_GAP",
-      "rationale": "Persistent exact-runtime configuration, root binding and MCP behavior are tested, but host-specific configuration formats and live UI invocation remain best-effort. The primary compatibility policy does not yet label this boundary clearly for v1."
+      "rationale": "Persistent exact-runtime configuration, root binding and MCP behavior are tested, but host-specific configuration formats and live UI invocation remain best-effort. The primary compatibility policy did not label this boundary clearly for v1.",
+      "resolution": {
+        "state": "CLOSED",
+        "evidence": "docs/V1_COMPATIBILITY.md classifies Agent Skills, adapters and generated host configuration as EXPERIMENTAL and documents best-effort host behavior."
+      }
     },
     {
       "id": "LIM-PACKAGE-EXPORTS",
       "topic": "Package public import boundary",
       "classification": "V1_BLOCKER",
-      "rationale": "The package publishes dist and declarations without an exports map. Consumers can deep-import implementation modules, leaving it ambiguous which JavaScript/TypeScript APIs v1 semantic versioning would protect."
+      "rationale": "The Beta.3 package publishes dist and declarations without an exports map. Consumers can deep-import implementation modules, leaving it ambiguous which JavaScript/TypeScript APIs v1 semantic versioning would protect.",
+      "resolution": {
+        "state": "CLOSED",
+        "evidence": "The Beta.4 development candidate exports only five documented JSON schemas and package.json. There is no package-root or programmatic JavaScript/TypeScript API; root, dist, MCP and experimental-schema deep imports are blocked and tested in source and the packed artifact."
+      }
     },
     {
       "id": "LIM-COMPATIBILITY-TIERS",
       "topic": "Stable versus experimental public surface",
       "classification": "V1_BLOCKER",
-      "rationale": "The shipped CLI and schemas include mature scan/report/MCP contracts alongside setup/status/auth-graph/diagnostic and host-integration surfaces, but no reviewed public policy identifies stable guarantees versus experimental functionality. A v1 release without this boundary would create accidental compatibility promises."
+      "rationale": "The Beta.3 CLI and schemas include mature scan/report/MCP contracts alongside setup/status/auth-graph/diagnostic and host-integration surfaces, but no reviewed public policy identifies stable guarantees versus experimental functionality. A v1 release without this boundary would create accidental compatibility promises.",
+      "resolution": {
+        "state": "CLOSED",
+        "evidence": "docs/V1_COMPATIBILITY.md and contract-policy.json classify every required surface as STABLE, EXPERIMENTAL or INTERNAL and define evolution rules, including rule IDs/versions, proof meaning and remediation-authority ceilings."
+      }
     },
     {
       "id": "LIM-STALE-PUBLIC-DOCS",
       "topic": "Beta.3 public installation and release documentation",
       "classification": "V1_BLOCKER",
-      "rationale": "README and integration/limitation pages still direct users to older Alpha versions and state that Beta.3 is unpublished or hosted/live publication evidence is unavailable. Those statements contradict the immutable successful Beta.3 release and can cause unsafe or misleading installation choices."
+      "rationale": "README and integration/limitation pages directed users to older Alpha versions and stated that Beta.3 was unpublished or hosted/live publication evidence was unavailable. Those statements contradicted the immutable successful Beta.3 release and could cause unsafe or misleading installation choices.",
+      "resolution": {
+        "state": "CLOSED",
+        "evidence": "README, claims, limitations, npm bootstrap, agent/plugin and release/provenance documentation now identify immutable published Beta.3, use unambiguous exact-version npm exec syntax, describe the untagged Beta.4 development candidate, and preserve all bounded-analysis limitations."
+      }
     },
     {
       "id": "LIM-RULE-VERSION-POLICY",
       "topic": "Rule ID and rule-version evolution",
       "classification": "DOCUMENTATION_GAP",
-      "rationale": "All 27 IDs and versions are inventoried, but the post-v1 compatibility rule for changes to meaning, severity, proof requirements, anchors and remediation ceilings is not yet published."
+      "rationale": "All 27 IDs and versions were inventoried, but the post-v1 compatibility rule for changes to meaning, severity, proof requirements, anchors and remediation ceilings was not published.",
+      "resolution": {
+        "state": "CLOSED",
+        "evidence": "docs/V1_COMPATIBILITY.md freezes public rule IDs, requires explicit rule-version evolution for semantic changes, and forbids silent proof or remediation-authority expansion."
+      }
     },
     {
       "id": "LIM-SARIF-EXTENSIONS",
       "topic": "SARIF property-bag compatibility",
       "classification": "DOCUMENTATION_GAP",
-      "rationale": "SARIF 2.1.0 level, fingerprint, code-flow and SAFE-fix behavior is deterministic, but the stability/additive policy for Cydetix-specific property-bag fields is not stated."
+      "rationale": "SARIF 2.1.0 level, fingerprint, code-flow and SAFE-fix behavior is deterministic, but the stability/additive policy for Cydetix-specific property-bag fields was not stated.",
+      "resolution": {
+        "state": "CLOSED",
+        "evidence": "docs/V1_COMPATIBILITY.md classifies the documented SARIF 2.1.0 mapping and named Cydetix extensions as STABLE and permits compatible additive properties."
+      }
     },
     {
       "id": "LIM-NPX-EXACT-PIN",
       "topic": "Exact-version npx invocation on Windows npm 11",
       "classification": "DOCUMENTATION_GAP",
-      "rationale": "The explicit form `npm exec --package=cydetix@0.6.0-beta.3 -- cydetix` runs the exact package, while shorthand `npx cydetix@0.6.0-beta.3` did not resolve the bin under npm 11.19.1 and could fall through to an older global binary. Exact pinning documentation must use the unambiguous form."
+      "rationale": "The explicit form `npm exec --package=cydetix@0.6.0-beta.3 -- cydetix` runs the exact package, while shorthand `npx cydetix@0.6.0-beta.3` did not resolve the bin under npm 11.19.1 and could fall through to an older global binary. Exact pinning documentation must use the unambiguous form.",
+      "resolution": {
+        "state": "CLOSED",
+        "evidence": "Public installation examples and the package validator require the explicit exact-version npm exec form."
+      }
     },
     {
       "id": "LIM-PLATFORM-EDGE-MATRIX",
@@ -156,13 +188,19 @@
       "id": "LIM-ALL-REFS-AUTHOR-POLICY",
       "topic": "All-refs author privacy policy currency",
       "classification": "DOCUMENTATION_GAP",
-      "rationale": "The complete history reachable from the audited release commit passes, and independent all-refs Gitleaks passes. A broader deterministic metadata audit of all locally fetched refs found three post-release Dependabot commits on isolated remote branches whose exact bot identity tuples are not yet recorded in the author-allowance policy. They are not ancestors of Beta.3 or main, but should be reviewed before claiming all public refs satisfy the policy."
+      "rationale": "The complete history reachable from the audited release commit passed, and independent all-refs Gitleaks passed. A broader deterministic metadata audit of all locally fetched refs found three post-release Dependabot commits on isolated remote branches whose exact bot identity tuples were not recorded in the author-allowance policy.",
+      "resolution": {
+        "state": "CLOSED",
+        "evidence": "Each isolated commit/ref and exact GitHub Dependabot author/GitHub committer tuple was reviewed and allowed by immutable commit only. The all-refs audit passed 89 commits; wildcard and future-unknown bot identities remain denied."
+      }
     }
   ],
   "summary": {
     "V1_BLOCKER": 4,
     "ACCEPTABLE_V1_LIMITATION": 13,
     "DOCUMENTATION_GAP": 5,
-    "MEASUREMENT_GAP": 3
+    "MEASUREMENT_GAP": 3,
+    "activeV1Blockers": 0,
+    "activeDocumentationGaps": 0
   }
 }

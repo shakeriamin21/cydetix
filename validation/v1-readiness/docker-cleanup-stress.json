@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "1.0.0",
+  "sourceCommit": "edd6163bea572d830043659860322c0232453942",
+  "historicalFailure": {
+    "state": "OBSERVED_BEFORE_REMEDIATION",
+    "suiteResult": "12/13",
+    "workloadResult": "TIMED_OUT",
+    "leakedContainerState": "Created",
+    "rootCause": "The combined docker run client was killed before daemon-side creation necessarily completed; an immediate empty docker ps result was accepted before the delayed container appeared."
+  },
+  "remediation": "Synchronous create and hardened inspection precede bounded start --attach. Exact-name rm --force covers every container state, retries transient failures, verifies absence, and converts unconfirmed cleanup to SANDBOX_MISCONFIGURED.",
+  "totalRuns": 50,
+  "parallelism": 5,
+  "timeoutProfilesMilliseconds": [1, 75],
+  "passed": 50,
+  "cleanupFailures": 0,
+  "unexpectedStates": [],
+  "leakedContainerCount": 0,
+  "leakedContainers": [],
+  "durationMilliseconds": 73533.3958,
+  "environment": {
+    "platform": "win32-x64",
+    "node": "v24.15.0",
+    "dockerClient": "29.0.1",
+    "dockerServer": "29.0.1",
+    "dockerProduct": "Docker Desktop",
+    "dockerDesktopVersion": "NOT_REPORTED_BY_DOCKER_INFO",
+    "dockerName": "docker-desktop",
+    "operatingSystem": "Docker Desktop",
+    "osType": "linux",
+    "architecture": "x86_64",
+    "kernelVersion": "6.18.33.2-microsoft-standard-WSL2",
+    "cgroupVersion": "2",
+    "defaultRuntime": "runc",
+    "securityOptions": ["name=seccomp,profile=builtin", "name=cgroupns"],
+    "image": "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
+    "imageId": "sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
+    "imageRepoDigests": [
+      "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b"
+    ]
+  },
+  "environmentAssumptions": [
+    "The local Docker daemon and runc/kernel boundary are trusted; container isolation is defense in depth, not a perfect hostile-native-code boundary.",
+    "The exact digest-pinned Linux image is already present locally and is never pulled implicitly.",
+    "Linux memory, PID, cgroup v2, runtime-default seccomp, network-none, read-only-rootfs, non-root, capability-drop, and no-new-privileges controls are available.",
+    "The daemon provides exact-name create, inspect, kill, force-remove, and list semantics; control-plane calls remain bounded and cleanup failure is reported.",
+    "No pre-existing cydetix-verify-* container is allowed when the stress gate starts."
+  ],
+  "state": "PASSED"
+}
