@@ -5,6 +5,19 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+## [0.6.0-beta.3] - 2026-09-15
+
+- Recover from the immutable failed Beta.2 release attempt by preparing the required versioned
+  Beta.3 validation report through the existing two-commit source/evidence contract. No release
+  validator, gate, product feature, security rule, proof semantic, remediation authority, sandbox
+  control, dependency, or MCP public surface is changed.
+- Record `v0.6.0-beta.2` as an immutable failed release attempt. Annotated tag object
+  `a76d297b9749aff247ce980310441d1b058f1644` targets `e4dbda8b15620e99827b056b92b51ce68a4c60e8`;
+  trusted release run `34937375125` passed its exact-commit hosted, history, dependency, test,
+  Docker, package, and install gates before failing closed because
+  `validation/releases/v0.6.0-beta.2/validation-report.json` was absent. Publication was skipped,
+  with no npm package or public GitHub release created.
+
 ## [0.6.0-beta.2] - 2026-09-15
 
 - Keep development validation fail-closed in release contexts while making its development-only

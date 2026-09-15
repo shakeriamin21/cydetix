@@ -17,6 +17,10 @@ export declare const immutableHistoricalReleaseIdentities: readonly [{
     readonly tag: "v0.6.0-beta.1";
     readonly object: "4aecf7055d2184d18e1dc5da63dd3a6e65e0259d";
     readonly target: "9ecc68f54127e5951d7c2a829cdd719b35779809";
+}, {
+    readonly tag: "v0.6.0-beta.2";
+    readonly object: "a76d297b9749aff247ce980310441d1b058f1644";
+    readonly target: "e4dbda8b15620e99827b056b92b51ce68a4c60e8";
 }];
 export declare const releaseHistorySchema: z.ZodObject<{
     schemaVersion: z.ZodLiteral<"1.0.0">;

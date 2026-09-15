@@ -12,7 +12,7 @@ if (process.env.CYDETIX_EXPECTED_TAG || process.env.GITHUB_REF_TYPE === "tag")
   throw new Error("Development validation cannot validate a release tag. Use npm run verify.");
 const baseline = "4e13b96cc3539e1b623a4c5a12f10a0954776253";
 const tagObject = "e692f1e23d58157a209f511adb6180d3f489a80c";
-const version = "0.6.0-beta.2";
+const version = "0.6.0-beta.3";
 const pkg = JSON.parse(await readFile("package.json", "utf8"));
 const lock = JSON.parse(await readFile("package-lock.json", "utf8"));
 const plugin = JSON.parse(await readFile("plugins/cydetix/.codex-plugin/plugin.json", "utf8"));
@@ -64,6 +64,11 @@ for (const required of [
     object: "4aecf7055d2184d18e1dc5da63dd3a6e65e0259d",
     target: "9ecc68f54127e5951d7c2a829cdd719b35779809",
   },
+  {
+    tag: "v0.6.0-beta.2",
+    object: "a76d297b9749aff247ce980310441d1b058f1644",
+    target: "e4dbda8b15620e99827b056b92b51ce68a4c60e8",
+  },
 ]) {
   const recorded = history.tags.find((entry) => entry.tag === required.tag);
   if (recorded?.object !== required.object || recorded.target !== required.target)
@@ -99,6 +104,16 @@ if (
   beta1Failure.publicGitHubReleaseCreated !== false
 )
   throw new Error("Immutable beta.1 failed-release record changed.");
+const beta2Failure = history.failedReleaseAttempts.find(
+  (attempt) => attempt.tag === "v0.6.0-beta.2",
+);
+if (
+  beta2Failure?.releaseRun !== 34937375125 ||
+  beta2Failure.state !== "FAILED_BEFORE_PUBLICATION" ||
+  beta2Failure.npmPublished !== false ||
+  beta2Failure.publicGitHubReleaseCreated !== false
+)
+  throw new Error("Immutable beta.2 failed-release record changed.");
 const observedTags = git(["tag", "--list", "v*"])
   .toString()
   .trim()
