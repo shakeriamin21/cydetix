@@ -108,6 +108,15 @@
       "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
       "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/types/node-26.5.1",
       "reason": "V1 stabilization: explicitly allow the legitimate GitHub Dependabot public noreply author/committer metadata on this exact isolated dependency-update commit. Privacy metadata decision only; no wildcard, future commit, dependency/code approval, ancestry change, or content-scan exemption."
+    },
+    {
+      "commit": "5a87b81c9be922539dc649047f685fea82073c10",
+      "authorName": "dependabot[bot]",
+      "authorEmailSha256": "bd5a8d6c673b738d52b0ac42a110045f3f964b3ebfc1d60ea805af743b1dc0e6",
+      "committerName": "GitHub",
+      "committerEmailSha256": "3c205d8fc749f72977b9331e3179773c315bb1f4860c366de2abe9ec9337730b",
+      "observedRef": "refs/remotes/origin/dependabot/npm_and_yarn/vitest-5.0.0",
+      "reason": "V1 recovery stabilization: explicitly allow public GitHub noreply author/committer metadata on this exact existing commit only. Privacy metadata approval only; no wildcard, future bot or commit approval, dependency/code approval, ancestry change, or content-scan exemption."
     }
   ]
 }
