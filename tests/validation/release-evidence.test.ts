@@ -108,6 +108,29 @@ describe("versioned release evidence", () => {
     );
   });
 
+  it("rejects changes to the immutable failed v1.0.0 tag identity", () => {
+    const changedHistory = structuredClone(history);
+    const v1 = changedHistory.tags.find((tag) => tag.tag === "v1.0.0");
+    if (v1 === undefined) throw new Error("v1.0.0 fixture is missing.");
+    v1.target = "d".repeat(40);
+    expect(() => releaseHistorySchema.parse(changedHistory)).toThrow(
+      "Immutable historical identity changed: v1.0.0",
+    );
+  });
+
+  it.each([
+    ["releaseRun", 35063154125],
+    ["failure", "altered failure account"],
+  ])("rejects changes to immutable failed v1.0.0 release field %s", (field, value) => {
+    const changedHistory = structuredClone(history);
+    const attempt = changedHistory.failedReleaseAttempts.find((entry) => entry.tag === "v1.0.0");
+    if (attempt === undefined) throw new Error("v1.0.0 failure fixture is missing.");
+    Object.assign(attempt, { [field]: value });
+    expect(() => releaseHistorySchema.parse(changedHistory)).toThrow(
+      "Immutable v1.0.0 failed-release record changed.",
+    );
+  });
+
   it("rejects missing and altered historical tag identities", () => {
     const observed = structuredClone(observedHistoricalTags).filter(
       (tag) => tag.tag !== "v0.6.0-alpha.10",

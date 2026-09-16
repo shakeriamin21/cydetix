@@ -2,9 +2,10 @@
 
 ## Supported versions
 
-The current `1.0.0` release candidate and `main` receive security review. The final readiness
-verdict is `V1_READY_WITH_LIMITATIONS`; `1.0.0` remains untagged and unpublished, so no published
-stable or production-support claim is made by this repository state.
+The current `1.0.1` recovery candidate and `main` receive security review. The final readiness
+verdict remains `V1_READY_WITH_LIMITATIONS`. The immutable `v1.0.0` attempt stopped before
+publication, and `1.0.1` remains untagged and unpublished, so no published stable or
+production-support claim is made by this repository state.
 
 ## Reporting a vulnerability
 

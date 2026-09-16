@@ -5,6 +5,18 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+## [1.0.1] - Unreleased
+
+- Recover from immutable failed release attempt `v1.0.0`, whose trusted run `35063154124` stopped at
+  current-version release-report validation before publication because the tag targeted the source
+  candidate without the required one-report evidence commit. No `1.0.0` npm package or public GitHub
+  release was created, and npm `latest` did not move.
+- Prepare the `1.0.1` source candidate for the repository's existing two-commit source/evidence
+  contract. The future annotated `v1.0.1` tag must target the evidence commit, not the source
+  commit, and remains unauthorized until exact-SHA CI, CodeQL, and OpenSSF succeed.
+- Preserve the audited V1 product behavior and documented limitations without changing detection,
+  proof, remediation, dependency, sandbox, MCP, CLI, package-export, or workflow-security semantics.
+
 ## [1.0.0] - Unreleased
 
 - Prepare the audited V1 product source and final readiness evidence as an untagged `1.0.0` release

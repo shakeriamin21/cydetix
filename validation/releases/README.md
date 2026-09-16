@@ -37,3 +37,10 @@ release artifacts can be built.
 `c03f2a1e72af312266f68d66ac4183e0c00511bd`, its target is
 `5bf295f53f4ca912a79715fd1ea455a31b72a585`, and trusted release run `34821381636` stopped during
 verification before publication. No alpha.12 npm package or public GitHub release was created.
+
+`v1.0.0` is also an immutable failed release attempt. Its annotated tag object is
+`dacf963b6f83bfb0e35648c4c62af35be1914a91`, its target is
+`78185c3dfb2d0091dc3f9eef1b9da4955fc5f546`, and trusted release run `35063154124` stopped at
+current-version release-report validation because the tag targeted the source candidate rather than
+a one-report evidence commit. Publication was skipped; no `1.0.0` npm package or public GitHub
+release was created, and npm `latest` did not move.

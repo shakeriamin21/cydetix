@@ -1,9 +1,11 @@
 # Prerelease and stable release procedure
 
-Beta.3 is the current immutable published prerelease. The current `1.0.0` candidate is prepared but
+Beta.3 is the current immutable published prerelease. The immutable `v1.0.0` attempt failed before
+publication because its annotated tag targeted the source candidate without the required evidence
+commit; the tag must not be moved or reused. The current `1.0.1` recovery candidate is prepared but
 untagged and unpublished; Beta.4 was never released. Do not create a tag, publish npm, create a
-GitHub Release, move npm `latest`, or submit a Marketplace listing until the exact candidate has
-passed its required hosted gates and the user separately approves that next phase.
+GitHub Release, move npm `latest`, or submit a Marketplace listing until the exact evidence commit
+has passed its required hosted gates and the user separately approves that next phase.
 
 ## Trusted-publishing trust model
 

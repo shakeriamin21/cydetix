@@ -43,11 +43,12 @@ cydetix
 `0.6.0-beta.3` is the current immutable published prerelease. Its annotated tag targets
 `c937ae1ddbf329bc62fb0376f04bf2123f438f4e`; trusted release run `34947037844` and exact-SHA CI,
 CodeQL, and OpenSSF gates succeeded. Alpha.12, Beta.1, and Beta.2 remain immutable failed attempts
-and were not published. The current source is the untagged, unpublished `1.0.0` V1 release candidate
-prepared from audited product source `edd6163bea572d830043659860322c0232453942` and its direct
-readiness-evidence commit. It is not a release, and npm `latest` has not moved. Use
-`npm run verify:development` for candidate validation. The separate `npm run verify` release gate
-still requires matching annotated-tag metadata and committed release evidence.
+and were not published. The immutable `v1.0.0` attempt also failed before publication because its
+tag targeted the source candidate without the required one-report evidence commit; no `1.0.0` npm
+package or public GitHub release exists, and npm `latest` did not move. The current source is the
+untagged, unpublished `1.0.1` recovery candidate. Use `npm run verify:development` for source
+validation. The separate `npm run verify` release gate still requires matching annotated-tag
+metadata and a committed two-commit release-evidence chain.
 
 ## What the default command does
 
@@ -112,7 +113,7 @@ Node executable, the exact package identity/version, and the project root. Confi
 then use process-style command and argument fields equivalent to:
 
 ```text
-<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 1.0.0
+<absolute-node> <absolute-cydetix-entrypoint> mcp --project-root <canonical-project-root> --require-version 1.0.1
 ```
 
 They contain no npm/npx command, registry URL, downloader, secret, or shell indirection. Routine MCP

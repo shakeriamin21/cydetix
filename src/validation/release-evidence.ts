@@ -70,6 +70,11 @@ export const immutableHistoricalReleaseIdentities = [
     object: "29203b647094604184bdd84386a1e7f23809ac28",
     target: "c937ae1ddbf329bc62fb0376f04bf2123f438f4e",
   },
+  {
+    tag: "v1.0.0",
+    object: "dacf963b6f83bfb0e35648c4c62af35be1914a91",
+    target: "78185c3dfb2d0091dc3f9eef1b9da4955fc5f546",
+  },
 ] as const;
 
 const alpha11SnapshotContract = {
@@ -78,6 +83,16 @@ const alpha11SnapshotContract = {
   sourcePath: "validation/validation-report.json",
   snapshotPath: "validation/releases/v0.6.0-alpha.11/validation-report.json",
   sha256: "35ecd64fbd9c9d0a4bdff306afd058ee3e0c32cdb19dcb3dd3c051022a51b4bf",
+} as const;
+
+const v1FailedReleaseContract = {
+  tag: "v1.0.0",
+  releaseRun: 35063154124,
+  state: "FAILED_BEFORE_PUBLICATION",
+  npmPublished: false,
+  publicGitHubReleaseCreated: false,
+  failure:
+    "The annotated tag targeted the source candidate without validation/releases/v1.0.0/validation-report.json; release-report validation failed closed during complete verification and the publish job was skipped.",
 } as const;
 
 export const releaseHistorySchema = z
@@ -159,6 +174,17 @@ export const releaseHistorySchema = z
       context.addIssue({
         code: "custom",
         message: "Immutable beta.2 failed-release record changed.",
+      });
+    const v1Failure = history.failedReleaseAttempts.find((attempt) => attempt.tag === "v1.0.0");
+    if (
+      v1Failure === undefined ||
+      Object.entries(v1FailedReleaseContract).some(
+        ([key, value]) => v1Failure[key as keyof typeof v1Failure] !== value,
+      )
+    )
+      context.addIssue({
+        code: "custom",
+        message: "Immutable v1.0.0 failed-release record changed.",
       });
   });
 

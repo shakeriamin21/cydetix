@@ -1,10 +1,11 @@
 # Local coding-agent compatibility
 
-Cydetix Beta.3 is the immutable released local, agent-independent security runtime. The current
-source is the untagged, unpublished `1.0.0` release candidate. Every supported host uses the same
-three stdio MCP tools and the same deterministic engine. Host adapters only detect and merge
-configuration; they contain no vulnerability rules, proof logic, authentication or authorization
-analysis, or remediation classification.
+Cydetix Beta.3 is the immutable released local, agent-independent security runtime. The immutable
+`v1.0.0` attempt stopped before publication; the current source is the untagged, unpublished `1.0.1`
+recovery candidate. Every supported host uses the same three stdio MCP tools and the same
+deterministic engine. Host adapters only detect and merge configuration; they contain no
+vulnerability rules, proof logic, authentication or authorization analysis, or remediation
+classification.
 
 The capability registry describes the integration Cydetix provides in this release. `mcpHttp` is
 false for every entry because remote HTTP MCP is intentionally out of scope, even where a host may
