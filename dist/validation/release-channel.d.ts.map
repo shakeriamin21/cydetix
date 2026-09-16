@@ -1,1 +1,1 @@
-{"version":3,"file":"release-channel.d.ts","sourceRoot":"","sources":["../../src/validation/release-channel.ts"],"names":[],"mappings":"AAAA,MAAM,MAAM,iBAAiB,GAAG,OAAO,GAAG,MAAM,GAAG,QAAQ,CAAC;AAS5D,wBAAgB,2BAA2B,CAAC,OAAO,EAAE,MAAM,GAAG,iBAAiB,CAK9E"}
+{"version":3,"file":"release-channel.d.ts","sourceRoot":"","sources":["../../src/validation/release-channel.ts"],"names":[],"mappings":"AAAA,MAAM,MAAM,iBAAiB,GAAG,OAAO,GAAG,MAAM,GAAG,QAAQ,CAAC;AAS5D,wBAAgB,2BAA2B,CAAC,OAAO,EAAE,MAAM,GAAG,iBAAiB,CAK9E;AAED,wBAAgB,mCAAmC,CAAC,OAAO,EAAE,MAAM,GAAG,OAAO,CAE5E"}

@@ -37,6 +37,8 @@ if (release?.on?.pull_request !== undefined)
   issues.push("release.yml: pull requests must not trigger releases");
 const publish = release?.jobs?.publish;
 const verifyRelease = release?.jobs?.["verify-release"];
+if (publish?.name !== "Publish approved release")
+  issues.push("release.yml: publish job wording must cover prerelease and stable releases");
 const releaseCheckoutStep = verifyRelease?.steps?.find(
   (step) => step?.name === "Checkout tagged source without persisted credentials",
 );
@@ -117,7 +119,7 @@ if (
 )
   issues.push("validation/gitleaks.toml: config must extend the built-in rules without allowlists");
 const npmPublishStep = publish?.steps?.find(
-  (step) => step?.name === "Publish approved prerelease through npm OIDC",
+  (step) => step?.name === "Publish approved package through npm OIDC",
 );
 const expectedNpmPublishScript = `shopt -s nullglob
 tarballs=(release-bundle/*.tgz)
@@ -125,18 +127,61 @@ if [ "\${#tarballs[@]}" -ne 1 ]; then
   echo "Expected exactly one npm tarball, found \${#tarballs[@]}" >&2
   exit 1
 fi
-npm_dist_tag="$(node scripts/resolve-release-channel.mjs)"
+npm_dist_tag="$(node scripts/resolve-release-channel.mjs --npm-dist-tag)"
 npm publish "./\${tarballs[0]}" --access public --tag "$npm_dist_tag" --ignore-scripts`;
 if (npmPublishStep?.shell !== "bash" || npmPublishStep?.run?.trim() !== expectedNpmPublishScript)
   issues.push(
     "release.yml: npm publish must require one verified local tarball and the deterministic version-derived dist-tag",
   );
+const githubDraftStep = publish?.steps?.find(
+  (step) => step?.name === "Create a non-public draft GitHub release",
+);
+const expectedGithubDraftScript = `github_prerelease="$(node scripts/resolve-release-channel.mjs --github-prerelease)"
+prerelease_args=()
+if [ "$github_prerelease" = "true" ]; then
+  prerelease_args+=(--prerelease)
+elif [ "$github_prerelease" != "false" ]; then
+  echo "Unsupported GitHub prerelease state: $github_prerelease" >&2
+  exit 1
+fi
+title="$(node -p "JSON.parse(require('fs').readFileSync('release/publication-config.json')).productName + ' v' + require('./package.json').version")"
+gh release create "$GITHUB_REF_NAME" release-bundle/* --verify-tag --draft "\${prerelease_args[@]}" \\
+  --title "$title" --notes-file "docs/releases/$GITHUB_REF_NAME.md"`;
+if (githubDraftStep?.shell !== "bash" || githubDraftStep?.run?.trim() !== expectedGithubDraftScript)
+  issues.push(
+    "release.yml: draft GitHub release must derive prerelease state from the package version",
+  );
+const githubPublishStep = publish?.steps?.find(
+  (step) => step?.name === "Publish the prepared GitHub release",
+);
+const expectedGithubPublishScript = `github_prerelease="$(node scripts/resolve-release-channel.mjs --github-prerelease)"
+if [ "$github_prerelease" != "true" ] && [ "$github_prerelease" != "false" ]; then
+  echo "Unsupported GitHub prerelease state: $github_prerelease" >&2
+  exit 1
+fi
+gh release edit "$GITHUB_REF_NAME" --draft=false --prerelease="$github_prerelease"`;
+if (
+  githubPublishStep?.shell !== "bash" ||
+  githubPublishStep?.run?.trim() !== expectedGithubPublishScript
+)
+  issues.push(
+    "release.yml: final GitHub release must explicitly retain or clear prerelease state from the package version",
+  );
 const expectedReleaseChannelResolver = `import { readFile } from "node:fs/promises";
 
-import { npmReleaseChannelForVersion } from "../dist/validation/release-channel.js";
+import {
+  githubReleaseIsPrereleaseForVersion,
+  npmReleaseChannelForVersion,
+} from "../dist/validation/release-channel.js";
 
 const packageJson = JSON.parse(await readFile("package.json", "utf8"));
-process.stdout.write(\`\${npmReleaseChannelForVersion(packageJson.version)}\\n\`);
+const output = process.argv[2] ?? "--npm-dist-tag";
+if (process.argv.length > 3) throw new Error("Expected at most one release-semantics selector.");
+if (output === "--npm-dist-tag")
+  process.stdout.write(\`\${npmReleaseChannelForVersion(packageJson.version)}\\n\`);
+else if (output === "--github-prerelease")
+  process.stdout.write(\`\${String(githubReleaseIsPrereleaseForVersion(packageJson.version))}\\n\`);
+else throw new Error(\`Unsupported release-semantics selector: \${output}.\`);
 `;
 let releaseChannelResolver;
 try {
@@ -166,6 +211,7 @@ const result = {
     "EXACT_COMMIT_CI_CODEQL_OPENSSF_GATES",
     "EXPLICIT_SINGLE_LOCAL_NPM_TARBALL",
     "DETERMINISTIC_VERSION_DERIVED_NPM_DIST_TAG",
+    "DETERMINISTIC_GITHUB_RELEASE_PRERELEASE_STATE",
   ],
   issues,
 };

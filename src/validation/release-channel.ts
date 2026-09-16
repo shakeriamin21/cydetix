@@ -13,3 +13,7 @@ export function npmReleaseChannelForVersion(version: string): NpmReleaseChannel 
   if (prerelease?.[1] === "alpha" || prerelease?.[1] === "beta") return prerelease[1];
   throw new Error(`Unsupported or malformed release version: ${version}.`);
 }
+
+export function githubReleaseIsPrereleaseForVersion(version: string): boolean {
+  return npmReleaseChannelForVersion(version) !== "latest";
+}

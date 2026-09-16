@@ -17,6 +17,10 @@ if (publication.nameMarketConflict !== "REVIEWED_AND_EXPLICITLY_APPROVED")
   errors.push("formal Cydetix name and legal review has not been explicitly approved");
 if (publication.version !== packageJson.version) errors.push("publication version mismatches");
 if (publication.tagCandidate !== `v${packageJson.version}`) errors.push("tag candidate mismatches");
+if (publication.publicationState !== "PREPARED_NOT_PUBLISHED")
+  errors.push("publication state must remain prepared and not published");
+if (publication.publicationAuthorized !== false)
+  errors.push("candidate source must not claim publication authority");
 let expectedNpmDistTag;
 try {
   expectedNpmDistTag = npmReleaseChannelForVersion(packageJson.version);

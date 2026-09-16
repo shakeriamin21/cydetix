@@ -1,7 +1,7 @@
 # Local coding-agent compatibility
 
 Cydetix Beta.3 is the immutable released local, agent-independent security runtime. The current
-source is the untagged `0.6.0-beta.4` stabilization candidate. Every supported host uses the same
+source is the untagged, unpublished `1.0.0` release candidate. Every supported host uses the same
 three stdio MCP tools and the same deterministic engine. Host adapters only detect and merge
 configuration; they contain no vulnerability rules, proof logic, authentication or authorization
 analysis, or remediation classification.

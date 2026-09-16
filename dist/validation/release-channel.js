@@ -9,4 +9,7 @@ export function npmReleaseChannelForVersion(version) {
         return prerelease[1];
     throw new Error(`Unsupported or malformed release version: ${version}.`);
 }
+export function githubReleaseIsPrereleaseForVersion(version) {
+    return npmReleaseChannelForVersion(version) !== "latest";
+}
 //# sourceMappingURL=release-channel.js.map

@@ -1,6 +1,6 @@
 {
   "name": "cydetix",
-  "version": "0.6.0-beta.4",
+  "version": "1.0.0",
   "description": "Zero-config deterministic application security and policy-bounded remediation CLI",
   "type": "module",
   "bin": {

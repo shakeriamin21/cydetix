@@ -5,6 +5,21 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
+## [1.0.0] - Unreleased
+
+- Prepare the audited V1 product source and final readiness evidence as an untagged `1.0.0` release
+  candidate. This preparation does not create `v1.0.0`, publish npm, create a GitHub release, or
+  move npm `latest`.
+- Preserve the `V1_READY_WITH_LIMITATIONS` scope: bounded analysis and corpus evidence,
+  `UNKNOWN`/`TRUNCATED` honesty, npm-only dependency inventory, passive secret analysis, one narrow
+  SAFE adapter, Docker/host trust assumptions, best-effort host integration, and no cross-host
+  performance SLO.
+- Extend the trusted tag-driven workflow's existing deterministic release-channel handling so
+  alpha/beta packages remain GitHub prereleases on `alpha`/`beta`, while a stable semantic version
+  uses npm `latest` and is finalized as a normal GitHub release. All exact-tag, exact-commit,
+  history, secret, dependency, sandbox, artifact, provenance, SBOM, and draft-first gates remain
+  fail closed.
+
 ## [0.6.0-beta.4] - Unreleased
 
 - Stabilize Docker timeout cleanup with a two-phase create/start lifecycle, exact-name idempotent

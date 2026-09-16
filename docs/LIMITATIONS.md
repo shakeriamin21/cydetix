@@ -1,7 +1,7 @@
 # Known limitations
 
-Cydetix is a prerelease static-analysis project, not a guarantee that an application is secure or
-compliant.
+Cydetix has a prepared but unpublished stable-version candidate. It is not a guarantee that an
+application is secure or compliant.
 
 ## Analysis scope
 

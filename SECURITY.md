@@ -2,9 +2,9 @@
 
 ## Supported versions
 
-The current prerelease line `0.6.0-alpha.x` and `main` receive security review. The Phase 6B
-engineering verdict is `PUBLIC_ALPHA_READY_WITH_LIMITATIONS`; no stable or production-supported
-version is claimed.
+The current `1.0.0` release candidate and `main` receive security review. The final readiness
+verdict is `V1_READY_WITH_LIMITATIONS`; `1.0.0` remains untagged and unpublished, so no published
+stable or production-support claim is made by this repository state.
 
 ## Reporting a vulnerability
 

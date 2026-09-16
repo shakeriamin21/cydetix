@@ -115,7 +115,7 @@ jobs:
           retention-days: 7
 
   publish:
-    name: Publish approved prerelease
+    name: Publish approved release
     needs: verify-release
     runs-on: ubuntu-latest
     environment: release
@@ -160,15 +160,23 @@ jobs:
         with:
           subject-path: release-bundle/*.tgz
           sbom-path: release-bundle/cydetix.cdx.json
-      - name: Create a non-public draft GitHub prerelease
+      - name: Create a non-public draft GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         shell: bash
         run: |
+          github_prerelease="$(node scripts/resolve-release-channel.mjs --github-prerelease)"
+          prerelease_args=()
+          if [ "$github_prerelease" = "true" ]; then
+            prerelease_args+=(--prerelease)
+          elif [ "$github_prerelease" != "false" ]; then
+            echo "Unsupported GitHub prerelease state: $github_prerelease" >&2
+            exit 1
+          fi
           title="$(node -p "JSON.parse(require('fs').readFileSync('release/publication-config.json')).productName + ' v' + require('./package.json').version")"
-          gh release create "$GITHUB_REF_NAME" release-bundle/* --verify-tag --draft --prerelease \
+          gh release create "$GITHUB_REF_NAME" release-bundle/* --verify-tag --draft "${prerelease_args[@]}" \
             --title "$title" --notes-file "docs/releases/$GITHUB_REF_NAME.md"
-      - name: Publish approved prerelease through npm OIDC
+      - name: Publish approved package through npm OIDC
         shell: bash
         run: |
           shopt -s nullglob
@@ -177,9 +185,16 @@ jobs:
             echo "Expected exactly one npm tarball, found ${#tarballs[@]}" >&2
             exit 1
           fi
-          npm_dist_tag="$(node scripts/resolve-release-channel.mjs)"
+          npm_dist_tag="$(node scripts/resolve-release-channel.mjs --npm-dist-tag)"
           npm publish "./${tarballs[0]}" --access public --tag "$npm_dist_tag" --ignore-scripts
-      - name: Publish the prepared GitHub prerelease
+      - name: Publish the prepared GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh release edit "$GITHUB_REF_NAME" --draft=false --prerelease
+        shell: bash
+        run: |
+          github_prerelease="$(node scripts/resolve-release-channel.mjs --github-prerelease)"
+          if [ "$github_prerelease" != "true" ] && [ "$github_prerelease" != "false" ]; then
+            echo "Unsupported GitHub prerelease state: $github_prerelease" >&2
+            exit 1
+          fi
+          gh release edit "$GITHUB_REF_NAME" --draft=false --prerelease="$github_prerelease"

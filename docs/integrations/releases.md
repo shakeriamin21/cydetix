@@ -1,9 +1,9 @@
 # Prerelease and stable release procedure
 
-Beta.3 is the current immutable published prerelease. The current Beta.4 development candidate and
-any future stable release are not authorized by this document. Do not create a tag, publish npm,
-create a GitHub Release, or submit a Marketplace listing until the user separately approves that
-exact candidate.
+Beta.3 is the current immutable published prerelease. The current `1.0.0` candidate is prepared but
+untagged and unpublished; Beta.4 was never released. Do not create a tag, publish npm, create a
+GitHub Release, move npm `latest`, or submit a Marketplace listing until the exact candidate has
+passed its required hosted gates and the user separately approves that next phase.
 
 ## Trusted-publishing trust model
 
@@ -101,9 +101,10 @@ SBOM, checksums, and manifest. The protected publication job then:
 
 1. downloads and verifies the exact build output;
 2. generates GitHub build and CycloneDX SBOM attestations;
-3. creates a non-public draft prerelease;
+3. creates a non-public draft GitHub release, marked prerelease only for alpha/beta versions;
 4. publishes the npm tarball through OIDC under the semver-derived prerelease or stable dist-tag;
-5. publishes the GitHub draft as a prerelease only after npm succeeds.
+5. publishes the GitHub draft only after npm succeeds, explicitly retaining prerelease state for
+   alpha/beta or clearing it for a stable semantic version.
 
 This ordering reduces partial publication but cannot make two registries atomic. If npm succeeds and
 the GitHub finalization fails, keep the draft and follow `docs/RELEASE_INCIDENT_RESPONSE.md`.

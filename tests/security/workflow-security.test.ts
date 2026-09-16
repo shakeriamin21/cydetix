@@ -16,6 +16,10 @@ const publishCommand =
   'npm publish "./${tarballs[0]}" --access public --tag "$npm_dist_tag" --ignore-scripts';
 const publishIssue =
   "release.yml: npm publish must require one verified local tarball and the deterministic version-derived dist-tag";
+const githubDraftIssue =
+  "release.yml: draft GitHub release must derive prerelease state from the package version";
+const githubPublishIssue =
+  "release.yml: final GitHub release must explicitly retain or clear prerelease state from the package version";
 const gitleaksIssue =
   "release.yml: complete-history Gitleaks scan must be pinned, unsuppressed, sandboxed, and exactly validated";
 const gitleaksConfigIssue =
@@ -113,12 +117,79 @@ describe("release workflow npm package spec", () => {
   it("rejects a release workflow that does not derive the channel from package version", async () => {
     const weakened = replaceRequired(
       releaseWorkflow,
-      'npm_dist_tag="$(node scripts/resolve-release-channel.mjs)"',
+      'npm_dist_tag="$(node scripts/resolve-release-channel.mjs --npm-dist-tag)"',
       'npm_dist_tag="beta"',
     );
     const result = await validateWorkflow(weakened);
     expect(result.status).toBe(1);
     expect(result.report.issues).toContain(publishIssue);
+  });
+});
+
+describe("release workflow GitHub prerelease semantics", () => {
+  it("requires deterministic prerelease handling for draft and final publication", async () => {
+    const result = await validateWorkflow(releaseWorkflow);
+    expect(result.status).toBe(0);
+    expect(result.report.controls).toContain("DETERMINISTIC_GITHUB_RELEASE_PRERELEASE_STATE");
+  });
+
+  it("rejects a draft release that is always marked prerelease", async () => {
+    const weakened = replaceRequired(
+      releaseWorkflow,
+      'github_prerelease="$(node scripts/resolve-release-channel.mjs --github-prerelease)"',
+      'github_prerelease="true"',
+    );
+    const result = await validateWorkflow(weakened);
+    expect(result.status).toBe(1);
+    expect(result.report.issues).toContain(githubDraftIssue);
+  });
+
+  it("rejects finalization that retains prerelease state for stable releases", async () => {
+    const weakened = replaceRequired(
+      releaseWorkflow,
+      'gh release edit "$GITHUB_REF_NAME" --draft=false --prerelease="$github_prerelease"',
+      'gh release edit "$GITHUB_REF_NAME" --draft=false --prerelease=true',
+    );
+    const result = await validateWorkflow(weakened);
+    expect(result.status).toBe(1);
+    expect(result.report.issues).toContain(githubPublishIssue);
+  });
+
+  it("rejects a draft release that omits prerelease state for alpha and beta", async () => {
+    const weakened = replaceRequired(
+      releaseWorkflow,
+      "          prerelease_args+=(--prerelease)",
+      "          :",
+    );
+    const result = await validateWorkflow(weakened);
+    expect(result.status).toBe(1);
+    expect(result.report.issues).toContain(githubDraftIssue);
+  });
+});
+
+describe("release workflow trusted-publishing controls", () => {
+  it.each([
+    ["environment: release", "environment: staging", "protected release environment"],
+    ["id-token: write", "id-token: read", "publish permission id-token must be write"],
+    ["contents: write", "contents: read", "publish permission contents must be write"],
+    ["attestations: write", "attestations: read", "publish permission attestations must be write"],
+  ])("rejects weakened %s", async (expected, replacement, issueFragment) => {
+    const result = await validateWorkflow(replaceRequired(releaseWorkflow, expected, replacement));
+    expect(result.status).toBe(1);
+    expect(result.report.issues.some((issue) => issue.includes(issueFragment))).toBe(true);
+  });
+
+  it("rejects a long-lived npm token fallback", async () => {
+    const weakened = replaceRequired(
+      releaseWorkflow,
+      'registry-url: "https://registry.npmjs.org"',
+      'registry-url: "https://registry.npmjs.org"\n          npm-token: ${{ secrets.NPM_TOKEN }}',
+    );
+    const result = await validateWorkflow(weakened);
+    expect(result.status).toBe(1);
+    expect(result.report.issues).toContain(
+      ".github/workflows/release.yml: long-lived npm token reference is forbidden",
+    );
   });
 });
 

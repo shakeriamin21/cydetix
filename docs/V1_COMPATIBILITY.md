@@ -1,8 +1,9 @@
 # Cydetix V1 compatibility policy
 
 This policy defines the compatibility boundary Cydetix is prepared to carry into a stable V1
-release. It does not declare the current `0.6.0-beta.4` development candidate to be a stable release
-and does not expand security-analysis coverage or remediation authority.
+release. The repository now carries an untagged, unpublished `1.0.0` candidate; that version
+identity does not claim an actual stable release and does not expand security-analysis coverage or
+remediation authority.
 
 ## Classification and evolution
 
