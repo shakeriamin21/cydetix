@@ -14,10 +14,13 @@ import {
   versionedReleaseReportPath,
 } from "../dist/validation/release-evidence.js";
 import { createContainerSandboxRunner } from "../dist/verification/runner.js";
+import {
+  sha256,
+  validateSourceBoundEvidenceSet,
+} from "../dist/validation/source-bound-evidence.js";
 
 const root = path.resolve(".");
 const resultsDirectory = path.resolve("validation", "results");
-const evidenceDirectory = path.resolve(".cydetix", "evidence");
 const releaseDirectory = path.resolve(
   process.env.CYDETIX_RELEASE_DIR ?? path.join(".cydetix", "release"),
 );
@@ -25,36 +28,80 @@ const packageJson = JSON.parse(await readFile("package.json", "utf8"));
 const releaseInputs = JSON.parse(
   await readFile(path.join(releaseDirectory, "release-inputs.json"), "utf8"),
 );
-const preliminaryRelease = JSON.parse(
-  await readFile(
-    path.join(releaseDirectory, `cydetix-release-validation-${packageJson.version}.json`),
-    "utf8",
-  ),
+function repositoryIdentity(value) {
+  return String(value)
+    .replace(/^git\+https:\/\/github\.com\//u, "")
+    .replace(/^https:\/\/github\.com\//u, "")
+    .replace(/^git@github\.com:/u, "")
+    .replace(/\.git$/u, "");
+}
+const expectedRepository = repositoryIdentity(packageJson.repository?.url);
+if (!Array.isArray(releaseInputs.evidence))
+  throw new Error("Release inputs contain no explicit source-bound evidence allowlist.");
+const evidenceIndex = {
+  evidenceFormatVersion: "1.0.0",
+  repository: expectedRepository,
+  sourceCommit: releaseInputs.sourceCommit,
+  evidence: releaseInputs.evidence,
+};
+const evidenceBlobs = await Promise.all(
+  releaseInputs.evidence.map(async (reference) => ({
+    path: reference.path,
+    bytes: await readFile(path.resolve(reference.path)),
+  })),
 );
-const testReport = JSON.parse(await readFile(path.join(evidenceDirectory, "tests.json"), "utf8"));
-const packedInstall = JSON.parse(
-  await readFile(path.join(evidenceDirectory, "packed-install.json"), "utf8"),
-);
-const packedPlugin = JSON.parse(
-  await readFile(path.join(evidenceDirectory, "packed-plugin.json"), "utf8"),
-);
-const selfScan = JSON.parse(await readFile(path.join(evidenceDirectory, "self-scan.json"), "utf8"));
-const performance = JSON.parse(
-  await readFile(path.join(evidenceDirectory, "performance.json"), "utf8"),
-).results;
+const evidence = validateSourceBoundEvidenceSet(evidenceIndex, evidenceBlobs, {
+  repository: expectedRepository,
+  sourceCommit: releaseInputs.sourceCommit,
+});
+function checkState(record) {
+  switch (record.result) {
+    case "PASS":
+      return "executed_pass";
+    case "FAIL":
+      return "executed_fail";
+    case "SKIPPED_CAPABILITY":
+      return "skipped_capability";
+    case "NOT_APPLICABLE":
+      return "not_applicable";
+    case "NOT_CHECKED":
+      return "not_checked";
+  }
+}
+function requireEvidence(type) {
+  const record = evidence.get(type);
+  if (record === undefined) throw new Error(`Missing required evidence ${type}.`);
+  return record;
+}
+async function subjectJson(type) {
+  const record = requireEvidence(type);
+  if (record.subject.kind !== "FILE" || record.subject.sha256 === undefined)
+    throw new Error(`Evidence ${type} has no bound JSON subject.`);
+  const bytes = await readFile(path.resolve(record.subject.identity));
+  if (sha256(bytes) !== record.subject.sha256 || bytes.length !== record.subject.bytes)
+    throw new Error(`Evidence subject hash mismatch for ${type}.`);
+  try {
+    return JSON.parse(bytes.toString("utf8"));
+  } catch {
+    throw new Error(`Evidence subject for ${type} is not valid JSON.`);
+  }
+}
+const testEvidence = requireEvidence("complete-test-suite");
+const packedInstallEvidence = requireEvidence("packed-install");
+const packedPluginEvidence = requireEvidence("packed-plugin");
+const selfScanEvidence = requireEvidence("self-scan");
+const testReport = await subjectJson("complete-test-suite");
+const packedInstall = packedInstallEvidence.details;
+const packedPlugin = packedPluginEvidence.details;
+const selfScan = await subjectJson("self-scan");
+const performanceEvidence = evidence.get("performance");
+const performance =
+  performanceEvidence === undefined ? [] : (await subjectJson("performance")).results;
 const corpora = await Promise.all(
   ["owasp-nodegoat.json", "owasp-benchmark-python.json"].map(async (name) =>
     JSON.parse(await readFile(path.join(resultsDirectory, name), "utf8")),
   ),
 );
-
-async function optionalEvidence(name, fallback) {
-  try {
-    return JSON.parse(await readFile(path.join(evidenceDirectory, name), "utf8"));
-  } catch {
-    return fallback;
-  }
-}
 
 function run(executable, arguments_, maximumBytes = 1_000_000) {
   const result = spawnSync(executable, arguments_, {
@@ -173,23 +220,23 @@ const externalConsistent =
   corpora[0]?.counts?.needsDomainContext === 1 &&
   corpora[1]?.counts?.notApplicable === 3 &&
   corpora[1]?.counts?.trueNegative === 0;
-const scorecard = await optionalEvidence("scorecard.json", {
-  state: "not_checked",
-  checksRun: 0,
-  limitations: [
-    "No exact-commit OpenSSF Scorecard result was supplied to this local release-preparation run.",
-  ],
-});
-const crossPlatform = await optionalEvidence("cross-platform.json", {
-  state: "not_checked",
-  evidence:
-    "The six-case GitHub-hosted Windows/Linux/macOS matrix is configured but was not remotely executed in this local gate.",
-});
-const externalRerun = await optionalEvidence("external-rerun.json", {
+const scorecardEvidence = requireEvidence("openssf-scorecard");
+const scorecard = {
+  state: scorecardEvidence.result === "PASS" ? "executed_pass" : "executed_fail",
+  version: String(scorecardEvidence.details.version ?? "GitHub-hosted"),
+  checksRun: Number(scorecardEvidence.details.checksRun ?? 0),
+  limitations: [],
+};
+const hostedCiEvidence = requireEvidence("hosted-ci");
+const crossPlatform = {
+  state: hostedCiEvidence.result === "PASS" ? "executed_pass" : "executed_fail",
+  evidence: `GitHub Actions CI run ${String(hostedCiEvidence.details.runId)} completed for exact source ${hostedCiEvidence.sourceCommit}.`,
+};
+const externalRerun = evidence.get("external-rerun")?.details ?? {
   state: "skipped_capability",
   evidence:
     "Fresh corpus acquisition was attempted from both official GitHub repositories, but host DNS resolution was unavailable; prior pinned results were not relabeled as a fresh run.",
-});
+};
 
 const checks = [
   {
@@ -202,21 +249,19 @@ const checks = [
   },
   {
     id: "git-history-privacy",
-    state:
-      preliminaryRelease.checks?.gitHistoryPrivacy === "PASS" ? "executed_pass" : "executed_fail",
-    evidence:
-      preliminaryRelease.checks?.gitHistoryPrivacy === "PASS"
-        ? "The explicit Git-history author/privacy allowlist passed."
-        : "Git-history author/privacy approval is incomplete; no identity was silently approved.",
+    state: checkState(requireEvidence("git-history-privacy")),
+    evidence: `The explicit Git-history author/privacy audit is bound to ${implementationCommit}.`,
   },
   {
     id: "complete-test-suite",
     state:
-      filesFailed === 0 && testsFailed === 0 && filesSkipped === 0 && testsSkipped === 0
-        ? "executed_pass"
-        : filesFailed > 0 || testsFailed > 0
-          ? "executed_fail"
-          : "skipped_capability",
+      testEvidence.result !== "PASS"
+        ? checkState(testEvidence)
+        : filesFailed === 0 && testsFailed === 0 && filesSkipped === 0 && testsSkipped === 0
+          ? "executed_pass"
+          : filesFailed > 0 || testsFailed > 0
+            ? "executed_fail"
+            : "skipped_capability",
     evidence: `${filesPassed} files and ${testsPassed} tests passed; ${filesFailed} files and ${testsFailed} tests failed; ${filesSkipped} files and ${testsSkipped} tests skipped.`,
   },
   {
@@ -357,19 +402,27 @@ const checks = [
   {
     id: "self-scan",
     state:
-      selfScan.state === "PASSED" && selfScan.activeFindings === 0
-        ? "executed_pass"
-        : "executed_fail",
+      selfScanEvidence.result !== "PASS"
+        ? checkState(selfScanEvidence)
+        : selfScan.state === "PASSED" && selfScan.activeFindings === 0
+          ? "executed_pass"
+          : "executed_fail",
     evidence: `${selfScan.filesExamined} files and ${selfScan.bytesExamined} bytes scanned; ${selfScan.activeFindings} active and ${selfScan.suppressedFindings} suppressed findings.`,
   },
   {
     id: "packed-install-current-host",
-    state: packedInstall.state === "PASSED" ? "executed_pass" : "executed_fail",
+    state:
+      packedInstallEvidence.result === "PASS" && packedInstall.state === "PASSED"
+        ? "executed_pass"
+        : "executed_fail",
     evidence: `Packed tarball installed with lifecycle scripts disabled; version, doctor, scan, remediation dry-run, and ${packedInstall.skillCount} packaged Agent Skills passed on ${packedInstall.platform}.`,
   },
   {
     id: "packed-plugin",
-    state: packedPlugin.state === "PASSED" ? "executed_pass" : "executed_fail",
+    state:
+      packedPluginEvidence.result === "PASS" && packedPlugin.state === "PASSED"
+        ? "executed_pass"
+        : "executed_fail",
     evidence: `The isolated plugin archive validated its manifest, required files, portability checks, and ${packedPlugin.skillCount} skills.`,
   },
   {
@@ -407,6 +460,22 @@ const checks = [
         ? `OpenSSF Scorecard ${scorecard.version} ran ${scorecard.checksRun} checks; it is posture evidence, not vulnerability truth.`
         : scorecard.limitations.join(" "),
   },
+  ...[
+    ["public-repository", "public-repository"],
+    ["npm-audit", "npm-audit"],
+    ["online-osv", "online-osv"],
+    ["independent-complete-history-gitleaks", "complete-history-gitleaks"],
+    ["workflow-security", "workflow-security"],
+    ["codeql", "codeql"],
+    ["hosted-sandbox", "hosted-sandbox"],
+  ].map(([id, type]) => {
+    const record = requireEvidence(type);
+    return {
+      id,
+      state: checkState(record),
+      evidence: `${record.evidenceType} ${record.result} from ${record.producer.name}, bound to ${record.repository}@${record.sourceCommit}.`,
+    };
+  }),
 ];
 
 const mandatoryChecks = new Set(mandatoryReleaseCheckIds);

@@ -52,6 +52,7 @@
     "release:preview": "npm run build && node scripts/build-release-artifacts.mjs --preview",
     "release:evidence": "npm run build && node scripts/generate-release-validation.mjs",
     "release:self-scan": "npm run build && node scripts/generate-self-scan-evidence.mjs",
+    "release:tests": "npm run build && node scripts/generate-release-test-evidence.mjs",
     "release:validation-artifact": "node scripts/finalize-release-validation-artifact.mjs",
     "corpus:phase3": "npm run build && node scripts/report-phase3-corpus.mjs",
     "corpus:phase4": "npm run build && node scripts/report-phase4-corpus.mjs",

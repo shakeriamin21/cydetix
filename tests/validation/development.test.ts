@@ -115,7 +115,8 @@ describe("explicit development and release boundaries", () => {
 
   it("keeps complete verification in the release workflow", () => {
     const workflow = readFileSync(".github/workflows/release.yml", "utf8");
-    expect(workflow).toContain("run: npm run verify\n");
+    expect(workflow).toContain("-- npm run verify");
+    expect(workflow).toContain("--type development-verification");
     expect(workflow).not.toContain("verify:development");
   });
 });

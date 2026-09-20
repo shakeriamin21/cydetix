@@ -10,6 +10,8 @@ jobs:
   verify-release:
     name: Verify exact release commit
     runs-on: ubuntu-latest
+    env:
+      CYDETIX_EXPECTED_SOURCE_SHA: ${{ github.sha }}
     permissions:
       actions: read
       contents: read
@@ -46,7 +48,11 @@ jobs:
       - name: Reject unsanitized reachable history
         env:
           CYDETIX_EXPECTED_TAG: ${{ github.ref_name }}
-        run: npm run audit:history -- --enforce --ref "refs/tags/${CYDETIX_EXPECTED_TAG}"
+        run: >-
+          node scripts/run-source-bound-command.mjs --type git-history-privacy --output
+          .cydetix/evidence/bound/git-history-privacy.json --capture-stdout
+          .cydetix/evidence/history.json -- node scripts/audit-git-history.mjs --enforce --ref
+          "refs/tags/${CYDETIX_EXPECTED_TAG}"
       - name: Pull reviewed immutable sandbox and secret-scanner images
         shell: bash
         run: |
@@ -70,33 +76,59 @@ jobs:
             --gitleaks-ignore-path /dev/null --ignore-gitleaks-allow \
             --log-opts="--full-history --all --text --no-textconv --no-ext-diff" \
             --no-banner --no-color --exit-code 0 --timeout 180
-          node scripts/validate-gitleaks-report.mjs .cydetix/evidence/gitleaks.json
+          node scripts/run-source-bound-command.mjs \
+            --type complete-history-gitleaks \
+            --output .cydetix/evidence/bound/complete-history-gitleaks.json \
+            --subject .cydetix/evidence/gitleaks-review.json \
+            -- node scripts/validate-gitleaks-report.mjs .cydetix/evidence/gitleaks.json
       - name: Run npm advisory gate
-        run: npm run audit
+        run: >-
+          node scripts/run-source-bound-command.mjs --type npm-audit --output
+          .cydetix/evidence/bound/npm-audit.json --capture-stdout .cydetix/evidence/npm-audit.txt --
+          npm audit --audit-level=high
       - name: Run complete verification with mandatory sandbox tests
         env:
           CYDETIX_SANDBOX_IMAGE: node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b
-        run: npm run verify
+        run: >-
+          node scripts/run-source-bound-command.mjs --type development-verification --output
+          .cydetix/evidence/bound/development-verification.json -- npm run verify
       - name: Run explicit online OSV gate
-        run: npm run validate:online-osv
+        run: >-
+          node scripts/run-source-bound-command.mjs --type online-osv --output
+          .cydetix/evidence/bound/online-osv.json --subject .cydetix/evidence/osv-online.json -- npm
+          run validate:online-osv
+      - name: Record complete test evidence
+        run: npm run release:tests
+      - name: Record native self-scan evidence
+        run: >-
+          node scripts/run-source-bound-command.mjs --type self-scan --output
+          .cydetix/evidence/bound/self-scan.json --subject .cydetix/evidence/self-scan.json -- npm
+          run release:self-scan
+      - name: Record public repository audit evidence
+        run: >-
+          node scripts/run-source-bound-command.mjs --type public-repository --output
+          .cydetix/evidence/bound/public-repository.json --capture-stdout
+          .cydetix/evidence/public-repository.json -- npm run audit:public-repository
+      - name: Record workflow security evidence
+        run: >-
+          node scripts/run-source-bound-command.mjs --type workflow-security --output
+          .cydetix/evidence/bound/workflow-security.json -- npm run validate:workflow-security
+      - name: Create explicit release evidence allowlist
+        run: >-
+          node scripts/create-release-evidence-index.mjs --output .cydetix/evidence/index.json
+          .cydetix/evidence/bound/hosted-ci.json .cydetix/evidence/bound/hosted-sandbox.json
+          .cydetix/evidence/bound/codeql.json .cydetix/evidence/bound/openssf-scorecard.json
+          .cydetix/evidence/bound/git-history-privacy.json
+          .cydetix/evidence/bound/complete-history-gitleaks.json
+          .cydetix/evidence/bound/npm-audit.json
+          .cydetix/evidence/bound/development-verification.json
+          .cydetix/evidence/bound/online-osv.json .cydetix/evidence/bound/complete-test-suite.json
+          .cydetix/evidence/bound/self-scan.json .cydetix/evidence/bound/public-repository.json
+          .cydetix/evidence/bound/workflow-security.json
       - name: Build exact release artifacts and manifest
         env:
-          CYDETIX_HISTORICAL_TESTS_STATE: PASS
           CYDETIX_RELEASE_DIR: release-bundle
-          CYDETIX_HOSTED_CI_STATE: PASS
-          CYDETIX_SANDBOX_REGRESSION_STATE: PASS
-          CYDETIX_SELF_SCAN_STATE: PASS
-          CYDETIX_SUPPLY_CHAIN_STATE: PASS
-          CYDETIX_NPM_AUDIT_STATE: PASS
-          CYDETIX_OSV_STATE: PASS
-          CYDETIX_INDEPENDENT_SECRET_SCAN_STATE: PASS
-          CYDETIX_SKILLS_STATE: PASS
-          CYDETIX_SCHEMAS_STATE: PASS
-          CYDETIX_SARIF_STATE: PASS
-          CYDETIX_CYCLONEDX_STATE: PASS
-          CYDETIX_LICENSE_AUDIT_STATE: PASS
-          CYDETIX_WORKFLOW_SECURITY_STATE: PASS
-          CYDETIX_OPENSSF_STATE: PASS
+          CYDETIX_RELEASE_EVIDENCE_INDEX: .cydetix/evidence/index.json
         run: npm run release:artifacts
       - name: Smoke-test the exact release tarball
         shell: bash

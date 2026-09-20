@@ -31,6 +31,18 @@ prove that the software is vulnerability-free, complete, or production-ready.
 
 ## Candidate preparation—no tag
 
+Release readiness uses source-bound evidence envelopes. Each producer resolves the repository and
+Git `HEAD` before execution, rejects an expected-SHA mismatch or dirty tracked source, executes its
+gate, and records the producer-derived commit, repository, result, and relevant subject digest. An
+explicit evidence index allowlists the only records that may participate in a candidate and binds
+each envelope by SHA-256. The report generator rejects missing, malformed, wrong-repository,
+wrong-commit, duplicate, corrupted, and digest-mismatched records; unreferenced files in
+`.cydetix/evidence` are irrelevant.
+
+This envelope and index are an internal release-input protocol. They do not change the public
+release-validation report schema: current schema `1.3.0` and literal historical schema `1.2.0`
+remain compatible and historical reports are not rewritten.
+
 From a clean reviewed source commit:
 
 ```powershell
@@ -40,6 +52,9 @@ $env:CYDETIX_SANDBOX_IMAGE = "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b3
 npm run verify:development
 npm run release:self-scan
 npm run validate:online-osv
+npm run release:tests
+# Run the remaining source-bound producers, then explicitly index their envelope paths.
+# release:artifacts requires CYDETIX_RELEASE_EVIDENCE_INDEX outside preview mode.
 npm run release:artifacts
 npm run release:evidence
 npm run validate:release-report

@@ -68,6 +68,12 @@ function replaceRequired(source: string, expected: string, replacement: string):
   return source.replace(expected, replacement);
 }
 
+function replaceLastRequired(source: string, expected: string, replacement: string): string {
+  const index = source.lastIndexOf(expected);
+  expect(index).toBeGreaterThanOrEqual(0);
+  return `${source.slice(0, index)}${replacement}${source.slice(index + expected.length)}`;
+}
+
 describe("release workflow npm package spec", () => {
   it("accepts the exact single-tarball explicit-local publish boundary", async () => {
     const result = await validateWorkflow(releaseWorkflow);
@@ -213,6 +219,20 @@ describe("release workflow exact-commit hosted gates", () => {
       `release.yml: ${expected} exact-commit success gate is missing or weakened`,
     );
   });
+
+  it("rejects release evidence producers without an exact workflow SHA", async () => {
+    const result = await validateWorkflow(
+      replaceRequired(
+        releaseWorkflow,
+        "CYDETIX_EXPECTED_SOURCE_SHA: ${{ github.sha }}",
+        "CYDETIX_EXPECTED_SOURCE_SHA: ${{ github.ref_name }}",
+      ),
+    );
+    expect(result.status).toBe(1);
+    expect(result.report.issues).toContain(
+      "release.yml: evidence producers must be bound to the exact workflow commit",
+    );
+  });
 });
 
 describe("release workflow complete-history secret scan", () => {
@@ -256,14 +276,14 @@ describe("release workflow complete-history secret scan", () => {
     expect(result.report.issues).toContain(gitleaksConfigIssue);
   });
 
-  it.each(["CYDETIX_OSV_STATE: PASS", "CYDETIX_INDEPENDENT_SECRET_SCAN_STATE: PASS"])(
-    "rejects a missing %s evidence handoff",
-    async (declaration) => {
-      const result = await validateWorkflow(replaceRequired(releaseWorkflow, declaration, ""));
-      expect(result.status).toBe(1);
-      expect(result.report.issues).toContain(evidenceStateIssue);
-    },
-  );
+  it.each([
+    ".cydetix/evidence/bound/online-osv.json",
+    ".cydetix/evidence/bound/complete-history-gitleaks.json",
+  ])("rejects a missing %s evidence handoff", async (declaration) => {
+    const result = await validateWorkflow(replaceLastRequired(releaseWorkflow, declaration, ""));
+    expect(result.status).toBe(1);
+    expect(result.report.issues).toContain(evidenceStateIssue);
+  });
 
   it.each([
     ["shallow checkout", "fetch-depth: 0", "fetch-depth: 1"],

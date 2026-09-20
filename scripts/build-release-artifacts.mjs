@@ -7,6 +7,17 @@ import { scanRepository } from "../dist/core/engine.js";
 import { generateCycloneDxSbom } from "../dist/supply-chain/sbom.js";
 import { currentReleaseValidationReportSchema } from "../dist/validation/release.js";
 import { versionedReleaseReportPath } from "../dist/validation/release-evidence.js";
+import {
+  sha256,
+  sourceBoundEvidenceIndexSchema,
+  validateSourceBoundEvidenceSet,
+} from "../dist/validation/source-bound-evidence.js";
+import {
+  completeEvidence,
+  establishEvidenceSource,
+  evidenceReference,
+  fileIdentity,
+} from "./lib/source-bound-evidence.mjs";
 
 const root = path.resolve(".");
 const preview = process.argv.includes("--preview");
@@ -78,6 +89,8 @@ const worktreeStatus = run("git", [
 if (worktreeStatus !== "" && !preview)
   throw new Error("Release artifacts require a clean committed worktree and index.");
 const sourceState = worktreeStatus === "" ? "COMMITTED_CLEAN" : "UNCOMMITTED_PREVIEW";
+const sourceContext =
+  sourceState === "COMMITTED_CLEAN" ? await establishEvidenceSource() : undefined;
 const publicRepositoryAudit = JSON.parse(
   run(process.execPath, [path.join(root, "scripts", "audit-public-repository.mjs")]),
 );
@@ -171,6 +184,82 @@ const sourceCommit = run("git", [
   "rev-parse",
   "HEAD",
 ]).trim();
+const boundEvidenceDirectory = path.resolve(".cydetix", "evidence", "bound");
+const artifactEvidenceReferences = [];
+if (sourceContext !== undefined) {
+  const packedInstallDetails = JSON.parse(
+    await readFile(path.resolve(".cydetix", "evidence", "packed-install.json"), "utf8"),
+  );
+  const packedPluginDetails = JSON.parse(
+    await readFile(path.resolve(".cydetix", "evidence", "packed-plugin.json"), "utf8"),
+  );
+  const records = [
+    {
+      type: "packed-install",
+      output: path.join(boundEvidenceDirectory, "packed-install.json"),
+      subject: await fileIdentity(tarball, "ARTIFACT", path.basename(tarball)),
+      details: packedInstallDetails,
+    },
+    {
+      type: "packed-plugin",
+      output: path.join(boundEvidenceDirectory, "packed-plugin.json"),
+      subject: await fileIdentity(pluginPath, "ARTIFACT", path.basename(pluginPath)),
+      details: packedPluginDetails,
+    },
+    {
+      type: "sbom-validation",
+      output: path.join(boundEvidenceDirectory, "sbom-validation.json"),
+      subject: await fileIdentity(sbomPath, "ARTIFACT", path.basename(sbomPath)),
+      details: { state: "PASS", format: "CycloneDX", specVersion: sbom.specVersion },
+    },
+  ];
+  for (const record of records) {
+    await completeEvidence(
+      sourceContext,
+      {
+        evidenceType: record.type,
+        producer: { name: "build-release-artifacts", version: "1.0.0" },
+        result: "PASS",
+        subject: record.subject,
+        details: record.details,
+      },
+      record.output,
+    );
+    artifactEvidenceReferences.push(await evidenceReference(record.output));
+  }
+}
+let externalEvidenceReferences = [];
+let externalEvidence = new Map();
+const evidenceIndexPath = process.env.CYDETIX_RELEASE_EVIDENCE_INDEX;
+if (evidenceIndexPath !== undefined) {
+  const index = sourceBoundEvidenceIndexSchema.parse(
+    JSON.parse(await readFile(path.resolve(evidenceIndexPath), "utf8")),
+  );
+  const blobs = await Promise.all(
+    index.evidence.map(async (reference) => ({
+      path: reference.path,
+      bytes: await readFile(path.resolve(reference.path)),
+    })),
+  );
+  externalEvidence = validateSourceBoundEvidenceSet(index, blobs, {
+    repository: sourceContext?.repository ?? index.repository,
+    sourceCommit,
+  });
+  for (const record of externalEvidence.values()) {
+    if (record.subject.kind !== "FILE") continue;
+    if (record.subject.sha256 === undefined || record.subject.bytes === undefined)
+      throw new Error(`Evidence ${record.evidenceType} has an incomplete subject binding.`);
+    const subjectBytes = await readFile(path.resolve(record.subject.identity));
+    if (
+      sha256(subjectBytes) !== record.subject.sha256 ||
+      subjectBytes.length !== record.subject.bytes
+    )
+      throw new Error(`Evidence subject hash mismatch for ${record.evidenceType}.`);
+  }
+  externalEvidenceReferences = index.evidence;
+} else if (!preview) {
+  throw new Error("Release artifacts require an explicit source-bound evidence index.");
+}
 const nodeVersion = process.version;
 const npmVersion = run(process.execPath, [npmCli, "--version"]).trim();
 const currentReportPath = path.join(root, versionedReleaseReportPath(packageJson.version));
@@ -189,29 +278,57 @@ if (
     phase6bValidation.product.version !== packageJson.version)
 )
   throw new Error("Current versioned release evidence does not match the package identity.");
-const declaredState = (name) => process.env[name] ?? "NOT_CHECKED";
 const checks = {
-  historicalTests: declaredState("CYDETIX_HISTORICAL_TESTS_STATE"),
-  hostedCi: process.env.CYDETIX_HOSTED_CI_STATE ?? "NOT_RUN",
-  sandboxRegression: declaredState("CYDETIX_SANDBOX_REGRESSION_STATE"),
-  selfScan: declaredState("CYDETIX_SELF_SCAN_STATE"),
-  supplyChain: declaredState("CYDETIX_SUPPLY_CHAIN_STATE"),
-  npmAudit: process.env.CYDETIX_NPM_AUDIT_STATE ?? "NOT_CHECKED",
-  osv: declaredState("CYDETIX_OSV_STATE"),
+  historicalTests: "NOT_CHECKED",
+  hostedCi: "NOT_CHECKED",
+  sandboxRegression: "NOT_CHECKED",
+  selfScan: "NOT_CHECKED",
+  supplyChain: "NOT_CHECKED",
+  npmAudit: "NOT_CHECKED",
+  osv: "NOT_CHECKED",
   publicRepository: publicRepositoryAudit.state,
   gitHistoryPrivacy: historyAudit.state,
-  independentSecretScan: declaredState("CYDETIX_INDEPENDENT_SECRET_SCAN_STATE"),
+  independentSecretScan: "NOT_CHECKED",
   packageAllowlist: "PASS",
   packageInstall: "PASS",
-  skills: declaredState("CYDETIX_SKILLS_STATE"),
+  skills: "NOT_CHECKED",
   plugin: "PASS",
-  schemas: declaredState("CYDETIX_SCHEMAS_STATE"),
-  sarif: declaredState("CYDETIX_SARIF_STATE"),
-  cyclonedx: declaredState("CYDETIX_CYCLONEDX_STATE"),
-  licenseAudit: declaredState("CYDETIX_LICENSE_AUDIT_STATE"),
-  workflowSecurity: declaredState("CYDETIX_WORKFLOW_SECURITY_STATE"),
-  openssfScorecard: process.env.CYDETIX_OPENSSF_STATE ?? "NOT_CHECKED",
+  schemas: "NOT_CHECKED",
+  sarif: "NOT_CHECKED",
+  cyclonedx: "PASS",
+  licenseAudit: "NOT_CHECKED",
+  workflowSecurity: "NOT_CHECKED",
+  openssfScorecard: "NOT_CHECKED",
+  codeql: "NOT_CHECKED",
 };
+const evidenceResults = new Map(
+  [...externalEvidence.entries()].map(([type, record]) => [type, record.result]),
+);
+for (const reference of artifactEvidenceReferences)
+  evidenceResults.set(reference.evidenceType, "PASS");
+const evidenceChecks = {
+  historicalTests: "complete-test-suite",
+  hostedCi: "hosted-ci",
+  sandboxRegression: "hosted-sandbox",
+  selfScan: "self-scan",
+  supplyChain: "development-verification",
+  npmAudit: "npm-audit",
+  osv: "online-osv",
+  publicRepository: "public-repository",
+  gitHistoryPrivacy: "git-history-privacy",
+  independentSecretScan: "complete-history-gitleaks",
+  packageInstall: "packed-install",
+  skills: "development-verification",
+  plugin: "packed-plugin",
+  schemas: "development-verification",
+  sarif: "development-verification",
+  licenseAudit: "development-verification",
+  workflowSecurity: "workflow-security",
+  openssfScorecard: "openssf-scorecard",
+  codeql: "codeql",
+};
+for (const [check, type] of Object.entries(evidenceChecks))
+  checks[check] = evidenceResults.get(type) ?? "NOT_CHECKED";
 const releaseCandidateState =
   phase6bValidation !== undefined &&
   phase6bValidation.verdict !== "NOT_READY_FOR_PUBLIC_USE" &&
@@ -267,6 +384,9 @@ const releaseInputs = {
     sizeGateBytes: 400_000,
   },
   artifacts,
+  evidence: [...externalEvidenceReferences, ...artifactEvidenceReferences].sort((left, right) =>
+    left.evidenceType.localeCompare(right.evidenceType),
+  ),
   reproducibilityClaim: "REPRODUCIBLE_INPUT_MANIFEST_ONLY",
 };
 const manifestPath = path.join(destination, "release-inputs.json");

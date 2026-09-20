@@ -37,6 +37,8 @@ if (release?.on?.pull_request !== undefined)
   issues.push("release.yml: pull requests must not trigger releases");
 const publish = release?.jobs?.publish;
 const verifyRelease = release?.jobs?.["verify-release"];
+if (verifyRelease?.env?.CYDETIX_EXPECTED_SOURCE_SHA !== "${{ github.sha }}")
+  issues.push("release.yml: evidence producers must be bound to the exact workflow commit");
 if (publish?.name !== "Publish approved release")
   issues.push("release.yml: publish job wording must cover prerelease and stable releases");
 const releaseCheckoutStep = verifyRelease?.steps?.find(
@@ -79,7 +81,7 @@ const historyAuditStep = release?.jobs?.["verify-release"]?.steps?.find(
 if (
   historyAuditStep?.env?.CYDETIX_EXPECTED_TAG !== "${{ github.ref_name }}" ||
   historyAuditStep?.run !==
-    'npm run audit:history -- --enforce --ref "refs/tags/${CYDETIX_EXPECTED_TAG}"'
+    'node scripts/run-source-bound-command.mjs --type git-history-privacy --output .cydetix/evidence/bound/git-history-privacy.json --capture-stdout .cydetix/evidence/history.json -- node scripts/audit-git-history.mjs --enforce --ref "refs/tags/${CYDETIX_EXPECTED_TAG}"'
 )
   issues.push("release.yml: Git-history privacy audit is not scoped to the validated release tag");
 const gitleaksStep = release?.jobs?.["verify-release"]?.steps?.find(
@@ -101,7 +103,11 @@ const expectedGitleaksScript = [
   "  --gitleaks-ignore-path /dev/null --ignore-gitleaks-allow \\",
   '  --log-opts="--full-history --all --text --no-textconv --no-ext-diff" \\',
   "  --no-banner --no-color --exit-code 0 --timeout 180",
-  "node scripts/validate-gitleaks-report.mjs .cydetix/evidence/gitleaks.json",
+  "node scripts/run-source-bound-command.mjs \\",
+  "  --type complete-history-gitleaks \\",
+  "  --output .cydetix/evidence/bound/complete-history-gitleaks.json \\",
+  "  --subject .cydetix/evidence/gitleaks-review.json \\",
+  "  -- node scripts/validate-gitleaks-report.mjs .cydetix/evidence/gitleaks.json",
 ].join("\n");
 if (gitleaksStep?.shell !== "bash" || gitleaksStep?.run?.trim() !== expectedGitleaksScript)
   issues.push(
@@ -110,9 +116,17 @@ if (gitleaksStep?.shell !== "bash" || gitleaksStep?.run?.trim() !== expectedGitl
 const releaseArtifactsStep = verifyRelease?.steps?.find(
   (step) => step?.name === "Build exact release artifacts and manifest",
 );
+const evidenceIndexStep = verifyRelease?.steps?.find(
+  (step) => step?.name === "Create explicit release evidence allowlist",
+);
 if (
-  releaseArtifactsStep?.env?.CYDETIX_OSV_STATE !== "PASS" ||
-  releaseArtifactsStep?.env?.CYDETIX_INDEPENDENT_SECRET_SCAN_STATE !== "PASS"
+  releaseArtifactsStep?.env?.CYDETIX_RELEASE_EVIDENCE_INDEX !== ".cydetix/evidence/index.json" ||
+  typeof evidenceIndexStep?.run !== "string" ||
+  !evidenceIndexStep.run.includes("complete-history-gitleaks.json") ||
+  !evidenceIndexStep.run.includes("online-osv.json") ||
+  !evidenceIndexStep.run.includes("hosted-ci.json") ||
+  !evidenceIndexStep.run.includes("codeql.json") ||
+  !evidenceIndexStep.run.includes("openssf-scorecard.json")
 )
   issues.push(
     "release.yml: release artifacts must explicitly inherit successful OSV and independent secret-scan gates",

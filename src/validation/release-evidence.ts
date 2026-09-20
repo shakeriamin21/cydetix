@@ -266,6 +266,15 @@ export const mandatoryReleaseCheckIds = [
   "packed-plugin",
   "release-artifacts",
   "clean-public-lineage",
+  "public-repository",
+  "npm-audit",
+  "online-osv",
+  "independent-complete-history-gitleaks",
+  "workflow-security",
+  "cross-platform-ci-matrix",
+  "codeql",
+  "openssf-scorecard",
+  "hosted-sandbox",
 ] as const;
 
 export function versionedReleaseReportPath(version: string): string {
