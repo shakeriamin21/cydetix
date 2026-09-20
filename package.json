@@ -106,7 +106,7 @@
     "@lezer/python": "1.1.19",
     "commander": "15.0.0",
     "yaml": "2.9.0",
-    "zod": "4.5.4"
+    "zod": "4.6.1"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
