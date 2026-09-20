@@ -186,6 +186,7 @@ const inventory = {
     "Commander usage errors are printed once with unchanged exit 2; a missing scan directory retains scan-failure exit 3.",
     "verify:development validates current versions and immutable historical evidence. Strict release gates remain unchanged and reject the unprepared development candidate.",
     "Blocker closure: history audit now reports every offending commit instead of collapsing a shared email hash; adds exact commit/author/committer privacy allowances in validation/history-author-allowances.json. No future bot/domain/ref-pattern exemption or historical publication change. Python HTML sink documentation explicitly excludes existing unsupported implicit Flask returns and callback/closure flows; engine coverage unchanged.",
+    "Release-validation schema 1.3.0 derives alpha, beta, and stable readiness labels from the strict version channel and rejects contradictions. The compatibility parser preserves immutable schema 1.2.0 reports literally; current evidence cannot use the legacy schema.",
   ],
 };
 const output = `${JSON.stringify(inventory, null, 2)}\n`;

@@ -1,13 +1,13 @@
 # Public claims and evidence
 
-Public documentation must use the narrow claim in this table. A future release may strengthen a
-claim only after its evidence changes.
+Public documentation must use the narrow claim in this table. Stable `v1.0.1` publication did not
+broaden analysis claims. A future release may strengthen a claim only after its evidence changes.
 
 | Claim                                              | Evidence                                                                                          | Maturity / limitation                                                                                                         |
 | -------------------------------------------------- | ------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
 | Ordinary scans are offline                         | Scan integration tests; OSV requires explicit `online` mode                                       | Validated internal                                                                                                            |
 | Ordinary scans do not execute repository code      | Hostile package scripts, formatter/prose, hook, and corpus tests remain inert                     | Validated internal                                                                                                            |
-| Repository paths are bounded                       | Canonical path, symlink/junction, traversal, NUL, absolute, and seeded mutation tests             | Validated locally and in the Beta.3 Windows/Linux/macOS Node 22/24 hosted matrix                                              |
+| Repository paths are bounded                       | Canonical path, symlink/junction, traversal, NUL, absolute, and seeded mutation tests             | Validated locally and in the v1.0.1 Windows/Linux/macOS Node 22/24 hosted matrix                                              |
 | Secrets are redacted                               | Working-tree/history/report/SARIF/remediation tests                                               | Validated internal; detection coverage is intentionally narrow                                                                |
 | Provider failure is not a clean result             | HTTP 500/429, DNS, TLS, malformed, partial, and timeout tests                                     | Validated internal                                                                                                            |
 | Current dependency advisory observation is clean   | npm audit: 0; explicit OSV: 214 packages, checked/no findings                                     | Time/provider-bounded; not an exhaustiveness or reachability claim                                                            |
@@ -20,11 +20,11 @@ claim only after its evidence changes.
 | External validation exists                         | Pinned NodeGoat and BenchmarkPython manifests/results                                             | Initial implementation review, not an independent human study                                                                 |
 | Observed NodeGoat finding precision is 100%        | 6 TP / 0 FP across 6 adjudicated emitted findings                                                 | Findings-only sample; recall unavailable; denominator must accompany claim                                                    |
 | Package contents are allowlisted                   | `npm pack --json --dry-run` content/path/size gate                                                | Validated on current host                                                                                                     |
-| Packed installation works                          | Clean local/global install; npm-exec; version/help/doctor/scan/auth/supply-chain/SBOM/fix dry-run | Exact Beta.3 package passed Windows/Linux/macOS on Node 22.18 and 24.11; broader host/filesystem combinations are not claimed |
+| Packed installation works                          | Clean local/global install; npm-exec; version/help/doctor/scan/auth/supply-chain/SBOM/fix dry-run | Exact v1.0.1 package passed Windows/Linux/macOS on Node 22.18 and 24.11; broader host/filesystem combinations are not claimed |
 | Release inputs are reproducible                    | Commit/version/tool versions and dependency/schema/catalogue/artifact hashes                      | Reproducible input manifest only; no bit-for-bit claim                                                                        |
-| Beta.3 release provenance exists                   | Trusted Release 34947037844; pinned OIDC workflow; npm and GitHub attestations                    | Exact immutable Beta.3 release evidence; provenance does not establish vulnerability freedom or analysis completeness         |
+| Stable v1.0.1 release provenance exists            | Trusted Release 35085779583; pinned OIDC workflow; npm and GitHub attestations                    | Exact immutable v1.0.1 release evidence; provenance does not establish vulnerability freedom or analysis completeness         |
 | Public repository contents and history are audited | HEAD-content audit, deterministic reachable/all-refs metadata policy, independent Gitleaks        | Exact-scope, tool, and reviewed-finding bounds apply; not every possible secret format is detectable                          |
-| Hosted CI, CodeQL, and Scorecard passed            | Exact-SHA CI 34942830651, CodeQL 34942830674, OpenSSF 34942830646                                 | Exact Beta.3 evidence only; future candidates require fresh exact-SHA success                                                 |
+| Hosted CI, CodeQL, and Scorecard passed            | Exact-SHA CI 35084476591, CodeQL 35084476327, OpenSSF 35084476387                                 | Exact v1.0.1 evidence only; future candidates require fresh exact-SHA success                                                 |
 
 Forbidden claims include "zero false positives," "finds every vulnerability," "OWASP compliant,"
 "complete website security," "fully isolated," "safe to execute arbitrary untrusted code," "secure

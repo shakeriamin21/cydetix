@@ -1,7 +1,9 @@
 import { z } from "zod";
-import { corpusValidationResultSchema } from "./model.js";
 import { sandboxCapabilitySchema } from "../verification/model.js";
-export const releaseValidationSchemaVersion = "1.2.0";
+import { corpusValidationResultSchema } from "./model.js";
+import { npmReleaseChannelForVersion } from "./release-channel.js";
+export const legacyReleaseValidationSchemaVersion = "1.2.0";
+export const releaseValidationSchemaVersion = "1.3.0";
 export const validationCheckStateSchema = z.enum([
     "executed_pass",
     "executed_fail",
@@ -37,9 +39,7 @@ const scaleResultSchema = z
     findings: z.number().int().nonnegative(),
 })
     .strict();
-export const releaseValidationReportSchema = z
-    .object({
-    schemaVersion: z.literal(releaseValidationSchemaVersion),
+const releaseValidationReportCommonShape = {
     generatedAt: z.iso.datetime(),
     product: z
         .object({
@@ -52,14 +52,7 @@ export const releaseValidationReportSchema = z
             .optional(),
     })
         .strict()
-        .refine((product) => product.evidenceOrigin !== "PUBLIC_GIT_COMMIT" ||
-        product.publicSourceCommit !== undefined, "Public Git evidence requires a public source commit."),
-    verdict: z.enum([
-        "NOT_READY_FOR_PUBLIC_USE",
-        "INTERNAL_ALPHA_READY",
-        "PUBLIC_ALPHA_READY_WITH_LIMITATIONS",
-        "PUBLIC_BETA_CANDIDATE",
-    ]),
+        .refine((product) => product.evidenceOrigin !== "PUBLIC_GIT_COMMIT" || product.publicSourceCommit !== undefined, "Public Git evidence requires a public source commit."),
     checks: z.array(checkSchema).min(1),
     corpora: z.array(corpusValidationResultSchema),
     sandbox: sandboxCapabilitySchema,
@@ -132,6 +125,76 @@ export const releaseValidationReportSchema = z
     ]),
     supportScope: z.array(z.string().min(1)),
     knownLimitations: z.array(z.string().min(1)),
+};
+const legacyReleaseValidationVerdictSchema = z.enum([
+    "NOT_READY_FOR_PUBLIC_USE",
+    "INTERNAL_ALPHA_READY",
+    "PUBLIC_ALPHA_READY_WITH_LIMITATIONS",
+    "PUBLIC_BETA_CANDIDATE",
+]);
+export const currentReleaseValidationVerdictSchema = z.enum([
+    "NOT_READY_FOR_PUBLIC_USE",
+    "PUBLIC_ALPHA_READY_WITH_LIMITATIONS",
+    "PUBLIC_BETA_READY_WITH_LIMITATIONS",
+    "PUBLIC_STABLE_READY_WITH_LIMITATIONS",
+]);
+export function releaseValidationVerdictForVersion(version, ready) {
+    const channel = npmReleaseChannelForVersion(version);
+    if (!ready) {
+        return "NOT_READY_FOR_PUBLIC_USE";
+    }
+    switch (channel) {
+        case "alpha":
+            return "PUBLIC_ALPHA_READY_WITH_LIMITATIONS";
+        case "beta":
+            return "PUBLIC_BETA_READY_WITH_LIMITATIONS";
+        case "latest":
+            return "PUBLIC_STABLE_READY_WITH_LIMITATIONS";
+    }
+}
+export const legacyReleaseValidationReportSchema = z
+    .object({
+    schemaVersion: z.literal(legacyReleaseValidationSchemaVersion),
+    ...releaseValidationReportCommonShape,
+    verdict: legacyReleaseValidationVerdictSchema,
 })
     .strict();
+export const currentReleaseValidationReportSchema = z
+    .object({
+    schemaVersion: z.literal(releaseValidationSchemaVersion),
+    ...releaseValidationReportCommonShape,
+    verdict: currentReleaseValidationVerdictSchema,
+})
+    .strict()
+    .superRefine((report, context) => {
+    let expectedVerdict;
+    try {
+        expectedVerdict = releaseValidationVerdictForVersion(report.product.version, report.verdict !== "NOT_READY_FOR_PUBLIC_USE");
+    }
+    catch (error) {
+        context.addIssue({
+            code: "custom",
+            path: ["product", "version"],
+            message: error instanceof Error ? error.message : String(error),
+        });
+        return;
+    }
+    if (report.verdict !== expectedVerdict) {
+        context.addIssue({
+            code: "custom",
+            path: ["verdict"],
+            message: `Release verdict ${report.verdict} contradicts version ${report.product.version}; expected ${expectedVerdict}.`,
+        });
+    }
+});
+/**
+ * Compatibility parser for immutable historical reports and current reports.
+ * Current release generation and validation must use
+ * currentReleaseValidationReportSchema so legacy maturity labels cannot be
+ * emitted for new releases.
+ */
+export const releaseValidationReportSchema = z.discriminatedUnion("schemaVersion", [
+    legacyReleaseValidationReportSchema,
+    currentReleaseValidationReportSchema,
+]);
 //# sourceMappingURL=release.js.map

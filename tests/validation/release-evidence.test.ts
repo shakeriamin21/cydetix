@@ -15,8 +15,8 @@ import {
   versionedReleaseReportPath,
 } from "../../src/validation/release-evidence.js";
 import {
-  releaseValidationReportSchema,
-  type ReleaseValidationReport,
+  currentReleaseValidationReportSchema,
+  type CurrentReleaseValidationReport,
 } from "../../src/validation/release.js";
 
 const history = releaseHistorySchema.parse(
@@ -36,15 +36,20 @@ const grandparentCommit = "c".repeat(40);
 const unrelatedCommit = "d".repeat(40);
 const betaReportPath = versionedReleaseReportPath("0.6.0-beta.1");
 
-function currentReportFixture(): ReleaseValidationReport {
-  const report = releaseValidationReportSchema.parse(
-    JSON.parse(
-      readFileSync("validation/releases/v0.6.0-alpha.11/validation-report.json", "utf8"),
-    ) as unknown,
-  );
-  report.product.version = "0.6.0-beta.1";
-  report.product.publicSourceCommit = sourceCommit;
-  return report;
+function currentReportFixture(): CurrentReleaseValidationReport {
+  const historical = JSON.parse(
+    readFileSync("validation/releases/v0.6.0-alpha.11/validation-report.json", "utf8"),
+  ) as Record<string, unknown>;
+  return currentReleaseValidationReportSchema.parse({
+    ...historical,
+    schemaVersion: "1.3.0",
+    product: {
+      ...(historical.product as Record<string, unknown>),
+      version: "0.6.0-beta.1",
+      publicSourceCommit: sourceCommit,
+    },
+    verdict: "NOT_READY_FOR_PUBLIC_USE",
+  });
 }
 
 describe("versioned release evidence", () => {
@@ -115,6 +120,16 @@ describe("versioned release evidence", () => {
     v1.target = "d".repeat(40);
     expect(() => releaseHistorySchema.parse(changedHistory)).toThrow(
       "Immutable historical identity changed: v1.0.0",
+    );
+  });
+
+  it("rejects changes to the immutable successful v1.0.1 tag identity", () => {
+    const changedHistory = structuredClone(history);
+    const v101 = changedHistory.tags.find((tag) => tag.tag === "v1.0.1");
+    if (v101 === undefined) throw new Error("v1.0.1 fixture is missing.");
+    v101.object = "d".repeat(40);
+    expect(() => releaseHistorySchema.parse(changedHistory)).toThrow(
+      "Immutable historical identity changed: v1.0.1",
     );
   });
 
@@ -249,6 +264,16 @@ describe("versioned release evidence", () => {
     const stored = await readFile(snapshot.snapshotPath);
     const report = verifyHistoricalEvidenceSnapshot(snapshot, stored, stored);
     expect(report.product.version).toBe("0.6.0-beta.1");
+  });
+
+  it("preserves the immutable v1.0.1 validation snapshot and its literal legacy verdict", async () => {
+    const snapshot = history.evidenceSnapshots.find((entry) => entry.version === "1.0.1");
+    if (snapshot === undefined) throw new Error("v1.0.1 snapshot fixture is missing.");
+    const stored = await readFile(snapshot.snapshotPath);
+    const report = verifyHistoricalEvidenceSnapshot(snapshot, stored, stored);
+    expect(report.product.version).toBe("1.0.1");
+    expect(report.schemaVersion).toBe("1.2.0");
+    expect(report.verdict).toBe("PUBLIC_ALPHA_READY_WITH_LIMITATIONS");
   });
 
   it("resolves and validates the report belonging to the package version", async () => {
@@ -427,7 +452,7 @@ describe("versioned release evidence", () => {
 
   it("rejects a ready verdict contradicted by mandatory evidence", () => {
     const report = currentReportFixture();
-    report.verdict = "PUBLIC_ALPHA_READY_WITH_LIMITATIONS";
+    report.verdict = "PUBLIC_BETA_READY_WITH_LIMITATIONS";
     expect(() =>
       validateCurrentReleaseReport(
         report,

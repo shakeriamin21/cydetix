@@ -4,7 +4,12 @@ import path from "node:path";
 
 import { z } from "zod";
 
-import { releaseValidationReportSchema, type ReleaseValidationReport } from "./release.js";
+import {
+  currentReleaseValidationReportSchema,
+  releaseValidationReportSchema,
+  type CurrentReleaseValidationReport,
+  type ReleaseValidationReport,
+} from "./release.js";
 
 const gitObjectIdSchema = z.string().regex(/^[a-f0-9]{40}$/);
 const sha256Schema = z.string().regex(/^[a-f0-9]{64}$/);
@@ -75,6 +80,11 @@ export const immutableHistoricalReleaseIdentities = [
     object: "dacf963b6f83bfb0e35648c4c62af35be1914a91",
     target: "78185c3dfb2d0091dc3f9eef1b9da4955fc5f546",
   },
+  {
+    tag: "v1.0.1",
+    object: "063b65deedc8228a4d155ddd2c286aa2f8c8eaeb",
+    target: "e06ba195beeb5c3428e65e3f95049b39afa2891c",
+  },
 ] as const;
 
 const alpha11SnapshotContract = {
@@ -83,6 +93,14 @@ const alpha11SnapshotContract = {
   sourcePath: "validation/validation-report.json",
   snapshotPath: "validation/releases/v0.6.0-alpha.11/validation-report.json",
   sha256: "35ecd64fbd9c9d0a4bdff306afd058ee3e0c32cdb19dcb3dd3c051022a51b4bf",
+} as const;
+
+const v101SnapshotContract = {
+  version: "1.0.1",
+  tag: "v1.0.1",
+  sourcePath: "validation/releases/v1.0.1/validation-report.json",
+  snapshotPath: "validation/releases/v1.0.1/validation-report.json",
+  sha256: "a1d5a38bb56c0e732351d12726e73ab11bb4e9555c42bd5b6f6af87a9f5e75f1",
 } as const;
 
 const v1FailedReleaseContract = {
@@ -150,6 +168,19 @@ export const releaseHistorySchema = z
       context.addIssue({
         code: "custom",
         message: "Immutable alpha.11 evidence snapshot contract changed.",
+      });
+    const v101Snapshot = history.evidenceSnapshots.find(
+      (snapshot) => snapshot.version === v101SnapshotContract.version,
+    );
+    if (
+      v101Snapshot === undefined ||
+      Object.entries(v101SnapshotContract).some(
+        ([key, value]) => v101Snapshot[key as keyof typeof v101Snapshot] !== value,
+      )
+    )
+      context.addIssue({
+        code: "custom",
+        message: "Immutable v1.0.1 evidence snapshot contract changed.",
       });
     const alpha12Failure = history.failedReleaseAttempts.find(
       (attempt) => attempt.tag === "v0.6.0-alpha.12",
@@ -379,8 +410,8 @@ export function validateCurrentReleaseReport(
   packageIdentity: { name: string; version: string },
   sourceIdentity: ReleaseReportSourceIdentity,
   options: { requireReleaseReady?: boolean } = {},
-): ReleaseValidationReport {
-  const parsed = releaseValidationReportSchema.safeParse(reportInput);
+): CurrentReleaseValidationReport {
+  const parsed = currentReleaseValidationReportSchema.safeParse(reportInput);
   if (!parsed.success) throw new Error("Current release report is malformed.");
   const report = parsed.data;
   if (report.product.name !== packageIdentity.name)
@@ -403,7 +434,7 @@ export function validateCurrentReleaseReport(
   if (options.requireReleaseReady === true && report.verdict === "NOT_READY_FOR_PUBLIC_USE")
     throw new Error("Tagged release evidence is not ready for public use.");
 
-  const checksById = new Map<string, ReleaseValidationReport["checks"][number]>();
+  const checksById = new Map<string, CurrentReleaseValidationReport["checks"][number]>();
   for (const check of report.checks) {
     if (checksById.has(check.id)) throw new Error(`Duplicate release check ${check.id}.`);
     checksById.set(check.id, check);

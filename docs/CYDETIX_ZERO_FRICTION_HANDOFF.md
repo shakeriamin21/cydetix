@@ -1,8 +1,9 @@
 # Cydetix zero-friction UX handoff
 
 > Historical Alpha.7 design record (2026-09-09). It is not current installation, release, hosted
-> validation, or provenance guidance. See the repository README and `docs/security/V1_READINESS.md`
-> for the immutable released Beta.3 baseline and current V1 stabilization evidence.
+> validation, or provenance guidance. See the repository README and `docs/releases/v1.0.1.md` for
+> current stable release truth. `docs/security/V1_READINESS.md` remains the historical pre-V1
+> stabilization record.
 
 Updated: 2026-09-09 Version: `0.6.0-alpha.7` Final verdict: **UNIVERSAL LOCAL AGENT CANDIDATE;
 PUBLICATION GATES OPEN**

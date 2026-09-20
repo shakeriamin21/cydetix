@@ -1,7 +1,7 @@
 export declare const PRODUCT: {
     readonly id: "cydetix";
     readonly displayName: "Cydetix";
-    readonly version: "1.0.1";
+    readonly version: "1.0.2";
     readonly reportSchemaVersion: "2.0.0";
     readonly ruleSchemaVersion: "1.0.0";
 };

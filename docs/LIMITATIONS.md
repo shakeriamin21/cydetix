@@ -1,7 +1,8 @@
 # Known limitations
 
-Cydetix has a prepared but unpublished stable-version candidate. It is not a guarantee that an
-application is secure or compliant.
+Stable `1.0.1` is published. The current source is an untagged, unpublished `1.0.2` maintenance
+candidate. Neither publication nor a passing scan guarantees that an application is secure or
+compliant.
 
 ## Analysis scope
 
@@ -55,19 +56,20 @@ application is secure or compliant.
   [current readiness evidence](security/V1_READINESS.md).
 - BenchmarkPython reviewed cases are outside current rule applicability and do not become true
   negatives.
-- Beta.3 exact-commit hosted gates passed on Linux, Windows, and macOS, including the supported Node
-  floor lines, CodeQL, OpenSSF, and the hosted Linux sandbox. That does not establish results for
-  every OS, kernel, filesystem, Docker runtime, or later source commit.
-- Node.js support is limited to 22.18+ in the 22.x line and 24.11+ in the 24.x line. The Beta.3
+- Stable `v1.0.1` exact-commit hosted gates passed on Linux, Windows, and macOS, including the
+  supported Node floor lines, CodeQL, OpenSSF, and the hosted Linux sandbox. That does not establish
+  results for every OS, kernel, filesystem, Docker runtime, or later source commit.
+- Node.js support is limited to 22.18+ in the 22.x line and 24.11+ in the 24.x line. The `v1.0.1`
   hosted matrix covered the exact floor versions; later patch versions and the current local Node
   runtime provide supplementary evidence, not an all-host guarantee.
-- The pinned release workflow requires exact-commit checks, protected environment approval,
-  OIDC-only Trusted Publishing and artifact/SBOM attestations. Beta.3 completed that workflow and is
-  immutable. A later candidate has no inherited release authority. Bit-for-bit reproducibility is
-  not claimed.
-- Beta.3 empirically exercised npm Trusted Publishing for the exact repository, workflow, and
-  `release` environment. No token fallback is present. External settings remain trusted operational
-  state and must be revalidated for a later release.
+- The pinned release workflow requires exact-commit checks, binds publication to the `release`
+  environment, uses OIDC-only Trusted Publishing, and requires artifact/SBOM attestations. Stable
+  `v1.0.1` completed that workflow and is immutable. A later candidate has no inherited release
+  authority. Bit-for-bit reproducibility is not claimed.
+- `v1.0.1` empirically exercised npm Trusted Publishing for the exact repository, workflow, and
+  `release` environment. No token fallback is present. The live environment currently has no
+  protection rules, so approval-based protection is an outstanding operational hardening action.
+  External settings remain trusted operational state and must be revalidated for a later release.
 - Warm-cache local performance measurements are descriptive. The observed FastAPI p95 regression
   remains unresolved; no cross-machine performance or complete large-repository coverage is claimed.
 - The public identity is Cydetix. Package registration does not establish brand/legal review,

@@ -24,6 +24,8 @@ const gitleaksIssue =
   "release.yml: complete-history Gitleaks scan must be pinned, unsuppressed, sandboxed, and exactly validated";
 const gitleaksConfigIssue =
   "validation/gitleaks.toml: config must extend the built-in rules without allowlists";
+const evidenceStateIssue =
+  "release.yml: release artifacts must explicitly inherit successful OSV and independent secret-scan gates";
 const releaseCheckoutIssue =
   "release.yml: release checkout must fetch complete history without persisted credentials";
 const exactGitleaksConfig =
@@ -253,6 +255,15 @@ describe("release workflow complete-history secret scan", () => {
     expect(result.status).toBe(1);
     expect(result.report.issues).toContain(gitleaksConfigIssue);
   });
+
+  it.each(["CYDETIX_OSV_STATE: PASS", "CYDETIX_INDEPENDENT_SECRET_SCAN_STATE: PASS"])(
+    "rejects a missing %s evidence handoff",
+    async (declaration) => {
+      const result = await validateWorkflow(replaceRequired(releaseWorkflow, declaration, ""));
+      expect(result.status).toBe(1);
+      expect(result.report.issues).toContain(evidenceStateIssue);
+    },
+  );
 
   it.each([
     ["shallow checkout", "fetch-depth: 0", "fetch-depth: 1"],

@@ -21,7 +21,12 @@ Historical evidence snapshots are copied without normalization from their immuta
 Development validation compares each snapshot byte-for-byte and by SHA-256 with the path recorded in
 the corresponding tag target. A current report is never substituted for a historical snapshot.
 
-The initial current report for a new version is prepared in two fail-closed stages:
+New reports use schema `1.3.0`, whose ready verdict is derived from the strict semantic-version
+channel and distinguishes alpha, beta, and stable-with-limitations. Version/verdict contradictions
+fail closed. The compatibility parser preserves immutable schema `1.2.0` reports and their literal
+historical verdicts, but schema `1.2.0` is not accepted as current evidence for a new release.
+
+The initial current report for a new version is prepared in fail-closed stages:
 
 1. Run the complete development checks and evidence-producing commands.
 2. Run `npm run release:artifacts` without a tag to create an explicitly non-publication-ready
@@ -44,3 +49,9 @@ verification before publication. No alpha.12 npm package or public GitHub releas
 current-version release-report validation because the tag targeted the source candidate rather than
 a one-report evidence commit. Publication was skipped; no `1.0.0` npm package or public GitHub
 release was created, and npm `latest` did not move.
+
+`v1.0.1` is the immutable successful stable recovery release. Its annotated tag object is
+`063b65deedc8228a4d155ddd2c286aa2f8c8eaeb`, its target is
+`e06ba195beeb5c3428e65e3f95049b39afa2891c`, and trusted release run `35085779583` completed npm OIDC
+publication and normal GitHub release finalization after exact-SHA hosted gates succeeded. Its
+schema `1.2.0` report remains byte-immutable and is registered by SHA-256 in release history.

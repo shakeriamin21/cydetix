@@ -5,19 +5,33 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
-## [1.0.1] - Unreleased
+## [1.0.2] - Unreleased
+
+- Reconcile public documentation and immutable release history with the successful stable `v1.0.1`
+  trusted publication while preserving failed historical attempts as failures.
+- Version current source as an untagged, unpublished `1.0.2` maintenance candidate.
+- Evolve release-validation reports from schema `1.2.0` to `1.3.0` so alpha, beta, and stable
+  versions receive channel-accurate readiness verdicts. Historical `1.2.0` reports remain parsed
+  literally and immutable; contradictory new version/verdict combinations fail closed.
+- Require release-artifact manifests to receive explicit successful OSV and independent secret-scan
+  gate states instead of inheriting potentially stale local evidence files.
+- Preserve all V1 security behavior, proof meanings, remediation authority, package exports, CLI,
+  MCP, configuration, offline execution, and fail-closed supply-chain controls.
+
+## [1.0.1] - 2026-09-16
 
 - Recover from immutable failed release attempt `v1.0.0`, whose trusted run `35063154124` stopped at
   current-version release-report validation before publication because the tag targeted the source
   candidate without the required one-report evidence commit. No `1.0.0` npm package or public GitHub
   release was created, and npm `latest` did not move.
-- Prepare the `1.0.1` source candidate for the repository's existing two-commit source/evidence
-  contract. The future annotated `v1.0.1` tag must target the evidence commit, not the source
-  commit, and remains unauthorized until exact-SHA CI, CodeQL, and OpenSSF succeed.
+- Complete the repository's two-commit source/evidence contract and publish stable `v1.0.1` through
+  trusted release run `35085779583` after exact-SHA CI, CodeQL, and OpenSSF succeeded.
+- Publish `cydetix@1.0.1` to npm `latest` with provenance and finalize a normal, non-prerelease
+  GitHub release from the immutable annotated tag.
 - Preserve the audited V1 product behavior and documented limitations without changing detection,
   proof, remediation, dependency, sandbox, MCP, CLI, package-export, or workflow-security semantics.
 
-## [1.0.0] - Unreleased
+## [1.0.0] - 2026-09-16 (failed before publication)
 
 - Prepare the audited V1 product source and final readiness evidence as an untagged `1.0.0` release
   candidate. This preparation does not create `v1.0.0`, publish npm, create a GitHub release, or

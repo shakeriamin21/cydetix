@@ -2,6 +2,8 @@
 
 Roadmap entries are possible directions, not implemented capabilities, commitments, or delivery
 dates. Current behavior is defined by `SUPPORT_MATRIX.md`, `docs/CLAIMS.md`, and released artifacts.
+The next evidence-producing phase is defined in `docs/POST_V1_VALIDATION_PLAN.md`; it is not part of
+the `1.0.2` maintenance implementation.
 
 ## Analysis coverage
 
@@ -52,7 +54,7 @@ dates. Current behavior is defined by `SUPPORT_MATRIX.md`, `docs/CLAIMS.md`, and
 ## Product principles
 
 - No hidden telemetry.
-- No stable-production claim based on prerelease versioning or a single score.
+- No production-fitness claim based on release channel, version number, or a single score.
 - No broad framework claim without measured evidence.
 - No automatic history rewrite, secret validation, or publication.
 - Security boundaries and unfavorable validation results remain visible.

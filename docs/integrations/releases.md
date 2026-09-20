@@ -1,24 +1,27 @@
 # Prerelease and stable release procedure
 
-Beta.3 is the current immutable published prerelease. The immutable `v1.0.0` attempt failed before
-publication because its annotated tag targeted the source candidate without the required evidence
-commit; the tag must not be moved or reused. The current `1.0.1` recovery candidate is prepared but
-untagged and unpublished; Beta.4 was never released. Do not create a tag, publish npm, create a
-GitHub Release, move npm `latest`, or submit a Marketplace listing until the exact evidence commit
-has passed its required hosted gates and the user separately approves that next phase.
+Stable `v1.0.1` is the current immutable published release and npm `latest`. Beta.3 remains the
+historical published prerelease; Beta.4 was never released. The immutable `v1.0.0` attempt failed
+before publication because its annotated tag targeted the source candidate without the required
+evidence commit, so that tag must not be moved or reused. The current source is the untagged,
+unpublished `1.0.2` maintenance candidate. Do not create a tag, publish npm, create a GitHub
+Release, move npm `latest`, or submit a Marketplace listing until a future exact evidence commit has
+passed its required hosted gates and the user separately approves that next phase.
 
 ## Trusted-publishing trust model
 
-The release workflow uses a protected GitHub-hosted `release` environment and npm Trusted Publishing
-through OIDC. No long-lived `NPM_TOKEN` is accepted by that workflow. npm currently requires CLI
-11.5.1+ and Node 22.14+ for trusted publishing; the workflow uses supported Node 24 and checks the
-npm CLI before publishing. The approved public `package.json` repository URL must exactly match the
-GitHub repository configured at npm.
+The release workflow binds its publication job to the GitHub-hosted `release` environment and uses
+npm Trusted Publishing through OIDC. No long-lived `NPM_TOKEN` is accepted by that workflow. The
+environment currently has no reviewer or deployment-branch protection rules; adding them remains a
+required operational hardening action. npm currently requires CLI 11.5.1+ and Node 22.14+ for
+trusted publishing; the workflow uses supported Node 24 and checks the npm CLI before publishing.
+The approved public `package.json` repository URL must exactly match the GitHub repository
+configured at npm.
 
-Beta.3 trusted release run `34947037844` succeeded through npm OIDC publication and GitHub release
-finalization. That evidence is bound to the immutable Beta.3 tag/commit and does not authorize a
-future release. Registry state and the external trusted-publisher binding must be rechecked for the
-next exact candidate. Historical failed attempts remain recorded in immutable release history.
+Stable trusted release run `35085779583` succeeded through npm OIDC publication and normal GitHub
+release finalization. That evidence is bound to immutable `v1.0.1` and does not authorize a future
+release. Registry state and the external trusted-publisher binding must be rechecked for the next
+exact candidate. Historical failed attempts remain recorded in immutable release history.
 
 Do not add a temporary long-lived npm token to `release.yml`. See
 [the npm package and Trusted Publishing plan](../NPM_BOOTSTRAP.md).
@@ -54,6 +57,12 @@ recorded source commit. From that clean report commit, run `npm run verify`, rer
 `npm run release:artifacts`, add the current report with `npm run release:validation-artifact`, and
 repeat the packed-install/plugin and history gates. A tag context never permits missing current
 evidence.
+
+Current release-validation schema `1.3.0` derives a ready verdict from the strict semantic-version
+channel: alpha, beta, or stable-with-limitations. Contradictory version/verdict combinations and
+unsupported prerelease identifiers fail closed. Immutable schema `1.2.0` reports retain their
+literal historical verdicts and are accepted only through the compatibility parser used to verify
+recorded snapshots; they are not valid current evidence for a new release.
 
 `--ref HEAD` resolves one candidate commit and audits every ancestor reachable from it. The release
 workflow instead passes its already validated `refs/tags/<version>` ref explicitly. Unrelated branch

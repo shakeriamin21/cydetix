@@ -123,10 +123,10 @@ scan report embeds Security IR, authorization proofs, optional authentication an
 optional supply-chain analysis v1; SARIF cross-file findings carry ordered `codeFlows`.
 `cydetix graph --auth` supports text and JSON. `fix` and `remediation show` support text/JSON; SAFE
 edits can also project SARIF `fixes`. HTML is roadmap. Supported runtimes are Node.js 22.18+ within
-22.x and 24.11+ within 24.x; CI configures both on GitHub-hosted Windows, macOS, and Linux. The
-packed install was observed locally on Node 24/Windows. The six-case hosted matrix and a hosted
-Linux sandbox job are configured but remain `NOT_RUN` until an approved GitHub repository executes
-them; local equivalents are not counted as hosted passes. Native standalone binaries are roadmap.
+22.x and 24.11+ within 24.x; CI configures both on GitHub-hosted Windows, macOS, and Linux. Exact
+`v1.0.1` CI run `35084476591` passed the six-case hosted matrix, packed-install checks, Action
+smoke, and hosted Linux sandbox job. Those exact-SHA results do not transfer to later commits,
+untested hosts, kernels, runtimes, or filesystems. Native standalone binaries are roadmap.
 
 ## External validation maturity
 

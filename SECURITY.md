@@ -2,10 +2,12 @@
 
 ## Supported versions
 
-The current `1.0.1` recovery candidate and `main` receive security review. The final readiness
-verdict remains `V1_READY_WITH_LIMITATIONS`. The immutable `v1.0.0` attempt stopped before
-publication, and `1.0.1` remains untagged and unpublished, so no published stable or
-production-support claim is made by this repository state.
+Stable `1.0.1` and the current `main` development line receive security review. `v1.0.1` was
+published through the trusted OIDC workflow after exact-SHA CI, CodeQL, and OpenSSF succeeded. The
+current source is the untagged, unpublished `1.0.2` maintenance candidate. The historical
+`V1_READY_WITH_LIMITATIONS` verdict and all documented limitations still apply; publication does not
+constitute a production-readiness or vulnerability-freedom claim. The immutable `v1.0.0` attempt
+stopped before publication and remains a failed historical attempt.
 
 ## Reporting a vulnerability
 

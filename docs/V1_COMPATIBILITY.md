@@ -1,9 +1,10 @@
 # Cydetix V1 compatibility policy
 
-This policy defines the compatibility boundary Cydetix is prepared to carry into a stable V1
-release. The immutable `v1.0.0` attempt stopped before publication, and the repository now carries
-an untagged, unpublished `1.0.1` recovery candidate. Neither identity claims an actual published
-stable release or expands security-analysis coverage or remediation authority.
+This policy defines the compatibility boundary of published stable Cydetix V1. The immutable
+`v1.0.0` attempt stopped before publication; `v1.0.1` subsequently completed the trusted release
+workflow and is the current published stable release. The repository now carries the untagged,
+unpublished `1.0.2` maintenance candidate. None of these release-state changes expands
+security-analysis coverage or remediation authority.
 
 ## Classification and evolution
 
@@ -44,7 +45,7 @@ classes and evolution rules.
 | Agent Skills and host adapters                    | `EXPERIMENTAL` | Skill wording, passive host detection, and host-specific configuration locations. They cannot add rules, proof, authority, network bootstrap, shell indirection, or target-code execution. Host invocation and UI behavior remain best effort.                                                                                                                                                |
 | `.cydetix.json`                                   | `STABLE`       | Strict data-only schema version `1.0.0`, documented keys, bounds, and suppression fields. Unknown keys and executable configuration remain rejected.                                                                                                                                                                                                                                          |
 | Setup-generated host configuration                | `EXPERIMENTAL` | Adapter file layouts may track host changes; exact Node/entrypoint/version/root binding and no npm/npx/shell/network bootstrap are invariant safety requirements.                                                                                                                                                                                                                             |
-| Node support                                      | `STABLE`       | `^22.18.0                                                                                                                                                                                                                                                                                                                                                                                     |     | ^24.11.0` for V1 unless a documented compatibility change narrows or extends support. |
+| Node support                                      | `STABLE`       | Node 22.18+ within Node 22 and Node 24.11+ within Node 24 for V1 unless a documented compatibility change narrows or extends support.                                                                                                                                                                                                                                                         |
 | npm CLI/bin                                       | `STABLE`       | The `cydetix` executable at the package bin boundary.                                                                                                                                                                                                                                                                                                                                         |
 | Programmatic JavaScript/TypeScript API            | `INTERNAL`     | No root JS API is supported. `dist/**`, MCP implementation modules, implementation declarations, and source modules are not public imports. CommonJS/ESM code must not import them.                                                                                                                                                                                                           |
 | Exported data subpaths                            | `STABLE`       | ESM and CommonJS consumers may load the five enumerated JSON schemas and `cydetix/package.json`; no other package subpath is public.                                                                                                                                                                                                                                                          |

@@ -107,6 +107,16 @@ if (gitleaksStep?.shell !== "bash" || gitleaksStep?.run?.trim() !== expectedGitl
   issues.push(
     "release.yml: complete-history Gitleaks scan must be pinned, unsuppressed, sandboxed, and exactly validated",
   );
+const releaseArtifactsStep = verifyRelease?.steps?.find(
+  (step) => step?.name === "Build exact release artifacts and manifest",
+);
+if (
+  releaseArtifactsStep?.env?.CYDETIX_OSV_STATE !== "PASS" ||
+  releaseArtifactsStep?.env?.CYDETIX_INDEPENDENT_SECRET_SCAN_STATE !== "PASS"
+)
+  issues.push(
+    "release.yml: release artifacts must explicitly inherit successful OSV and independent secret-scan gates",
+  );
 let gitleaksConfig;
 try {
   gitleaksConfig = await readFile(path.join("validation", "gitleaks.toml"), "utf8");
@@ -208,6 +218,7 @@ const result = {
     "COMPLETE_RELEASE_HISTORY_CHECKOUT",
     "RELEASE_REACHABLE_HISTORY_SCOPE",
     "PINNED_UNSUPPRESSED_COMPLETE_HISTORY_SECRET_SCAN",
+    "EXPLICIT_RELEASE_EVIDENCE_STATE_HANDOFF",
     "EXACT_COMMIT_CI_CODEQL_OPENSSF_GATES",
     "EXPLICIT_SINGLE_LOCAL_NPM_TARBALL",
     "DETERMINISTIC_VERSION_DERIVED_NPM_DIST_TAG",

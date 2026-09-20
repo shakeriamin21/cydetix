@@ -29,6 +29,21 @@ try {
 }
 if (publication.npmDistTag !== expectedNpmDistTag)
   errors.push("npm dist-tag does not match the deterministic package release channel");
+let expectedPublishedNpmDistTag;
+try {
+  expectedPublishedNpmDistTag = npmReleaseChannelForVersion(publication.currentPublishedVersion);
+} catch (error) {
+  errors.push(error instanceof Error ? error.message : "published release version is unsupported");
+}
+if (publication.currentPublishedVersion === packageJson.version)
+  errors.push("prepared candidate must differ from the current published version");
+if (publication.currentPublishedTag !== `v${publication.currentPublishedVersion}`)
+  errors.push("current published tag mismatches");
+if (
+  publication.currentPublishedNpmDistTag !== expectedPublishedNpmDistTag ||
+  publication.currentPublishedNpmDistTag !== "latest"
+)
+  errors.push("current published npm dist-tag must identify a stable latest release");
 if (publication.npmPackageRegistration !== "EXISTS")
   errors.push("approved npm package registration is not confirmed to exist");
 if (publication.npmTrustedPublisher !== "CONFIGURED")

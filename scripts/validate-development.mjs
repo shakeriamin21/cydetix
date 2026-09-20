@@ -12,7 +12,7 @@ if (process.env.CYDETIX_EXPECTED_TAG || process.env.GITHUB_REF_TYPE === "tag")
   throw new Error("Development validation cannot validate a release tag. Use npm run verify.");
 const baseline = "4e13b96cc3539e1b623a4c5a12f10a0954776253";
 const tagObject = "e692f1e23d58157a209f511adb6180d3f489a80c";
-const version = "1.0.1";
+const version = "1.0.2";
 const pkg = JSON.parse(await readFile("package.json", "utf8"));
 const lock = JSON.parse(await readFile("package-lock.json", "utf8"));
 const plugin = JSON.parse(await readFile("plugins/cydetix/.codex-plugin/plugin.json", "utf8"));
@@ -79,6 +79,11 @@ for (const required of [
     object: "dacf963b6f83bfb0e35648c4c62af35be1914a91",
     target: "78185c3dfb2d0091dc3f9eef1b9da4955fc5f546",
   },
+  {
+    tag: "v1.0.1",
+    object: "063b65deedc8228a4d155ddd2c286aa2f8c8eaeb",
+    target: "e06ba195beeb5c3428e65e3f95049b39afa2891c",
+  },
 ]) {
   const recorded = history.tags.find((entry) => entry.tag === required.tag);
   if (recorded?.object !== required.object || recorded.target !== required.target)
@@ -132,6 +137,14 @@ if (
   v1Failure.publicGitHubReleaseCreated !== false
 )
   throw new Error("Immutable v1.0.0 failed-release record changed.");
+const v101Snapshot = history.evidenceSnapshots.find((snapshot) => snapshot.version === "1.0.1");
+if (
+  v101Snapshot?.tag !== "v1.0.1" ||
+  v101Snapshot.sourcePath !== "validation/releases/v1.0.1/validation-report.json" ||
+  v101Snapshot.snapshotPath !== "validation/releases/v1.0.1/validation-report.json" ||
+  v101Snapshot.sha256 !== "a1d5a38bb56c0e732351d12726e73ab11bb4e9555c42bd5b6f6af87a9f5e75f1"
+)
+  throw new Error("Immutable v1.0.1 evidence snapshot contract changed.");
 const observedTags = git(["tag", "--list", "v*"])
   .toString()
   .trim()

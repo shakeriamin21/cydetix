@@ -2,7 +2,11 @@ import { spawnSync } from "node:child_process";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import path from "node:path";
 
-import { releaseValidationReportSchema } from "../dist/validation/release.js";
+import {
+  currentReleaseValidationReportSchema,
+  releaseValidationSchemaVersion,
+  releaseValidationVerdictForVersion,
+} from "../dist/validation/release.js";
 import {
   assessReleaseTagIntegrity,
   mandatoryReleaseCheckIds,
@@ -428,8 +432,8 @@ const wslVersion =
         .match(/^WSL version:\s*(.+)$/mu)?.[1]
     : undefined;
 
-const validation = releaseValidationReportSchema.parse({
-  schemaVersion: "1.2.0",
+const validation = currentReleaseValidationReportSchema.parse({
+  schemaVersion: releaseValidationSchemaVersion,
   generatedAt: new Date().toISOString(),
   product: {
     name: "cydetix",
@@ -437,7 +441,7 @@ const validation = releaseValidationReportSchema.parse({
     evidenceOrigin: "PUBLIC_GIT_COMMIT",
     publicSourceCommit: implementationCommit,
   },
-  verdict: mandatoryPassed ? "PUBLIC_ALPHA_READY_WITH_LIMITATIONS" : "NOT_READY_FOR_PUBLIC_USE",
+  verdict: releaseValidationVerdictForVersion(packageJson.version, mandatoryPassed),
   checks,
   corpora,
   sandbox,

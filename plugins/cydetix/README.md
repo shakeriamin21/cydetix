@@ -15,7 +15,7 @@ npm run validate:packed-plugin
 ```
 
 Versioned plugin archives use `cydetix-codex-plugin-<version>.tar.gz`; their SHA-256 is recorded in
-the release manifest and `SHA256SUMS`. Beta.3 is the current immutable released archive; Beta.4 is
-an untagged stabilization candidate. The repository catalog entry is in
-`.agents/plugins/marketplace.json`; it is installable from a reviewed public repository ref only
-after that repository exists. Marketplace publication is not claimed.
+the release manifest and `SHA256SUMS`. `v1.0.1` is the current immutable published release archive;
+the source tree prepares an untagged, unpublished `1.0.2` maintenance candidate. The repository
+catalog entry is in `.agents/plugins/marketplace.json` and may be installed only from a reviewed
+public repository ref. Marketplace submission or publication is not claimed.

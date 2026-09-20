@@ -1,8 +1,9 @@
 # Cydetix publication gate
 
-> Historical Alpha.7 gate record. Beta.3 was subsequently released by the trusted OIDC workflow. Use
-> `docs/integrations/releases.md` and versioned readiness evidence for any future candidate; the
-> historical states below must not be read as current registry or hosted-gate status.
+> Historical Alpha.7 gate record. Beta.3 was subsequently released as a prerelease, and stable
+> `v1.0.1` was subsequently published by trusted OIDC release run `35085779583`. Use
+> `docs/integrations/releases.md` for the current procedure; the historical states below must not be
+> read as current registry, GitHub configuration, or hosted-gate status.
 
 Historical registry evidence: 2026-09-06; current candidate: 2026-09-09
 

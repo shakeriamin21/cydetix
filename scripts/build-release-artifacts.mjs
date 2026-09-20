@@ -5,7 +5,7 @@ import path from "node:path";
 
 import { scanRepository } from "../dist/core/engine.js";
 import { generateCycloneDxSbom } from "../dist/supply-chain/sbom.js";
-import { releaseValidationReportSchema } from "../dist/validation/release.js";
+import { currentReleaseValidationReportSchema } from "../dist/validation/release.js";
 import { versionedReleaseReportPath } from "../dist/validation/release-evidence.js";
 
 const root = path.resolve(".");
@@ -173,19 +173,10 @@ const sourceCommit = run("git", [
 ]).trim();
 const nodeVersion = process.version;
 const npmVersion = run(process.execPath, [npmCli, "--version"]).trim();
-const gitleaks = await readFile(
-  path.join(root, ".cydetix", "evidence", "gitleaks-review.json"),
-  "utf8",
-)
-  .then(JSON.parse)
-  .catch(() => ({ state: "NOT_CHECKED" }));
-const osv = await readFile(path.join(root, ".cydetix", "evidence", "osv-online.json"), "utf8")
-  .then(JSON.parse)
-  .catch(() => ({ state: "NOT_CHECKED" }));
 const currentReportPath = path.join(root, versionedReleaseReportPath(packageJson.version));
 const phase6bValidation = await readFile(currentReportPath, "utf8")
   .then(JSON.parse)
-  .then((report) => releaseValidationReportSchema.parse(report))
+  .then((report) => currentReleaseValidationReportSchema.parse(report))
   .catch((error) => {
     if (error?.code !== "ENOENT") throw error;
     if (process.env.GITHUB_REF_TYPE === "tag" || process.env.CYDETIX_EXPECTED_TAG !== undefined)
@@ -206,10 +197,10 @@ const checks = {
   selfScan: declaredState("CYDETIX_SELF_SCAN_STATE"),
   supplyChain: declaredState("CYDETIX_SUPPLY_CHAIN_STATE"),
   npmAudit: process.env.CYDETIX_NPM_AUDIT_STATE ?? "NOT_CHECKED",
-  osv: osv.state,
+  osv: declaredState("CYDETIX_OSV_STATE"),
   publicRepository: publicRepositoryAudit.state,
   gitHistoryPrivacy: historyAudit.state,
-  independentSecretScan: gitleaks.state,
+  independentSecretScan: declaredState("CYDETIX_INDEPENDENT_SECRET_SCAN_STATE"),
   packageAllowlist: "PASS",
   packageInstall: "PASS",
   skills: declaredState("CYDETIX_SKILLS_STATE"),

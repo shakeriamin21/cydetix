@@ -5,7 +5,10 @@ const beta3Commit = "c937ae1ddbf329bc62fb0376f04bf2123f438f4e";
 const beta3TagObject = "29203b647094604184bdd84386a1e7f23809ac28";
 const readinessEvidenceHead = "0da72c1babc01a5d8ffb3708caba29bdd0de0f06";
 const auditedCandidateVersion = "0.6.0-beta.4";
-const candidateVersion = "1.0.0";
+const v100TagObject = "dacf963b6f83bfb0e35648c4c62af35be1914a91";
+const v100Target = "78185c3dfb2d0091dc3f9eef1b9da4955fc5f546";
+const v101TagObject = "063b65deedc8228a4d155ddd2c286aa2f8c8eaeb";
+const v101Target = "e06ba195beeb5c3428e65e3f95049b39afa2891c";
 const expectedExports = {
   "./schemas/scan-report.schema.json": "./schemas/scan-report.schema.json",
   "./schemas/finding.schema.json": "./schemas/finding.schema.json",
@@ -36,19 +39,43 @@ async function json(path) {
   return JSON.parse(await readFile(path, "utf8"));
 }
 
-const [pkg, policy, readiness, limitations, governance, stress, dependabotReview, allowances] =
-  await Promise.all([
-    json("package.json"),
-    json("validation/v1-readiness/contract-policy.json"),
-    json("validation/v1-readiness/readiness.json"),
-    json("validation/v1-readiness/limitations.json"),
-    json("validation/v1-readiness/governance.json"),
-    json("validation/v1-readiness/docker-cleanup-stress.json"),
-    json("validation/v1-readiness/dependabot-author-review.json"),
-    json("validation/history-author-allowances.json"),
-  ]);
+const [
+  pkg,
+  publication,
+  policy,
+  readiness,
+  limitations,
+  governance,
+  stress,
+  dependabotReview,
+  allowances,
+] = await Promise.all([
+  json("package.json"),
+  json("release/publication-config.json"),
+  json("validation/v1-readiness/contract-policy.json"),
+  json("validation/v1-readiness/readiness.json"),
+  json("validation/v1-readiness/limitations.json"),
+  json("validation/v1-readiness/governance.json"),
+  json("validation/v1-readiness/docker-cleanup-stress.json"),
+  json("validation/v1-readiness/dependabot-author-review.json"),
+  json("validation/history-author-allowances.json"),
+]);
 
-invariant(pkg.version === candidateVersion, "V1 stabilization candidate version changed.");
+invariant(
+  pkg.version === publication.version && /^1\.\d+\.\d+$/u.test(pkg.version),
+  "Current source is not a consistent stable-V1 maintenance version.",
+);
+invariant(
+  publication.publicationState === "PREPARED_NOT_PUBLISHED" &&
+    publication.publicationAuthorized === false,
+  "Current source improperly claims publication state or authority.",
+);
+invariant(
+  publication.currentPublishedVersion === "1.0.1" &&
+    publication.currentPublishedTag === "v1.0.1" &&
+    publication.currentPublishedNpmDistTag === "latest",
+  "Current stable-publication metadata does not identify v1.0.1 exactly.",
+);
 invariant(
   readiness.candidate.version === auditedCandidateVersion &&
     readiness.candidate.state === "UNTAGGED_DEVELOPMENT_CANDIDATE" &&
@@ -170,68 +197,29 @@ invariant(
     git(["rev-parse", `${readinessEvidenceHead}^`]) === auditedSourceSha,
   "The final readiness-evidence commit is not the exact direct child of the audited source.",
 );
-if (head !== readinessEvidenceHead)
-  invariant(
-    git(["rev-parse", `${head}^`]) === readinessEvidenceHead &&
-      git(["rev-list", "--count", `${readinessEvidenceHead}..${head}`]) === "1",
-    "The V1 candidate must be exactly one commit above the final readiness-evidence commit.",
-  );
+invariant(
+  git(["merge-base", readinessEvidenceHead, head]) === readinessEvidenceHead,
+  "Current source does not descend from the final V1 readiness-evidence commit.",
+);
+invariant(
+  git(["diff", "--name-only", readinessEvidenceHead, head, "--", "validation/v1-readiness"]) === "",
+  "Immutable V1 readiness evidence changed after its recorded commit.",
+);
 invariant(stress.sourceCommit === auditedSourceSha, "Docker stress evidence targets another SHA.");
 invariant(
   governance.auditedSourceSha === auditedSourceSha,
   "Governance evidence targets another SHA.",
 );
-const releasePreparationPaths = new Set([
-  ".github/workflows/release.yml",
-  "CHANGELOG.md",
-  "README.md",
-  "SECURITY.md",
-  "dist/core/brand.d.ts",
-  "dist/core/brand.js",
-  "dist/core/brand.js.map",
-  "dist/validation/release-channel.d.ts",
-  "dist/validation/release-channel.d.ts.map",
-  "dist/validation/release-channel.js",
-  "dist/validation/release-channel.js.map",
-  "docs/LIMITATIONS.md",
-  "docs/V1_COMPATIBILITY.md",
-  "docs/integrations/agents.md",
-  "docs/integrations/releases.md",
-  "docs/releases/v1.0.0.md",
-  "package-lock.json",
-  "package.json",
-  "plugins/cydetix/.codex-plugin/plugin.json",
-  "release/publication-config.json",
-  "scripts/resolve-release-channel.mjs",
-  "scripts/validate-development.mjs",
-  "scripts/validate-publication-config.mjs",
-  "scripts/validate-v1-readiness.mjs",
-  "scripts/validate-workflow-security.mjs",
-  "src/core/brand.ts",
-  "src/validation/release-channel.ts",
-  "tests/cli/smoke.test.ts",
-  "tests/cli/trust.test.ts",
-  "tests/integrations/compatibility.test.ts",
-  "tests/integrations/setup.test.ts",
-  "tests/security/workflow-security.test.ts",
-  "tests/validation/development.test.ts",
-  "tests/validation/publication-config.test.ts",
-  "tests/validation/release-channel.test.ts",
-]);
-const candidateChanges = [
-  ...git(["diff", "--name-only", auditedSourceSha]).split("\n").filter(Boolean),
-  ...git(["ls-files", "--others", "--exclude-standard"]).split("\n").filter(Boolean),
-].filter((file, index, files) => files.indexOf(file) === index);
-const outOfScopeChanges = candidateChanges.filter(
-  (file) =>
-    file !== "docs/security/V1_READINESS.md" &&
-    !file.startsWith("validation/v1-readiness/") &&
-    !releasePreparationPaths.has(file),
-);
-invariant(candidateChanges.length > 0, "The V1 candidate has no audited-source delta.");
 invariant(
-  outOfScopeChanges.length === 0,
-  `Changes after the audited source SHA exceed release preparation: ${outOfScopeChanges.join(", ")}.`,
+  git([
+    "diff",
+    "--name-only",
+    auditedSourceSha,
+    readinessEvidenceHead,
+    "--",
+    "validation/v1-readiness",
+  ]) !== "",
+  "The final readiness-evidence commit does not contain its versioned evidence set.",
 );
 invariant(
   git(["rev-parse", "refs/tags/v0.6.0-beta.3"]) === beta3TagObject &&
@@ -239,7 +227,17 @@ invariant(
   "The immutable Beta.3 identity changed.",
 );
 invariant(git(["tag", "--list", "v0.6.0-beta.4"]) === "", "A Beta.4 tag exists.");
-invariant(git(["tag", "--list", "v1*"]) === "", "A V1 tag exists.");
+invariant(
+  git(["rev-parse", "refs/tags/v1.0.0"]) === v100TagObject &&
+    git(["rev-parse", "refs/tags/v1.0.0^{}"]) === v100Target,
+  "The immutable failed v1.0.0 identity changed.",
+);
+invariant(
+  git(["rev-parse", "refs/tags/v1.0.1"]) === v101TagObject &&
+    git(["rev-parse", "refs/tags/v1.0.1^{}"]) === v101Target,
+  "The immutable successful v1.0.1 identity changed.",
+);
+invariant(git(["tag", "--list", `v${pkg.version}`]) === "", "A current-candidate tag exists.");
 invariant(
   git(["diff", "--name-only", beta3Commit, head, "--", "validation/releases/v0.6.0-beta.3"]) === "",
   "The immutable Beta.3 release-evidence directory changed during V1 stabilization.",
@@ -251,9 +249,9 @@ const [readme, compatibility, readinessDocument] = await Promise.all([
   readFile("docs/security/V1_READINESS.md", "utf8"),
 ]);
 invariant(
-  readme.includes("npm exec --yes --package=cydetix@0.6.0-beta.3 -- cydetix") &&
-    readme.includes("unpublished `1.0.0` V1 release") &&
-    !readme.includes("current source is the unpublished `0.6.0-beta.3`"),
+  readme.includes("npm exec --yes --package=cydetix@1.0.1 -- cydetix") &&
+    readme.includes("untagged, unpublished `1.0.2` maintenance candidate") &&
+    !readme.includes("Beta.3 is the current immutable published prerelease"),
   "Primary installation or release-status documentation is stale.",
 );
 invariant(

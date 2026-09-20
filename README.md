@@ -5,7 +5,7 @@ Security for AI-built software.
 ## One-off scanner
 
 ```bash
-npm exec --yes --package=cydetix@0.6.0-beta.3 -- cydetix
+npm exec --yes --package=cydetix@1.0.1 -- cydetix
 ```
 
 That's it.
@@ -19,7 +19,7 @@ AI integration requires a persistent installation so routine agent execution nev
 installs packages at runtime:
 
 ```bash
-npm install -g cydetix@0.6.0-beta.3
+npm install -g cydetix@1.0.1
 cydetix setup
 ```
 
@@ -36,19 +36,17 @@ every AI product.
 For CLI-only use, the same global installation remains optional:
 
 ```bash
-npm install -g cydetix@0.6.0-beta.3
+npm install -g cydetix@1.0.1
 cydetix
 ```
 
-`0.6.0-beta.3` is the current immutable published prerelease. Its annotated tag targets
-`c937ae1ddbf329bc62fb0376f04bf2123f438f4e`; trusted release run `34947037844` and exact-SHA CI,
-CodeQL, and OpenSSF gates succeeded. Alpha.12, Beta.1, and Beta.2 remain immutable failed attempts
-and were not published. The immutable `v1.0.0` attempt also failed before publication because its
-tag targeted the source candidate without the required one-report evidence commit; no `1.0.0` npm
-package or public GitHub release exists, and npm `latest` did not move. The current source is the
-untagged, unpublished `1.0.1` recovery candidate. Use `npm run verify:development` for source
-validation. The separate `npm run verify` release gate still requires matching annotated-tag
-metadata and a committed two-commit release-evidence chain.
+`1.0.1` is the current immutable published stable release and npm `latest`. Its annotated tag
+targets `e06ba195beeb5c3428e65e3f95049b39afa2891c`; trusted release run `35085779583` and the
+exact-SHA CI, CodeQL, and OpenSSF gates succeeded. Beta.3 remains a historical published prerelease.
+Alpha.12, Beta.1, Beta.2, and `v1.0.0` remain immutable failed attempts and were not published. The
+current source prepares the untagged, unpublished `1.0.2` maintenance candidate. Use
+`npm run verify:development` for source validation. The separate `npm run verify` release gate still
+requires matching annotated-tag metadata and a committed two-commit release-evidence chain.
 
 ## What the default command does
 
@@ -216,7 +214,7 @@ cydetix doctor --agents --format json
 Specific execution can be requested when troubleshooting npm cache behavior:
 
 ```bash
-npm exec --yes --package=cydetix@0.6.0-beta.3 -- cydetix
+npm exec --yes --package=cydetix@1.0.1 -- cydetix
 ```
 
 ## Security and limitations
@@ -229,23 +227,23 @@ Cydetix does not certify a project as secure or production-ready. Unsupported or
 behavior remains `UNKNOWN`, `NOT_APPLICABLE`, or uncovered as appropriate. Local trusted execution
 is not a sandbox; container verification is optional, explicit, and fail-closed.
 
-The Beta.3 engine detects documented high-confidence SQL injection, OS command injection, path
-traversal, and SSRF dataflow patterns in bounded JavaScript/TypeScript and Python server contexts.
-It requires recognized sources, import/framework-proven sinks, propagation, reachability, complete
-analysis, and absence of a relevant recognized control. It does not claim universal language or
-framework coverage; all four rules are `REVIEW_REQUIRED` and have no automatic fix. See
+Cydetix V1 detects documented high-confidence SQL injection, OS command injection, path traversal,
+and SSRF dataflow patterns in bounded JavaScript/TypeScript and Python server contexts. It requires
+recognized sources, import/framework-proven sinks, propagation, reachability, complete analysis, and
+absence of a relevant recognized control. It does not claim universal language or framework
+coverage; all four rules are `REVIEW_REQUIRED` and have no automatic fix. See
 [rule coverage](docs/security/RULE_COVERAGE.md) and the [trust model](docs/security/TRUST_MODEL.md).
 
-Beta.3 was published through the tag-driven OIDC trusted release workflow. Registry state and
-dist-tags remain time-varying external facts and must be rechecked for any future release. Package
-registration is not product-name exclusivity or trademark clearance. Legal clearance has not been
-performed and no exclusivity is claimed.
+Stable `v1.0.1` was published through the tag-driven OIDC trusted release workflow. Registry state
+and dist-tags remain time-varying external facts and must be rechecked for any future release.
+Package registration is not product-name exclusivity or trademark clearance. Legal clearance has not
+been performed and no exclusivity is claimed.
 
 Read the [security model](docs/SECURITY_MODEL.md), [threat model](THREAT_MODEL.md),
 [autofix policy](AUTOFIX_POLICY.md), [validation record](docs/VALIDATION.md), and
-[limitations](docs/LIMITATIONS.md) before relying on this prerelease in a sensitive workflow. See
-the [local coding-agent compatibility registry](docs/integrations/agents.md) for adapter contracts.
-The [V1 contract policy](docs/V1_COMPATIBILITY.md) classifies stable, experimental, and internal
+[limitations](docs/LIMITATIONS.md) before relying on Cydetix in a sensitive workflow. See the
+[local coding-agent compatibility registry](docs/integrations/agents.md) for adapter contracts. The
+[V1 contract policy](docs/V1_COMPATIBILITY.md) classifies stable, experimental, and internal
 surfaces, including the intentionally closed package import boundary.
 
 ## Development

@@ -71,6 +71,9 @@ if (manifest.size > 400_000)
 if (manifest.unpackedSize > 2_500_000)
   throw new Error(`Unpacked size ${manifest.unpackedSize} exceeds the release gate.`);
 const packageJson = JSON.parse(await readFile(path.resolve("package.json"), "utf8"));
+const publication = JSON.parse(
+  await readFile(path.resolve("release", "publication-config.json"), "utf8"),
+);
 if (packageJson.name !== "cydetix")
   throw new Error("Package name must be the unscoped cydetix identity.");
 if (JSON.stringify(packageJson.bin) !== JSON.stringify({ cydetix: "dist/cli/main.js" }))
@@ -91,7 +94,9 @@ const readme = await readFile(path.resolve("README.md"), "utf8");
 if (!readme.startsWith("# Cydetix\n\nSecurity for AI-built software.\n\n## One-off scanner\n"))
   throw new Error("README must lead with the Cydetix tagline and one-off scanner path.");
 if (
-  !readme.includes("npm exec --yes --package=cydetix@0.6.0-beta.3 -- cydetix") ||
+  !readme.includes(
+    `npm exec --yes --package=cydetix@${publication.currentPublishedVersion} -- cydetix`,
+  ) ||
   /(?:npx|npm install -g|--package=)\s+@/u.test(readme)
 )
   throw new Error("README onboarding must use the unscoped Cydetix identity.");

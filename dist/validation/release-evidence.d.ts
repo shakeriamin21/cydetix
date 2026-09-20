@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { type ReleaseValidationReport } from "./release.js";
+import { type CurrentReleaseValidationReport, type ReleaseValidationReport } from "./release.js";
 declare const historicalTagSchema: z.ZodObject<{
     tag: z.ZodString;
     object: z.ZodString;
@@ -29,6 +29,10 @@ export declare const immutableHistoricalReleaseIdentities: readonly [{
     readonly tag: "v1.0.0";
     readonly object: "dacf963b6f83bfb0e35648c4c62af35be1914a91";
     readonly target: "78185c3dfb2d0091dc3f9eef1b9da4955fc5f546";
+}, {
+    readonly tag: "v1.0.1";
+    readonly object: "063b65deedc8228a4d155ddd2c286aa2f8c8eaeb";
+    readonly target: "e06ba195beeb5c3428e65e3f95049b39afa2891c";
 }];
 export declare const releaseHistorySchema: z.ZodObject<{
     schemaVersion: z.ZodLiteral<"1.0.0">;
@@ -90,6 +94,6 @@ export declare function validateCurrentReleaseReport(reportInput: unknown, packa
     version: string;
 }, sourceIdentity: ReleaseReportSourceIdentity, options?: {
     requireReleaseReady?: boolean;
-}): ReleaseValidationReport;
+}): CurrentReleaseValidationReport;
 export {};
 //# sourceMappingURL=release-evidence.d.ts.map

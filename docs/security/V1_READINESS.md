@@ -1,5 +1,10 @@
 # Cydetix V1 readiness
 
+> Historical pre-release decision record generated before stable V1 publication. Its Beta.3 and
+> Beta.4 statements describe that exact audit state and are intentionally not rewritten. Stable
+> `v1.0.1` was subsequently published on 2026-09-16; see the repository README,
+> `docs/releases/v1.0.1.md`, and `docs/integrations/releases.md` for current release truth.
+
 ## Verdict
 
 `V1_READY_WITH_LIMITATIONS`
