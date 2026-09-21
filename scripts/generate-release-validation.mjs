@@ -18,6 +18,7 @@ import {
   sha256,
   validateSourceBoundEvidenceSet,
 } from "../dist/validation/source-bound-evidence.js";
+import { formatRepositoryJson } from "./lib/canonical-json.mjs";
 
 const root = path.resolve(".");
 const resultsDirectory = path.resolve("validation", "results");
@@ -570,7 +571,7 @@ const validation = currentReleaseValidationReportSchema.parse({
 await mkdir(resultsDirectory, { recursive: true });
 const validationPath = path.resolve(versionedReleaseReportPath(packageJson.version));
 await mkdir(path.dirname(validationPath), { recursive: true });
-await writeFile(validationPath, `${JSON.stringify(validation, null, 2)}\n`, "utf8");
+await writeFile(validationPath, await formatRepositoryJson(validation, validationPath), "utf8");
 process.stdout.write(
   `Generated release validation ${validation.verdict} for ${validation.product.publicSourceCommit}.\n`,
 );
