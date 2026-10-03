@@ -470,3 +470,46 @@ export function validateCurrentReleaseReport(
   }
   return report;
 }
+
+export function assessReleaseArtifactReport(
+  reportInput: unknown,
+  packageIdentity: { name: string; version: string },
+  sourceIdentity: ReleaseReportSourceIdentity,
+):
+  | {
+      state: "CURRENT_VERSIONED_REPORT";
+      report: CurrentReleaseValidationReport;
+      expectedSourceCommit: string;
+    }
+  | {
+      state: "STALE_SOURCE_REPORT";
+      report: CurrentReleaseValidationReport;
+      expectedSourceCommit: string;
+    } {
+  const parsed = currentReleaseValidationReportSchema.safeParse(reportInput);
+  if (!parsed.success) throw new Error("Current release report is malformed.");
+  const report = parsed.data;
+  if (report.product.name !== packageIdentity.name)
+    throw new Error(`Release evidence product ${report.product.name} does not match package.`);
+  if (report.product.version !== packageIdentity.version)
+    throw new Error(`Release evidence version ${report.product.version} does not match package.`);
+  if (
+    report.product.evidenceOrigin !== "PUBLIC_GIT_COMMIT" ||
+    report.product.publicSourceCommit === undefined
+  )
+    throw new Error("Current release evidence must identify a public source commit.");
+
+  const reportPath = versionedReleaseReportPath(packageIdentity.version);
+  const evidenceOnlyCommit =
+    sourceIdentity.parents.length === 1 &&
+    sourceIdentity.changedFromParent.length === 1 &&
+    sourceIdentity.changedFromParent[0] === reportPath;
+  const expectedSourceCommit = evidenceOnlyCommit
+    ? (sourceIdentity.parents[0] ?? sourceIdentity.head)
+    : sourceIdentity.head;
+  if (report.product.publicSourceCommit !== expectedSourceCommit)
+    return { state: "STALE_SOURCE_REPORT", report, expectedSourceCommit };
+
+  validateCurrentReleaseReport(report, packageIdentity, sourceIdentity);
+  return { state: "CURRENT_VERSIONED_REPORT", report, expectedSourceCommit };
+}

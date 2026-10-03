@@ -5,8 +5,10 @@ import path from "node:path";
 
 import { scanRepository } from "../dist/core/engine.js";
 import { generateCycloneDxSbom } from "../dist/supply-chain/sbom.js";
-import { currentReleaseValidationReportSchema } from "../dist/validation/release.js";
-import { versionedReleaseReportPath } from "../dist/validation/release-evidence.js";
+import {
+  assessReleaseArtifactReport,
+  versionedReleaseReportPath,
+} from "../dist/validation/release-evidence.js";
 import {
   sha256,
   sourceBoundEvidenceIndexSchema,
@@ -262,22 +264,65 @@ if (evidenceIndexPath !== undefined) {
 }
 const nodeVersion = process.version;
 const npmVersion = run(process.execPath, [npmCli, "--version"]).trim();
-const currentReportPath = path.join(root, versionedReleaseReportPath(packageJson.version));
-const phase6bValidation = await readFile(currentReportPath, "utf8")
+const reportRelativePath = versionedReleaseReportPath(packageJson.version);
+const currentReportPath = path.join(root, reportRelativePath);
+const storedReport = await readFile(currentReportPath, "utf8")
   .then(JSON.parse)
-  .then((report) => currentReleaseValidationReportSchema.parse(report))
   .catch((error) => {
     if (error?.code !== "ENOENT") throw error;
     if (process.env.GITHUB_REF_TYPE === "tag" || process.env.CYDETIX_EXPECTED_TAG !== undefined)
       throw new Error("Current versioned release evidence is mandatory in a tag release context.");
     return undefined;
   });
+const identityLine = run("git", [
+  "-c",
+  "safe.directory=" + root.replaceAll("\\", "/"),
+  "rev-list",
+  "--parents",
+  "-n",
+  "1",
+  sourceCommit,
+]).trim();
+const [resolvedCommit, ...parents] = identityLine.split(/\s+/u);
+if (resolvedCommit !== sourceCommit)
+  throw new Error("Release artifact source commit identity could not be resolved.");
+const changedFromParent =
+  parents.length === 1
+    ? run("git", [
+        "-c",
+        "safe.directory=" + root.replaceAll("\\", "/"),
+        "diff",
+        "--name-only",
+        parents[0] + ".." + sourceCommit,
+      ])
+        .trim()
+        .split("\n")
+        .filter(Boolean)
+    : [];
+const reportTrackedClean =
+  run("git", [
+    "-c",
+    "safe.directory=" + root.replaceAll("\\", "/"),
+    "status",
+    "--porcelain",
+    "--",
+    reportRelativePath,
+  ]).trim() === "";
+const reportAssessment =
+  storedReport === undefined
+    ? undefined
+    : assessReleaseArtifactReport(
+        storedReport,
+        { name: packageJson.name, version: packageJson.version },
+        { head: sourceCommit, parents, changedFromParent, reportTrackedClean },
+      );
 if (
-  phase6bValidation !== undefined &&
-  (phase6bValidation.product.name !== packageJson.name ||
-    phase6bValidation.product.version !== packageJson.version)
+  reportAssessment?.state === "STALE_SOURCE_REPORT" &&
+  (process.env.GITHUB_REF_TYPE === "tag" || process.env.CYDETIX_EXPECTED_TAG !== undefined)
 )
-  throw new Error("Current versioned release evidence does not match the package identity.");
+  throw new Error("Stale versioned release evidence is forbidden in a tag release context.");
+const phase6bValidation =
+  reportAssessment?.state === "CURRENT_VERSIONED_REPORT" ? reportAssessment.report : undefined;
 const checks = {
   historicalTests: "NOT_CHECKED",
   hostedCi: "NOT_CHECKED",
@@ -330,6 +375,7 @@ const evidenceChecks = {
 for (const [check, type] of Object.entries(evidenceChecks))
   checks[check] = evidenceResults.get(type) ?? "NOT_CHECKED";
 const releaseCandidateState =
+  sourceState === "COMMITTED_CLEAN" &&
   phase6bValidation !== undefined &&
   phase6bValidation.verdict !== "NOT_READY_FOR_PUBLIC_USE" &&
   publication.decision === "APPROVED" &&
@@ -345,22 +391,27 @@ const phase7Validation = {
   sourceState,
   checks,
   phase6bEvidence:
-    phase6bValidation === undefined
+    reportAssessment?.state === "STALE_SOURCE_REPORT"
       ? {
-          state: "NOT_GENERATED",
-          reportPath: path.relative(root, currentReportPath).replaceAll("\\", "/"),
+          state: "STALE_SOURCE_REPORT",
+          reportPath: reportRelativePath,
+          expectedSourceCommit: reportAssessment.expectedSourceCommit,
+          publicSourceCommit: reportAssessment.report.product.publicSourceCommit,
         }
-      : {
-          state: "CURRENT_VERSIONED_REPORT",
-          verdict: phase6bValidation.verdict,
-          evidenceOrigin: phase6bValidation.product.evidenceOrigin,
-          ...(phase6bValidation.product.publicSourceCommit === undefined
-            ? {}
-            : { publicSourceCommit: phase6bValidation.product.publicSourceCommit }),
-          sandboxState: phase6bValidation.sandbox.state,
-          tests: phase6bValidation.tests,
-          environment: phase6bValidation.environment,
-        },
+      : phase6bValidation === undefined
+        ? {
+            state: "NOT_GENERATED",
+            reportPath: reportRelativePath,
+          }
+        : {
+            state: "CURRENT_VERSIONED_REPORT",
+            verdict: phase6bValidation.verdict,
+            evidenceOrigin: phase6bValidation.product.evidenceOrigin,
+            publicSourceCommit: phase6bValidation.product.publicSourceCommit,
+            sandboxState: phase6bValidation.sandbox.state,
+            tests: phase6bValidation.tests,
+            environment: phase6bValidation.environment,
+          },
 };
 const validationName = `cydetix-release-validation-${packageJson.version}.json`;
 const validationPath = path.join(destination, validationName);

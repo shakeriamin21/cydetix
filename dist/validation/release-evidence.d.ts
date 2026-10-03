@@ -95,5 +95,17 @@ export declare function validateCurrentReleaseReport(reportInput: unknown, packa
 }, sourceIdentity: ReleaseReportSourceIdentity, options?: {
     requireReleaseReady?: boolean;
 }): CurrentReleaseValidationReport;
+export declare function assessReleaseArtifactReport(reportInput: unknown, packageIdentity: {
+    name: string;
+    version: string;
+}, sourceIdentity: ReleaseReportSourceIdentity): {
+    state: "CURRENT_VERSIONED_REPORT";
+    report: CurrentReleaseValidationReport;
+    expectedSourceCommit: string;
+} | {
+    state: "STALE_SOURCE_REPORT";
+    report: CurrentReleaseValidationReport;
+    expectedSourceCommit: string;
+};
 export {};
 //# sourceMappingURL=release-evidence.d.ts.map
