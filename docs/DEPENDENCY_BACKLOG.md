@@ -1,7 +1,7 @@
 # Dependency maintenance backlog
 
 Observed from live Dependabot pull requests on 2026-09-20. This is a review queue, not approval to
-merge or publish. No dependency version is changed by the `1.0.2` maintenance candidate. Every
+merge or publish. No dependency version is changed by the `1.0.3` maintenance candidate. Every
 accepted update must run the complete development, package/install, workflow-security, history,
 security, and mandatory Docker gates on its own exact commit.
 

@@ -250,7 +250,7 @@ const [readme, compatibility, readinessDocument] = await Promise.all([
 ]);
 invariant(
   readme.includes("npm exec --yes --package=cydetix@1.0.1 -- cydetix") &&
-    readme.includes("untagged, unpublished `1.0.2` maintenance candidate") &&
+    readme.includes("untagged, unpublished `1.0.3` maintenance candidate") &&
     !readme.includes("Beta.3 is the current immutable published prerelease"),
   "Primary installation or release-status documentation is stale.",
 );

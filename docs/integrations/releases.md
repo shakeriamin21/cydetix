@@ -4,7 +4,7 @@ Stable `v1.0.1` is the current immutable published release and npm `latest`. Bet
 historical published prerelease; Beta.4 was never released. The immutable `v1.0.0` attempt failed
 before publication because its annotated tag targeted the source candidate without the required
 evidence commit, so that tag must not be moved or reused. The current source is the untagged,
-unpublished `1.0.2` maintenance candidate. Do not create a tag, publish npm, create a GitHub
+unpublished `1.0.3` maintenance candidate. Do not create a tag, publish npm, create a GitHub
 Release, move npm `latest`, or submit a Marketplace listing until a future exact evidence commit has
 passed its required hosted gates and the user separately approves that next phase.
 

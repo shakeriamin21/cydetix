@@ -12,7 +12,7 @@ import { temporaryDirectory } from "../helpers/temporary.js";
 const historicalReport = JSON.parse(
   await readFile("validation/releases/v1.0.1/validation-report.json", "utf8"),
 ) as Record<string, unknown>;
-const validationPath = path.resolve(versionedReleaseReportPath("1.0.2"));
+const validationPath = path.resolve(versionedReleaseReportPath("1.0.3"));
 
 function realisticCurrentReport() {
   return currentReleaseValidationReportSchema.parse({
@@ -21,7 +21,7 @@ function realisticCurrentReport() {
     generatedAt: "2026-09-21T00:00:00.000Z",
     product: {
       ...(historicalReport.product as Record<string, unknown>),
-      version: "1.0.2",
+      version: "1.0.3",
       publicSourceCommit: "a".repeat(40),
     },
     verdict: "PUBLIC_STABLE_READY_WITH_LIMITATIONS",

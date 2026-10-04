@@ -1,6 +1,6 @@
 # Known limitations
 
-Stable `1.0.1` is published. The current source is an untagged, unpublished `1.0.2` maintenance
+Stable `1.0.1` is published. The current source is an untagged, unpublished `1.0.3` maintenance
 candidate. Neither publication nor a passing scan guarantees that an application is secure or
 compliant.
 

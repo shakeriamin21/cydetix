@@ -3,7 +3,7 @@
 Roadmap entries are possible directions, not implemented capabilities, commitments, or delivery
 dates. Current behavior is defined by `SUPPORT_MATRIX.md`, `docs/CLAIMS.md`, and released artifacts.
 The next evidence-producing phase is defined in `docs/POST_V1_VALIDATION_PLAN.md`; it is not part of
-the `1.0.2` maintenance implementation.
+the `1.0.3` maintenance implementation.
 
 ## Analysis coverage
 

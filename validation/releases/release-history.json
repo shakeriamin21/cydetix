@@ -80,6 +80,11 @@
       "tag": "v1.0.1",
       "object": "063b65deedc8228a4d155ddd2c286aa2f8c8eaeb",
       "target": "e06ba195beeb5c3428e65e3f95049b39afa2891c"
+    },
+    {
+      "tag": "v1.0.2",
+      "object": "9baf4735cc9937b8b23b00700b23c3e9e13eea0d",
+      "target": "505b2e55a8bd48c180f8d15212059c250a1b726a"
     }
   ],
   "evidenceSnapshots": [
@@ -103,6 +108,13 @@
       "sourcePath": "validation/releases/v1.0.1/validation-report.json",
       "snapshotPath": "validation/releases/v1.0.1/validation-report.json",
       "sha256": "a1d5a38bb56c0e732351d12726e73ab11bb4e9555c42bd5b6f6af87a9f5e75f1"
+    },
+    {
+      "version": "1.0.2",
+      "tag": "v1.0.2",
+      "sourcePath": "validation/releases/v1.0.2/validation-report.json",
+      "snapshotPath": "validation/releases/v1.0.2/validation-report.json",
+      "sha256": "a45b1f14701563813b9e558afb01c9e77cc52167eb8f29be8d49263b0dd130ec"
     }
   ],
   "failedReleaseAttempts": [
@@ -137,6 +149,14 @@
       "npmPublished": false,
       "publicGitHubReleaseCreated": false,
       "failure": "The annotated tag targeted the source candidate without validation/releases/v1.0.0/validation-report.json; release-report validation failed closed during complete verification and the publish job was skipped."
+    },
+    {
+      "tag": "v1.0.2",
+      "releaseRun": 37187353787,
+      "state": "FAILED_BEFORE_PUBLICATION",
+      "npmPublished": false,
+      "publicGitHubReleaseCreated": false,
+      "failure": "The release artifact builder rejected a complete-history Gitleaks evidence subject hash mismatch after later verification rewrote the shared review file; publication was skipped."
     }
   ]
 }

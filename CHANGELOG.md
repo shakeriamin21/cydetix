@@ -5,11 +5,21 @@ package; report and rule schemas are versioned independently.
 
 ## [Unreleased]
 
-## [1.0.2] - Unreleased
+## [1.0.3] - 2026-10-04
+
+- Bind Gitleaks release evidence to immutable content-addressed validator output; later verification
+  cannot overwrite an earlier subject.
+- Supersede the failed immutable v1.0.2 tag. Trusted run 37187353787 stopped at a Gitleaks
+  subject-hash mismatch before npm or GitHub Release publication; 1.0.1 remains the previous
+  published stable release.
+- Bump package, CLI, plugin, and prepared release metadata to 1.0.3 without changing stable product
+  contracts.
+
+## [1.0.2] - Failed publication attempt
 
 - Reconcile public documentation and immutable release history with the successful stable `v1.0.1`
   trusted publication while preserving failed historical attempts as failures.
-- Version current source as an untagged, unpublished `1.0.2` maintenance candidate.
+- Prepared source as an untagged, unpublished `1.0.2` maintenance candidate.
 - Evolve release-validation reports from schema `1.2.0` to `1.3.0` so alpha, beta, and stable
   versions receive channel-accurate readiness verdicts. Historical `1.2.0` reports remain parsed
   literally and immutable; contradictory new version/verdict combinations fail closed.

@@ -2,7 +2,7 @@
 
 Status: `PLANNED_NOT_EXECUTED`
 
-This plan is not part of the `1.0.2` maintenance implementation and makes no new support claim. It
+This plan is not part of the `1.0.3` maintenance implementation and makes no new support claim. It
 defines the evidence that must exist before a later `1.1.0` scope can be admitted. Scans remain
 offline, target code is never executed, no hidden telemetry is permitted, and unfavorable results
 must be retained.

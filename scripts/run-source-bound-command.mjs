@@ -2,6 +2,8 @@ import { spawnSync } from "node:child_process";
 import { readFile, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 
+import { writeContentAddressedSubject } from "./lib/immutable-evidence-subject.mjs";
+
 import {
   completeEvidence,
   establishEvidenceSource,
@@ -24,8 +26,14 @@ const subjectArgument = process.argv.includes("--subject") ? take("--subject") :
 const captureArgument = process.argv.includes("--capture-stdout")
   ? take("--capture-stdout")
   : undefined;
-if (subjectArgument !== undefined && captureArgument !== undefined)
-  throw new Error("Use either --subject or --capture-stdout, not both.");
+const addressedArgument = process.argv.includes("--capture-stdout-addressed")
+  ? take("--capture-stdout-addressed")
+  : undefined;
+if (
+  [subjectArgument, captureArgument, addressedArgument].filter((value) => value !== undefined)
+    .length > 1
+)
+  throw new Error("Use only one subject or stdout capture mode.");
 
 const source = await establishEvidenceSource();
 const subjectPath = subjectArgument ?? captureArgument;
@@ -52,9 +60,17 @@ const result = spawnSync(executable, arguments_, {
 });
 if (captureArgument !== undefined)
   await writeFile(path.resolve(captureArgument), result.stdout ?? "", "utf8");
+const passed = result.error === undefined && result.status === 0;
+let addressedPath;
+if (addressedArgument !== undefined && passed) {
+  JSON.parse(result.stdout);
+  addressedPath = await writeContentAddressedSubject(addressedArgument, result.stdout);
+}
 
 let subject;
-if (subjectPath !== undefined) {
+if (addressedPath !== undefined) {
+  subject = await fileIdentity(addressedPath);
+} else if (subjectPath !== undefined) {
   try {
     subject = await fileIdentity(path.resolve(subjectPath));
   } catch {
@@ -64,7 +80,6 @@ if (subjectPath !== undefined) {
     };
   }
 }
-const passed = result.error === undefined && result.status === 0;
 await completeEvidence(
   source,
   {

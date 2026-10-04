@@ -106,7 +106,7 @@ const expectedGitleaksScript = [
   "node scripts/run-source-bound-command.mjs \\",
   "  --type complete-history-gitleaks \\",
   "  --output .cydetix/evidence/bound/complete-history-gitleaks.json \\",
-  "  --subject .cydetix/evidence/gitleaks-review.json \\",
+  "  --capture-stdout-addressed .cydetix/evidence/gitleaks-subjects \\",
   "  -- node scripts/validate-gitleaks-report.mjs .cydetix/evidence/gitleaks.json",
 ].join("\n");
 if (gitleaksStep?.shell !== "bash" || gitleaksStep?.run?.trim() !== expectedGitleaksScript)

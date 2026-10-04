@@ -1,8 +1,14 @@
 import { spawnSync } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import path from "node:path";
 import { describe, expect, it } from "vitest";
+
+import {
+  verifyBoundFileSubject,
+  writeContentAddressedSubject,
+} from "../../scripts/lib/immutable-evidence-subject.mjs";
 
 interface ReviewedFinding {
   fingerprint: string;
@@ -94,6 +100,60 @@ describe("Gitleaks reviewed-finding validator", () => {
   }
   const reviewedDocumentation = findingAt(0);
   const reviewedFixture = findingAt(1);
+
+  it("keeps release Gitleaks evidence immutable through later verification and rejects tampering", async () => {
+    const temporary = mkdtempSync(path.join(tmpdir(), "cydetix-gitleaks-subjects-"));
+    try {
+      const first = validate(exactFindings);
+      expect(first.status).toBe(0);
+      const subjectFile = await writeContentAddressedSubject(temporary, first.stdout);
+      const initialBytes = readFileSync(subjectFile);
+      const record = {
+        evidenceType: "complete-history-gitleaks",
+        subject: {
+          kind: "FILE",
+          identity: subjectFile,
+          sha256: createHash("sha256").update(initialBytes).digest("hex"),
+          bytes: initialBytes.length,
+        },
+      };
+      await expect(verifyBoundFileSubject(record)).resolves.toBeUndefined();
+
+      // This is the trusted release order: create evidence, then run tests in
+      // verification. The second validator run rewrites the legacy scratch file.
+      const later = validateSource(JSON.stringify(exactFindings, null, 2));
+      expect(later.status).toBe(0);
+      const laterSubject = await writeContentAddressedSubject(temporary, later.stdout);
+      expect(laterSubject).not.toBe(subjectFile);
+      expect(readFileSync(subjectFile)).toEqual(initialBytes);
+      const scratchReview = JSON.parse(
+        readFileSync(
+          path.join(repositoryRoot, ".cydetix", "evidence", "gitleaks-review.json"),
+          "utf8",
+        ),
+      ) as { reportSha256: string };
+      const laterReview = JSON.parse(later.stdout) as { reportSha256: string };
+      expect(scratchReview.reportSha256).toBe(laterReview.reportSha256);
+      await expect(verifyBoundFileSubject(record)).resolves.toBeUndefined();
+      expect(await writeContentAddressedSubject(temporary, first.stdout)).toBe(subjectFile);
+
+      await expect(
+        verifyBoundFileSubject({
+          ...record,
+          subject: { ...record.subject, sha256: "0".repeat(64) },
+        }),
+      ).rejects.toThrow("Evidence subject hash mismatch");
+      writeFileSync(subjectFile, "tampered");
+      await expect(verifyBoundFileSubject(record)).rejects.toThrow(
+        "Evidence subject hash mismatch",
+      );
+      await expect(writeContentAddressedSubject(temporary, first.stdout)).rejects.toThrow(
+        "changed after creation",
+      );
+    } finally {
+      rmSync(temporary, { recursive: true, force: true });
+    }
+  });
 
   it("accepts 14 immutable historical and nine supplemental findings only with exact reviewed evidence", () => {
     expect(manifest.reviewedFindings).toHaveLength(14);

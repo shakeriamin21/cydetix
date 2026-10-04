@@ -55,14 +55,14 @@ describe("prepared stable publication configuration", () => {
   it("exactly matches package version, tag candidate, and deterministic channel", async () => {
     const result = await validatePublication(publication);
     expect(result.status).toBe(0);
-    expect(result.stdout).toContain("Cydetix 1.0.2");
+    expect(result.stdout).toContain("Cydetix 1.0.3");
   });
 
   it.each([
     ["version", "1.0.1", "publication version mismatches"],
     ["tagCandidate", "v1.0.1", "tag candidate mismatches"],
     ["npmDistTag", "beta", "npm dist-tag does not match"],
-    ["currentPublishedVersion", "1.0.2", "prepared candidate must differ"],
+    ["currentPublishedVersion", "1.0.3", "prepared candidate must differ"],
     ["currentPublishedTag", "v1.0.0", "current published tag mismatches"],
     [
       "currentPublishedNpmDistTag",

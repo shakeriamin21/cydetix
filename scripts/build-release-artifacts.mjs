@@ -10,7 +10,6 @@ import {
   versionedReleaseReportPath,
 } from "../dist/validation/release-evidence.js";
 import {
-  sha256,
   sourceBoundEvidenceIndexSchema,
   validateSourceBoundEvidenceSet,
 } from "../dist/validation/source-bound-evidence.js";
@@ -20,6 +19,7 @@ import {
   evidenceReference,
   fileIdentity,
 } from "./lib/source-bound-evidence.mjs";
+import { verifyBoundFileSubject } from "./lib/immutable-evidence-subject.mjs";
 
 const root = path.resolve(".");
 const preview = process.argv.includes("--preview");
@@ -247,17 +247,7 @@ if (evidenceIndexPath !== undefined) {
     repository: sourceContext?.repository ?? index.repository,
     sourceCommit,
   });
-  for (const record of externalEvidence.values()) {
-    if (record.subject.kind !== "FILE") continue;
-    if (record.subject.sha256 === undefined || record.subject.bytes === undefined)
-      throw new Error(`Evidence ${record.evidenceType} has an incomplete subject binding.`);
-    const subjectBytes = await readFile(path.resolve(record.subject.identity));
-    if (
-      sha256(subjectBytes) !== record.subject.sha256 ||
-      subjectBytes.length !== record.subject.bytes
-    )
-      throw new Error(`Evidence subject hash mismatch for ${record.evidenceType}.`);
-  }
+  for (const record of externalEvidence.values()) await verifyBoundFileSubject(record);
   externalEvidenceReferences = index.evidence;
 } else if (!preview) {
   throw new Error("Release artifacts require an explicit source-bound evidence index.");

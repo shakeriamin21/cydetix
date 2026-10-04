@@ -3,7 +3,7 @@
 This policy defines the compatibility boundary of published stable Cydetix V1. The immutable
 `v1.0.0` attempt stopped before publication; `v1.0.1` subsequently completed the trusted release
 workflow and is the current published stable release. The repository now carries the untagged,
-unpublished `1.0.2` maintenance candidate. None of these release-state changes expands
+unpublished `1.0.3` maintenance candidate. None of these release-state changes expands
 security-analysis coverage or remediation authority.
 
 ## Classification and evolution

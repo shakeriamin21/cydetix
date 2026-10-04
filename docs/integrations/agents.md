@@ -2,7 +2,7 @@
 
 Cydetix `v1.0.1` is the immutable published stable, local, agent-independent security runtime. The
 immutable `v1.0.0` attempt stopped before publication; the current source is the untagged,
-unpublished `1.0.2` maintenance candidate. Every supported host uses the same three stdio MCP tools
+unpublished `1.0.3` maintenance candidate. Every supported host uses the same three stdio MCP tools
 and the same deterministic engine. Host adapters only detect and merge configuration; they contain
 no vulnerability rules, proof logic, authentication or authorization analysis, or remediation
 classification.

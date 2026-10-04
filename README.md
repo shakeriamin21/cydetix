@@ -44,7 +44,7 @@ cydetix
 targets `e06ba195beeb5c3428e65e3f95049b39afa2891c`; trusted release run `35085779583` and the
 exact-SHA CI, CodeQL, and OpenSSF gates succeeded. Beta.3 remains a historical published prerelease.
 Alpha.12, Beta.1, Beta.2, and `v1.0.0` remain immutable failed attempts and were not published. The
-current source prepares the untagged, unpublished `1.0.2` maintenance candidate. Use
+current source prepares the untagged, unpublished `1.0.3` maintenance candidate. Use
 `npm run verify:development` for source validation. The separate `npm run verify` release gate still
 requires matching annotated-tag metadata and a committed two-commit release-evidence chain.
 

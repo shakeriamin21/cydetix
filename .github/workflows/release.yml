@@ -79,7 +79,7 @@ jobs:
           node scripts/run-source-bound-command.mjs \
             --type complete-history-gitleaks \
             --output .cydetix/evidence/bound/complete-history-gitleaks.json \
-            --subject .cydetix/evidence/gitleaks-review.json \
+            --capture-stdout-addressed .cydetix/evidence/gitleaks-subjects \
             -- node scripts/validate-gitleaks-report.mjs .cydetix/evidence/gitleaks.json
       - name: Run npm advisory gate
         run: >-
