@@ -16,7 +16,9 @@ const s4 = "93ae9a469722f8ce8e30c84221b212887b9fbbfc";
 const evidenceCommit = "e".repeat(40);
 const packageIdentity = { name: "cydetix", version: "1.0.2" };
 const reportPath = versionedReleaseReportPath(packageIdentity.version);
-const historicalBytes = readFileSync(reportPath);
+const historicalBytes = readFileSync(
+  new URL("../fixtures/release-stale-s3-1.0.2.json", import.meta.url),
+);
 const historicalReport = currentReleaseValidationReportSchema.parse(
   JSON.parse(historicalBytes.toString("utf8")),
 );

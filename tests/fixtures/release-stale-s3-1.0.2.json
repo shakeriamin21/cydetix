@@ -1,0 +1,94 @@
+{
+  "schemaVersion": "1.3.0",
+  "generatedAt": "2026-09-21T10:43:26.999Z",
+  "product": {
+    "name": "cydetix",
+    "version": "1.0.2",
+    "evidenceOrigin": "PUBLIC_GIT_COMMIT",
+    "publicSourceCommit": "4939fadcb3c34eb6d065a98a731fd0748fcdc763"
+  },
+  "checks": [
+    {
+      "id": "historical-source-fixture",
+      "state": "not_checked",
+      "evidence": "Immutable S3 source-binding regression fixture."
+    }
+  ],
+  "corpora": [],
+  "sandbox": {
+    "schemaVersion": "1.0.0",
+    "runner": "CONTAINER_SANDBOX",
+    "state": "AVAILABLE_HARDENED",
+    "runtime": "docker",
+    "runtimeVersion": "29.0.1",
+    "imageIdentity": "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
+    "controls": {
+      "network": "DENIED",
+      "environment": "SANITIZED",
+      "workspace": "EPHEMERAL_COPY",
+      "containerRoot": "READ_ONLY",
+      "dockerSocketMounted": false,
+      "sshAgentMounted": false,
+      "privileged": false,
+      "nonRoot": true,
+      "noNewPrivileges": true,
+      "capabilitiesDropped": true,
+      "seccomp": "RUNTIME_DEFAULT",
+      "memoryMegabytes": 512,
+      "cpuCount": 1,
+      "pidLimit": 128,
+      "outputBytes": 2000000,
+      "timeoutMilliseconds": 120000
+    },
+    "limitations": [
+      "Container isolation reduces risk but is not claimed as a perfect security boundary.",
+      "A network-denied, non-root, read-only, resource-bounded launch probe executed successfully.",
+      "The runtime-default seccomp profile is used; host runtime enforcement remains trusted."
+    ]
+  },
+  "environment": {
+    "nodeVersion": "v24.15.0",
+    "npmVersion": "11.19.1",
+    "platform": "win32-x64",
+    "docker": {
+      "clientVersion": "29.0.1",
+      "serverVersion": "29.0.1",
+      "serverPlatform": "Docker Desktop 4.52.0 (210994)",
+      "osType": "linux",
+      "architecture": "x86_64",
+      "kernelVersion": "6.18.33.2-microsoft-standard-WSL2",
+      "cgroupVersion": "2",
+      "defaultRuntime": "runc",
+      "securityOptions": ["name=seccomp,profile=builtin", "name=cgroupns"],
+      "imageIdentity": "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b",
+      "imageRepoDigests": [
+        "node@sha256:1b2479dd35a99687d6638f5976fd235e26c5b37e8122f786fcd5fe231d63de5b"
+      ]
+    },
+    "wsl": {
+      "version": "2.7.14.0",
+      "backend": "WSL2"
+    }
+  },
+  "scorecard": {
+    "state": "not_checked",
+    "checksRun": 0,
+    "limitations": []
+  },
+  "tests": {
+    "filesPassed": 0,
+    "testsPassed": 0,
+    "filesFailed": 0,
+    "testsFailed": 0,
+    "filesSkipped": 0,
+    "testsSkipped": 0
+  },
+  "performance": [],
+  "package": {
+    "state": "SUPERSEDED_BY_PUBLIC_RENAME",
+    "evidence": "Historical source-binding regression fixture."
+  },
+  "supportScope": [],
+  "knownLimitations": [],
+  "verdict": "NOT_READY_FOR_PUBLIC_USE"
+}
